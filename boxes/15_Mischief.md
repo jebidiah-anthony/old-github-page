@@ -1,6 +1,7 @@
 ---
 layout: default
-title: "HTB Mischief (10.10.10.92)"
+title: "HTB Mischief"
+description: "10.10.10.92 | Tricked Badge"
 header-img: "boxes/screenshots/15_mischief/mischief.png"
 tags: [hackthebox, htb, boot2root, writeup, linux, snmp, ipv6, command-execution, access-control-lists]
 ---
