@@ -1,45 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/style.css?v=">
-
-<!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>jebidiah-anthony | write-ups and what nots</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="jebidiah-anthony" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="write-ups and what nots" />
-<meta property="og:description" content="write-ups and what nots" />
-<link rel="canonical" href="http://localhost:4000/ctf.html" />
-<meta property="og:url" content="http://localhost:4000/ctf.html" />
-<meta property="og:site_name" content="jebidiah-anthony" />
-<script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/ctf.html","headline":"jebidiah-anthony","description":"write-ups and what nots","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-
-  </head>
-
-  <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what nots</h2>
-
-	<span>
-	  <a href="/">home</a>
-          <a href="/htb.html">htb writeups</a>
-	  <a href="/ctf.html">ctf writeups</a>
-	</span>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h2 id="table-of-contents">TABLE OF CONTENTS</h2>
+I"�<h2 id="table-of-contents">TABLE OF CONTENTS</h2>
 
 <table>
   <tbody>
@@ -65,7 +24,7 @@
 <hr />
 <hr />
 
-<h2 id="nactf-2019">»<a href="https://www.nactf.com/">NACTF 2019</a>«</h2>
+<h2 id="nactf-2019"><a href="https://www.nactf.com/">NACTF 2019</a></h2>
 
 <table>
   <tbody>
@@ -129,7 +88,7 @@
 <hr />
 <hr />
 
-<h2 id="tghack-2019">»<a href="https://tghack.no/">TG:Hack 2019</a>«</h2>
+<h2 id="-tghack-2019">* <a href="https://tghack.no/">TG:Hack 2019</a></h2>
 
 <table>
   <tbody>
@@ -175,7 +134,7 @@
 <hr />
 <hr />
 
-<h2 id="tjctf-2019">»<a href="https://tjctf.org/">TJCTF 2019</a>«</h2>
+<h2 id="tjctf-2019"><a href="https://tjctf.org/">TJCTF 2019</a></h2>
 
 <table>
   <tbody>
@@ -221,10 +180,4 @@
     </tr>
   </tbody>
 </table>
-
-      </section>
-    </div>
-
-    
-  </body>
-</html>
+:ET

@@ -2,7 +2,7 @@
 layout: default
 ---
 
-### TABLE OF CONTENTS
+## TABLE OF CONTENTS
 
 [NACTF 2019](#nactf-2019) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
 [TG:Hack 2019](#tghack-2019) | Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT
@@ -12,9 +12,7 @@ layout: default
 ---
 ---
 
-## [NACTF 2019](https://www.nactf.com/)
-
-__DURATION__: Wed, 18 Sept 2019 06:00 PHT - Mon, 23 Sept 2019, 06:00 PHT
+## >>[NACTF 2019](https://www.nactf.com/)<<
 
 <strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong>
 Vyom's Soggy Croutons | 50 pts | Crypto | ROT9
@@ -29,9 +27,7 @@ Loony Tunes | 50 pts | Crypto | Pigpen Cipher
 ---
 ---
 
-## [TG:Hack 2019](https://tghack.no/)
-
-__DURATION__: Thu, 18 April 2019, 00:00 PHT - Sun, 21 April 2019, 00:00 PHT
+## >>[TG:Hack 2019](https://tghack.no/)<<
 
 <strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong>
 [Fortune Cookie](./chals/ctf/2019_TG:Hack/web/1_Fortune_cookie.html) | 50 pts | Web | HTTP Cookies
@@ -43,9 +39,7 @@ __DURATION__: Thu, 18 April 2019, 00:00 PHT - Sun, 21 April 2019, 00:00 PHT
 ---
 ---
 
-## [TJCTF 2019](https://tjctf.org/)
-
-__DURATION__: Sat, 06 April 2019, 07:00 PHT - Wed, 10 April 2019, 	07:00 PHT
+## >>[TJCTF 2019](https://tjctf.org/)<<
 
 <strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong>
 [Moar Horse 2](./chals/ctf/2019_TJCTF/web/2_moar_horse_2.html) | 70 pts | Web | Scripting, Recursive Search
