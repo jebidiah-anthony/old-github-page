@@ -1,6 +1,3 @@
 title: jebidiah-anthony
-description: write-ups and what not
 google_analytics: True
 theme: jekyll-theme-hacker
-include:
-  - kryptos.md
