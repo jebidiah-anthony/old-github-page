@@ -1,8 +1,8 @@
 ---
 layout: default
 title: HTB Mischief
-subtitle: BADGE: Tricked | IP: 10.10.10.92
-header-img: "./screenshots/15_mischief/mischief.jpg"
+subtitle: 10.10.10.92 | Tricked Badge
+header-img: "./screenshots/15_mischief/mischief.png"
 tags:[hackthebox, htb, boot2root, writeup, linux, snmp, ipv6, command-execution, access-control-lists]
 ---
 
