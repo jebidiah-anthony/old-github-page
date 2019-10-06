@@ -1,0 +1,308 @@
+I"E}<h2 id="super-duper-aes">Super Duper AES</h2>
+
+<h3 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The Advanced Encryption Standard (AES) has got to go. Spencer just 
+invented the Super Duper Advanced Encryption Standard (SDAES), and 
+it's 100% unbreakable. AES only performs up to 14 rounds of 
+substitution and permutation, while SDAES performs 10,000. That's so 
+secure, SDAES doesn't even use a key!
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="part-2--given-files">PART 2 : GIVEN FILES</h3>
+
+<h4 id="-sdaespy"><strong>[&gt;]</strong> <a href="./files/SuperDuperAES/sdaes.py">sdaes.py</a></h4>
+<h4 id="-ciphertxt"><strong>[&gt;]</strong> <a href="./files/SuperDuperAES/cipher.txt">cipher.txt</a></h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>d59fd3f37182486a44231de4713131d20324fbfe80e91ae48658ba707cb84841972305fc3e0111c753733cf2
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="part-3--program-flow">PART 3 : PROGRAM FLOW</h3>
+
+<ol>
+  <li>A plaintext is passed as an argument when running <code class="highlighter-rouge">sdaes.py</code>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python3 sdaes.py <span class="s2">"&lt;plaintext&gt;"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>The plaintext is padded if necessary to have a lenght with a multiple of 4:
+    <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pad</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">numBytes</span> <span class="o">=</span> <span class="mi">4</span><span class="o">-</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">%</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">message</span> <span class="o">+</span> <span class="n">numBytes</span> <span class="o">*</span> <span class="nb">chr</span><span class="p">(</span><span class="n">numBytes</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>The plaintext is converted to hex then separated into blocks with a length of 8 nibbles (4 bytes).</p>
+  </li>
+  <li>Each block goes through a substitution function
+    <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">substitute</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">):</span>
+    <span class="n">substitutedHexBlock</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="n">substitution</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> 
+                    <span class="mi">13</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">hexDigit</span> <span class="ow">in</span> <span class="n">hexBlock</span><span class="p">:</span>
+        <span class="n">newDigit</span> <span class="o">=</span> <span class="n">substitution</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">hexDigit</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]</span>
+        <span class="n">substitutedHexBlock</span> <span class="o">+=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">newDigit</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">substitutedHexBlock</span>
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>Each nibble is substituted depending on its corresponding value in the <code class="highlighter-rouge">substitution</code> array.</li>
+    </ol>
+  </li>
+  <li>After the substitution, the block undergoes permutation:
+    <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">permute</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">):</span>
+    <span class="n">permutation</span> <span class="o">=</span>   <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> 
+                    <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> 
+                    <span class="mi">27</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span>
+                     <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">permutedBlock</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+        <span class="n">bit</span> <span class="o">=</span> <span class="p">(</span><span class="n">block</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">i</span>
+        <span class="n">permutedBlock</span> <span class="o">|=</span> <span class="n">bit</span> <span class="o">&lt;&lt;</span> <span class="n">permutation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">hexpad</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">permutedBlock</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>It checks if a <strong><code class="highlighter-rouge">bit</code></strong> is turned on or equal to <code class="highlighter-rouge">1</code>.</li>
+      <li>The bit corresponding to the value in the <code class="highlighter-rouge">permutation</code> array is turned on if the value of <code class="highlighter-rouge">bit</code> is 1.</li>
+    </ol>
+  </li>
+  <li>Steps <strong>#3</strong> to <strong>#5</strong> are repeated 10,000 times to produce the ciphertext.</li>
+</ol>
+
+<hr />
+
+<h3 id="part-4--getting-the-flag">PART 4 : GETTING THE FLAG</h3>
+
+<ol>
+  <li>Reverse the <strong><code class="highlighter-rouge">permute()</code></strong> function:
+    <ol>
+      <li>Consider <strong><code class="highlighter-rouge">permutationBlock</code></strong> as a string of 32 0s:
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00000000000000000000000000000000
+</code></pre></div>        </div>
+      </li>
+      <li><strong><code class="highlighter-rouge">bit</code></strong> only returns <code class="highlighter-rouge">1</code> or <code class="highlighter-rouge">0</code>:
+        <ul>
+          <li><strong>HYPOTHETICALLY:</strong> if the <strong><code class="highlighter-rouge">32nd</code>, <code class="highlighter-rouge">28th</code>, <code class="highlighter-rouge">16th</code>,</strong> and <strong><code class="highlighter-rouge">8th</code></strong> bit (from the right) from the current block are turned on:
+            <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">permutation</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="n">omitted</span><span class="o">..</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">permutedBlock</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">format</span><span class="p">(</span><span class="n">permutedBlock</span><span class="p">,</span> <span class="s">"032b"</span><span class="p">)</span>
+<span class="s">'00000000000000000000000000000000'</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bit</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># bit is set to 1 since the test bits below are assumed to be turned on.
+</span><span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">permutedBlock</span> <span class="o">|=</span> <span class="n">bit</span> <span class="o">&lt;&lt;</span> <span class="n">permutation</span><span class="p">[</span><span class="mi">32</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># permutation[32 - 1] =&gt; 8
+</span><span class="o">&gt;&gt;&gt;</span> <span class="nb">format</span><span class="p">(</span><span class="n">permutedBlock</span><span class="p">,</span> <span class="s">"032b"</span><span class="p">)</span>
+<span class="s">'00000000000000000000000100000000'</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">permutedBlock</span> <span class="o">|=</span> <span class="n">bit</span> <span class="o">&lt;&lt;</span> <span class="n">permutation</span><span class="p">[</span><span class="mi">28</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># permutation[28 - 1] =&gt; 20
+</span><span class="o">&gt;&gt;&gt;</span> <span class="nb">format</span><span class="p">(</span><span class="n">permutedBlock</span><span class="p">,</span> <span class="s">"032b"</span><span class="p">)</span>
+<span class="s">'00000000000100000000000100000000'</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">permutedBlock</span> <span class="o">|=</span> <span class="n">bit</span> <span class="o">&lt;&lt;</span> <span class="n">permutation</span><span class="p">[</span><span class="mi">16</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># permutation[16 - 1] =&gt; 2
+</span><span class="o">&gt;&gt;&gt;</span> <span class="nb">format</span><span class="p">(</span><span class="n">permutedBlock</span><span class="p">,</span> <span class="s">"032b"</span><span class="p">)</span>
+<span class="s">'00000000000100000000000100000100'</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">permutedBlock</span> <span class="o">|=</span> <span class="n">bit</span> <span class="o">&lt;&lt;</span> <span class="n">permutation</span><span class="p">[</span><span class="mi">8</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>   <span class="c1"># permutation[8 - 1]  =&gt; 19
+</span><span class="o">&gt;&gt;&gt;</span> <span class="nb">format</span><span class="p">(</span><span class="n">permutedBlock</span><span class="p">,</span> <span class="s">"032b"</span><span class="p">)</span>
+<span class="s">'00000000000110000000000100000100'</span>
+</code></pre></div>            </div>
+          </li>
+          <li><strong><code class="highlighter-rouge">10001000000000001000000010000000</code></strong> was just remapped to <strong><code class="highlighter-rouge">00000000000110000000000100000100</code></strong></li>
+          <li>The permutation function basically checks if a bit is turned on in the ciphertext blockthen remaps them to a different position based on the <strong><code class="highlighter-rouge">permutation</code></strong> array.</li>
+          <li>There will be no conflict in checking if a bit was originally turned on since each of the original set of bits could only be mapped to a corresponding unique position after the permutation.</li>
+        </ul>
+      </li>
+      <li>A function definition for undoing the permutation:
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">permute</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">):</span>
+    <span class="n">permutation</span> <span class="o">=</span>   <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+    <span class="n">sub_block</span> <span class="o">=</span> <span class="p">[</span><span class="s">"0"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">enc_block</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="s">"032b"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">enc_block</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span> 
+            <span class="n">bit</span> <span class="o">=</span> <span class="n">permutation</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">31</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">sub_block</span><span class="p">[</span><span class="n">bit</span><span class="p">]</span> <span class="o">=</span> <span class="s">"1"</span>
+        
+    <span class="n">sub_block</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_block</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">hexpad</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sub_block</span><span class="p">,</span> <span class="mi">2</span><span class="p">))[</span><span class="mi">2</span><span class="p">:])</span>
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>Reverse the <strong><code class="highlighter-rouge">substitute()</code></strong> function:
+    <ol>
+      <li>
+        <p>The nibbles on the plaintext block are substituted based on the <strong><code class="highlighter-rouge">substitution</code></strong> array:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>0</th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+              <th>7</th>
+              <th>8</th>
+              <th>9</th>
+              <th>A</th>
+              <th>B</th>
+              <th>C</th>
+              <th>D</th>
+              <th>E</th>
+              <th>F</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>8</td>
+              <td>4</td>
+              <td>F</td>
+              <td>9</td>
+              <td>3</td>
+              <td>E</td>
+              <td>6</td>
+              <td>2</td>
+              <td>D</td>
+              <td>1</td>
+              <td>7</td>
+              <td>5</td>
+              <td>C</td>
+              <td>A</td>
+              <td>B</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>Just remap the nibbles back to their original positions:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>0</th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+              <th>7</th>
+              <th>8</th>
+              <th>9</th>
+              <th>A</th>
+              <th>B</th>
+              <th>C</th>
+              <th>D</th>
+              <th>E</th>
+              <th>F</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>F</td>
+              <td>9</td>
+              <td>7</td>
+              <td>4</td>
+              <td>1</td>
+              <td>B</td>
+              <td>6</td>
+              <td>A</td>
+              <td>0</td>
+              <td>3</td>
+              <td>D</td>
+              <td>E</td>
+              <td>C</td>
+              <td>8</td>
+              <td>5</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </li>
+  <li>Put everything together:
+    <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">hexlify</span><span class="p">,</span><span class="n">unhexlify</span>
+
+<span class="k">def</span> <span class="nf">hexpad</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">):</span>
+    <span class="n">numZeros</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numZeros</span><span class="o">*</span><span class="s">"0"</span> <span class="o">+</span> <span class="n">hexBlock</span>
+   
+<span class="k">def</span> <span class="nf">substitute</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">):</span>
+    <span class="n">substitutedHexBlock</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="n">substitution</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">hexDigit</span> <span class="ow">in</span> <span class="n">hexBlock</span><span class="p">:</span>
+        <span class="n">newDigit</span> <span class="o">=</span> <span class="n">substitution</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">hexDigit</span><span class="p">,</span> <span class="mi">16</span><span class="p">)]</span>
+        <span class="n">substitutedHexBlock</span> <span class="o">+=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">newDigit</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span>
+   
+    <span class="k">return</span> <span class="n">substitutedHexBlock</span>
+   
+   
+<span class="k">def</span> <span class="nf">permute</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">):</span>
+    <span class="n">permutation</span> <span class="o">=</span>   <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+    <span class="n">sub_block</span> <span class="o">=</span> <span class="p">[</span><span class="s">"0"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">enc_block</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hexBlock</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="s">"032b"</span><span class="p">)</span>
+   
+        <span class="k">if</span> <span class="n">enc_block</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span> 
+            <span class="n">bit</span> <span class="o">=</span> <span class="n">permutation</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">31</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">sub_block</span><span class="p">[</span><span class="n">bit</span><span class="p">]</span> <span class="o">=</span> <span class="s">"1"</span>
+           
+    <span class="n">sub_block</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_block</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+   
+    <span class="k">return</span> <span class="n">hexpad</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sub_block</span><span class="p">,</span> <span class="mi">2</span><span class="p">))[</span><span class="mi">2</span><span class="p">:])</span>
+   
+   
+<span class="k">def</span> <span class="nf">round</span><span class="p">(</span><span class="n">hexMessage</span><span class="p">):</span>
+    <span class="n">numBlocks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hexMessage</span><span class="p">)</span><span class="o">//</span><span class="mi">8</span>
+    <span class="n">permutedHexMessage</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numBlocks</span><span class="p">):</span>
+        <span class="n">permutedHexMessage</span> <span class="o">+=</span> <span class="n">permute</span><span class="p">(</span><span class="n">hexMessage</span><span class="p">[</span><span class="mi">8</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">8</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">])</span>
+    <span class="n">substitutedHexMessage</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numBlocks</span><span class="p">):</span>
+        <span class="n">substitutedHexMessage</span> <span class="o">+=</span> <span class="n">substitute</span><span class="p">(</span><span class="n">permutedHexMessage</span><span class="p">[</span><span class="mi">8</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">8</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">substitutedHexMessage</span>
+   
+   
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+   
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"cipher.txt"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ciphertext</span><span class="p">:</span>
+        <span class="n">hexMessage</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+            <span class="n">hexMessage</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">hexMessage</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">hexMessage</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>Since the original process per round was substitute then permutate, the decryption should be permutation before substitution.</li>
+    </ol>
+  </li>
+  <li>Run the decryption script:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python3 decrypt.py
+<span class="go">  nactf{5ub5t1tut10n_p3rmutat10n_n33d5_a_k3y}
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>The permutation and substitution functions will always be reversible for block ciphers especially if they are known.</li>
+      <li>The vulnerability lies with the lack of key passed during encryption.
+        <ul>
+          <li>The number of rounds used during encryption would be irrelevant since the ciphertext produced without a key wouldn’t really be “random” enough.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="flag--nactf5ub5t1tut10n_p3rmutat10n_n33d5_a_k3y">FLAG : <strong>nactf{5ub5t1tut10n_p3rmutat10n_n33d5_a_k3y}</strong></h2>
+:ET

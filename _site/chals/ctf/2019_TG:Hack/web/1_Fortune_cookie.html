@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony | write-ups and what nots</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="write-ups and what nots" />
+<meta property="og:description" content="write-ups and what nots" />
+<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_TG:Hack/web/1_Fortune_cookie.html" />
+<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_TG:Hack/web/1_Fortune_cookie.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_TG:Hack/web/1_Fortune_cookie.html","headline":"jebidiah-anthony","description":"write-ups and what nots","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what nots</h2>
+
+	<span>
+	  <a href="/">home</a>
+          <a href="/htb.html">htb writeups</a>
+	  <a href="/ctf.html">ctf writeups</a>
+	</span>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2><img src="./screenshots/Fortune_cookie.png" alt="Fortune cookie (50 pts)" /></h2>
+<h2 id="challenge-info">CHALLENGE INFO</h2>
+<ul>
+  <li><strong>CHALLENGE LINK</strong>: https://fortune.tghack.no/</li>
+  <li><strong>ASSUMED OBJECTIVE</strong>: Alter the site’s <strong><em>cookies</em></strong> to get the flag</li>
+</ul>
+
+<hr />
+
+<h2 id="1-check-cookies">1. Check cookies</h2>
+
+<ul>
+  <li>From HTTP Response Headers:
+    <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...
+Set-Cookie: access_token=divination:student
+...
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="2-change-the-value-of-access_token">2. Change the value of <strong>access_token</strong></h2>
+
+<ul>
+  <li>HTTP Request Headers:
+    <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...
+Cookie: access_token=divination:professor
+...
+</span></code></pre></div>    </div>
+  </li>
+  <li>Changing the value to <strong>divination:professor</strong> returns:
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OMG! You're so fortunate! Take this flag: TG19{what_a_fortune_my_lucky_one}
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="flag--tg19what_a_fortune_my_lucky_one">FLAG : <strong>TG19{what_a_fortune_my_lucky_one}</strong></h2>
+
+      </section>
+    </div>
+
+    
+  </body>
+</html>

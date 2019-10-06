@@ -1,0 +1,67 @@
+I"£<h2 id="reversible-sneaky-algorithm-0">Reversible Sneaky Algorithm #0</h2>
+
+<h3 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Yavan sent me these really large numbers... what can they mean? He 
+sent me the cipher "c", the private key "d", and the public modulus 
+"n". I also know he converted his message to a number with ascii. 
+For example:
+
+"nactf" --&gt; \x6e61637466 --&gt; 474080310374
+
+Can you help me decrypt his cipher?
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="part-2--given-files">PART 2 : GIVEN FILES</h3>
+
+<h4 id="-rsatxt"><strong>[&gt;]</strong> <a href="./files/rsa.txt">rsa.txt</a></h4>
+
+<table>
+<tr>
+  <td>c</td>
+  <td>7597447581111665937753781070914281099248138767561231457808924842755340796976767584904483452403406793827996034815852778012984740739361969304711271790657255334745163889379518040725967970769121270606356380463906882556650693485795903105298437519246733021136433493998710761239540681944709850299154477898517149127</td>
+</tr>
+<tr>
+  <td>n</td>
+  <td>140971369982728290584003929856637011308685429687969594429997821710108459830116393789723684079062708514036299475509430542212659734507429142853158004794834935174746493412962154796160975546005828130717579132438781804174244070129160649779404165370266408790722528108474736698480388956217393838955462967989235557729</td>
+</tr>
+<tr>
+  <td>d</td>
+  <td>3210396717872682205420233842120187670754123682946955455494937957220148561826887372494355836977601850209792589944578254791223196877372140862540829182847721214418314564429696694983379689813325142035328881707722441498876726169675843996078221651180111278667814216844121752144791638682520989591783787929482763483</td>
+</tr>
+</table>
+
+<hr />
+
+<h3 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h3>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># n = p*q
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">140971369982728290584003929856637011308685429687969594429997821710108459830116393789723684079062708514036299475509430542212659734507429142853158004794834935174746493412962154796160975546005828130717579132438781804174244070129160649779404165370266408790722528108474736698480388956217393838955462967989235557729</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># phi = (p-1)*(q-1) 
+</span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># d = inverse(exponent, phi) 
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">3210396717872682205420233842120187670754123682946955455494937957220148561826887372494355836977601850209792589944578254791223196877372140862540829182847721214418314564429696694983379689813325142035328881707722441498876726169675843996078221651180111278667814216844121752144791638682520989591783787929482763483</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># ciphertext 
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">7597447581111665937753781070914281099248138767561231457808924842755340796976767584904483452403406793827996034815852778012984740739361969304711271790657255334745163889379518040725967970769121270606356380463906882556650693485795903105298437519246733021136433493998710761239540681944709850299154477898517149127</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">unhexlify</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">plaintext</span> <span class="o">=</span> <span class="n">unhexlify</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">plaintext</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+<span class="n">nactf</span><span class="p">{</span><span class="n">w3lc0me_t0_numb3r_th30ry</span><span class="p">}</span>
+</code></pre></div></div>
+<p><strong>NOTE(S)</strong>:</p>
+<ol>
+  <li><strong><code class="highlighter-rouge">python3</code></strong> handles large numbers very well compared to <strong><code class="highlighter-rouge">python2</code></strong>.</li>
+  <li>All the values required for decryption are already given.</li>
+  <li>The implementation of the decryption is all thatâ€™s left.</li>
+</ol>
+
+<hr />
+
+<h2 id="flag--nactfw3lc0me_t0_numb3r_th30ry">FLAG : <strong>nactf{w3lc0me_t0_numb3r_th30ry}</strong></h2>
+:ET
