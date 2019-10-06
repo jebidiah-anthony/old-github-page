@@ -12,11 +12,7 @@
     {% if page.title %}
     <meta property="og:title" content="{{ page.title }}" />
     {% endif %}
-    {% if page.subtitle %}
-    <meta property="og:description" content="{{ page.subtitle }}" />
-    {% else %}
-    {% seo %}
-    {% endif %} 
+    {% seo %} 
   </head>
 
   <body>
