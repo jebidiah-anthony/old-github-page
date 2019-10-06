@@ -1,0 +1,64 @@
+I"²<h1 id="htb-mischief-10101092-machine-write-up">HTB Mischief (10.10.10.92) MACHINE WRITE-UP</h1>
+
+<h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">nmap --min-rate 1000 -p- -sT -sU -v 10.10.10.92
+</span><span class="gp">#</span><span class="w"> </span>22/tcp   open  ssh
+<span class="gp">#</span><span class="w"> </span>3366/tcp open  creativepartnr
+<span class="gp">#</span><span class="w"> </span>161/udp  open  snmp
+<span class="go">nmap -oN mischief -p 22,161,3366 -sC -sT -sU -sV -v 10.10.10.92
+</span><span class="gp">#</span><span class="w"> </span>22/tcp   open          ssh            OpenSSH 7.6p1 Ubuntu 4 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+<span class="gp">#</span><span class="w"> </span>| ssh-hostkey:
+<span class="gp">#</span><span class="w"> </span>|   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 <span class="o">(</span>RSA<span class="o">)</span>
+<span class="gp">#</span><span class="w"> </span>|   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f <span class="o">(</span>ECDSA<span class="o">)</span>
+<span class="gp">#</span><span class="w"> </span>|_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 <span class="o">(</span>ED25519<span class="o">)</span>
+<span class="gp">#</span><span class="w"> </span>3366/tcp open          caldav         Radicale calendar and contacts server <span class="o">(</span>Python BaseHTTPServer<span class="o">)</span>
+<span class="gp">#</span><span class="w"> </span>| http-auth:
+<span class="gp">#</span><span class="w"> </span>| HTTP/1.0 401 Unauthorizedx0D
+<span class="gp">#</span><span class="w"> </span>|_  Basic <span class="nv">realm</span><span class="o">=</span>Test
+<span class="gp">#</span><span class="w"> </span>| http-methods:
+<span class="gp">#</span><span class="w"> </span>|_  Supported Methods: GET HEAD
+<span class="gp">#</span><span class="w"> </span>|_http-server-header: SimpleHTTP/0.6 Python/2.7.15rc1
+<span class="gp">#</span><span class="w"> </span>|_http-title: Site doesn<span class="s1">'t have a title (text/html).
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">161/udp  open          snmp           SNMPv1 server; net-snmp SNMPv3 server (public)
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">| snmp-info:
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   enterprise: net-snmp
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   engineIDFormat: unknown
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   engineIDData: b6a9f84e18fef95a00000000
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   snmpEngineBoots: 19
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|_  snmpEngineTime: 59m39s
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">| snmp-interfaces:
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   lo
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     IP address: 127.0.0.1  Netmask: 255.0.0.0
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     Type: softwareLoopback  Speed: 10 Mbps
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     Status: up
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     Traffic stats: 0.67 Kb sent, 0.67 Kb received
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     IP address: 10.10.10.92  Netmask: 255.255.255.0
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     MAC address: 00:50:56:b9:2c:07 (VMware)
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     Type: ethernetCsmacd  Speed: 1 Gbps
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|     Status: up
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|_    Traffic stats: 618.08 Kb sent, 23.39 Mb received
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">| snmp-netstat:
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  0.0.0.0:22           0.0.0.0:0
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  0.0.0.0:3366         0.0.0.0:0
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:22       10.10.14.213:32850
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:22       10.10.14.213:32864
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:22       10.10.15.54:40920
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:22       10.10.16.63:40704
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:3366     10.10.14.213:47812
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:3366     10.10.14.213:47814
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:3366     10.10.14.213:47816
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:3366     10.10.14.213:47818
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  10.10.10.92:3366     10.10.14.213:47820
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  127.0.0.1:3306       0.0.0.0:0
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   TCP  127.0.0.53:53        0.0.0.0:0
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   UDP  0.0.0.0:161          *:*
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|   UDP  0.0.0.0:34424        *:*
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|_  UDP  127.0.0.53:53        *:*
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">| snmp-sysdescr: Linux Mischief 4.15.0-20-generic #21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|_  System uptime: 59m39.09s (357909 timeticks)
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">|_snmp-win32-software:
+</span><span class="gp">#</span><span class="w"> </span><span class="s1">Service Info: Host: Mischief; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></code></pre></div></div>
+:ET

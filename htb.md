@@ -20,7 +20,7 @@ layout: default
 [Lightweight](https://github.com/jebidiah-anthony/htb_lightweight) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.119 | <span style="color:orange">30 pts | May 11, 2019
 [Irked](https://github.com/jebidiah-anthony/htb_irked) | <span style="color:green">Linux | <span style="color:green">10.10.10.117 | <span style="color:green">20 pts | Apr 27, 2019
 [Teacher](https://github.com/jebidiah-anthony/htb_teacher) | <span style="color:green">Linux | <span style="color:green">10.10.10.153 | <span style="color:green">20 pts | Apr 20, 2019
-[Mischief](https://hackedthebox.wordpress.com/htb-mischief/) | Linux | 10.10.10.92 | 50 pts | Jan 06, 2019
+[Mischief](./boxes/15_Mischief.html) | Linux | 10.10.10.92 | 50 pts | Jan 06, 2019
 [Waldo](https://hackedthebox.wordpress.com/htb-waldo/) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.87 | <span style="color:orange">30 pts | Dec 16, 2018
 [Active](https://hackedthebox.wordpress.com/htb-active/) | <span style="color:green">Windows | <span style="color:green">10.10.10.100 | <span style="color:green">20 pts | Dec 09, 2018
 [Hawk](https://hackedthebox.wordpress.com/htb-hawk/) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.102 | <span style="color:orange">30 pts | Dec 02, 2018
