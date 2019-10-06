@@ -1,9 +1,26 @@
 ---
 layout: default
 title: HTB Mischief
+subtitle: BADGE: Tricked | IP: 10.10.10.92
+header-img: "./screenshots/15_mischief/mischief.jpg"
+tags:[hackthebox, htb, boot2root, writeup, linux, snmp, ipv6, command-execution, access-control-lists]
 ---
 
 # HTB Mischief (10.10.10.92) MACHINE WRITE-UP
+
+### TABLE OF CONTENTS
+
+- [PART 1 : INITIAL RECON](#part-1--initial-recon)
+- [PART 2 : PORT ENUMERATION](#part-2--port-enumeration)
+  - [UDP PORT 161 (snmp)](#udp-port-161-snmp)
+  - [TCP PORT 3366 (http, IPv4)](#tcp-port-3366-http-ipv4)
+  - [TCP PORT 80 (http, IPv6)](#tcp-port-80-http-ipv6)
+- [PART 3 : EXPLOITATION](#part-3--exploitation)
+- [PART 4 : GENERATE USER SHELL](#part-4--generate-user-shell)
+- [PART 5.1 : PRIVILEGE ESCALATION (loki -&gt; root)](#part-51--privilege-escalation-loki---root)
+- [PART 5.2 : PRIVILEGE ESCALATION (www-data -&gt; root)](#part-52--privilege-escalation-www-data---root)
+
+---
 
 ## PART 1 : INITIAL RECON
 
