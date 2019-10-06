@@ -1,4 +1,4 @@
-I"œ<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+I"š<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
 
 <table>
   <tbody>
@@ -16,11 +16,12 @@
     </tr>
     <tr>
       <td><a href="#hackthebox-retired-challenges">HTB Retired Challenges</a></td>
-      <td><a href="#web-challenges">Web Challenges</a></td>
+      <td>(<a href="#web-challenges">Web</a>)</td>
     </tr>
   </tbody>
 </table>
 
+<hr />
 <hr />
 
 <h2 id="nactf-2019"><a href="https://www.nactf.com/">NACTF 2019</a></h2>

@@ -1,4 +1,4 @@
-I"ê<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+I"Ø<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
 
 <table>
   <tbody>
@@ -14,14 +14,14 @@
       <td><a href="#tjctf-2019">TJCTF 2019</a></td>
       <td>Sat, 06 Apr 2019, 07:00 PHT - Wed, 10 Apr 2019, 07:00 PHT</td>
     </tr>
+    <tr>
+      <td><a href="#hackthebox-retired-challenges">HTB Retired Challenges</a></td>
+      <td>(<a href="#web-challenges">Web</a>)</td>
+    </tr>
   </tbody>
 </table>
 
-<p><a href="#hackthebox-retired-challenges">HackTheBox Retired Challenges</a></p>
-<ul>
-  <li><a href="#web-challenges">Web Challenges</a></li>
-</ul>
-
+<hr />
 <hr />
 
 <h2 id="nactf-2019"><a href="https://www.nactf.com/">NACTF 2019</a></h2>
@@ -88,6 +88,7 @@
 </table>
 
 <hr />
+<hr />
 
 <h2 id="tghack-2019"><a href="https://tghack.no/">TG:Hack 2019</a></h2>
 
@@ -135,6 +136,7 @@
 </table>
 
 <hr />
+<hr />
 
 <h2 id="tjctf-2019"><a href="https://tjctf.org/">TJCTF 2019</a></h2>
 
@@ -157,6 +159,7 @@
   </tbody>
 </table>
 
+<hr />
 <hr />
 
 <h2 id="hackthebox-retired-challenges">HackTheBox Retired Challenges</h2>

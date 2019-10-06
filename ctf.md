@@ -10,6 +10,7 @@ layout: default
 [HTB Retired Challenges](#hackthebox-retired-challenges) | ([Web](#web-challenges))
 
 ---
+---
 
 ## [NACTF 2019](https://www.nactf.com/)
 
@@ -26,6 +27,7 @@ Loony Tunes | 50 pts | Crypto | Pigpen Cipher
 [Reversible Sneaky Algorithm #2](./chals/ctf/2019_NACTF/crypto/8_Reversible_Sneaky_Algorithm_2.html) | 350 pts | Crypto | RSA
 
 ---
+---
 
 ## [TG:Hack 2019](https://tghack.no/)
 
@@ -39,6 +41,7 @@ __DURATION__: Thu, 18 April 2019, 00:00 PHT - Sun, 21 April 2019, 00:00 PHT
 [Wizardschat](./chals/ctf/2019_TG:Hack/web/5_Wizardschat.html) | 300 pts | Web | Server-side Template Injection
 
 ---
+---
 
 ## [TJCTF 2019](https://tjctf.org/)
 
@@ -47,6 +50,7 @@ __DURATION__: Sat, 06 April 2019, 07:00 PHT - Wed, 10 April 2019, 	07:00 PHT
 <strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong>
 [Moar Horse 2](./chals/ctf/2019_TJCTF/web/2_moar_horse_2.html) | 70 pts | Web | Scripting, Recursive Search
 
+---
 ---
 
 ## HackTheBox Retired Challenges
