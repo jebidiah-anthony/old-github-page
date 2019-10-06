@@ -1,0 +1,17 @@
+I"|<h1 id="projects">PROJECTS</h1>
+
+<h2 id="setting-up-a-windows-event-collector">»<a href="./prjct/Windows-Event-Collector.html">Setting up a Windows Event Collector</a>«</h2>
+<blockquote>
+  <p>This lays out how to create a sbuscription (both source and collector initiated) that collects selected forwarded <strong><code class="highlighter-rouge">.evtx</code></strong>  event logs from a workstation to a domain controller.</p>
+</blockquote>
+
+<h2 id="creating-custom-evtx-logfiles">»<a href="./prjct/Custom-evtx-Logfiles.html">Creating Custom <strong><em>.evtx</em></strong> Logfiles</a>«</h2>
+<blockquote>
+  <p>This shows the process of how to create custom <strong><code class="highlighter-rouge">.evtx</code></strong> log files using <strong><code class="highlighter-rouge">ecmangen.exe</code></strong> and other utilities present in the <strong>Windows Development Kit</strong>. The log files created could be used as a destination log for forwarded events.</p>
+</blockquote>
+
+<hr />
+<hr />
+
+<h2 id="pass-the-ticket-psremoting-multi-hop-bypass">»<a href="./prjct/PTT-PSRemoting.html">Pass-the-Ticket: PSRemoting Multi-hop Bypass</a>«</h2>
+:ET
