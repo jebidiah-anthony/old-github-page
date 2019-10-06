@@ -1,8 +1,11 @@
 ---
+title: CTF Write-ups
 layout: default
 ---
 
-## TABLE OF CONTENTS
+# CTF WRITE-UPS
+
+### [NAVIGATION]
 
 [NACTF 2019](#nactf-2019) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
 [TG:Hack 2019](#tghack-2019) | Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT
