@@ -11,17 +11,17 @@ layout: default
 |:---------|:---|:-----------|:------------|:--------|
 [SwagShop](./boxes/30_swagshop.html) | <span style="color:green">Linux</span> | <span style="color:green">10.10.10.140 | <span style="color:green">20 pts | Sep 28, 2019
 [Kryptos](./boxes/29_kryptos.html) | Linux | 10.10.10.129 | 50 pts | Sep 21, 2019
-[Luke](https://github.com/jebidiah-anthony/htb_luke) | <span style="color:orange">FreeBSD | <span style="color:orange">10.10.10.137 | <span style="color:orange">30 pts | Sep 14, 2019
-[CTF](https://github.com/jebidiah-anthony/htb_ctf) | Linux | 10.10.10.122 | 50 pts | Jul 20, 2019
-[FriendZone](https://github.com/jebidiah-anthony/htb_friendzone) | <span style="color:green">Linux | <span style="color:green">10.10.10.123 | <span style="color:green">20 pts | Jul 13, 2019
-[Flujab](https://github.com/jebidiah-anthony/htb_flujab) | <span style="color:red">Linux | <span style="color:red">10.10.10.124 | <span style="color:red">40 pts | Jun 15, 2019
-[Help](https://github.com/jebidiah-anthony/htb_help) | <span style="color:green">Linux | <span style="color:green">10.10.10.121 | <span style="color:green">20 pts | Jun 08, 2019
-[Chaos](https://github.com/jebidiah-anthony/htb_chaos) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.120 | <span style="color:orange">30 pts | May 25, 2019
-[Lightweight](https://github.com/jebidiah-anthony/htb_lightweight) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.119 | <span style="color:orange">30 pts | May 11, 2019
-[Irked](https://github.com/jebidiah-anthony/htb_irked) | <span style="color:green">Linux | <span style="color:green">10.10.10.117 | <span style="color:green">20 pts | Apr 27, 2019
-[Teacher](https://github.com/jebidiah-anthony/htb_teacher) | <span style="color:green">Linux | <span style="color:green">10.10.10.153 | <span style="color:green">20 pts | Apr 20, 2019
+[Luke](./boxes/28_Luke.html) | <span style="color:orange">FreeBSD | <span style="color:orange">10.10.10.137 | <span style="color:orange">30 pts | Sep 14, 2019
+[CTF](./boxes/26_CTF.html) | Linux | 10.10.10.122 | 50 pts | Jul 20, 2019
+[FriendZone](./boxes/25_Friendzone.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.123 | <span style="color:green">20 pts | Jul 13, 2019
+[Flujab](./boxes/24_Flujab.html) | <span style="color:red">Linux | <span style="color:red">10.10.10.124 | <span style="color:red">40 pts | Jun 15, 2019
+[Help](./boxes/23_Help.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.121 | <span style="color:green">20 pts | Jun 08, 2019
+[Chaos](./boxes/22_Chaos.html) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.120 | <span style="color:orange">30 pts | May 25, 2019
+[Lightweight](./boxes/21_Lightweight.html) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.119 | <span style="color:orange">30 pts | May 11, 2019
+[Irked](./boxes/20_Irked.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.117 | <span style="color:green">20 pts | Apr 27, 2019
+[Teacher](./boxes/19_Teacher.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.153 | <span style="color:green">20 pts | Apr 20, 2019
 [Mischief](./boxes/15_Mischief.html) | Linux | 10.10.10.92 | 50 pts | Jan 06, 2019
-[Waldo](https://hackedthebox.wordpress.com/htb-waldo/) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.87 | <span style="color:orange">30 pts | Dec 16, 2018
+[Waldo](./boxes/14_Waldo.html) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.87 | <span style="color:orange">30 pts | Dec 16, 2018
 [Active](https://hackedthebox.wordpress.com/htb-active/) | <span style="color:green">Windows | <span style="color:green">10.10.10.100 | <span style="color:green">20 pts | Dec 09, 2018
 [Hawk](https://hackedthebox.wordpress.com/htb-hawk/) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.102 | <span style="color:orange">30 pts | Dec 02, 2018
 [Jerry](https://hackedthebox.wordpress.com/htb-jerry/) | <span style="color:green">Windows | <span style="color:green">10.10.10.95 | <span style="color:green">20 pts | Nov 18, 2018

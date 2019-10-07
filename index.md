@@ -5,7 +5,7 @@ title: whoami
 
 ## <span style="color:red">$ whoami</span>
 
-### __FELIX ANGELO O. MENDOZA__ : [GitHub](https://github.com/jebidiah-anthony?tab=repositories) | [LinkedIn](https://www.linkedin.com/in/faomendoza/) | [WordPress](https://fiftyliterbox.wordpress.com/)
+### __FELIX ANGELO O. MENDOZA__ : [LinkedIn](https://www.linkedin.com/in/faomendoza/) | [WordPress](https://fiftyliterbox.wordpress.com/)
 
 ---
 
