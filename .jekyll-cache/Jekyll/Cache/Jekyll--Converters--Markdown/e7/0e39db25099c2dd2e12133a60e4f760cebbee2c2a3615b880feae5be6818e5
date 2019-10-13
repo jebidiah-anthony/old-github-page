@@ -1,0 +1,13 @@
+I"«<h1 id="htb-writeup-101010138">HTB WriteUp (10.10.10.138)</h1>
+
+<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+
+<hr />
+
+<h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">--min-rate</span> 15000 <span class="nt">-p-</span> 10.10.10.138
+<span class="go">  
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-O</span> <span class="nt">-p</span> 22,80 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-T4</span> 10.10.10.138
+</code></pre></div></div>
+:ET

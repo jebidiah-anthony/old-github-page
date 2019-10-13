@@ -1,4 +1,4 @@
-I""=<h1 id="htb-write-ups">HTB WRITE-UPS</h1>
+I"N=<h1 id="htb-write-ups">HTB WRITE-UPS</h1>
 
 <h2 id="rooted-retired-machines">[Rooted Retired Machines]</h2>
 
@@ -13,6 +13,13 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td style="text-align: left"><a href="./boxes/31_WriteUp.html">WriteUp</a></td>
+      <td style="text-align: left"><span style="color:green">Linux</span></td>
+      <td style="text-align: left"><span style="color:green">10.10.10.138</span></td>
+      <td style="text-align: left"><span style="color:green">20 pts</span></td>
+      <td style="text-align: left">Oct 12, 2019</td>
+    </tr>
     <tr>
       <td style="text-align: left"><a href="./boxes/30_swagshop.html">SwagShop</a></td>
       <td style="text-align: left"><span style="color:green">Linux</span></td>
@@ -188,13 +195,6 @@
       <td style="text-align: left"><span style="color:red">Linux</span></td>
       <td style="text-align: left"><span style="color:red">10.10.10.139</span></td>
       <td style="text-align: left"><span style="color:red">40 pts</span></td>
-      <td style="text-align: left">Active</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">WriteUp</td>
-      <td style="text-align: left"><span style="color:green">Linux</span></td>
-      <td style="text-align: left"><span style="color:green">10.10.10.138</span></td>
-      <td style="text-align: left"><span style="color:green">20 pts</span></td>
       <td style="text-align: left">Active</td>
     </tr>
     <tr>

