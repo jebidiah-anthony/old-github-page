@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/assets/css/style.css?v=">
     
     
-    <meta property="og:image" content="http://localhost:4000/boxes/screenshots/31_writeup/writeup.jpg" />
+    <meta property="og:image" content="http://jebidiah-anthony.github.io/boxes/screenshots/31_writeup/writeup.jpg" />
     
     
     <meta property="og:title" content="HTB WriteUp" />
@@ -401,6 +401,8 @@ Disallow: /writeup/
   eeba........................7226
 
 </span></code></pre></div></div>
+
+<p>Normally, overriding a binary by writing to another directory listed in the <strong><code class="highlighter-rouge">$PATH</code></strong> variable with the same name wouldn’t work. Every binary invoked is written on a cache which includes its absolute path. But since the <strong><code class="highlighter-rouge">run-parts</code></strong> binary is being executed from scratch with <strong><code class="highlighter-rouge">/usr/bin/env -i</code></strong>, it was possible.</p>
 
       </section>
     </div>

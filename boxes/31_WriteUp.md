@@ -371,3 +371,5 @@ The __`run-parts`__ binary was completely overridden and the creted reverse shel
   eeba........................7226
 
 ```
+
+Normally, overriding a binary by writing to another directory listed in the __`$PATH`__ variable with the same name wouldn't work. Every binary invoked is written on a cache which includes its absolute path. But since the __`run-parts`__ binary is being executed from scratch with __`/usr/bin/env -i`__, it was possible.
