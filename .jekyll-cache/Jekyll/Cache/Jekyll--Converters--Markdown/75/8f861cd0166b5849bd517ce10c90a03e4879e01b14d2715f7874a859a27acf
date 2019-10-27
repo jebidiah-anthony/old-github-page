@@ -1,0 +1,199 @@
+I"(<h1 id="htb-safe-101010147">HTB Safe (10.10.10.147)</h1>
+
+<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+
+<hr />
+
+<h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">--min-rate</span> 15000 <span class="nt">-p-</span> <span class="nt">-v</span> 10.10.10.147
+<span class="go">
+  PORT     STATE SERVICE
+  22/tcp   open  ssh
+  80/tcp   open  http
+  1337/tcp open  waste
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-p</span> 22,80,1337 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-T4</span> 10.10.10.147
+<span class="go">
+  PORT     STATE SERVICE VERSION
+  22/tcp   open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)
+  | ssh-hostkey: 
+  |   2048 6d:7c:81:3d:6a:3d:f9:5f:2e:1f:6a:97:e5:00:ba:de (RSA)
+  |   256 99:7e:1e:22:76:72:da:3c:c9:61:7d:74:d7:80:33:d2 (ECDSA)
+  |_  256 6a:6b:c3:8e:4b:28:f7:60:85:b1:62:ff:54:bc:d8:d6 (ED25519)
+  80/tcp   open  http    Apache httpd 2.4.25 ((Debian))
+  |_http-server-header: Apache/2.4.25 (Debian)
+  |_http-title: Apache2 Debian Default Page: It works
+  1337/tcp open  waste?
+  | fingerprint-strings: 
+  |   DNSStatusRequestTCP: 
+  |     09:11:19 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |   DNSVersionBindReqTCP: 
+  |     09:11:13 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |   GenericLines: 
+  |     09:10:59 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |     What do you want me to echo back?
+  |   GetRequest: 
+  |     09:11:05 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |     What do you want me to echo back? GET / HTTP/1.0
+  |   HTTPOptions: 
+  |     09:11:06 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |     What do you want me to echo back? OPTIONS / HTTP/1.0
+  |   Help: 
+  |     09:11:24 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back? HELP
+  |   NULL: 
+  |     09:10:59 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |   RPCCheck: 
+  |     09:11:08 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |   RTSPRequest: 
+  |     09:11:07 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back? OPTIONS / RTSP/1.0
+  |   SSLSessionReq: 
+  |     09:11:25 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back?
+  |   TLSSessionReq: 
+  |     09:11:27 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back?
+  |   TerminalServerCookie: 
+  |     09:11:26 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |_    What do you want me to echo back?
+
+</span></code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="tcp-port-80">TCP PORT 80</h3>
+
+<p>Opening <strong><code class="highlighter-rouge">http://10.10.10.147</code></strong> brings you to a default web server page:</p>
+
+<p><img src="./screenshots/33_safe/80_landing_page.png" alt="80 Landing Page" /></p>
+
+<p>And viewing its page source reveals an HTML comment:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/1999/xhtml"</span><span class="nt">&gt;</span>
+<span class="c">&lt;!-- 'myapp' can be downloaded to analyze from here
+     its running on port 1337 --&gt;</span>
+...omitted...
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>It says that an application, <a href="">myapp</a>, is running on port 1337 and could be downloaded via HTTP.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>wget http://10.10.10.147/myapp
+<span class="go">
+  Connecting to 10.10.10.147:80... connected.
+  HTTP request sent, awaiting response... 200 OK
+  Length: 16592 (16K)
+  Saving to: ‘myapp’
+
+</span><span class="gp">  myapp                     100%[=====================================&gt;</span><span class="o">]</span>  16.20K
+<span class="go">
+</span></code></pre></div></div>
+
+<h3 id="tcp-port-1337">TCP PORT 1337</h3>
+
+<p>The downloaded application was said to be hosted on this port and trying to access it over <span>netcat</span> goes like the following:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nc 10.10.10.147 1337
+<span class="go">
+   09:30:08 up 19:50,  0 users,  load average: 0.02, 0.01, 0.00
+  test_input_string
+
+  What do you want me to echo back? test_input_string
+
+</span></code></pre></div></div>
+
+<p>The same goes when trying to execute the downloaded application from earlier.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">chmod</span> +x myapp
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>./myapp
+<span class="go">
+   21:32:30 up 59 min,  1 user,  load average: 3.47, 3.49, 3.48
+
+  What do you want me to echo back? test_input_string_for_myapp_local
+  test_input_string_for_myapp_local
+
+</span></code></pre></div></div>
+
+<p>With a local copy of the binary, it should be easier to create an exploit to achieve remote command execution.</p>
+
+<hr />
+
+<h2 id="part-3--exploitation">PART 3 : EXPLOITATION</h2>
+
+<h3 id="myapp">./myapp</h3>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file ./myapp
+<span class="go">
+  ./myapp: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, 
+  interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=fcbd5
+  450d23673e92c8b716200762ca7d282c73a, not stripped
+
+</span><span class="gp">$</span><span class="w"> </span>gdb <span class="nt">-q</span> ./myapp
+<span class="go">
+(gdb) checksec
+
+  Canary                        : No
+  NX                            : Yes
+  PIE                           : No
+  Fortify                       : No
+  RelRO                         : Partial
+
+</span></code></pre></div></div>
+
+<p><strong><code class="highlighter-rouge">./myapp</code></strong> is a <strong style="color:orange">64-bit ELF executable</strong> which means that crafting ROP chains with function arguments requries setting certain register values before passing each function call. Its security features include only <strong><em>NX (non-executable segment)</em></strong> enabled and <strong><em>Partial RelRO (Relocation Read-Only)</em></strong>.</p>
+
+<p><strong style="color:orange">NX (Non-execute)</strong></p>
+<blockquote>
+  <p>The application, when loaded in memory, does not allow any of its segments to be both writable and executable. The idea here is that writable memory should never be executed (as it can be manipulated) and vice versa.</p>
+</blockquote>
+
+<p><strong style="color:orange">Partial RelRO (Relocation Read-Only)</strong></p>
+<blockquote>
+  <p>The headers in your binary, which need to be writable during startup of the application (to allow the dynamic linker to load and link stuff like shared libraries) are marked as read-only when the linker is done doing its magic (but before the application itself is launched).</p>
+</blockquote>
+
+<h3 id="the-main-function">The <strong>main()</strong> function</h3>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">(gdb) info functions
+
+  0x0000000000401030  puts@plt
+  0x0000000000401040  system@plt
+  ...omitted...
+  0x0000000000401060  gets@plt
+  ...omitted...
+  0x0000000000401152  test
+  0x000000000040115f  main
+
+(gdb) disassemble main
+
+</span><span class="gp">  0x000000000040115f &lt;+0&gt;</span>:	push   rbp
+<span class="gp">  0x0000000000401160 &lt;+1&gt;</span>:	mov    rbp,rsp
+<span class="gp">  0x0000000000401163 &lt;+4&gt;</span>:	sub    rsp,0x70
+<span class="gp">  0x0000000000401167 &lt;+8&gt;</span>:	lea    rdi,[rip+0xe9a]        <span class="c"># 0x402008</span>
+<span class="gp">  0x000000000040116e &lt;+15&gt;</span>:	call   0x401040 &lt;system@plt&gt;
+<span class="gp">  0x0000000000401173 &lt;+20&gt;</span>:	lea    rdi,[rip+0xe9e]        <span class="c"># 0x402018</span>
+<span class="gp">  0x000000000040117a &lt;+27&gt;</span>:	mov    eax,0x0
+<span class="gp">  0x000000000040117f &lt;+32&gt;</span>:	call   0x401050 &lt;<span class="nb">printf</span>@plt&gt;
+<span class="gp">  0x0000000000401184 &lt;+37&gt;</span>:	lea    rax,[rbp-0x70]
+<span class="gp">  0x0000000000401188 &lt;+41&gt;</span>:	mov    esi,0x3e8
+<span class="gp">  0x000000000040118d &lt;+46&gt;</span>:	mov    rdi,rax
+<span class="gp">  0x0000000000401190 &lt;+49&gt;</span>:	mov    eax,0x0
+<span class="gp">  0x0000000000401195 &lt;+54&gt;</span>:	call   0x401060 &lt;gets@plt&gt;
+<span class="gp">  0x000000000040119a &lt;+59&gt;</span>:	lea    rax,[rbp-0x70]
+<span class="gp">  0x000000000040119e &lt;+63&gt;</span>:	mov    rdi,rax
+<span class="gp">  0x00000000004011a1 &lt;+66&gt;</span>:	call   0x401030 &lt;puts@plt&gt;
+<span class="gp">  0x00000000004011a6 &lt;+71&gt;</span>:	mov    eax,0x0
+<span class="gp">  0x00000000004011ab &lt;+76&gt;</span>:	leave  
+<span class="gp">  0x00000000004011ac &lt;+77&gt;</span>:	ret  
+<span class="go"> 
+</span></code></pre></div></div>
+
+<p>Since there is already a call to the <strong style="color:orange">libc system function</strong> (<strong><code class="highlighter-rouge">system@plt</code></strong>) and a way to write to memory using the existing call to <strong><code class="highlighter-rouge">gets()</code></strong> (<strong><code class="highlighter-rouge">gets@plt</code></strong>), there is no need to leak libc addresses to compute offsets beacuse we already have what we need aside from having control of the <strong style="color:orange">$rdi</strong></p>
+
+:ET

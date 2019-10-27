@@ -1,16 +1,6 @@
----
-layout: default
-title: "elastalerter"
-description: "Tests rules if they match 100% accurately."
-header-img: ""
-tags: [elastalert, elastalert-test-rule]
----
+I"[+<h1 id="elastalerterpy">./elastalerter.py</h1>
 
-# ./elastalerter.py
-
----
-
-## ENVIRONMENT
+<h2 id="environment">ENVIRONMENT:</h2>
 
 <table>
 <tr>
@@ -27,89 +17,93 @@ tags: [elastalert, elastalert-test-rule]
 </tr>
 </table>
 
-- This probably won't work on Windows.
+<ul>
+  <li>This probably won’t work on Windows.</li>
+</ul>
 
----
+<hr />
 
-## SET-UP
+<h2 id="set-up">SET-UP</h2>
 
-1. Download and run [elasticsearch 7.4.0](https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.4.0-linux-x86_64.tar.gz) for Linux.
+<ol>
+  <li>
+    <p>Download and run <a href="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.4.0-linux-x86_64.tar.gz">elasticsearch 7.4.0</a> for Linux.</p>
 
-   ```console
-   $ tar xvf elasticsearch-7.4.0-linux-x86_64.tar.gz
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">tar </span>xvf elasticsearch-7.4.0-linux-x86_64.tar.gz
+<span class="go">
+  ...omitted...
 
-     ...omitted...
+</span><span class="gp">$</span><span class="w"> </span>elasticsearch-7.4.0/bin/elasticsearch
+<span class="go">
+  ...omitted...
 
-   $ elasticsearch-7.4.0/bin/elasticsearch
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Set-up a python virtual environment:</p>
 
-     ...omitted...
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>pip3 <span class="nb">install </span>virtualenv
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>python3 <span class="nt">-m</span> virtualenv v_env
+<span class="go">
+  Using base prefix '/usr'
+  New python executable in CURRENT_WORKING_DIRECTORY/v_env/bin/python3
+  Also creating executable in CURRENT_WORKING_DIRECTORY/v_env/bin/python
+  Installing setuptools, pip, wheel...
+  done.  
 
-   ```
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">source </span>v_env/bin/activate
+<span class="go">
+</span><span class="gp">(v_env) $</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Download and install dependencies for <strong><em>elastalerter.py</em></strong></p>
 
-2. Set-up a python virtual environment:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>wget https://jebidiah-anthony.github.io/prjct/files/elastalerter.zip
+<span class="go">   
+  ...omitted...
+  HTTP request sent, awaiting response... 200 OK
+  Length: 4248 (4.1K) [application/zip]
+  Saving to: ‘elastalerter.zip’
 
-   ```console
-   $ pip3 install virtualenv
-
-   $ python3 -m virtualenv v_env
-
-     Using base prefix '/usr'
-     New python executable in CURRENT_WORKING_DIRECTORY/v_env/bin/python3
-     Also creating executable in CURRENT_WORKING_DIRECTORY/v_env/bin/python
-     Installing setuptools, pip, wheel...
-     done.  
-
-   $ source v_env/bin/activate
-
-   (v_env) $
-   ```
-
-3. Download and install dependencies for __*elastalerter.py*__
-
-   ```console
-   (v_env) $ wget https://jebidiah-anthony.github.io/prjct/files/elastalerter.zip
+</span><span class="gp">  elastalerter.zip         100%[================================&gt;</span><span class="o">]</span>   4.15K  <span class="nt">--</span>.-KB/s    <span class="k">in </span>0s  
+<span class="go">  ...omitted...
    
-     ...omitted...
-     HTTP request sent, awaiting response... 200 OK
-     Length: 4248 (4.1K) [application/zip]
-     Saving to: ‘elastalerter.zip’
-
-     elastalerter.zip         100%[================================>]   4.15K  --.-KB/s    in 0s  
-     ...omitted...
+</span><span class="gp">(v_env) $</span><span class="w"> </span>unzip elastalerter.py 
+<span class="go">   
+  Archive:  elastalerter.zip
+    inflating: elastalerter.py         
+    inflating: requirements.txt        
+    inflating: setup.py 
    
-   (v_env) $ unzip elastalerter.py 
+</span><span class="gp">(v_env) $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nt">--requirement</span> requirements.txt
+<span class="go">   
+  ...omitted...
+  Installing collected packages: pytz, tzlocal, six, APScheduler, urllib3, idna, certifi, chardet, requests, 
+  aws-requests-auth, blist, docutils, jmespath, python-dateutil, botocore, s3transfer, boto3, pycparser, cffi, 
+  configparser, croniter, defusedxml, docopt, jsonschema, mock, PyStaticConfiguration, stomp.py, exotel, 
+  envparse, python-magic, pbr, oauthlib, requests-oauthlib, requests-toolbelt, jira, PyYAML, PySocks, PyJWT, 
+  twilio, texttable, elasticsearch, future, thehive4py, elastalert, tabulate
+  ...omitted...
    
-     Archive:  elastalerter.zip
-       inflating: elastalerter.py         
-       inflating: requirements.txt        
-       inflating: setup.py 
-   
-   (v_env) $ pip install --requirement requirements.txt
-   
-     ...omitted...
-     Installing collected packages: pytz, tzlocal, six, APScheduler, urllib3, idna, certifi, chardet, requests, 
-     aws-requests-auth, blist, docutils, jmespath, python-dateutil, botocore, s3transfer, boto3, pycparser, cffi, 
-     configparser, croniter, defusedxml, docopt, jsonschema, mock, PyStaticConfiguration, stomp.py, exotel, 
-     envparse, python-magic, pbr, oauthlib, requests-oauthlib, requests-toolbelt, jira, PyYAML, PySocks, PyJWT, 
-     twilio, texttable, elasticsearch, future, thehive4py, elastalert, tabulate
-     ...omitted...
-   
-   (v_env) $ pip install .
-   
-     ...omitted...
-     Successfully built elastalerter
-     Installing collected packages: elastalerter
-     Successfully installed elastalerter-0.0.1
+</span><span class="gp">(v_env) $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nb">.</span>
+<span class="go">   
+  ...omitted...
+  Successfully built elastalerter
+  Installing collected packages: elastalerter
+  Successfully installed elastalerter-0.0.1
 
-   ```
+</span></code></pre></div>    </div>
+  </li>
+</ol>
 
----
+<hr />
 
-## EXECUTION
+<h2 id="execution">EXECUTION</h2>
 
-```console
-(v_env) $ python elastalerter.py -h
-
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">-h</span>
+<span class="go">
     usage: ./test.py --logs LOGS_DIR --rules RULES_DIR --expected expected.json
 
       SAMPLE "expected.json"
@@ -121,8 +115,8 @@ tags: [elastalert, elastalert-test-rule]
               "match": (True | False)
           },
           "test_id": {
-              ...
-          }
+</span><span class="c">              ...
+</span><span class="go">          }
       }
 
   optional arguments:
@@ -137,8 +131,8 @@ tags: [elastalert, elastalert-test-rule]
     --logs DIR          directory of the logs to be indexed
     --rules DIR         directory of the rules to run with elastalert
 
-(v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected ./expected.json
-
+</span><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> ./expected.json
+<span class="go">
   [+] INDEXING LOGS FROM "./logs" ... 
 
   	[ERROR] "test.json" IS NOT A VALID LOG FILE
@@ -176,8 +170,8 @@ tags: [elastalert, elastalert-test-rule]
 
   [+] DONE
 
-(v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected ./expected.json -r rule01.yaml
-
+</span><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> ./expected.json <span class="nt">-r</span> rule01.yaml
+<span class="go">
   [+] INDEXING LOGS FROM "./logs" ... 
   
   	[ERROR] "test.json" IS NOT A VALID LOG FILE
@@ -213,4 +207,5 @@ tags: [elastalert, elastalert-test-rule]
   
   [+] DONE
 
-```
+</span></code></pre></div></div>
+:ET

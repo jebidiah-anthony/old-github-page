@@ -1,48 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/style.css?v=">
-    
-    
-    
-    <meta property="og:title" content="HTB Write-ups" />
-    
-    <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>HTB Write-ups | jebidiah-anthony</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="HTB Write-ups" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/htb.html" />
-<meta property="og:url" content="http://localhost:4000/htb.html" />
-<meta property="og:site_name" content="jebidiah-anthony" />
-<script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/htb.html","headline":"HTB Write-ups","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
- 
-  </head>
-
-  <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what not</h2>
-
-	<span>
-	  <a href="/">whoami</a> | 
-          <a href="/htb.html">htb writeups</a> | 
-	  <a href="/ctf.html">ctf writeups</a> | 
-	  <a href="/projects.html">projects</a> 
-	</span>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h1 id="htb-write-ups">HTB WRITE-UPS</h1>
+I"¥=<h1 id="htb-write-ups">HTB WRITE-UPS</h1>
 
 <h2 id="rooted-retired-machines">[Rooted Retired Machines]</h2>
 
@@ -357,19 +313,4 @@
     </tr>
   </tbody>
 </table>
-
-      </section>
-    </div>
-
-    
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'true', 'auto');
-        ga('send', 'pageview');
-      </script>
-    
-  </body>
-</html>
+:ET

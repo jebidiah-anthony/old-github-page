@@ -9,6 +9,7 @@ layout: default
 
 | Box Name | OS | Machine IP | Base Points | Retired |
 |:---------|:---|:-----------|:------------|:--------|
+[Safe](./boxes/33_Safe.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.147 | <span style="color:green">20 pts | Oct 26, 2019
 [Ellingson](./boxes/32_Ellingson.html) | <span style="color:red">Linux | <span style="color:red">10.10.10.139 | <span style="color:red">40 pts | Oct 19, 2019
 [WriteUp](./boxes/31_WriteUp.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.138 | <span style="color:green">20 pts | Oct 12, 2019
 [SwagShop](./boxes/30_swagshop.html) | <span style="color:green">Linux</span> | <span style="color:green">10.10.10.140 | <span style="color:green">20 pts | Sep 28, 2019
@@ -41,7 +42,6 @@ layout: default
 Jarvis | <span style="color:orange">Linux | <span style="color:orange">10.10.10.143 | <span style="color:orange">30 pts | Active
 Haystack | <span style="color:green">Linux | <span style="color:green">10.10.10.115 | <span style="color:green">20 pts | Active
 Craft | <span style="color:orange">Linux | <span style="color:orange">10.10.10.110 | <span style="color:orange">30 pts | Active
-Safe | <span style="color:green">Linux | <span style="color:green">10.10.10.147 | <span style="color:green">20 pts | Active
 Networked | <span style="color:green">Linux | <span style="color:green">10.10.10.146 | <span style="color:green">20 pts | Active
 Bitlab | <span style="color:orange">Linux | <span style="color:orange">10.10.10.114 | <span style="color:orange">30 pts | Active
 

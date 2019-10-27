@@ -1,0 +1,83 @@
+I"®<h1 id="htb-safe-101010147">HTB Safe (10.10.10.147)</h1>
+
+<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+
+<hr />
+
+<h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">--min-rate</span> 15000 <span class="nt">-p-</span> <span class="nt">-v</span> 10.10.10.147
+<span class="go">
+  PORT     STATE SERVICE
+  22/tcp   open  ssh
+  80/tcp   open  http
+  1337/tcp open  waste
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-p</span> 22,80,1337 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-T4</span> 10.10.10.147
+<span class="go">
+  PORT     STATE SERVICE VERSION
+  22/tcp   open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)
+  | ssh-hostkey: 
+  |   2048 6d:7c:81:3d:6a:3d:f9:5f:2e:1f:6a:97:e5:00:ba:de (RSA)
+  |   256 99:7e:1e:22:76:72:da:3c:c9:61:7d:74:d7:80:33:d2 (ECDSA)
+  |_  256 6a:6b:c3:8e:4b:28:f7:60:85:b1:62:ff:54:bc:d8:d6 (ED25519)
+  80/tcp   open  http    Apache httpd 2.4.25 ((Debian))
+  |_http-server-header: Apache/2.4.25 (Debian)
+  |_http-title: Apache2 Debian Default Page: It works
+  1337/tcp open  waste?
+  | fingerprint-strings: 
+  |   DNSStatusRequestTCP: 
+  |     09:11:19 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |   DNSVersionBindReqTCP: 
+  |     09:11:13 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |   GenericLines: 
+  |     09:10:59 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |     What do you want me to echo back?
+  |   GetRequest: 
+  |     09:11:05 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |     What do you want me to echo back? GET / HTTP/1.0
+  |   HTTPOptions: 
+  |     09:11:06 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |     What do you want me to echo back? OPTIONS / HTTP/1.0
+  |   Help: 
+  |     09:11:24 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back? HELP
+  |   NULL: 
+  |     09:10:59 up 19:31, 0 users, load average: 0.01, 0.03, 0.00
+  |   RPCCheck: 
+  |     09:11:08 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |   RTSPRequest: 
+  |     09:11:07 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back? OPTIONS / RTSP/1.0
+  |   SSLSessionReq: 
+  |     09:11:25 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back?
+  |   TLSSessionReq: 
+  |     09:11:27 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |     What do you want me to echo back?
+  |   TerminalServerCookie: 
+  |     09:11:26 up 19:31, 0 users, load average: 0.00, 0.03, 0.00
+  |_    What do you want me to echo back?
+
+</span></code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="tcp-port-80">TCP PORT 80</h3>
+
+<p>Opening <strong><code class="highlighter-rouge">http://10.10.10.147</code></strong> brings you to a default web server page:</p>
+
+<p><img src="./screenshots/33_safe/80_landing_page.png" alt="80 Landing Page" /></p>
+
+<p>And viewing its page source reveals an HTML comment:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/1999/xhtml"</span><span class="nt">&gt;</span>
+<span class="c">&lt;!-- 'myapp' can be downloaded to analyze from here
+     its running on port 1337 --&gt;</span>
+...omitted...
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+:ET
