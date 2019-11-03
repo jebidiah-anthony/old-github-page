@@ -6,16 +6,16 @@ class Alert(Alerter):
     required_options = set(['name'])
 
     def alert(self, matches):
-
+        print(matches)
         for match in matches:
-
             with open("/tmp/alert_test_results.log", "a") as output_file:
                 
-                alert_data = {
-                    'rule': self.rule["name"],
-                    'index': match['_index'],
-                    'id': match['_id']
-                }
+                alert_data = { 'rule': self.rule["name"] }
+
+                alert_data['index'] = match.get("_index")
+                alert_data['id'] = match.get("_id")
+                alert_data['hits'] = match.get("num_hits")
+                alert_data['matches'] = match.get("num_matches")
 
                 json.dump(alert_data, output_file)
                 output_file.write("\n")
