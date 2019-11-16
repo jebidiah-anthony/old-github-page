@@ -5,6 +5,9 @@ layout: default
 
 # PROJECTS
 
+## >>[elastalerter.py](./prjct/elastalerter.html)<<
+> An elastalert rule tester built using python. Tests could be set-up uniquely and could be run by batch. Specified logs are indexed using [__Elasticsearch 7.4.0__](https://www.elastic.co/downloads/past-releases/elasticsearch-7-4-0) and are used with a custom elastalert [alerter](https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter/alerter.py). This program covers testing for single matches and log aggregation with field mapping capabilities. ([source code](https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.py))
+
 ## >>[Setting up a Windows Event Collector](./prjct/Windows-Event-Collector.html)<<
 > This lays out how to create a sbuscription (both source and collector initiated) that collects selected forwarded __`.evtx`__  event logs from a workstation to a domain controller.
 

@@ -9,7 +9,7 @@ layout: default
 
 | Box Name | OS | Machine IP | Base Points | Retired |
 |:---------|:---|:-----------|:------------|:--------|
-[Safe](./boxes/33_Safe.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.147 | <span style="color:green">20 pts | Oct 26, 2019
+[Safe](./boxes/33_Safe.html) (NO PRIVESC YET) | <span style="color:green">Linux | <span style="color:green">10.10.10.147 | <span style="color:green">20 pts | Oct 26, 2019
 [Ellingson](./boxes/32_Ellingson.html) | <span style="color:red">Linux | <span style="color:red">10.10.10.139 | <span style="color:red">40 pts | Oct 19, 2019
 [WriteUp](./boxes/31_WriteUp.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.138 | <span style="color:green">20 pts | Oct 12, 2019
 [SwagShop](./boxes/30_swagshop.html) | <span style="color:green">Linux</span> | <span style="color:green">10.10.10.140 | <span style="color:green">20 pts | Sep 28, 2019
@@ -39,16 +39,16 @@ layout: default
 
 | Box Name | OS | Machine IP | Base Points | Retired |
 |:---------|:---|:-----------|:------------|:--------|
-Jarvis | <span style="color:orange">Linux | <span style="color:orange">10.10.10.143 | <span style="color:orange">30 pts | Active
-Haystack | <span style="color:green">Linux | <span style="color:green">10.10.10.115 | <span style="color:green">20 pts | Active
 Craft | <span style="color:orange">Linux | <span style="color:orange">10.10.10.110 | <span style="color:orange">30 pts | Active
-Networked | <span style="color:green">Linux | <span style="color:green">10.10.10.146 | <span style="color:green">20 pts | Active
 Bitlab | <span style="color:orange">Linux | <span style="color:orange">10.10.10.114 | <span style="color:orange">30 pts | Active
 
 ## [BACKLOG]
 
 | Box Name | OS | Machine IP | Base Points | Retired |
 |:---------|:---|:-----------|:------------|:--------|
+Networked | <span style="color:green">Linux | <span style="color:green">10.10.10.146 | <span style="color:green">20 pts | Nov 16, 2019
+Jarvis | <span style="color:orange">Linux | <span style="color:orange">10.10.10.143 | <span style="color:orange">30 pts | Nov 09, 2019
+Haystack | <span style="color:green">Linux | <span style="color:green">10.10.10.115 | <span style="color:green">20 pts | Nov 02, 2019
 OneTwoSeven | <span style="color:red">Linux | <span style="color:red">10.10.10.133 | <span style="color:red">40 pts | Sep 01, 2019
 Frolic | <span style="color:green">Linux | <span style="color:green">10.10.10.111 | <span style="color:green">20 pts | Mar 24, 2019
 Dab | <span style="color:red">Linux | <span style="color:red">10.10.10.86 | <span style="color:red">40 pts | Feb 02, 2019
