@@ -164,40 +164,48 @@
   <li>
     <p>Download and install dependencies for <strong><em>elastalerter.py</em></strong></p>
 
+    <h3 id="download-and-unzip-the-files">download and unzip the files</h3>
     <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>wget https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.zip?raw<span class="o">=</span><span class="nb">true</span>
-</code></pre></div>    </div>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...omitted...
+<span class="go">   
+  ...omitted...
   HTTP request sent, awaiting response... 200 OK
   Length: 4248 (4.1K) [application/zip]
   Saving to: ‘elastalerter.zip’
 
-  elastalerter.zip         100%[================================&gt;]   4.15K  --.-KB/s    in 0s
-  ...omitted...
-</code></pre></div>    </div>
-    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>unzip elastalerter.py 
-</code></pre></div>    </div>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Archive:  elastalerter.zip
+</span><span class="gp">  elastalerter.zip         100%[================================&gt;</span><span class="o">]</span>   4.15K  <span class="nt">--</span>.-KB/s    <span class="k">in </span>0s
+<span class="go">  ...omitted...
+   
+</span><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>unzip elastalerter.py 
+<span class="go">   
+  Archive:  elastalerter.zip
     inflating: elastalerter.py
     inflating: requirements.txt
     inflating: setup.py 
-</code></pre></div>    </div>
+
+</span></code></pre></div>    </div>
+
+    <h3 id="install-dependencies">install dependencies</h3>
     <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nt">--requirement</span> requirements.txt
-</code></pre></div>    </div>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...omitted...
+<span class="go">   
+  ...omitted...
   Installing collected packages: pytz, tzlocal, six, APScheduler, urllib3, idna, certifi, chardet, requests, 
   aws-requests-auth, blist, docutils, jmespath, python-dateutil, botocore, s3transfer, boto3, pycparser, cffi, 
   configparser, croniter, defusedxml, docopt, jsonschema, mock, PyStaticConfiguration, stomp.py, exotel, 
   envparse, python-magic, pbr, oauthlib, requests-oauthlib, requests-toolbelt, jira, PyYAML, PySocks, PyJWT, 
   twilio, texttable, elasticsearch, future, thehive4py, elastalert, tabulate
   ...omitted...
-</code></pre></div>    </div>
+
+</span></code></pre></div>    </div>
+
+    <h3 id="install-the-alerter">install the alerter</h3>
     <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nb">.</span>
-</code></pre></div>    </div>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...omitted...
+<span class="go">   
+  ...omitted...
   Successfully built elastalerter
   Installing collected packages: elastalerter
-  Successfully installed elastalerter-0.0.1
-</code></pre></div>    </div>
+  Successfully installed elastalerter-0.0.2
+
+</span></code></pre></div>    </div>
   </li>
 </ol>
 
@@ -273,6 +281,7 @@ required arguments:
 
 <span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
 
+
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
     ╞════════════╪══════════╪═════════════════════════════════════════════════════════════╡
@@ -334,6 +343,7 @@ required arguments:
 
 
 <span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
+
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
