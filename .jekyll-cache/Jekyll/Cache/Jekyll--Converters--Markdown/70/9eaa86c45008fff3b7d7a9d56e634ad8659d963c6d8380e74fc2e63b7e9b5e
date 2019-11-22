@@ -1,52 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/style.css?v=">
-    
-    
-    <meta property="og:image" content="https://jebidiah-anthony.github.io/" />
-    
-    
-    <meta property="og:title" content="elastalerter.py" />
-    
-    <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>elastalerter.py | jebidiah-anthony</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="elastalerter.py" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="An elastalert rule tester using python." />
-<meta property="og:description" content="An elastalert rule tester using python." />
-<link rel="canonical" href="https://jebidiah-anthony.github.io/prjct/elastalerter.html" />
-<meta property="og:url" content="https://jebidiah-anthony.github.io/prjct/elastalerter.html" />
-<meta property="og:site_name" content="jebidiah-anthony" />
-<script type="application/ld+json">
-{"@type":"WebPage","url":"https://jebidiah-anthony.github.io/prjct/elastalerter.html","headline":"elastalerter.py","description":"An elastalert rule tester using python.","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
- 
-  </head>
-
-  <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what not</h2>
-
-	<span>
-	  <a href="/">whoami</a> | 
-          <a href="/htb.html">htb writeups</a> | 
-	  <a href="/ctf.html">ctf writeups</a> | 
-	  <a href="/projects.html">projects</a> 
-	</span>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h1 id="elastalerterpy">./elastalerter.py</h1>
+I"�h<h1 id="elastalerterpy">./elastalerter.py</h1>
 
 <h2 id="environment">ENVIRONMENT</h2>
 
@@ -158,54 +110,51 @@
 
 </span><span class="gp">$</span><span class="w"> </span><span class="nb">source </span>v_env/bin/activate
 <span class="go">
-</span><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w">
+</span><span class="gp">(v_env) $</span><span class="w">
 </span></code></pre></div>    </div>
   </li>
   <li>
     <p>Download and install dependencies for <strong><em>elastalerter.py</em></strong></p>
 
-    <h3 id="download-and-unzip-the-files">download and unzip the files</h3>
-    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>wget https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.zip?raw<span class="o">=</span><span class="nb">true</span>
-<span class="go">   
-  ...omitted...
+    <h4 id="download-and-unzip-the-files">download and unzip the files</h4>
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>wget https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.zip?raw<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...omitted...
   HTTP request sent, awaiting response... 200 OK
   Length: 4248 (4.1K) [application/zip]
   Saving to: ‘elastalerter.zip’
 
-</span><span class="gp">  elastalerter.zip         100%[================================&gt;</span><span class="o">]</span>   4.15K  <span class="nt">--</span>.-KB/s    <span class="k">in </span>0s
-<span class="go">  ...omitted...
-   
-</span><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>unzip elastalerter.py 
-<span class="go">   
-  Archive:  elastalerter.zip
+  elastalerter.zip         100%[================================&gt;]   4.15K  --.-KB/s    in 0s
+  ...omitted...
+</code></pre></div>    </div>
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>unzip elastalerter.py 
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Archive:  elastalerter.zip
     inflating: elastalerter.py
     inflating: requirements.txt
     inflating: setup.py 
+</code></pre></div>    </div>
 
-</span></code></pre></div>    </div>
-
-    <h3 id="install-dependencies">install dependencies</h3>
-    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nt">--requirement</span> requirements.txt
-<span class="go">   
-  ...omitted...
+    <h4 id="install-dependencies">install dependencies</h4>
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nt">--requirement</span> requirements.txt
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...omitted...
   Installing collected packages: pytz, tzlocal, six, APScheduler, urllib3, idna, certifi, chardet, requests, 
   aws-requests-auth, blist, docutils, jmespath, python-dateutil, botocore, s3transfer, boto3, pycparser, cffi, 
   configparser, croniter, defusedxml, docopt, jsonschema, mock, PyStaticConfiguration, stomp.py, exotel, 
   envparse, python-magic, pbr, oauthlib, requests-oauthlib, requests-toolbelt, jira, PyYAML, PySocks, PyJWT, 
   twilio, texttable, elasticsearch, future, thehive4py, elastalert, tabulate
   ...omitted...
+</code></pre></div>    </div>
 
-</span></code></pre></div>    </div>
-
-    <h3 id="install-the-alerter">install the alerter</h3>
-    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nb">.</span>
-<span class="go">   
-  ...omitted...
+    <h4 id="install-the-alerter">install the alerter</h4>
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>pip <span class="nb">install</span> <span class="nb">.</span>
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...omitted...
   Successfully built elastalerter
   Installing collected packages: elastalerter
   Successfully installed elastalerter-0.0.2
-
-</span></code></pre></div>    </div>
+</code></pre></div>    </div>
   </li>
 </ol>
 
@@ -214,7 +163,7 @@
 <h2 id="execution-w-sample-output">EXECUTION (w/ sample output)</h2>
 
 <h3 id="help--h---help">help (<strong><code class="highlighter-rouge">-h, --help</code></strong>)</h3>
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>python elastalerter.py <span class="nt">-h</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">-h</span>
 </code></pre></div></div>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>usage: python ./elastalerter.py --logs LOGS_DIR --rules RULES_DIR --expected expected.json
 
@@ -250,37 +199,36 @@ required arguments:
 </code></pre></div></div>
 
 <h3 id="default-output">default output</h3>
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> expected.json
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> expected.json
 </code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color:#779ECB">[+] RUNNING test_1 :</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
-    <span style="color:green">[+] TEST ( test_1 ) PASSED</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[+] RUNNING test_1 :
+    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
+    [+] TEST ( test_1 ) PASSED
 
-<span style="color:#779ECB">[+] RUNNING test_2 :</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
-    <span style="color:green">[+] TEST ( test_2 ) PASSED</span>
+[+] RUNNING test_2 :
+    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
+    [+] TEST ( test_2 ) PASSED
 
-<span style="color:#779ECB">[+] RUNNING test_3 :</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
-    <span style="color:red">[+] TEST ( test_3 ) FAILED</span>
+[+] RUNNING test_3 :
+    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
+    [+] TEST ( test_3 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_4 :</span>
-    <span style="color:orange">[+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )</span>
-        <span style="color:red">[ERROR] "test_file" IS NOT A VALID JSON FILE.</span>
-        <span style="color:red">[ERROR] "test_file.json" IS NOT A VALID LOG FILE.</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
-    <span style="color:red">[+] TEST ( test_4 ) FAILED</span>
+[+] RUNNING test_4 :
+    [+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )
+        [ERROR] "test_file" IS NOT A VALID JSON FILE.
+        [ERROR] "test_file.json" IS NOT A VALID LOG FILE.
+    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
+    [+] TEST ( test_4 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_agg_1 :</span>
-    <span style="color:orange">[+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )</span>
-    <span style="color:red">[+] TEST ( test_agg_1 ) FAILED</span>
+[+] RUNNING test_agg_1 :
+    [+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )
+    [+] TEST ( test_agg_1 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_agg_02 :</span>
-    <span style="color:orange">[+] TEST ( test_agg_2 ) WAS DISABLED</span>
+[+] RUNNING test_agg_02 :
+    [+] TEST ( test_agg_2 ) WAS DISABLED
 
 
-<span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
-
+[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
@@ -313,37 +261,36 @@ required arguments:
 </span></code></pre></div></div>
 
 <h4 id="-execution">&gt; execution</h4>
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> expected.json <span class="nt">--mappings</span> mappings.json
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> expected.json <span class="nt">--mappings</span> mappings.json
 </code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color:#779ECB">[+] RUNNING test_1 :</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
-    <span style="color:green">[+] TEST ( test_1 ) PASSED</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[+] RUNNING test_1 :
+    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
+    [+] TEST ( test_1 ) PASSED
 
-<span style="color:#779ECB">[+] RUNNING test_2 :</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
-    <span style="color:green">[+] TEST ( test_2 ) PASSED</span>
+[+] RUNNING test_2 :
+    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
+    [+] TEST ( test_2 ) PASSED
 
-<span style="color:#779ECB">[+] RUNNING test_3 :</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
-    <span style="color:red">[+] TEST ( test_3 ) FAILED</span>
+[+] RUNNING test_3 :
+    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
+    [+] TEST ( test_3 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_4 :</span>
-    <span style="color:orange">[+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )</span>
-        <span style="color:red">[ERROR] "test_file" IS NOT A VALID JSON FILE.</span>
-        <span style="color:red">[ERROR] "test_file.json" IS NOT A VALID LOG FILE.</span>
-    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
-    <span style="color:red">[+] TEST ( test_4 ) FAILED</span>
+[+] RUNNING test_4 :
+    [+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )
+        [ERROR] "test_file" IS NOT A VALID JSON FILE.
+        [ERROR] "test_file.json" IS NOT A VALID LOG FILE.
+    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
+    [+] TEST ( test_4 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_agg_1 :</span>
-    <span style="color:orange">[+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )</span>
-    <span style="color:red">[+] TEST ( test_agg_1 ) FAILED</span>
+[+] RUNNING test_agg_1 :
+    [+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )
+    [+] TEST ( test_agg_1 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_agg_02 :</span>
-    <span style="color:orange">[+] TEST ( test_agg_2 ) WAS DISABLED</span>
+[+] RUNNING test_agg_02 :
+    [+] TEST ( test_agg_2 ) WAS DISABLED
 
 
-<span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
-
+[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
@@ -363,56 +310,56 @@ required arguments:
 </code></pre></div></div>
 
 <h3 id="verbose---verbose">verbose (<strong><code class="highlighter-rouge">--verbose</code></strong>)</h3>
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"><span style="color:red">(v_env)</span> $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> ./expected.json <span class="nt">--verbose</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">(v_env) $</span><span class="w"> </span>python elastalerter.py <span class="nt">--logs</span> ./logs <span class="nt">--rules</span> ./rules <span class="nt">--expected</span> ./expected.json <span class="nt">--verbose</span>
 </code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color:#779ECB">[+] RUNNING test_1 :</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[+] RUNNING test_1 :
     [+] A NEW INDEX ( test_1 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
+    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    <span style="color:green">[+] TEST ( test_1 ) PASSED</span>
+    [+] TEST ( test_1 ) PASSED
 
-<span style="color:#779ECB">[+] RUNNING test_2 :</span>
+[+] RUNNING test_2 :
     [+] A NEW INDEX ( test_2 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
+    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    <span style="color:green">[+] TEST ( test_2 ) PASSED</span>
+    [+] TEST ( test_2 ) PASSED
 
-<span style="color:#779ECB">[+] RUNNING test_3 :</span>
+[+] RUNNING test_3 :
     [+] A NEW INDEX ( test_3 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
+    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    <span style="color:red">[+] TEST ( test_3 ) FAILED</span>
+    [+] TEST ( test_3 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_4 :</span>
+[+] RUNNING test_4 :
     [+] A NEW INDEX ( test_4 ) WAS CREATED
-    <span style="color:orange">[+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )</span>
-        <span style="color:red">[ERROR] "test_file" IS NOT A VALID JSON FILE.</span>
-        <span style="color:red">[ERROR] "test_file.json" IS NOT A VALID LOG FILE.</span>
+    [+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )
+        [ERROR] "test_file" IS NOT A VALID JSON FILE.
+        [ERROR] "test_file.json" IS NOT A VALID LOG FILE.
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
+    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    <span style="color:red">[+] TEST ( test_4 ) FAILED</span>
+    [+] TEST ( test_4 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_agg_1 :</span>
+[+] RUNNING test_agg_1 :
     [+] A NEW INDEX ( test_agg_1 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    <span style="color:orange">[+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )</span>
+    [+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    <span style="color:red">[+] TEST ( test_agg_1 ) FAILED</span>
+    [+] TEST ( test_agg_1 ) FAILED
 
-<span style="color:#779ECB">[+] RUNNING test_agg_02 :</span>
-    <span style="color:orange">[+] TEST ( test_agg_2 ) WAS DISABLED</span>
+[+] RUNNING test_agg_02 :
+    [+] TEST ( test_agg_2 ) WAS DISABLED
 
 
-<span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
+[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
@@ -430,19 +377,4 @@ required arguments:
     │ test_agg_1 │ FAILED   │ &gt; HITS (5) EXCEEDED THE THRESHOLD                           │
     ╘════════════╧══════════╧═════════════════════════════════════════════════════════════╛
 </code></pre></div></div>
-
-      </section>
-    </div>
-
-    
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'true', 'auto');
-        ga('send', 'pageview');
-      </script>
-    
-  </body>
-</html>
+:ET

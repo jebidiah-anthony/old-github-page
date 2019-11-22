@@ -11,6 +11,9 @@ title: whoami
 
 ## <span style="color:red">$ achievements</span>
 
+### __8th Place, Cypber SEA Game 2019__ (_Nov 2019_)
+> Competed as a member of __Team Philippines__ in a Capture the Flag competition held at the AJCCBC organized by the JNSA (Japan Network Security Association)
+
 ### __2nd Place, ROOTCON CTF__ (_Sep 2019_)
 > Competed as a member of __Team [hsb]JumboHackdog__ in a Capture the Flag competition organized by _Pwn De Manila_ for the premier hacking conference, _ROOTCON 13_
 
