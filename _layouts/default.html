@@ -8,10 +8,14 @@
     
     {% if page.header-img %}
     <meta property="og:image" content="{{ site.url }}/{{ page.header-img }}" />
+    {% else %}
+    <meta property="og:image" content="{{ site.url }}/banner.jpg" />
     {% endif %}
+
     {% if page.title %}
     <meta property="og:title" content="{{ page.title }}" />
     {% endif %}
+
     {% seo %} 
   </head>
 

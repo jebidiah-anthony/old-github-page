@@ -7,11 +7,21 @@ layout: default
 
 ### [NAVIGATION]
 
-[Cyber SEA Game 2019]() | Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT
+[Cyber SEA Game 2019](#cyber-sea-game-2019) | Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT
 [NACTF 2019](#nactf-2019) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
 [TG:Hack 2019](#tghack-2019) | Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT
 [TJCTF 2019](#tjctf-2019) | Sat, 06 Apr 2019, 07:00 PHT - Wed, 10 Apr 2019, 07:00 PHT
 [HTB Retired Challenges](#hackthebox-retired-challenges) | ([Web](#web-challenges))
+
+---
+---
+
+## >>Cyber SEA Game 2019<<
+
+<strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong>
+[Fraud(1) Whistle blowing](./chals/ctf/2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html) | 50 pts | Crypto | Fullwidth Unicode Encoding
+[The_Sword](./chals/ctf/2019_CyberSEAGame/crypto/2_The_Sword.html) | 50 pts | Crypto | Embedded Text
+[ShellScript](./chals/ctf/2019_CyberSEAGame/crypto/3_ShellScript.html) | 200 pts | Crypto | Obfuscated Code
 
 ---
 ---

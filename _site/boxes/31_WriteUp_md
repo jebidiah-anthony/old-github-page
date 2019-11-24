@@ -9,9 +9,11 @@
     
     <meta property="og:image" content="http://localhost:4000/boxes/screenshots/31_writeup/writeup.jpg" />
     
+
     
     <meta property="og:title" content="HTB WriteUp" />
     
+
     <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>HTB WriteUp | jebidiah-anthony</title>
 <meta name="generator" content="Jekyll v4.0.0" />
