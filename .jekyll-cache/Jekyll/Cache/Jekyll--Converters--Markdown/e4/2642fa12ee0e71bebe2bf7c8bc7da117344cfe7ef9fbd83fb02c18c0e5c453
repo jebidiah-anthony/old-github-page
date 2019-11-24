@@ -1,0 +1,29 @@
+I"w<h1 id="pdf-jpgs-120-pts">PDF-JPGS (120 pts)</h1>
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Your friend who calls himself a hacker sent you the following message with a PDF file attached.
+
+Can you see a difference between these two image files?
+
+Two images that look completely ordinary are pasted in the PDF file, and it is highly unlikely that these files are normal.
+Find a flag in this PDF file.
+
+flag format: flag{[A-Za-z_]}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="">PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf</a></p>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<p>The PDF contains an image</p>
+
+<p><img src="../screenshots/pdf-jpgs_pdf.png" alt="PDF" /></p>
+
+:ET

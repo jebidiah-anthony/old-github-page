@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="og:image" content="http://localhost:4000/" />
+    
+
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cyber SEA Game 2019 [Cryptography] PDF-JPGS (120 pts)" />
+<meta property="og:description" content="Cyber SEA Game 2019 [Cryptography] PDF-JPGS (120 pts)" />
+<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html" />
+<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html","headline":"jebidiah-anthony","description":"Cyber SEA Game 2019 [Cryptography] PDF-JPGS (120 pts)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+ 
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what not</h2>
+
+	<span>
+	  <a href="/">whoami</a> | 
+          <a href="/htb.html">htb writeups</a> | 
+	  <a href="/ctf.html">ctf writeups</a> | 
+	  <a href="/projects.html">projects</a> 
+	</span>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="pdf-jpgs-120-pts">PDF-JPGS (120 pts)</h1>
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Your friend who calls himself a hacker sent you the following message with a PDF file attached.
+
+Can you see a difference between these two image files?
+
+Two images that look completely ordinary are pasted in the PDF file, and it is highly unlikely that these files are normal.
+Find a flag in this PDF file.
+
+flag format: flag{[A-Za-z_]}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="./files/PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf">PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf</a></p>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<p>The PDF contains an image</p>
+
+<p><img src="../screenshots/pdf-jpgs_pdf.png" alt="PDF" /></p>
+
+<p>And running <strong><code class="highlighter-rouge">binwalk</code></strong> gives you:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>binwalk PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf
+<span class="go">
+  DECIMAL       HEXADECIMAL     DESCRIPTION
+  --------------------------------------------------------------------------------
+  0             0x0             PDF document, version: "1.6"
+  1332          0x534           TIFF image data, big-endian, offset of first image directory: 8
+  53228         0xCFEC          TIFF image data, big-endian, offset of first image directory: 8
+
+</span></code></pre></div></div>
+
+<p>Still nothing seems out of the ordinary but opening the file in a <strong>hex editor</strong> and searching for a <strong>JPG File Header</strong> (<strong><code class="highlighter-rouge">FF D8 FF __</code></strong>) leads you to this:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>bless PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf
+</code></pre></div></div>
+
+<p><img src="../screenshots/pdf-jpgs_jpg_sig.png" alt="JPG File Signature" /></p>
+
+<p>One possible file header for JPG files is <strong><code class="highlighter-rouge">FF D8 FF E0 00 10 4A 46 49 46 00 01</code></strong> or <strong><code class="highlighter-rouge">ÿØÿà..JFIF..</code></strong></p>
+
+<p>Between the earlier detected signature and the <strong><code class="highlighter-rouge">JFIF</code></strong> string is a string which says:</p>
+
+<p><img src="../screenshots/pdf-jpgs_jpg_comment.png" alt="JPG Comment" /></p>
+
+<p>Delete the comment and make the header <strong><code class="highlighter-rouge">FF D8 FF E0 00 10 4A 46 49 46 00 01</code></strong> then delete everything above it so the file begins with the new JPG header:</p>
+
+<p><img src="../screenshots/pdf-jpgs_jpg_hex.png" alt="JPG Hexdump" /></p>
+
+<p>Saving the new hexdump as <strong><code class="highlighter-rouge">flag.jpg</code></strong> returns a new image:</p>
+
+<p><img src="../screenshots/pdf-jpgs_flag.jpg" alt="FLAG" /></p>
+
+<hr />
+
+<h2 id="flag--flagtwo_image_files_in_this_pdf">FLAG : <strong>flag{Two_Image_Files_In_This_PDF}</strong></h2>
+
+      </section>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

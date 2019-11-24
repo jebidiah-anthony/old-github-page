@@ -1,0 +1,55 @@
+I"3
+<h1 id="pdf-jpgs-120-pts">PDF-JPGS (120 pts)</h1>
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Your friend who calls himself a hacker sent you the following message with a PDF file attached.
+
+Can you see a difference between these two image files?
+
+Two images that look completely ordinary are pasted in the PDF file, and it is highly unlikely that these files are normal.
+Find a flag in this PDF file.
+
+flag format: flag{[A-Za-z_]}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="">PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf</a></p>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<p>The PDF contains an image</p>
+
+<p><img src="../screenshots/pdf-jpgs_pdf.png" alt="PDF" /></p>
+
+<p>And running <strong><code class="highlighter-rouge">binwalk</code></strong> gives you:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>binwalk PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf
+<span class="go">
+  DECIMAL       HEXADECIMAL     DESCRIPTION
+  --------------------------------------------------------------------------------
+  0             0x0             PDF document, version: "1.6"
+  1332          0x534           TIFF image data, big-endian, offset of first image directory: 8
+  53228         0xCFEC          TIFF image data, big-endian, offset of first image directory: 8
+
+</span></code></pre></div></div>
+
+<p>Still nothing seems out of the ordinary but opening the file in a <strong>hex editor</strong> and searching for a <strong>JPG File Header</strong> (<strong><code class="highlighter-rouge">FF D8 FF __</code></strong>) leads you to this:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>bless PDF-JPGS_d1633b9cc9fac22736e29a63eec14771.pdf
+</code></pre></div></div>
+
+<p><img src="../screenshots/pdf-jpgs_jpg_sig.png" alt="JPG File Signature" /></p>
+
+<p>One possible file header for JPG files is <strong><code class="highlighter-rouge">FF D8 FF E0 00 10 4A 46 49 46 00 01</code></strong> or <strong><code class="highlighter-rouge">ÿØÿà..JFIF..</code></strong></p>
+
+<p>Between this detected signature and the <strong><code class="highlighter-rouge">JFIF</code></strong> string is a string which says:</p>
+
+<p><img src="../screenshots/pdf-jpgs_jpg_comment.png" alt="JPG Comment" /></p>
+
+:ET

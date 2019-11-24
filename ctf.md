@@ -22,6 +22,7 @@ layout: default
 [Fraud(1) Whistle blowing](./chals/ctf/2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html) | 50 pts | Crypto | Fullwidth Unicode Encoding
 [The_Sword](./chals/ctf/2019_CyberSEAGame/crypto/2_The_Sword.html) | 50 pts | Crypto | Embedded Text
 [ShellScript](./chals/ctf/2019_CyberSEAGame/crypto/3_ShellScript.html) | 200 pts | Crypto | Obfuscated Code
+[PDF-JPGS](./chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html) | 120 pts | Forensics | File Headers
 
 ---
 ---
