@@ -1,9 +1,15 @@
 ---
 title: What Not
 layout: default
+description: "Various manuals and proof of concepts."
+header-img: ""
+tags: []
 ---
 
 # PROJECTS
+
+## >>[CORS for Dummies](./prjct/CORS.html)<<
+> This is a brief introduction to __Cross Origin Resource Sharing__ along with common misconfigurations that might lead to exploitation. This was an entry to mubix's OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway.
 
 ## >>[elastalerter.py](./prjct/elastalerter.html)<<
 > An elastalert rule tester built using python. Tests could be set-up uniquely and could be run by batch. Specified logs are indexed using [__Elasticsearch 7.4.0__](https://www.elastic.co/downloads/past-releases/elasticsearch-7-4-0) and are used with a custom elastalert [alerter](https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter/alerter.py). This program covers testing for single matches and log aggregation with field mapping capabilities. ([source code](https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.py))

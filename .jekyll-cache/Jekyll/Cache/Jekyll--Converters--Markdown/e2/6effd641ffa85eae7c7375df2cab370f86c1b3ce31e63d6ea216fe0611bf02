@@ -1,0 +1,124 @@
+I"�"<h1 id="cross-origin-resource-sharing-cors">Cross Origin Resource Sharing (CORS)</h1>
+
+<h2 id="what-is-cors">What is CORS?</h2>
+
+<p>Web pages, say like http://example.com/page, can always request resources from another web page as long as it comes from the same origin (this includes protocol, domain, and port). This <strong>same origin policy</strong> helps prevent malicious behavior since data circulates only from within the domain.</p>
+
+<p>But what if the resources you need are only available elsewhere? This is where CORS come into play. It allows you to access resources or to navigate to another server. This is helpful especially when loading images, scripts, stylesheets, etc. CORS requests are done by using standard HTTP methods such as <strong><code class="highlighter-rouge">GET</code></strong>, <strong><code class="highlighter-rouge">PATCH</code></strong>, <strong><code class="highlighter-rouge">POST</code></strong>,  <strong><code class="highlighter-rouge">PUT</code></strong>, and <strong><code class="highlighter-rouge">DELETE</code></strong> and are implemented using HTTP headers.</p>
+
+<p><strong>HTTP Request Headers</strong>:</p>
+<ul>
+  <li><strong><code class="highlighter-rouge">Origin</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Request-Method</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Request-Headers</code></strong></li>
+</ul>
+
+<p><strong>HTTP Response Headers</strong>:</p>
+<ul>
+  <li><strong><code class="highlighter-rouge">Access-Control-Allow-Origin</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Allow-Credentials</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Expose-Headers</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Max-Age</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Allow-Methods</code></strong></li>
+  <li><strong><code class="highlighter-rouge">Access-Control-Allow-Headers</code></strong></li>
+</ul>
+
+<p><strong><code class="highlighter-rouge">Access-Control-Allow-Origin</code></strong> allows servers to specify how their resources are shared externally. Many times, this header will be set to <strong><code class="highlighter-rouge">*</code></strong> pertaining to any external domain. It could be a list of domains or it could even be set to <strong><code class="highlighter-rouge">null</code></strong>.</p>
+
+<p>Most servers only allow <strong><code class="highlighter-rouge">GET</code></strong> requests as to avoid any intention of maliciously editing or deleting assets. However, such requests are not automatically dropped by the server. It first undergoes a <strong>preflight test</strong> in order to determine what methods are allowed.</p>
+
+<p><strong>Pre-flight Test</strong></p>
+
+<ol>
+  <li>It first sends an <strong><code class="highlighter-rouge">OPTIONS</code></strong> request:
+    <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">OPTIONS</span> <span class="nn">/resource</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Origin</span><span class="p">:</span> <span class="s">example.com</span>
+<span class="na">Access-Control-Request-Method</span><span class="p">:</span> <span class="s">DELETE</span>
+</code></pre></div>    </div>
+  </li>
+  <li>The server responds:
+    <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Access-Control-Allow-Origin</span><span class="p">:</span> <span class="s">*</span>
+<span class="na">Access-Control-Allow-Method</span><span class="p">:</span> <span class="s">DELETE, GET</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>After the pre-flight test, the original request is then handled.</p>
+
+<ol>
+  <li>Deleting a resource:
+    <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">DELETE</span> <span class="nn">/resource</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">ORIGIN</span><span class="p">:</span> <span class="s">example.com</span>
+<span class="na">Access-Control-Request-Method</span><span class="p">:</span> <span class="s">DELETE</span>
+</code></pre></div>    </div>
+  </li>
+  <li>The server responds:
+    <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Access-Control-Allow-Origin</span><span class="p">:</span> <span class="s">*</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Since the <strong><code class="highlighter-rouge">DELETE</code></strong> method was allowed after checking during the pre-flight test, the resource was successfully deleted. Other headers automatically added by the browser are omitted from the example above.</p>
+
+<h2 id="common-misconfigurations">Common Misconfigurations</h2>
+
+<ul>
+  <li>
+    <p><strong><code class="highlighter-rouge">Access-Control-Allow-Credentials</code></strong> is set to <strong><code class="highlighter-rouge">true</code></strong>:</p>
+
+    <blockquote>
+      <p>Credentials are often stored in cookies and cookies are used to maintain our sessions or what the browser uses to indicate that we are currently logged in. Its value is mostly unique to our own and this header enables credential transmission which is bad new especially for websites susceptible to <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">Cross-Site Scripting (XSS)</a>.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>This would only be exploitable if <strong><code class="highlighter-rouge">Access-Control-Allow-Origin</code></strong> is not set to a wildcard (<strong><code class="highlighter-rouge">*</code></strong>) even if the a wildcard was used to cover a website’s subdomains (e.g. <strong><code class="highlighter-rouge">*.example.com</code></strong>).</p>
+    </blockquote>
+
+    <blockquote>
+      <p>Exposing your website to everyone and used along with this header the console would return <strong><code class="highlighter-rouge">Cannot use wildcard in Access-Control-Allow-Origin when credentials flag is true.</code></strong> This could be a work around but this is still bad practice.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong><code class="highlighter-rouge">Access-Control-Allow-Origin: null</code></strong></p>
+
+    <blockquote>
+      <p>Hostile documents could be crafted and sent with a <strong><code class="highlighter-rouge">Origin: null</code></strong> header and it would be accepted since serialization of the <strong><code class="highlighter-rouge">Origin</code></strong> of files are defined to be null.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>This should not be used.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Don’t give unneeded methods in <strong><code class="highlighter-rouge">Access-Control-Allow-Method</code></strong></p>
+
+    <blockquote>
+      <p><strong><code class="highlighter-rouge">DELETE</code></strong>, <strong><code class="highlighter-rouge">PATCH</code></strong>, <strong><code class="highlighter-rouge">POST</code></strong>, and <strong><code class="highlighter-rouge">PUT</code></strong> could be used to alter or remove a site’s assets/resources and even trigger further unwanted actions.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Giving access to everyone – <strong><code class="highlighter-rouge">Access-Control-Allow-Origin: *</code></strong></p>
+
+    <blockquote>
+      <p>Perhaps adding specific websites to a white list might be advisable if resources contain somewhat sensitive content.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>Or perhaps limiting accessible subdomains and endpoints would prove to be more secure but this would require different configurations.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="references">REFERENCES</h2>
+
+<ul>
+  <li>https://www.codecademy.com/articles/what-is-cors</li>
+  <li>https://portswigger.net/research/exploiting-cors-misconfigurations-for-bitcoins-and-bounties</li>
+  <li>https://www.geekboy.ninja/blog/exploiting-misconfigured-cors-cross-origin-resource-sharing/</li>
+  <li>https://stackoverflow.com/questions/12001269/what-are-the-security-risks-of-setting-access-control-allow-origin</li>
+  <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin</li>
+  <li>https://mobilejazz.com/blog/which-security-risks-do-cors-imply/</li>
+</ul>
+:ET
