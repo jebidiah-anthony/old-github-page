@@ -1,0 +1,20 @@
+I"@<h1 id="friend-100-pts">Friend (100 pts)</h1>
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Among File001 to File999, find files with the same features with File.
+Identify the files and also provide evidence for the commonality.
+
+flag format: flag{File&lt;4 digits&gt;_lowercase alphanumeric}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] File</p>
+
+<p>[&gt;] File0001 - File0999</p>
+
+<p>[&gt;] memo.txt</p>
+:ET

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="og:image" content="http://localhost:4000/" />
+    
+
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cyber SEA Game 2019 [Misc] Trim_Auth (150 pts)" />
+<meta property="og:description" content="Cyber SEA Game 2019 [Misc] Trim_Auth (150 pts)" />
+<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html" />
+<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html","headline":"jebidiah-anthony","description":"Cyber SEA Game 2019 [Misc] Trim_Auth (150 pts)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+ 
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what not</h2>
+
+	<span>
+	  <a href="/">whoami</a> | 
+          <a href="/htb.html">htb writeups</a> | 
+	  <a href="/ctf.html">ctf writeups</a> | 
+	  <a href="/projects.html">projects</a> 
+	</span>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="trim_auth-150-pts">Trim_Auth (150 pts)</h1>
+
+<hr />
+
+<h2 id="part-1--getting-the-flag">PART 1 : GETTING THE FLAG</h2>
+
+<p>The challenge gives you a link to a web application:</p>
+
+<p><img src="../screenshots/trim_auth_landing_page.png" alt="Landing Page" /></p>
+
+<p>It contains a login form and attempting to login with <strong><code class="highlighter-rouge">test : test</code></strong> returns an error message <strong><code class="highlighter-rouge">Oops...</code></strong></p>
+
+<p><img src="../screenshots/trim_auth_error_message.png" alt="Error Message" /></p>
+
+<p>Maybe the <strong style="color:red">trim</strong> in the challenge title pertains to <strong style="color:red">SQL truncation</strong> where strings with leading or trailing spaces are used to duplicate unique entries since they are technically different during insertion but the spaces are dropped during query.</p>
+
+<p>Now logging in with a username, <strong>” admin”</strong>, with any password returns:</p>
+
+<p><img src="../screenshots/trim_auth_flag.png" alt="Flag" /></p>
+
+<hr />
+
+<h2 id="flag--flagmysql_trim_space">FLAG : <strong>flag{MYSQL_trim_space}</strong></h2>
+
+      </section>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

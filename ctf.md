@@ -23,6 +23,8 @@ layout: default
 [The_Sword](./chals/ctf/2019_CyberSEAGame/crypto/2_The_Sword.html) | 50 pts | Crypto | Embedded Text
 [ShellScript](./chals/ctf/2019_CyberSEAGame/crypto/3_ShellScript.html) | 200 pts | Crypto | Obfuscated Code
 [PDF-JPGS](./chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html) | 120 pts | Forensics | File Headers
+[Friend](./chals/ctf/2019_CyberSEAGame/misc/6_Friend.html) | 100 pts | Misc | Hash Collision
+[Trim_Auth](./chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html) | 150 pts | Misc | SQL Truncation
 
 ---
 ---
