@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="og:image" content="http://localhost:4000/" />
+    
+
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cyber SEA Game 2019 [OS] Shared (110 pts)" />
+<meta property="og:description" content="Cyber SEA Game 2019 [OS] Shared (110 pts)" />
+<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_CyberSEAGame/os/2_Shared.html" />
+<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_CyberSEAGame/os/2_Shared.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_CyberSEAGame/os/2_Shared.html","headline":"jebidiah-anthony","description":"Cyber SEA Game 2019 [OS] Shared (110 pts)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+ 
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what not</h2>
+
+	<span>
+	  <a href="/">whoami</a> | 
+          <a href="/htb.html">htb writeups</a> | 
+	  <a href="/ctf.html">ctf writeups</a> | 
+	  <a href="/projects.html">projects</a> 
+	</span>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="shared-110-pts">Shared (110 pts)</h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You are asked to investigate a case where the execution of an exe file on Linux fails. Download the attached document and find a flag.
+
+flag format: Flag{single-byte alphanumeric characters/symbols}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="./files/Shared_04dca129c011213979aded2e7bef71d3.zip">Shared_04dca129c011213979aded2e7bef71d3.zip</a></p>
+<ul>
+  <li>libflag.so</li>
+  <li>main.exe</li>
+</ul>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file main.exe
+<span class="go">
+  main.exe: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.18, BuildID[sha1]=572e5a45a57b8e8de469cfe301e7d653fb4a6565, not stripped
+
+</span></code></pre></div></div>
+
+<p>The binary included in the zip archive is an ELF file and running the binary in a Linux terminal outputs:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">chmod</span> +x ./main.exe
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>./main.exe
+<span class="go">
+  ./main.exe: error while loading shared libraries: libflag.so: cannot open shared object file: No such file or directory
+
+</span><span class="gp">$</span><span class="w"> </span>ldd ./main.exe
+<span class="go">
+  	linux-vdso.so.1 (0x00007ffc60b4c000)
+</span><span class="gp">  	libflag.so =&gt;</span><span class="w"> </span>not found
+<span class="gp">  	libc.so.6 =&gt;</span><span class="w"> </span>/lib/x86_64-linux-gnu/libc.so.6 <span class="o">(</span>0x00007ff7683e1000<span class="o">)</span>
+<span class="go">      	/lib64/ld-linux-x86-64.so.2 (0x00007ff7685be000)
+
+</span></code></pre></div></div>
+
+<p>Running <strong><code class="highlighter-rouge">./main.exe</code></strong> regularly and through <strong><code class="highlighter-rouge">ldd</code></strong> returns that <strong><code class="highlighter-rouge">libflag.so</code></strong> could not be found.</p>
+
+<p>Export the current working directory or where the <strong><code class="highlighter-rouge">libflag.so</code></strong> file is saved to the environment variable, <strong><code class="highlighter-rouge">LD_LIBRARY_PATH</code></strong>, to force load the shared object file to the binary.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>./main.exe
+<span class="go">
+  flag{specify_the_library}
+
+</span></code></pre></div></div>
+
+<hr />
+
+<h2 id="flag--flagspecify_the_library">FLAG : <strong>flag{specify_the_library}</strong></h2>
+
+      </section>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

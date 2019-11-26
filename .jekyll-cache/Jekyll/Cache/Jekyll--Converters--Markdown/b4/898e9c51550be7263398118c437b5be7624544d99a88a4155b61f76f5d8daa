@@ -1,0 +1,48 @@
+I"Ÿ<h1 id="shared-110-pts">Shared (110 pts)</h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You are asked to investigate a case where the execution of an exe file on Linux fails. Download the attached document and find a flag.
+
+flag format: Flag{single-byte alphanumeric characters/symbols}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="./files/Shared_04dca129c011213979aded2e7bef71d3.zip">Shared_04dca129c011213979aded2e7bef71d3.zip</a></p>
+<ul>
+  <li>libflag.so</li>
+  <li>main.exe</li>
+</ul>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file main.exe
+<span class="go">
+  main.exe: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.18, BuildID[sha1]=572e5a45a57b8e8de469cfe301e7d653fb4a6565, not stripped
+
+</span></code></pre></div></div>
+
+<p>The binary included in the zip archive is an ELF file and running the binary in a Linux terminal outputs:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">chmod</span> +x ./main.exe
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>./main.exe
+<span class="go">
+  ./main.exe: error while loading shared libraries: libflag.so: cannot open shared object file: No such file or directory
+
+</span><span class="gp">$</span><span class="w"> </span>ldd ./main.exe
+<span class="go">
+  	linux-vdso.so.1 (0x00007ffc60b4c000)
+</span><span class="gp">  	libflag.so =&gt;</span><span class="w"> </span>not found
+<span class="gp">  	libc.so.6 =&gt;</span><span class="w"> </span>/lib/x86_64-linux-gnu/libc.so.6 <span class="o">(</span>0x00007ff7683e1000<span class="o">)</span>
+<span class="go">      	/lib64/ld-linux-x86-64.so.2 (0x00007ff7685be000)
+
+</span></code></pre></div></div>
+:ET
