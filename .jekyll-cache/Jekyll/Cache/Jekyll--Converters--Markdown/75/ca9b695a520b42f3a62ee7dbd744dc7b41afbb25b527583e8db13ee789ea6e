@@ -1,52 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/style.css?v=">
-    
-    
-    <meta property="og:image" content="http://localhost:4000/banner.jpg" />
-    
-
-    
-    <meta property="og:title" content="CTF Write-ups" />
-    
-
-    <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>CTF Write-ups | jebidiah-anthony</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="CTF Write-ups" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/ctf.html" />
-<meta property="og:url" content="http://localhost:4000/ctf.html" />
-<meta property="og:site_name" content="jebidiah-anthony" />
-<script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/ctf.html","headline":"CTF Write-ups","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
- 
-  </head>
-
-  <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what not</h2>
-
-	<span>
-	  <a href="/">whoami</a> | 
-          <a href="/htb.html">htb writeups</a> | 
-	  <a href="/ctf.html">ctf writeups</a> | 
-	  <a href="/projects.html">projects</a> 
-	</span>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h1 id="ctf-write-ups">CTF WRITE-UPS</h1>
+I",<h1 id="ctf-write-ups">CTF WRITE-UPS</h1>
 
 <h3 id="navigation">[NAVIGATION]</h3>
 
@@ -80,67 +32,17 @@
 
 <h2 id="cyber-sea-game-2019">»Cyber SEA Game 2019«</h2>
 
-<table>
-  <tbody>
-    <tr>
-      <td><strong style="text-decoration:underline">CHALLENGE NAME</strong></td>
-      <td><strong style="text-decoration:underline">POINTS</strong></td>
-      <td><strong style="text-decoration:underline">CATEGORY</strong></td>
-      <td><strong style="text-decoration:underline">TAGS</strong></td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html">Fraud(1) Whistle blowing</a></td>
-      <td>50 pts</td>
-      <td>Crypto</td>
-      <td>Fullwidth Unicode Encoding</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/crypto/2_The_Sword.html">The_Sword</a></td>
-      <td>50 pts</td>
-      <td>Crypto</td>
-      <td>Embedded Text</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/crypto/3_ShellScript.html">ShellScript</a></td>
-      <td>200 pts</td>
-      <td>Crypto</td>
-      <td>Obfuscated Code</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html">PDF-JPGS</a></td>
-      <td>120 pts</td>
-      <td>Forensics</td>
-      <td>File Headers</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/misc/6_Friend.html">Friend</a></td>
-      <td>100 pts</td>
-      <td>Misc</td>
-      <td>Hash Collision</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html">Trim_Auth</a></td>
-      <td>150 pts</td>
-      <td>Misc</td>
-      <td>SQL Truncation</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/network/1_Intact.html">Intact</a></td>
-      <td>80 pts</td>
-      <td>Network</td>
-      <td>FTP</td>
-    </tr>
-    <tr>
-      <td><a href="./chals/ctf/2019_CyberSEAGame/os/2_Shared.html">Shared</a></td>
-      <td>110 pts</td>
-      <td>OS</td>
-      <td>Shared Objects</td>
-    </tr>
-  </tbody>
-</table>
-
-<hr />
-<hr />
+<p><strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong>
+<a href="./chals/ctf/2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html">Fraud(1) Whistle blowing</a> | 50 pts | Crypto | Fullwidth Unicode Encoding
+<a href="./chals/ctf/2019_CyberSEAGame/crypto/2_The_Sword.html">The_Sword</a> | 50 pts | Crypto | Embedded Text
+<a href="./chals/ctf/2019_CyberSEAGame/crypto/3_ShellScript.html">ShellScript</a> | 200 pts | Crypto | Obfuscated Code
+<a href="./chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html">PDF-JPGS</a> | 120 pts | Forensics | File Headers
+<a href="./chals/ctf/2019_CyberSEAGame/misc/6_Friend.html">Friend</a> | 100 pts | Misc | Hash Collision
+<a href="./chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html">Trim_Auth</a> | 150 pts | Misc | SQL Truncation
+<a href="./chals/ctf/2019_CyberSEAGame/network/1_Intact.html">Intact</a> | 80 pts | Network | FTP
+<a href="./chals/ctf/2019_CyberSEAGame/os/2_Shared.html">Shared</a> | 110 pts | OS | Shared Objects
+—
+—</p>
 
 <h2 id="nactf-2019">»<a href="https://www.nactf.com/">NACTF 2019</a>«</h2>
 
@@ -298,19 +200,4 @@
     </tr>
   </tbody>
 </table>
-
-      </section>
-    </div>
-
-    
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'true', 'auto');
-        ga('send', 'pageview');
-      </script>
-    
-  </body>
-</html>
+:ET
