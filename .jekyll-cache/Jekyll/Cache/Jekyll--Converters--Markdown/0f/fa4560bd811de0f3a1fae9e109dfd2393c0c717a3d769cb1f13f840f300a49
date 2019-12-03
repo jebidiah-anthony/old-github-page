@@ -1,52 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/style.css?v=">
-    
-    
-    <meta property="og:image" content="http://localhost:4000/banner.jpg" />
-    
-
-    
-    <meta property="og:title" content="whoami" />
-    
-
-    <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>whoami | jebidiah-anthony</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="whoami" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/" />
-<meta property="og:url" content="http://localhost:4000/" />
-<meta property="og:site_name" content="jebidiah-anthony" />
-<script type="application/ld+json">
-{"@type":"WebSite","url":"http://localhost:4000/","name":"jebidiah-anthony","headline":"whoami","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
- 
-  </head>
-
-  <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what not</h2>
-
-	<span>
-	  <a href="/">whoami</a> | 
-          <a href="/htb.html">htb writeups</a> | 
-	  <a href="/ctf.html">ctf writeups</a> | 
-	  <a href="/projects.html">projects</a> 
-	</span>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h2 id="-whoami"><span style="color:red">$ whoami</span></h2>
+I"¶<h2 id="-whoami"><span style="color:red">$ whoami</span></h2>
 
 <h3 id="felix-angelo-o-mendoza--hackthebox--linkedin--wordpress"><strong>FELIX ANGELO O. MENDOZA</strong> : <a href="https://www.hackthebox.eu/profile/50201">HackTheBox</a> | <a href="https://www.linkedin.com/in/faomendoza/">LinkedIn</a> | <a href="https://fiftyliterbox.wordpress.com/">WordPress</a></h3>
 
@@ -102,19 +54,4 @@
 </blockquote>
 
 <hr />
-
-      </section>
-    </div>
-
-    
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'true', 'auto');
-        ga('send', 'pageview');
-      </script>
-    
-  </body>
-</html>
+:ET
