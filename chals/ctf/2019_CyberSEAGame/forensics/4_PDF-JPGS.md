@@ -1,6 +1,6 @@
 ---
 layout: default
-description: "Cyber SEA Game 2019 [Cryptography] PDF-JPGS (120 pts)"
+description: "Cyber SEA Game 2019 [Forensics] PDF-JPGS (120 pts)"
 header-img: ""
 tags: []
 ---
