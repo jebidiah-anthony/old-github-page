@@ -2,8 +2,7 @@
 title: What Not
 layout: default
 description: "Various manuals and proof of concepts."
-header-img: ""
-tags: []
+tags: "projects, pass-the-ticket, double-hop, psremoting, evtx, custom logs, ecmangen, subscription, windows event forwarder, windows event collector, wec, wef, elastalerter, elastalert, elasticsearch, rules, cross origin resource sharing, cors, mubix"
 ---
 
 # PROJECTS
