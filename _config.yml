@@ -1,3 +1,7 @@
 title: jebidiah-anthony
 google_analytics: True
 theme: jekyll-theme-hacker
+
+url: "https://jebidiah-anthony.github.io"
+plugins:
+  - jekyll-sitemap

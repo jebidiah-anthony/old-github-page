@@ -39,7 +39,7 @@
 <meta property="og:url" content="http://localhost:4000/prjct/elastalerter_md" />
 <meta property="og:site_name" content="jebidiah-anthony" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/prjct/elastalerter_md","headline":"elastalerter.py","description":"An elastalert rule tester using python.","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"http://localhost:4000/prjct/elastalerter_md","description":"An elastalert rule tester using python.","headline":"elastalerter.py","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
  
   </head>
