@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "ShellScript [cry 200]
 description: "Cyber SEA Game 2019 [Cryptography] ShellScript (200 pts)"
-header-img: ""
-tags: []
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, cryptography, crypto, shellscript, shell script, obfuscated code, ascii, decimal]
 ---
 
 # ShellScript (200 pts)

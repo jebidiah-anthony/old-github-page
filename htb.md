@@ -1,6 +1,9 @@
 ---
 title: HTB Write-ups
 layout: default
+description: "Retired HackTheBox Machine Write-ups"
+header-img: "chals/htb/htb.png"
+tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe]
 ---
 
 # HTB WRITE-UPS
@@ -24,7 +27,7 @@ layout: default
 [Irked](./boxes/20_Irked.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.117 | <span style="color:green">20 pts | Apr 27, 2019
 [Teacher](./boxes/19_Teacher.html) | <span style="color:green">Linux | <span style="color:green">10.10.10.153 | <span style="color:green">20 pts | Apr 20, 2019
 [Mischief](./boxes/15_Mischief.html) | Linux | 10.10.10.92 | 50 pts | Jan 06, 2019
-[Waldo](./boxes/14_Waldo.html) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.87 | <span style="color:orange">30 pts | Dec 16, 2018
+[Waldo](./boxes/14_Waldo.html) (NO PRIVESC YET) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.87 | <span style="color:orange">30 pts | Dec 16, 2018
 [Active](https://hackedthebox.wordpress.com/htb-active/) | <span style="color:green">Windows | <span style="color:green">10.10.10.100 | <span style="color:green">20 pts | Dec 09, 2018
 [Hawk](https://hackedthebox.wordpress.com/htb-hawk/) | <span style="color:orange">Linux | <span style="color:orange">10.10.10.102 | <span style="color:orange">30 pts | Dec 02, 2018
 [Jerry](https://hackedthebox.wordpress.com/htb-jerry/) | <span style="color:green">Windows | <span style="color:green">10.10.10.95 | <span style="color:green">20 pts | Nov 18, 2018

@@ -3,13 +3,13 @@ layout: default
 title: "HTB Waldo"
 description: "10.10.10.87 | 30 pts"
 header-img: "boxes/screenshots/14_waldo/waldo.png"
-tags: []
+tags: [hackthebox, htb, boot2root, writeup, linux, php, str_replace, ssh, private key, private key authentication, identity file, linux capabilities, capabilities, sbin, getcap, waldo]
 ---
 
 # HTB Waldo (10.10.10.87) MACHINE WRITE-UP
 
 ### TABLE OF CONTENTS
-
+y
 * [PART 1 : INITIAL RECON](#part-1--initial-recon)
 * [PART 2 : PORT ENUMERATION](#part-2--port-enumeration)
   * [TCP PORT 80 (http)](#tcp-port-80-http)

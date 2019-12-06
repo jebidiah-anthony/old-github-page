@@ -3,7 +3,7 @@ layout: default
 title: "HTB Lightweight"
 description: "10.10.10.119 | 30 pts"
 header-img: "boxes/screenshots/21_lightweight/lightweight.png"
-tags: [hackthebox, htb, writeup, linux, ldap, ldap-authentication, capabilities, linux-capabilities, openssl] 
+tags: [hackthebox, htb, boot2root, writeup, write-up, linux, ldap, ldap-authentication, capabilities, linux-capabilities, openssl] 
 ---
 
 # HTB Lightweight (10.10.10.119) MACHINE WRITE-UP

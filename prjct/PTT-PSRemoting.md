@@ -1,6 +1,8 @@
 ---
 layout: default
-title: PtT PSRemoting
+title: "Double Hop Bypass"
+description: "The double-hop problem occurs when, for example, a local PowerShell instance connected via PSRemoting to a remote server which is connected to the target server and an attempt to execute commands on the target server was made and was rejected. The end goal of this proof-of-concept is to execute a pass-the-ticket attack on an active directory while being remotely connected to a domain computer with administrator privileges."
+tags: [windows, pass the ticket, PTT, krbtgt, klist, double hop, double hop bypass, multi hop, multihop, bypass, mimikatz, exploitation]
 ---
 
 # Pass-the-Ticket over PSRemoting using Invoke-Mimikatz

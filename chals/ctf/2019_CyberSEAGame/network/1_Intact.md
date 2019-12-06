@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "Intact [net 80]"
 description: "Cyber SEA Game 2019 [Network] Intact (80 pts)"
-header-img: ""
-tags: [cyber-sea-game-2019, cyber-sea-game, network, intact, ftp, pcap, wireshark]
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, network, network forensics, intact, ftp, ftp-data, ftp data, pcap, tshark]
 ---
 
 # Intact (80 pts)

@@ -1,5 +1,9 @@
 ---
 layout: default
+title: "HTB Kryptos"
+description: "10.10.10.129 | Cracker Badge"
+header-img: "boxes/screenshots/29_kryptos/kryptos.jpeg"
+tags: [hackthebox, htb, boot2root, writeup, write-up, linux, php, pdo, pdo objects, pdo exception, pdo exceptions, rc4, arbitrary file upload, local file inclusion, lfi, vimcrypt, vimcrypt2, blowfish, prng, pseudo random number generator, random number generator, primitive roots, python, python eval function, eval function, eval, kryptos]
 ---
 
 # HTB KryptOS (10.10.10.129) MACHINE WRITE-UP

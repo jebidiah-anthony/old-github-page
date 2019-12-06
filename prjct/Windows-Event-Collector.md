@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Windows Event Collector
+description: "This lays out how to create a sbuscription (both source and collector initiated) that collects selected forwarded .evtx event logs from a workstation to a domain controller."
+tags: [windows, event manager, event viewer, event logs, windows logs, logs, windows event forwarder, windows event collector, subscription, evtx]
 ---
 
 # Setting up a Windows Event Collector

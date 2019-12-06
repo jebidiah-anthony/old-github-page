@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "Fraud(1) [cry 50]"
 description: "Cyber SEA Game 2019 [Cryptography] Fraud(1) Whistle blowing (50 pts)"
-header-img: ""
-tags: []
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, cryptography, crypto, full-width encoding, fullwidth encoding, unicode, codepoint]
 ---
 
 # Fraud(1) Whistle Blowing (50 pts)

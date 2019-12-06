@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "The_Sword [cry 50]"
 description: "Cyber SEA Game 2019 [Cryptography] The_Sword (50 pts)"
-header-img: ""
-tags: []
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, cryptography, crypto, embedded text, embedded]
 ---
 
 # The_Sword (50 pts)

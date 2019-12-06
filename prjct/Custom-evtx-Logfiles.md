@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Custom evtx Logfiles
+description: "This shows the process of how to create custom .evtx log files using ecmangen.exe and other utilities present in the Windows Development Kit. The log file(s) created could be used as a destination log for forwarded events."
+tags: [windows, event manager, event viewer, event logs, windows logs, logs, evtx, evtx logs, custom evtx, creating, creation, manifest file, ecmangen.exe, ecmangen]
 ---
 
 # CREATING __CUSTOM LOGS__ FOR __WINDOWS EVENT COLLECTOR__

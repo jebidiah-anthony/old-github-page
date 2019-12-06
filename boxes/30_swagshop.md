@@ -1,5 +1,9 @@
 ---
 layout: default
+title: "HTB SwagShop"
+description: "10.10.10.140 | 20 pts"
+header-img: "boxes/screenshots/30_swagshop/swagshop.png"
+tags: [hackthebox, htb, boot2root, writeup, write-up, linux, magento, cve, vim, vi]
 ---
 
 # HTB SWAGSHOP (10.10.10.140) MACHINE WRITE-UP

@@ -3,7 +3,7 @@ layout: default
 title: "HTB Ellingson"
 description: "10.10.10.139 | 40 pts"
 header-img: "boxes/screenshots/32_ellingson/ellingson.png"
-tags: [hackthebox, htb, boot2root, writeup, linux, python-objects, whiskey, wsgi, wsgi-debugger, linux-group, unix-group, ret2libc, plt, got, pwntools-ssh, pwn-ssh]
+tags: [hackthebox, htb, boot2root, writeup, write-up, linux, python-objects, whiskey, wsgi, wsgi-debugger, linux-group, unix-group, ret2libc, plt, got, pwntools-ssh, pwn-ssh]
 ---
 
 # HTB Ellingson (10.10.10.139)

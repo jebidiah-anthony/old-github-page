@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "Notes [for 120]"
 description: "Cyber SEA Game 2019 [Forensics] Notes (120 pts)"
-header-img: ""
-tags: [cyber-sea-game, ctf, doc, doc-file, ms-word, macro, macro-payload, payload, bash, wine]
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, forensics, doc, doc file, ms word, macro, macro payload, payload, bash, wine, pe32, ms windows]
 ---
 
 # Notes (120 pts)

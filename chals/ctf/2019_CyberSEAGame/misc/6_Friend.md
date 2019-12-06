@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "Friend [msc 100]"
 description: "Cyber SEA Game 2019 [Misc] Friend (100 pts)"
-header-img: ""
-tags: []
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, misc, miscellaneous, friend, md5, sha1, hash, hash collision]
 ---
 
 # Friend (100 pts)

@@ -1,8 +1,9 @@
 ---
 layout: default
+title: "PDF-JPGS [for 120]"
 description: "Cyber SEA Game 2019 [Forensics] PDF-JPGS (120 pts)"
-header-img: ""
-tags: []
+header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
+tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, forensics, disc forensics, pdf-jpgs, pdf, jpg, file header, file headers]
 ---
 
 # PDF-JPGS (120 pts)

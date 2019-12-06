@@ -1,12 +1,13 @@
 ---
 layout: default
 title: "CORS"
-description: "My entry for mubix's OSCP giveaway challenge #3 regarding Cross Origin Resource Sharing"
-header-img: ""
-tags: [CORS, cross-origin-resource-sharing, misconfigurations, misconfig, headers, pre-flight, preflight]
+description: "This is a brief introduction to Cross Origin Resource Sharing along with common misconfigurations that might lead to exploitation. This was an entry to mubix’s OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway."
+tags: [CORS, cross origin resource sharing, cross-origin resource sharing, misconfigurations, misconfig, headers, pre-flight, preflight]
 ---
 
 # Cross Origin Resource Sharing (CORS)
+
+---
 
 ## What is CORS?
 
@@ -30,6 +31,8 @@ __HTTP Response Headers__:
 __`Access-Control-Allow-Origin`__ allows servers to specify how their resources are shared externally. Many times, this header will be set to __`*`__ pertaining to any external domain. It could be a list of domains or it could even be set to __`null`__. 
 
 Most servers only allow __`GET`__ requests as to avoid any intention of maliciously editing or deleting assets. However, such requests are not automatically dropped by the server. It first undergoes a __preflight test__ in order to determine what methods are allowed.
+
+---
 
 __Pre-flight Test__
 
@@ -64,6 +67,8 @@ After the pre-flight test, the original request is then handled.
 
 Since the __`DELETE`__ method was allowed after checking during the pre-flight test, the resource was successfully deleted. Other headers automatically added by the browser are omitted from the example above.
 
+---
+
 ## Common Misconfigurations
 
 - __`Access-Control-Allow-Credentials`__ is set to __`true`__:
@@ -89,6 +94,8 @@ Since the __`DELETE`__ method was allowed after checking during the pre-flight t
   > Perhaps adding specific websites to a white list might be advisable if resources contain somewhat sensitive content.
 
   > Or perhaps limiting accessible subdomains and endpoints would prove to be more secure but this would require different configurations.
+
+---
 
 ## REFERENCES
 

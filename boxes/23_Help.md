@@ -3,7 +3,7 @@ layout: default
 title: "HTB Help"
 description: "10.10.10.121 | 20 pts"
 header-img: "boxes/screenshots/23_help/help.jpeg"
-tags: [hackthebox, htb, writeup, linux, helpdeskz, arbitrary-file-upload, file-upload, bash-history]
+tags: [hackthebox, htb, boot2root, writeup, write-up, linux, helpdeskz, arbitrary-file-upload, file-upload, bash-history, help]
 ---
 
 # HTB Help (10.10.10.121) MACHINE WRITE-UP

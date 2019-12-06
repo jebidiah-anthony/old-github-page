@@ -6,10 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/assets/css/style.css?v=">
     
-    <meta property="og:tags" content="CORScross-origin-resource-sharingmisconfigurationsmisconfigheaderspre-flightpreflight" />
+    
+    <meta property="article:tag" content="CORS" />
+    
+    <meta property="article:tag" content="cross origin resource sharing" />
+    
+    <meta property="article:tag" content="cross-origin resource sharing" />
+    
+    <meta property="article:tag" content="misconfigurations" />
+    
+    <meta property="article:tag" content="misconfig" />
+    
+    <meta property="article:tag" content="headers" />
+    
+    <meta property="article:tag" content="pre-flight" />
+    
+    <meta property="article:tag" content="preflight" />
+        
 
     
-    <meta property="og:image" content="http://localhost:4000/" />
+    <meta property="og:image" content="http://localhost:4000/banner.jpg" />
     
 
     
@@ -21,13 +37,13 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="CORS" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="My entry for mubix’s OSCP giveaway challenge #3 regarding Cross Origin Resource Sharing" />
-<meta property="og:description" content="My entry for mubix’s OSCP giveaway challenge #3 regarding Cross Origin Resource Sharing" />
+<meta name="description" content="This is a brief introduction to Cross Origin Resource Sharing along with common misconfigurations that might lead to exploitation. This was an entry to mubix’s OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway." />
+<meta property="og:description" content="This is a brief introduction to Cross Origin Resource Sharing along with common misconfigurations that might lead to exploitation. This was an entry to mubix’s OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway." />
 <link rel="canonical" href="http://localhost:4000/prjct/CORS.html" />
 <meta property="og:url" content="http://localhost:4000/prjct/CORS.html" />
 <meta property="og:site_name" content="jebidiah-anthony" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/prjct/CORS.html","headline":"CORS","description":"My entry for mubix’s OSCP giveaway challenge #3 regarding Cross Origin Resource Sharing","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"http://localhost:4000/prjct/CORS.html","headline":"CORS","description":"This is a brief introduction to Cross Origin Resource Sharing along with common misconfigurations that might lead to exploitation. This was an entry to mubix’s OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
  
   </head>
@@ -51,6 +67,8 @@
     <div class="container">
       <section id="main_content">
         <h1 id="cross-origin-resource-sharing-cors">Cross Origin Resource Sharing (CORS)</h1>
+
+<hr />
 
 <h2 id="what-is-cors">What is CORS?</h2>
 
@@ -78,6 +96,8 @@
 <p><strong><code class="highlighter-rouge">Access-Control-Allow-Origin</code></strong> allows servers to specify how their resources are shared externally. Many times, this header will be set to <strong><code class="highlighter-rouge">*</code></strong> pertaining to any external domain. It could be a list of domains or it could even be set to <strong><code class="highlighter-rouge">null</code></strong>.</p>
 
 <p>Most servers only allow <strong><code class="highlighter-rouge">GET</code></strong> requests as to avoid any intention of maliciously editing or deleting assets. However, such requests are not automatically dropped by the server. It first undergoes a <strong>preflight test</strong> in order to determine what methods are allowed.</p>
+
+<hr />
 
 <p><strong>Pre-flight Test</strong></p>
 
@@ -113,6 +133,8 @@
 </ol>
 
 <p>Since the <strong><code class="highlighter-rouge">DELETE</code></strong> method was allowed after checking during the pre-flight test, the resource was successfully deleted. Other headers automatically added by the browser are omitted from the example above.</p>
+
+<hr />
 
 <h2 id="common-misconfigurations">Common Misconfigurations</h2>
 
@@ -162,6 +184,8 @@
     </blockquote>
   </li>
 </ul>
+
+<hr />
 
 <h2 id="references">REFERENCES</h2>
 

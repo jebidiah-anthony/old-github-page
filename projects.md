@@ -1,11 +1,13 @@
 ---
-title: What Not
+title: PROJECTS
 layout: default
-description: "Various manuals and proof of concepts."
-tags: "projects, pass-the-ticket, double-hop, psremoting, evtx, custom logs, ecmangen, subscription, windows event forwarder, windows event collector, wec, wef, elastalerter, elastalert, elasticsearch, rules, cross origin resource sharing, cors, mubix"
+description: "Various manuals and proof of concepts I've created out of personal interest most of which in a Windows context."
+tags: [projects, pass-the-ticket, double-hop, psremoting, evtx, custom logs, ecmangen, subscription, windows event forwarder, windows event collector, wec, wef, elastalerter, elastalert, elasticsearch, rules, cross origin resource sharing, cors, mubix]
 ---
 
-# PROJECTS
+# <span style="color:red">$ projects</span>
+
+---
 
 ## >>[CORS for Dummies](./prjct/CORS.html)<<
 > This is a brief introduction to __Cross Origin Resource Sharing__ along with common misconfigurations that might lead to exploitation. This was an entry to mubix's OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway.

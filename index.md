@@ -1,6 +1,8 @@
 ---
 layout: default
 title: whoami
+description: ""
+tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber sea games, 2019, linkedin]
 ---
 
 ## <span style="color:red">$ whoami</span>
@@ -11,7 +13,7 @@ title: whoami
 
 ## <span style="color:red">$ achievements</span>
 
-### __National Representative, [Cypber SEA Game 2019](https://jebidiah-anthony.github.io/ctf.html#cyber-sea-game-2019)__ (_Nov 2019_)
+### __National Representative, [Cyber SEA Game 2019](https://jebidiah-anthony.github.io/ctf.html#cyber-sea-game-2019)__ (_Nov 2019_)
 > Competed as member of the __Philippine team__ in the annual Cyber SEA Game held in Thailand organized by the AJCCBC (ASEAN-Japan Cybersecurity Capacity Building Center) and JNSA (Japan Network Security Association), supported by JAIF 2.0 (Japan-ASEAN Integration Fund), and in cooperation with ETDA (Electronic Transactions Development Agency), Ministry of Internal Affairs and Communications, and the Ministry of Digital Economy and Society. 
 
 ### __2nd Place, ROOTCON CTF__ (_Sep 2019_)

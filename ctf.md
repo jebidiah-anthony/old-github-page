@@ -2,7 +2,7 @@
 title: CTF Write-ups
 layout: default
 description: "Solution to CTF Challenges I've encountered."
-tags: "ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, nactf, cyberseagame, cyberseagames, cyber-sea-game, cyber-sea-games, tghack, tg:hack, tjctf, hacktheboc, htb, solutions, 2019"
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, nactf, cyberseagame, cyberseagames, cyber-sea-game, cyber-sea-games, tghack, tg:hack, tjctf, hackthebox, htb, solutions, 2019]
 ---
 
 # CTF WRITE-UPS
