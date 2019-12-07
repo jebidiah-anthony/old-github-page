@@ -1,8 +1,8 @@
 ---
 layout: default
 title: whoami
-description: ""
-tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber sea games, 2019, linkedin]
+description: "I am Felix Angelo Mendoza and I made this to serve as a platform for me to post solutions to challenges I've completed and to write and discuss security-related topics that have interested me."
+tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber sea games, 2019, linkedin, hackstreetboys, philippines, ph]
 ---
 
 ## <span style="color:red">$ whoami</span>
@@ -14,7 +14,7 @@ tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber
 ## <span style="color:red">$ achievements</span>
 
 ### __National Representative, [Cyber SEA Game 2019](https://jebidiah-anthony.github.io/ctf.html#cyber-sea-game-2019)__ (_Nov 2019_)
-> Competed as member of the __Philippine team__ in the annual Cyber SEA Game held in Thailand organized by the AJCCBC (ASEAN-Japan Cybersecurity Capacity Building Center) and JNSA (Japan Network Security Association), supported by JAIF 2.0 (Japan-ASEAN Integration Fund), and in cooperation with ETDA (Electronic Transactions Development Agency), Ministry of Internal Affairs and Communications, and the Ministry of Digital Economy and Society. 
+> Competed as a member of the __Philippine team__ in the annual Cyber SEA Game held in Thailand organized by the AJCCBC (ASEAN-Japan Cybersecurity Capacity Building Center), ETDA (Electronic Transactions Development Agency), and JNSA (Japan Network Security Association), supported by JAIF 2.0 (Japan-ASEAN Integration Fund), and in cooperation with the Ministry of Internal Affairs and Communications, and the Ministry of Digital Economy and Society. 
 
 ### __2nd Place, ROOTCON CTF__ (_Sep 2019_)
 > Competed as a member of __Team [hsb]JumboHackdog__ in a Capture the Flag competition organized by _Pwn De Manila_ for the premier hacking conference, _ROOTCON 13_

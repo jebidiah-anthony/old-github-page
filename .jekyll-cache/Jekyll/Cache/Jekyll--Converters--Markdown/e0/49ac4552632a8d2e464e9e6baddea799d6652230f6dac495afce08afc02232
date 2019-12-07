@@ -1,0 +1,101 @@
+I"Å<h2 id="-cyber-sea-game-2019"><span style="color:red">$ Cyber SEA Game 2019</span></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong style="text-decoration:none">CHALLENGE NAME</strong></th>
+      <th><strong style="text-decoration:none">POINTS</strong></th>
+      <th><strong style="text-decoration:none">CATEGORY</strong></th>
+      <th><strong style="text-decoration:none">TAGS</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html">Fraud(1) Whistle blowing</a></td>
+      <td>50 pts</td>
+      <td>Crypto</td>
+      <td>Fullwidth Unicode Encoding</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/crypto/2_The_Sword.html">The_Sword</a></td>
+      <td>50 pts</td>
+      <td>Crypto</td>
+      <td>Embedded Text</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/crypto/3_ShellScript.html">ShellScript</a></td>
+      <td>200 pts</td>
+      <td>Crypto</td>
+      <td>Obfuscated Code</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/forensics/4_PDF-JPGS.html">PDF-JPGS</a></td>
+      <td>120 pts</td>
+      <td>Forensics</td>
+      <td>File Headers</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/forensics/5_Notes.html">Notes</a></td>
+      <td>120 pts</td>
+      <td>Forensics</td>
+      <td>MS Office Macro</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/misc/6_Friend.html">Friend</a></td>
+      <td>100 pts</td>
+      <td>Misc</td>
+      <td>Hash Collision</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/misc/8_Trim_Auth.html">Trim_Auth</a></td>
+      <td>150 pts</td>
+      <td>Misc</td>
+      <td>SQL Truncation</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/network/1_Intact.html">Intact</a></td>
+      <td>80 pts</td>
+      <td>Network</td>
+      <td>FTP</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/os/2_Shared.html">Shared</a></td>
+      <td>110 pts</td>
+      <td>OS</td>
+      <td>Shared Objects</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+<br /></p>
+
+<h2 id="-other-ctf-write-ups"><strong style="color:red">$ other ctf write-ups</strong></h2>
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">Cyber SEA Game 2019</a></td>
+      <td>Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-NACTF.html">NACTF 2019</a></td>
+      <td>Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-TGHack.html">TG:Hack 2019</a></td>
+      <td>Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-TJCTF.html">TJCTF 2019</a></td>
+      <td>Sat, 06 Apr 2019, 07:00 PHT - Wed, 10 Apr 2019, 07:00 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/htb/htb.html">HTB Retired Challenges</a></td>
+      <td><a href="http://localhost:4000/chals/htb/htb.html#for">Forensics</a> | <a href="http://localhost:4000/chals/htb/htb.html#web">Web</a></td>
+    </tr>
+  </tbody>
+</table>
+
+:ET

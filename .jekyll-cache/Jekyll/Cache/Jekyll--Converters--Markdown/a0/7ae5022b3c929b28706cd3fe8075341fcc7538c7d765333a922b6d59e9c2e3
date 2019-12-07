@@ -1,0 +1,78 @@
+I"Á	<h2 id="-tghack-2019"><span style="color:red">$ <a href="https://tghack.no/">TG:Hack 2019</a></span></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong style="text-decoration:none">CHALLENGE NAME</strong></th>
+      <th><strong style="text-decoration:none">POINTS</strong></th>
+      <th><strong style="text-decoration:none">CATEGORY</strong></th>
+      <th><strong style="text-decoration:none">TAGS</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="./2019_TG:Hack/web/1_Fortune_cookie.html">Fortune Cookie</a></td>
+      <td>50 pts</td>
+      <td>Web</td>
+      <td>HTTP Cookies</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_TG:Hack/web/2_Imagicur.html">Imagicur</a></td>
+      <td>150 pts</td>
+      <td>Web</td>
+      <td>Arbitrary File Upload</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_TG:Hack/web/3_Wandshop.html">Wandshop</a></td>
+      <td>100 pts</td>
+      <td>Web</td>
+      <td>Form Input Value</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_TG:Hack/web/4_itsmagic.html">itsmagic</a></td>
+      <td>100 pts</td>
+      <td>Web</td>
+      <td>Directory Fuzzing</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_TG:Hack/web/5_Wizardschat.html">Wizardschat</a></td>
+      <td>300 pts</td>
+      <td>Web</td>
+      <td>Server-side Template Injection</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+<br />
+<br /></p>
+
+<h2 id="-other-ctf-write-ups"><strong style="color:red">$ other ctf write-ups</strong></h2>
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">Cyber SEA Game 2019</a></td>
+      <td>Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-NACTF.html">NACTF 2019</a></td>
+      <td>Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-TGHack.html">TG:Hack 2019</a></td>
+      <td>Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/ctf/2019-TJCTF.html">TJCTF 2019</a></td>
+      <td>Sat, 06 Apr 2019, 07:00 PHT - Wed, 10 Apr 2019, 07:00 PHT</td>
+    </tr>
+    <tr>
+      <td><a href="http://localhost:4000/chals/htb/htb.html">HTB Retired Challenges</a></td>
+      <td><a href="http://localhost:4000/chals/htb/htb.html#for">Forensics</a> | <a href="http://localhost:4000/chals/htb/htb.html#web">Web</a></td>
+    </tr>
+  </tbody>
+</table>
+
+:ET

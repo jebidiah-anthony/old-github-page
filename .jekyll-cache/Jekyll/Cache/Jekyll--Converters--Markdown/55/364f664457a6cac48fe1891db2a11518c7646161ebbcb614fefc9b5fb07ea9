@@ -1,0 +1,51 @@
+I"<h2 id="-ctf-nactf-2019"><span style="color:red">$ ctf “<a href="https://www.nactf.com/">NACTF 2019</a>”</span></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong style="text-decoration:none">CHALLENGE NAME</strong></th>
+      <th><strong style="text-decoration:none">POINTS</strong></th>
+      <th><strong style="text-decoration:none">CATEGORY</strong></th>
+      <th><strong style="text-decoration:none">TAGS</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="./chals/ctf/2019_NACTF/crypto/3_Group_Test_Randomizer_0.html">Dr. J’s Group Test Randomizer:<br />Board Problem #0</a></td>
+      <td>100 pts</td>
+      <td>Crypto</td>
+      <td>Middle Square</td>
+    </tr>
+    <tr>
+      <td><a href="./chals/ctf/2019_NACTF/crypto/4_Reversible_Sneaky_Algorithm_0.html">Reversible Sneaky Algorithm #0</a></td>
+      <td>125 pts</td>
+      <td>Crypto</td>
+      <td>RSA</td>
+    </tr>
+    <tr>
+      <td><a href="./chals/ctf/2019_NACTF/crypto/5_Super_Duper_AES.html">Super Duper AES</a></td>
+      <td>250 pts</td>
+      <td>Crypto</td>
+      <td>Subtitution-Permutation Cipher</td>
+    </tr>
+    <tr>
+      <td><a href="./chals/ctf/2019_NACTF/crypto/6_Reversible_Sneaky_Algorithm_1.html">Reversible Sneaky Algorithm #1</a></td>
+      <td>275 pts</td>
+      <td>Crypto</td>
+      <td>RSA</td>
+    </tr>
+    <tr>
+      <td><a href="./chals/ctf/2019_NACTF/crypto/7_Group_Test_Randomizer_1.html">Dr. J’s Group Test Randomizer:<br />Board Problem #1</a></td>
+      <td>300 pts</td>
+      <td>Crypto</td>
+      <td>Middle Square</td>
+    </tr>
+    <tr>
+      <td><a href="./chals/ctf/2019_NACTF/crypto/8_Reversible_Sneaky_Algorithm_2.html">Reversible Sneaky Algorithm #2</a></td>
+      <td>350 pts</td>
+      <td>Crypto</td>
+      <td>RSA</td>
+    </tr>
+  </tbody>
+</table>
+:ET

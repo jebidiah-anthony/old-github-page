@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# HDC Web Challenge (30 pts)
+# HDC [WEB] (30 pts)
 
 ## PART 1 : CHALLENGE DESCRIPTION
 

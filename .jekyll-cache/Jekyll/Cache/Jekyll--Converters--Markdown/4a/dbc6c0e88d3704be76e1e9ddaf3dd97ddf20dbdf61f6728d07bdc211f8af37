@@ -1,0 +1,13 @@
+I"�<h2 id="-ctf-cyber-sea-game-2019"><span style="color:red">$ ctf “Cyber SEA Game 2019”</span></h2>
+
+<h2 id="challenge-name--points--category--tags"><strong style="text-decoration:underline">CHALLENGE NAME</strong> | <strong style="text-decoration:underline">POINTS</strong> | <strong style="text-decoration:underline">CATEGORY</strong> | <strong style="text-decoration:underline">TAGS</strong></h2>
+<p><a href="./chals/ctf/2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html">Fraud(1) Whistle blowing</a> | 50 pts | Crypto | Fullwidth Unicode Encoding
+<a href="./chals/ctf/2019_CyberSEAGame/crypto/2_The_Sword.html">The_Sword</a> | 50 pts | Crypto | Embedded Text
+<a href="./chals/ctf/2019_CyberSEAGame/crypto/3_ShellScript.html">ShellScript</a> | 200 pts | Crypto | Obfuscated Code
+<a href="./chals/ctf/2019_CyberSEAGame/forensics/4_PDF-JPGS.html">PDF-JPGS</a> | 120 pts | Forensics | File Headers
+<a href="./chals/ctf/2019_CyberSEAGame/forensics/5_Notes.html">Notes</a> | 120 pts | Forensics | MS Office Macro
+<a href="./chals/ctf/2019_CyberSEAGame/misc/6_Friend.html">Friend</a> | 100 pts | Misc | Hash Collision
+<a href="./chals/ctf/2019_CyberSEAGame/misc/8_Trim_Auth.html">Trim_Auth</a> | 150 pts | Misc | SQL Truncation
+<a href="./chals/ctf/2019_CyberSEAGame/network/1_Intact.html">Intact</a> | 80 pts | Network | FTP
+<a href="./chals/ctf/2019_CyberSEAGame/os/2_Shared.html">Shared</a> | 110 pts | OS | Shared Objects</p>
+:ET

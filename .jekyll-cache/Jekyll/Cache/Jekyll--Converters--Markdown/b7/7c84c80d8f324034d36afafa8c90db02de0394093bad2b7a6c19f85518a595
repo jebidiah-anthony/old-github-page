@@ -1,0 +1,33 @@
+I"‘<h2 id="-htb-retired-challenges"><span style="color:red">$ htb retired challenges</span></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong style="text-decoration:none">CHALLENGE NAME</strong></th>
+      <th><strong style="text-decoration:none">CATEGORY</strong></th>
+      <th><strong style="text-decoration:none">POINTS</strong></th>
+      <th><strong style="text-decoration:none">DIFFICULTY</strong></th>
+      <th><strong style="text-decoration:none">RELEASED</strong></th>
+      <th><strong style="text-decoration:none">RETIRED</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="./for/Keep_Tryin.html">Keep Tryinâ€™</a></td>
+      <td><span id="for">Forensics</span></td>
+      <td><span style="color:orange">50 pts</span></td>
+      <td><span style="color:orange">Medium</span></td>
+      <td>Apr 25, 2018</td>
+      <td>Oct 27, 2019</td>
+    </tr>
+    <tr>
+      <td><a href="./web/HDC.html">HDC</a></td>
+      <td><span id="web">Web</span></td>
+      <td><span style="color:green">30 pts</span></td>
+      <td><span style="color:green">Easy</span></td>
+      <td>Jul 10, 2017</td>
+      <td>Jul 31, 2019</td>
+    </tr>
+  </tbody>
+</table>
+:ET
