@@ -9,8 +9,6 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 
 ---
 
-test
-
 [Cyber SEA Game 2019](./chals/ctf/2019-CyberSEAGame.html) | Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT
 [NACTF 2019](./chals/ctf/2019-NACTF.html) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
 [TG:Hack 2019](./chals/ctf/2019-TGHack.html) | Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT

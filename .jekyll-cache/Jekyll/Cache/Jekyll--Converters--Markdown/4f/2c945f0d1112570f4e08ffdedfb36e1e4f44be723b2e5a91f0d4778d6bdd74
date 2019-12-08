@@ -1,4 +1,5 @@
-I"Ý<h1 id="-ctf-write-ups"><span style="color:red">$ ctf write-ups</span></h1>
+I"ì<h1 id="-ctf-write-ups"><span style="color:red">$ ctf write-ups</span></h1>
+
 <hr />
 
 <table>
@@ -21,7 +22,7 @@
     </tr>
     <tr>
       <td><a href="./chals/htb/challenges.html">HTB Retired Challenges</a></td>
-      <td><a href="./chals/htb/htb.html#for">Forensics</a> | <a href="./chals/htb/htb.html#web">Web</a></td>
+      <td><a href="./chals/htb/challenges.html#for">Forensics</a> | <a href="./chals/htb/challenges.html#web">Web</a></td>
     </tr>
   </tbody>
 </table>
