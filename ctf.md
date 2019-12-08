@@ -1,12 +1,15 @@
 ---
-title: "CTF WRITE-UPS"
 layout: menu
+title: "CTF WRITE-UPS"
 description: "Solution to CTF Challenges I've encountered."
 tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, nactf, cyberseagame, cyberseagames, cyber-sea-game, cyber-sea-games, tghack, tg:hack, tjctf, hackthebox, htb, solutions, 2019]
 ---
 
 # <span style="color:red">$ ctf write-ups</span>
+
 ---
+
+test
 
 [Cyber SEA Game 2019](./chals/ctf/2019-CyberSEAGame.html) | Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT
 [NACTF 2019](./chals/ctf/2019-NACTF.html) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
