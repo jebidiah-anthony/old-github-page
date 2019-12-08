@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB WriteUp"
 description: "10.10.10.138 | 20 pts"
 header-img: "boxes/screenshots/31_writeup/writeup.jpg"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, cms-made-simple, blind-sql-injection, time-based-sql-injection, sql-sleep, env, environment-path, path, binary-hijack]
 ---
 
-# HTB WriteUp (10.10.10.138)
+# <span style="color:red">HTB WriteUp (10.10.10.138)</span>
+
+---
 
 ### TABLE OF CONTENTS
 * [PART 1 : INITIAL RECON](#part-1--initial-recon)

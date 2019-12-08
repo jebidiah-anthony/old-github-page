@@ -49,28 +49,209 @@
 <script type="application/ld+json">
 {"@type":"WebPage","url":"http://localhost:4000/boxes/20_Irked.html","description":"10.10.10.117 20 pts","headline":"HTB Irked","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
- 
+
+
+    <style>
+      header {
+	margin-bottom: 0px;
+      }
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        /*height: 100%; */
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+	max-width: 910px;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+      }
+
+      #main_content h4 { padding-left: 25px; }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 15px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (max-height: 450px) {}
+    </style>
+
   </head>
 
   <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what not</h2>
-
-	<span>
-	  <a href="/">whoami</a> | 
-          <a href="/htb.html">htb writeups</a> | 
-	  <a href="/ctf.html">ctf writeups</a> | 
-	  <a href="/projects.html">projects</a> 
-	</span>
-      </div>
-    </header>
-
     <div class="container">
-      <section id="main_content">
-        <h1 id="htb-irked-101010117-machine-write-up">HTB Irked (10.10.10.117) MACHINE WRITE-UP</h1>
+       <div class="sidebar">
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">  
+  >  <a href="/">whoami</a>
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <strong style="color:orange">Irked</strong>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/15_Mischief.html">Mischief</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div class="ctf_content">
+	 <header>
+           <div class="container">
+             <h1 style="padding:10px 0 0 20px">jebidiah-anthony</h1>
+             <h2 style="padding:0 0 0 20px">write-ups and what not</h2>
+           </div>
+         </header>
+         <section id="main_content"><h1 id="htb-irked-101010117-machine-write-up"><span style="color:red">HTB Irked (10.10.10.117) MACHINE WRITE-UP</span></h1>
+
+<hr />
 
 <h3 id="table-of-contents">TABLE OF CONTENTS</h3>
 
@@ -339,8 +520,8 @@
     </ol>
   </li>
 </ol>
-
-      </section>
+</section>
+       </div>
     </div>
 
     

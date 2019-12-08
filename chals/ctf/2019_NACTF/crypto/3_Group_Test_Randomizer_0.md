@@ -1,8 +1,10 @@
 ---
-layout: default
+layout: menu
 ---
 
-## Dr. J's Group Test Randomizer #0
+## <span style="color:red">Dr. J's Group Test Randomizer #0</span>
+
+---
 
 ### PART 1 : CHALLENGE DESCRIPTION
 

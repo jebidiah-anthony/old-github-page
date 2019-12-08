@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Irked"
 description: "10.10.10.117 | 20 pts"
 header-img: "boxes/screenshots/20_irked/irked.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, ircd, irc, steganogpraphy, steg]
 ---
 
-# HTB Irked (10.10.10.117) MACHINE WRITE-UP
+# <span style="color:red">HTB Irked (10.10.10.117) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

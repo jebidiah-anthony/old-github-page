@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: menu
 title: whoami
 description: "I am Felix Angelo Mendoza and I made this to serve as a platform for me to post solutions to challenges I've completed and to write and discuss security-related topics that have interested me."
 tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber sea games, 2019, linkedin, hackstreetboys, philippines, ph]

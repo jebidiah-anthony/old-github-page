@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Chaos"
 description: "10.10.10.120 | 30 pts"
 header-img: "boxes/screenshots/22_chaos/chaos.jpg"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, imap, python-crypto, pdftex, rbash, restricted-shell, firefox-profile, password-reuse]
 ---
 
-# HTB Chaos (10.10.10.120) MACHINE WRITE-UP
+# <span style="color:red">HTB Chaos (10.10.10.120) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

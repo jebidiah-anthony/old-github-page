@@ -1,8 +1,10 @@
 ---
-layout: default
+layout: menu
 ---
 
-## Reversible Sneaky Algorithm #1
+## <span style="color:red">Reversible Sneaky Algorithm #1</span>
+
+---
 
 ### PART 1 : CHALLENGE DESCRIPTION
 

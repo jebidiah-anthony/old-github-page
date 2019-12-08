@@ -1,11 +1,11 @@
 ---
-layout: default
+layout: menu
 title: "CORS"
 description: "This is a brief introduction to Cross Origin Resource Sharing along with common misconfigurations that might lead to exploitation. This was an entry to mubix’s OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway."
 tags: [CORS, cross origin resource sharing, cross-origin resource sharing, misconfigurations, misconfig, headers, pre-flight, preflight]
 ---
 
-# Cross Origin Resource Sharing (CORS)
+# <span style="color:red">Cross Origin Resource Sharing (CORS)</span>
 
 ---
 

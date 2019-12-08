@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Flujab"
 description: "10.10.10.124 | 40 pts"
 header-img: "boxes/screenshots/24_flujab/flujab.jpg"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, smtp, sql-injection, caching, ajenti, ajenti-filesystem, ssh-keys, gnu-screen] 
 ---
 
-# HTB Flujab (10.10.10.124) MACHINE WRITE-UP
+# <span style="color:red">HTB Flujab (10.10.10.124) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

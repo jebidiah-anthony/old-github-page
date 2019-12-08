@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: menu
 title: "HTB Waldo"
 description: "10.10.10.87 | 30 pts"
 header-img: "boxes/screenshots/14_waldo/waldo.png"

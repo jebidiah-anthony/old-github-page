@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Safe"
 description: "10.10.10.147 | 20 pts"
 header-img: "boxes/screenshots/33_safe/safe.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, binary exploitation, pwn, data segment, bss segment, /bin/sh, gets, c gets, libc gets, keepass, keepass2john, safe]
 ---
 
-# HTB Safe (10.10.10.147)
+# <span style="color:red">HTB Safe (10.10.10.147)</span>
+
+---
 
 ### TABLE OF CONTENTS
 

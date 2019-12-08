@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB SwagShop"
 description: "10.10.10.140 | 20 pts"
 header-img: "boxes/screenshots/30_swagshop/swagshop.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, magento, cve, vim, vi]
 ---
 
-# HTB SWAGSHOP (10.10.10.140) MACHINE WRITE-UP
+# <span style="color:red">HTB SWAGSHOP (10.10.10.140) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 * [PART 1 : INITITAL RECON](#part-1--initital-recon)

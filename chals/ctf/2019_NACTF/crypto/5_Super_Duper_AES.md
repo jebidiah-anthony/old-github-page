@@ -1,8 +1,10 @@
 ---
-layout: default
+layout: menu
 ---
 
-## Super Duper AES
+## <span style="color:red">Super Duper AES</span>
+
+---
 
 ### PART 1 : CHALLENGE DESCRIPTION
 

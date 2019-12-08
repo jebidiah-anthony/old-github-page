@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB FriendZone"
 description: "10.10.10.123 | 20 pts"
 header-img: "boxes/screenshots/25_friendzone/friendzone.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, dns, subdomain, smb share, smb, python-library-hijacking, lfi-vulnerability]
 ---
 
-# HTB FriendZone (10.10.10.123) MACHINE WRITE-UP
+# <span style="color:red">HTB FriendZone (10.10.10.123) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

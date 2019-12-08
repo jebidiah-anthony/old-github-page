@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Mischief"
 description: "10.10.10.92 | Tricked Badge"
 header-img: "boxes/screenshots/15_mischief/mischief.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, snmp, ipv6, command execution, access control lists, mischief]
 ---
 
-# HTB Mischief (10.10.10.92) MACHINE WRITE-UP
+# <span style="color:red">HTB Mischief (10.10.10.92) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

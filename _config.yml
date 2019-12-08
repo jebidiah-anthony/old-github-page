@@ -5,3 +5,9 @@ theme: jekyll-theme-hacker
 url: "https://jebidiah-anthony.github.io"
 plugins:
   - jekyll-sitemap
+
+ctf_menu: [[CyberSEAGame, 2019, Cyber SEA Game], [NACTF, 2019, NACTF], [TGHack, 2019, "TG:Hack"], [TJCTF, 2019, TJCTF]]
+
+htb_menu: [[33, Safe], [32, Ellingson], [31, WriteUp], [30, swagshop], [29, kryptos], [28, Luke], [26, CTF], [25, Friendzone], [24, Flujab], [23, Help], [22, Chaos], [21, Lightweight], [20, Irked], [19, Teacher], [15, Mischief], [14, Waldo]]
+
+prj_menu: [[CORS, CORS], [elastalerter.py, elastalerter], [Event Forwarder, Windows-Event-Collector], [Custom .evtx Files, Custom-evtx-Logfiles], [Double Hop Bypass, PTT-PSRemoting]]

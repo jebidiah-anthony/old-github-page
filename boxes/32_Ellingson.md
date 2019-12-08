@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Ellingson"
 description: "10.10.10.139 | 40 pts"
 header-img: "boxes/screenshots/32_ellingson/ellingson.png"
-tags: [hackthebox, htb, boot2root, writeup, write-up, linux, python-objects, whiskey, wsgi, wsgi-debugger, linux-group, unix-group, ret2libc, plt, got, pwntools-ssh, pwn-ssh]
+tags: [hackthebox, htb, boot2root, writeup, write-up, linux, python-objects, whiskey, wsgi, wsgi-debugger, linux-group, unix-group, ret2libc, plt, got, pwntools-ssh, pwn-ssh, ellingson]
 ---
 
-# HTB Ellingson (10.10.10.139)
+# <span style="color:red">HTB Ellingson (10.10.10.139)</span>
+
+---
 
 ### TABLE OF CONTENTS
 

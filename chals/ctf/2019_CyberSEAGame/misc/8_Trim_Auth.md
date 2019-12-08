@@ -1,12 +1,12 @@
 ---
-layout: default
+layout: menu
 title: "Trim_Auth [msc 150]"
 description: "Cyber SEA Game 2019 [Misc] Trim_Auth (150 pts)"
 header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
 tags: [cyber sea game, cyber sea games, cyberseagame, cyberseagames, 2019, ctf, challenge, writeup, write-up, solution, misc, miscellaneous, trim_auth, trim auth, sql truncation, mysql, trailing space, leading space, space, spaces, trim]
 ---
 
-# Trim_Auth (150 pts)
+# <span style="color:red">Trim_Auth (150 pts)</span>
 
 ---
 

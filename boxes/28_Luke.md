@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Luke"
 description: "10.10.10.137 | 30 pts"
 header-img: "boxes/screenshots/28_luke/luke.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, openbsd, json-web-token, jwt, jwt-auth, ajenti, ajenti-filesystem, ajenti-plugins]
 ---
 
-# HTB LUKE (10.10.10.137) MACHINE WRITE-UP
+# <span style="color:red">HTB LUKE (10.10.10.137) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

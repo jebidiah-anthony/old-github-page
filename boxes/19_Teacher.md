@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB Teacher"
 description: "10.10.10.153 | 20 pts"
 header-img: "boxes/screenshots/19_teacher/teacher.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, rce, remote-code-execution, moodle]
 ---
 
-# HTB Teacher (10.10.10.153) MACHINE WRITE-UP
+# <span style="color:red">HTB Teacher (10.10.10.153) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 

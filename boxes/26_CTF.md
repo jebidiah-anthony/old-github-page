@@ -1,12 +1,14 @@
 ---
-layout: default
+layout: menu
 title: "HTB CTF"
 description: "10.10.10.122 | Ticket Master Badge"
 header-img: "boxes/screenshots/26_ctf/ctf.jpg"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, ldap-injection, compressed token format, stoken, otp, 7z, 7za, listfile, bash-scripting, ctf] 
 ---
 
-# HTB CTF (10.10.10.122) MACHINE WRITE-UP
+# <span style="color:red">HTB CTF (10.10.10.122) MACHINE WRITE-UP</span>
+
+---
 
 ### TABLE OF CONTENTS
 
