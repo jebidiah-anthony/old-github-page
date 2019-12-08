@@ -1,7 +1,11 @@
 <h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
 
-<div style="padding-top:10px">  
-  >  <a href="/">whoami</a>
+<div style="padding-top:10px">
+  {% if page.url == "/"  %}
+  > <strong style="color:orange">whoami</strong>
+  {% else %}
+  > <a href="/">whoami</a>
+  {% endif %}
 </div>
 <div style="padding-top:10px">  
   >  <a href="/htb.html">
@@ -13,8 +17,8 @@
   </a>
 </div>
 <div style="padding-top:10px">
-  > <a href="{{site.url}}/chals/ctf/{{ site.ctf_menu[0][1] }}-{{ site.ctf_menu[0][0] }}.html">
-    {% if page.url contains "/chals/" %}
+  > <a href="/ctf.html">
+    {% if page.url contains "/chals/" or page.url contains "ctf.html" %}
     <strong style="color:orange">ctf writeups</strong>
     {% else %}
     ctf writeups

@@ -1,11 +1,11 @@
 ---
-layout: default
+layout: menu
 description: "HTB Keep Trying' [FORENSICS] (50 pts)"
 header-img: "chals/htb/htb.png"
 tags: "hackthebox, htb, challenge, forensics, network, network-forensics, write-up, solution, dns, dns-txt, txt, txt-record, dns-exfil, dns-exfiltration, base64, rc4, keep-tryin, keep-trying"
 ---
 
-# Keep Tryin' [FORENSICS] (50 pts)
+# <span style="color:red">Keep Tryin' [FORENSICS] (50 pts)</span>
 
 ---
 

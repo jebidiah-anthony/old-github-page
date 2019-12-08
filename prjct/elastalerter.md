@@ -1,8 +1,7 @@
 ---
-layout: default
+layout: menu
 title: "elastalerter.py"
 description: "An elastalert rule tester using python."
-header-img: ""
 tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 ---
 
@@ -89,7 +88,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 
 1. Download and run [elasticsearch 7.4.0](https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.4.0-linux-x86_64.tar.gz) for Linux.
 
-   ```console
+   ```shell
    $ tar xvf elasticsearch-7.4.0-linux-x86_64.tar.gz
 
      ...
@@ -102,7 +101,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 
 2. Set-up a python virtual environment:
 
-   ```console
+   ```shell
    $ pip3 install virtualenv
 
    $ python3 -m virtualenv v_env
@@ -121,7 +120,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 3. Download and install dependencies for __*elastalerter.py*__
 
    ### download and unzip the files
-   ```console
+   ```shell
    (v_env) $ wget https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.zip?raw=true
    
      ...omitted...
@@ -142,7 +141,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
    ```
 
    ### install dependencies
-   ```console
+   ```shell
    (v_env) $ pip install --requirement requirements.txt
    
      ...omitted...
@@ -156,7 +155,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
    ```
 
    ### install the alerter
-   ```console
+   ```shell
    (v_env) $ pip install .
    
      ...omitted...
@@ -171,7 +170,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 ## EXECUTION (w/ sample output)
 
 ### help (__`-h, --help`__)
-```console
+```shell
 (v_env) $ python elastalerter.py -h
 ```
 ```
@@ -209,7 +208,7 @@ required arguments:
 ```
 
 ### default output
-```console
+```shell
 (v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected expected.json
 ```
 ```
@@ -274,7 +273,7 @@ required arguments:
 ```
 
 #### > execution
-```console
+```shell
 (v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected expected.json --mappings mappings.json
 ```
 ```
@@ -325,7 +324,7 @@ required arguments:
 ```
 
 ### verbose (__`--verbose`__)
-```console
+```shell
 (v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected ./expected.json --verbose
 ```
 ```

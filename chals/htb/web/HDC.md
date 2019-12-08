@@ -1,8 +1,14 @@
 ---
-layout: default
+layout: menu
+title: "HDC (web 30)"
+description: "HTB Retired Web Challenge (30 pts)"
+header-img: "chals/htb/htb.png"
+tags: [hackthebox, htb, challenge, challenge, web, web exploitation, hdc, retired, 2019]
 ---
 
-# HDC [WEB] (30 pts)
+# <span style="color:red">HDC [WEB] (30 pts)</span>
+
+---
 
 ## PART 1 : CHALLENGE DESCRIPTION
 

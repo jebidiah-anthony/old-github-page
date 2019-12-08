@@ -1,6 +1,6 @@
 ---
 title: "CTF WRITE-UPS"
-layout: default
+layout: menu
 description: "Solution to CTF Challenges I've encountered."
 tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, nactf, cyberseagame, cyberseagames, cyber-sea-game, cyber-sea-games, tghack, tg:hack, tjctf, hackthebox, htb, solutions, 2019]
 ---
@@ -12,4 +12,4 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 [NACTF 2019](./chals/ctf/2019-NACTF.html) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
 [TG:Hack 2019](./chals/ctf/2019-TGHack.html) | Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT
 [TJCTF 2019](./chals/ctf/2019-TJCTF.html) | Sat, 06 Apr 2019, 07:00 PHT - Wed, 10 Apr 2019, 07:00 PHT
-[HTB Retired Challenges](./chals/htb/htb.html) | [Forensics](./chals/htb/htb.html#for) \| [Web](./chals/htb/htb.html#web)
+[HTB Retired Challenges](./chals/htb/challenges.html) | [Forensics](./chals/htb/challenges.html#for) \| [Web](./chals/htb/challenges.html#web)

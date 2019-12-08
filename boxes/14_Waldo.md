@@ -9,7 +9,7 @@ tags: [hackthebox, htb, boot2root, writeup, linux, php, str_replace, ssh, privat
 # HTB Waldo (10.10.10.87) MACHINE WRITE-UP
 
 ### TABLE OF CONTENTS
-y
+
 * [PART 1 : INITIAL RECON](#part-1--initial-recon)
 * [PART 2 : PORT ENUMERATION](#part-2--port-enumeration)
   * [TCP PORT 80 (http)](#tcp-port-80-http)
