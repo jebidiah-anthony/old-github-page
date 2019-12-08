@@ -1,0 +1,47 @@
+I"t<h1 id="fraud1-whistle-blowing-50-pts"><span style="color:red">Fraud(1) Whistle Blowing (50 pts)</span></h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Mr. Horii is in charge of investigation of a case of embezzlement that occurred in the company.
+While he has not been able to find any clue, he received an email from an unknown sender.
+
+/EF/BC/B6/EF/BC/A7/EF/BD/87/EF/BD/9A/EF/BC/B8/EF/BC/90/EF/BC/B6/EF/BD/94/EF/BC/B9/EF/BD/8A/EF/BC/AE/EF/BC/96/EF/BD/85/EF/BD/8D/EF/BD/97/EF/BD/9A/EF/BD/83/EF/BD/8C/EF/BC/98/EF/BD/98/EF/BC/AE/EF/BC/B6/EF/BC/99/EF/BC/A7/EF/BD/84/EF/BC/B7/EF/BC/91/EF/BD/90/EF/BC/BA/EF/BC/B1/EF/BC/9D/EF/BC/9D
+
+The email appears to contain important information about the incident, but the essential parts are replaced by meaningless strings. Mr. Horii has no idea about what to do.
+Find information hidden in this email for Mr. Horii.
+
+flag format: flag{[A-Za-z0-9 symbols]}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--getting-the-flag">PART 2 : GETTING THE FLAG</h2>
+
+<p>Unicode characters with codepoints from <strong><code class="highlighter-rouge">U+FF00</code></strong> to <strong><code class="highlighter-rouge">U+FF60</code></strong> are Full-width characters and their literal <strong>UTF-8</strong> equivalents are <strong><code class="highlighter-rouge">\xEF\xBC\x80</code></strong> to <strong><code class="highlighter-rouge">\xEF\xBC\xBF</code></strong> and <strong><code class="highlighter-rouge">\xEF\xBD\x80</code></strong> to <strong><code class="highlighter-rouge">\xEF\xBD\xA0</code></strong></p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nv">c</span><span class="o">=</span><span class="s2">"/EF/BC/B6/EF/BC/A7/EF/BD/87/EF/BD/9A/EF/BC/B8/EF/BC/90/EF/BC/B6/EF/BD/94/EF/BC/B9/EF/BD/8A/EF/BC/AE/EF/BC/96/EF/BD/85/EF/BD/8D/EF/BD/97/EF/BD/9A/EF/BD/83/EF/BD/8C/EF/BC/98/EF/BD/98/EF/BC/AE/EF/BC/B6/EF/BC/99/EF/BC/A7/EF/BD/84/EF/BC/B7/EF/BC/91/EF/BD/90/EF/BC/BA/EF/BC/B1/EF/BC/9D/EF/BC/9D"</span>
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nv">c</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="nv">$c</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s2">"s/</span><span class="se">\/</span><span class="s2">/</span><span class="se">\\\x</span><span class="s2">/g"</span><span class="si">)</span>
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="nv">$c</span>
+<span class="go">
+  ＶＧｇｚＸ０ＶｔＹｊＮ６ｅｍｗｚｃｌ８ｘＮＶ９ＧｄＷ１ｐＺＱ＝＝
+</span></code></pre></div></div>
+
+<p>Convert the full-width encoding to ASCII</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="nv">$c</span> | uni2ascii <span class="nt">-B</span> <span class="nt">-q</span>
+<span class="go">
+  VGgzX0VtYjN6emwzcl8xNV9GdW1paQ==
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="s2">"VGgzX0VtYjN6emwzcl8xNV9GdW1pZQ=="</span> | <span class="nb">base64</span> <span class="nt">-d</span>
+<span class="go">
+  Th3_Emb3zzl3r_15_Fumie  
+</span></code></pre></div></div>
+
+<hr />
+
+<h2 id="flag--flagth3_emb3zzl3r_15_fumie">FLAG : <strong>flag{Th3_Emb3zzl3r_15_Fumie}</strong></h2>
+:ET
