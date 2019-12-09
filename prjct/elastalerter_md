@@ -5,7 +5,9 @@ description: "An elastalert rule tester using python."
 tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 ---
 
-# ./elastalerter.py
+# <span style="color:red">./elastalerter.py</span>
+
+---
 
 ## ENVIRONMENT
 
