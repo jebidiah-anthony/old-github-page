@@ -68,21 +68,46 @@
 
 
     <style>
-      header {
-	margin-bottom: 0px;
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
       }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
       .container {
 	max-width: 1200px;
       }
       .sidebar {
         border-right: 1px dashed #b5e853;
 	bottom: 0;
-        /*height: 100%; */
+        height: 100%;
 	overflow: auto;
 	padding: 10px 10px 10px 10px;
         position: fixed;
 	top: 0;
         width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
       }
       
       .ctf_content {
@@ -104,12 +129,11 @@
       }
       #main_content h4 { 
         margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
       }
-
-      #main_content h4 { padding-left: 25px; }
       #main_content ol, ul { margin: 0 0 0 10px; }
 
-      .highlighter-rouge { padding: 0 10px 0 15px; }
+      .highlighter-rouge { padding: 0 10px 0 10px; }
 
       .section-divider{
         border-bottom: 1.5px solid #b5e853;
@@ -117,14 +141,105 @@
         width:55%;
       }
       
-      @media screen and (max-height: 450px) {}
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 40px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+      }
     </style>
 
   </head>
 
   <body>
     <div class="container">
-       <div class="sidebar">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
 	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
 
 <div style="padding-top:10px">
@@ -216,11 +331,16 @@
 	   
 	 </div>
        </div>
-       <div class="ctf_content">
+       <div id="content" class="ctf_content">
 	 <header>
-           <div class="container">
-             <h1 style="padding:10px 0 0 20px">jebidiah-anthony</h1>
-             <h2 style="padding:0 0 0 20px">write-ups and what not</h2>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
            </div>
          </header>
          <section id="main_content"><h1 id="intact-80-pts"><span style="color:red">Intact (80 pts)</span></h1>
@@ -364,6 +484,17 @@ flag format: Flag{single-byte alphanumeric characters/symbols}
 </section>
        </div>
     </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
 
     
       <script>
