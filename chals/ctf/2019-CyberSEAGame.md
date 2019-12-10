@@ -15,7 +15,10 @@ challenges: [
   [Intact, network/1_Intact.html, Network (80), FTP],
   [Shared, os/2_Shared.html, OS (110), Shared Objects]
 ]
-
+recommendations: [
+  [Binary Ultra, https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), ""], 
+  [Present, https://altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), ""]
+]
 ---
 
 ## <span style="color:red">$ Cyber SEA Game 2019</span>
@@ -66,11 +69,6 @@ challenges: [
    {% endfor %}
  </table>
 </div>
-
-recommendations: [
-  [Binary Ultra, https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), ""], 
-  [Present, https://altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), ""]
-]
 
 
 
