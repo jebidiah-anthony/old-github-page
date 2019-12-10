@@ -9,7 +9,7 @@ challenges: [
   [Shared, os/2_Shared.html, OS (110), Shared Objects]
   [The_Sword, crypto/2_The_Sword.html, Crypto (50), Embedded Text], 
   [ShellScript, crypto/3_ShellScript.html, Crypto (200), Obfuscated Code], 
-  [PDF-JPGS, forensics/4_PDF-JPGS.html, Forensics (120), File Headers], 
+
   [Notes, forensics/5_Notes.html, Forensics (120), MS Office Macro], 
   [Friend, misc/6_Friend.html, Misc (100), Hash Collision], 
   [Trim_Auth, misc/8_Trim_Auth.html, Misc (150), SQL Truncation], 
@@ -71,6 +71,8 @@ recommendations: [
   [Binary Ultra, https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), ""], 
   [Present, https://altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), ""]
 ]
+
+  [PDF-JPGS, forensics/4_PDF-JPGS.html, Forensics (120), File Headers], 
 
 - 'Write-up by my teammate, <a href="https://altelus1.github.io/about.html" target="_blank">Altelus</a>'
 - Write-ups from <a href="https://khroot.com/2019/12/06/cyber-sea-game-2019-write-up/" target="_blank">Team Cambodia</a>
