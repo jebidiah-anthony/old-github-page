@@ -1,0 +1,214 @@
+I"<h2 id="-htb-retired-challenges"><span style="color:red">$ htb retired challenges</span></h2>
+
+<hr />
+
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <td><strong style="text-decoration:underline">CHALLENGE NAME</strong></td>
+     <td><strong style="text-decoration:underline">CATEGORY</strong></td>
+     <td><strong style="text-decoration:underline">POINTS</strong></td>
+     <td><strong style="text-decoration:underline">DIFFICULTY</strong></td>
+     <td><strong style="text-decoration:underline">RELEASED</strong></td>
+     <td><strong style="text-decoration:underline">RETIRED</strong></td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         <a href="./for/Keep_Tryin.html">Keep Tryin'</a>
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:orange">50 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Apr 25, 2018</td>
+     <td>Oct 27, 2019</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Took the Byte
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jun 30, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         MarketDump
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:orange">30 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>May 16, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Blue Shadow
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:orange">60 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>May 28, 2018</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Reminiscent
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Oct 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Deadly Arthropod
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Oct 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Marshal in the Middle
+       
+     </td>
+     <td><span id="for">Forensics</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Sep 01, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   
+   <tr>
+     <td>
+       
+         <a href="./for/HDC.html">HDC</a>
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">30 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 10, 2017</td>
+     <td>Jul 31, 2019</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         FreeLancer
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 31, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Fuzzy
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 05, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Emdee five for life
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>May 21, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Cartographer
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Aug 31, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Lernaean
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Grammar
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 22, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         I know Mag1k
+       
+     </td>
+     <td><span id="web">Web</span></td>
+     <td><span style="color:orange">50 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Jul 12, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+ </table>
+</div>
+:ET

@@ -1,0 +1,118 @@
+I"â<h2 id="-cyber-sea-game-2019"><span style="color:red">$ Cyber SEA Game 2019</span></h2>
+
+<hr />
+
+<h3 id="duration">DURATION</h3>
+<div style="margin-left:10px">[<span>Thu, 21 Nov 2019, 11:30 PHT</span> - <span>Thu, 21 Nov 2019, 18:30 PHT</span>]</div>
+
+<hr />
+
+<h3 id="challenges-write-ups">CHALLENGES WRITE-UPS</h3>
+
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <th><strong style="text-decoration:underline">NAME</strong></th>
+     <th><strong style="text-decoration:underline">CATEGORY/PTS</strong></th>
+     <th><strong style="text-decoration:underline">TAGS</strong></th>
+   </tr>
+   
+   <tr>
+     <td><a href="./2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html">Fraud(1) Whistle blowing</a></td>
+     <td>Crypto (50)</td>
+     <td>Fullwidth Unicode Encoding</td>
+   </tr>
+   
+   <tr>
+     <td><a href="./2019_CyberSEAGame/crypto/2_The_Sword.html">The_Sword</a></td>
+     <td>Crypto (50)</td>
+     <td>Embedded Text</td>
+   </tr>
+   
+ </table>
+</div>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong style="text-decoration:underline">NAME</strong></td>
+      <td><strong style="text-decoration:underline">CATEGORY/PTS</strong></td>
+      <td><strong style="text-decoration:underline">TAGS</strong></td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/crypto/1_Fraud1_Whistle_blowing.html">Fraud(1) Whistle blowing</a></td>
+      <td>Crypto (50)</td>
+      <td>Fullwidth Unicode Encoding</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/crypto/2_The_Sword.html">The_Sword</a></td>
+      <td>Crypto (50)</td>
+      <td>Embedded Text</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/crypto/3_ShellScript.html">ShellScript</a></td>
+      <td>Crypto (200)</td>
+      <td>Obfuscated Code</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/forensics/4_PDF-JPGS.html">PDF-JPGS</a></td>
+      <td>Forensics (120)</td>
+      <td>File Headers</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/forensics/5_Notes.html">Notes</a></td>
+      <td>Forensics (120)</td>
+      <td>MS Office Macro</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/misc/6_Friend.html">Friend</a></td>
+      <td>Misc (100)</td>
+      <td>Hash Collision</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/misc/8_Trim_Auth.html">Trim_Auth</a></td>
+      <td>Misc (150)</td>
+      <td>SQL Truncation</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/network/1_Intact.html">Intact</a></td>
+      <td>Network (80)</td>
+      <td>FTP</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_CyberSEAGame/os/2_Shared.html">Shared</a></td>
+      <td>OS (110)</td>
+      <td>Shared Objects</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="recommendations">RECOMMENDATIONS</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong style="text-decoration:underline">NAME</strong></td>
+      <td><strong style="text-decoration:underline">CATEGORY/PTS</strong></td>
+      <td><strong style="text-decoration:underline">TAGS</strong></td>
+    </tr>
+    <tr>
+      <td><a href="https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra" target="_blank">Binary Ultra</a></td>
+      <td>Binary (50)</td>
+      <td>Write-up by my teammate, <a href="https://altelus1.github.io/about.html">Altelus</a></td>
+    </tr>
+    <tr>
+      <td><a href="https://altelus1.github.io/writeups/cyberseagames2019/present" target="_blank">Present</a></td>
+      <td>Binary (100)</td>
+      <td>Write-up by my teammate, <a href="https://altelus1.github.io/about.html">Altelus</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>Write-ups from <a href="https://khroot.com/2019/12/06/cyber-sea-game-2019-write-up/" target="_blank">Team Cambodia</a></li>
+  <li>Write-ups from <a href="https://github.com/end1an/Cyber-SEA-GAME-2019" target="_blank">Team Thailand</a></li>
+</ul>
+:ET

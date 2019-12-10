@@ -177,7 +177,6 @@ tags: [windows, event manager, event viewer, event logs, windows logs, logs, evt
             <td>DC System Logs</td>
             <td>Default</td>
           </tr>
-          </tr>
           <tr>
             <td>WEF-PowerShell</td>
             <td>WEF_PowerShell</td>
@@ -185,7 +184,6 @@ tags: [windows, event manager, event viewer, event logs, windows logs, logs, evt
             <td>Yes</td>
             <td>DC PowerShell Logs</td>
             <td>Default</td>
-          </tr>
           </tr>
           <tr>
             <td>WEF-Sysmon</td>

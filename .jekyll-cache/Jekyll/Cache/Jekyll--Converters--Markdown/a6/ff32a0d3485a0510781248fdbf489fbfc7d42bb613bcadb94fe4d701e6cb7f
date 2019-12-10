@@ -1,0 +1,71 @@
+I"�
+<h2 id="-nactf-2019"><span style="color:red">$ <a href="https://www.nactf.com/">NACTF 2019</a></span></h2>
+
+<hr />
+
+<h3 id="duration">DURATION</h3>
+<div style="margin-left:10px">[<span>Wed, 18 Sep 2019, 06:00 PHT</span> - <span>Mon, 23 Sep 2019, 06:00 PHT</span>]</div>
+
+<hr />
+
+<h3 id="challenges">CHALLENGES</h3>
+
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <td><strong style="text-decoration:underline">NAME</strong></td>
+     <td><strong style="text-decoration:underline">CATEGORY/PTS</strong></td>
+     <td><strong style="text-decoration:underline">TAGS</strong></td>
+   </tr>
+   
+   <tr>
+     <td><a href="./2019_NACTF/crypto/3_Group_Test_Randomizer_0.html">Dr. J's Group Test Randomizer:<br />Board Problem \#0</a></td>
+     <td>Crypto (100)</td>
+     <td>Middle Square</td>
+   </tr>
+   
+ </table>
+</div>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong style="text-decoration:underline">NAME</strong></td>
+      <td><strong style="text-decoration:underline">CATEGORY/PTS</strong></td>
+      <td><strong style="text-decoration:underline">TAGS</strong></td>
+    </tr>
+    <tr>
+      <td><a href="./2019_NACTF/crypto/3_Group_Test_Randomizer_0.html">Dr. J’s Group Test Randomizer:<br />Board Problem #0</a></td>
+      <td>Crypto (100)</td>
+      <td>Middle Square</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_NACTF/crypto/4_Reversible_Sneaky_Algorithm_0.html">Reversible Sneaky Algorithm #0</a></td>
+      <td>Crypto (125)</td>
+      <td>RSA</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_NACTF/crypto/5_Super_Duper_AES.html">Super Duper AES</a></td>
+      <td>Crypto (250)</td>
+      <td>Subtitution-Permutation</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_NACTF/crypto/6_Reversible_Sneaky_Algorithm_1.html">Reversible Sneaky Algorithm #1</a></td>
+      <td>Crypto (275)</td>
+      <td>RSA</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_NACTF/crypto/7_Group_Test_Randomizer_1.html">Dr. J’s Group Test Randomizer:<br />Board Problem #1</a></td>
+      <td>Crypto (300)</td>
+      <td>Middle Square</td>
+    </tr>
+    <tr>
+      <td><a href="./2019_NACTF/crypto/8_Reversible_Sneaky_Algorithm_2.html">Reversible Sneaky Algorithm #2</a></td>
+      <td>Crypto (350)</td>
+      <td>RSA</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>, [Reversible Sneaky Algorithm #0, crypto/4_Reversible_Sneaky_Algorithm_0.html, Crypto (125), RSA], [Super Duper AES, crypto/5_Super_Duper_AES.html, Crypto (250), Subtitution-Permutation], [Reversible Sneaky Algorithm #1, crypto/6_Reversible_Sneaky_Algorithm_1.html, Crypto (275), RSA], [Dr. J’s Group Test Randomizer:<br />Board Problem #1, crypto/7_Group_Test_Randomizer_1.html, Crypto (300), Middle Square], [Reversible Sneaky Algorithm #2, crypto/8_Reversible_Sneaky_Algorithm_2.html, Crypto (350), RSA]</p>
+:ET

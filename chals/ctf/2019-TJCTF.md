@@ -3,6 +3,7 @@ layout: menu
 title: "TJCTF 2019"
 description: "TJCTF 2019 Web exploit challenge write-up"
 tags: [ctf, capture the flag, challenges, challenge write ups, write-ups, writeups, write-up, writeup, tjctf, solutions, 2019]
+challenges: [[Moar Horse 2, web/2_moar_horse_2.html, Web (70), "Scripting, Recursive Search"]]
 ---
 
 ## <span style="color:red">$ [TJCTF 2019](https://tjctf.org/)</span>
@@ -16,5 +17,19 @@ tags: [ctf, capture the flag, challenges, challenge write ups, write-ups, writeu
 
 ### CHALLENGES
 
-<strong style="text-decoration:underline">NAME</strong> | <strong style="text-decoration:underline">CATEGORY/PTS</strong> | <strong style="text-decoration:underline">TAGS</strong>
-[Moar Horse 2](./2019_TJCTF/web/2_moar_horse_2.html) | Web (70) | Scripting, Recursive Search
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <td><strong style="text-decoration:underline">NAME</strong></td>
+     <td><strong style="text-decoration:underline">CATEGORY/PTS</strong></td>
+     <td><strong style="text-decoration:underline">TAGS</strong></td>
+   </tr>
+   {% for chal in page.challenges %}
+   <tr>
+     <td><a href="./2019_TJCTF/{{ chal[1] }}">{{ chal[0] }}</a></td>
+     <td>{{ chal[2] }}</td>
+     <td>{{ chal[3] }}</td>
+   </tr>
+   {% endfor %}
+ </table>
+</div>

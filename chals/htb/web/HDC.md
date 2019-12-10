@@ -29,70 +29,72 @@ Note: The flag is not an e-mail address.
   
   ![HDC Home](./screenshots/hdc_login.png)
 
-- Page Source:
-  - Input Form:
-    ```html
-    <form id='formaki' name='formaki' action="./main/index.php" method="post">
-      <p align="center">Enter Username / Password
-        <input type="text" name="name1" size="20">
-        <input type="text" Name="name2" size="20">
-      </p>
+- Input Form (Page Source):
+  ```html
+  <form id='formaki' name='formaki' action="./main/index.php" method="post">
+    <p align="center">Enter Username / Password
+      <input type="text" name="name1" size="20">
+      <input type="text" Name="name2" size="20">
+    </p>
 
-      <p align="center">
-        <input type="hidden" value= name="name1">
-        <input type="hidden" value= name="name2">
+    <p align="center">
+      <input type="hidden" value= name="name1">
+      <input type="hidden" value= name="name2">
 
-        <input type="button" value="Submit" onclick="doProcess()"/>
-      </p>
-    </form>
-    ```
-    __NOTE(S)__:
-    1. The form submission is handled by a function `doProcess()`.
-       - `onclick=` is always referenced to a JS script
-    2. There are two hidden inputs -- `name1` and `name2`.
+      <input type="button" value="Submit" onclick="doProcess()"/>
+    </p>
+  </form>
+  ```
+  1. The form submission is handled by a function `doProcess()`.
+     - `onclick=` is always referenced to a JS script
+  2. There are two hidden inputs -- `name1` and `name2`.
 
-  - Included Scripts:
-    ```html
-    <script src="jquery-3.2.1.js"></script>
-    <script src="myscripts.js"></script>
-    ```
-    __NOTE(S)__:
-    1. `myscripts.js`:
-       ```js
-       function doProcess()
-       {
-	   document.forms["formaki"].submit();
-       }
-       ```
-    2. `jquery-3.2.1.js`:
-       ```js
-       // ...omitted...
-       function doProcess() {
-           var form = document.createElement("form");
-           form.setAttribute("method", "post");
-           form.setAttribute("action", "main/index.php");
-           form.setAttribute("target", "view");
-           var hiddenField = document.createElement("input");
-           hiddenField.setAttribute("type", "hidden");
-           hiddenField.setAttribute("name", "name1");
-           hiddenField.setAttribute("value", "TXlMaXR0bGU");
-           var hiddenField2 = document.createElement("input");
-           hiddenField2.setAttribute("type", "hidden");
-           hiddenField2.setAttribute("name", "name2");
-           hiddenField2.setAttribute("value", "cDB3bmll");
-           form.appendChild(hiddenField2);
-           form.appendChild(hiddenField);
-           form.appendChild(hiddenField2);
-           document.body.appendChild(form);
-           window.open('', 'view');
-           form.submit();
-       }
-       // ...omitted...
-       ```
-       - It's very notable that the included jquery file was not __*minified*__.
-       - It also includes a function definition of `doProcess()`:
-         - It sets the hiddent inputs, `name1` and `name2`, to `TXlMaXR0bGU` and `cDB3bmll` respectively.
-         - `name1` and `name2` are also input names for the username and password in the login form's user input.
+<span></span>
+
+- Included Scripts:
+  ```html
+  <script src="jquery-3.2.1.js"></script>
+  <script src="myscripts.js"></script>
+  ```
+  
+  1. `myscripts.js`:
+     ```js
+     function doProcess()
+     {
+	 document.forms["formaki"].submit();
+     }
+     ```
+  2. `jquery-3.2.1.js`:
+     - It's very notable that the included jquery file was not __*minified*__.
+     - It also includes a function definition of `doProcess()`:
+
+     ```js
+     // ...omitted...
+     function doProcess() {
+         var form = document.createElement("form");
+         form.setAttribute("method", "post");
+         form.setAttribute("action", "main/index.php");
+         form.setAttribute("target", "view");
+         var hiddenField = document.createElement("input");
+         hiddenField.setAttribute("type", "hidden");
+         hiddenField.setAttribute("name", "name1");
+         hiddenField.setAttribute("value", "TXlMaXR0bGU");
+         var hiddenField2 = document.createElement("input");
+         hiddenField2.setAttribute("type", "hidden");
+         hiddenField2.setAttribute("name", "name2");
+         hiddenField2.setAttribute("value", "cDB3bmll");
+         form.appendChild(hiddenField2);
+         form.appendChild(hiddenField);
+         form.appendChild(hiddenField2);
+         document.body.appendChild(form);
+         window.open('', 'view');
+         form.submit();
+     }
+     // ...omitted...
+     ```
+
+     - It sets the hiddent inputs, `name1` and `name2`, to `TXlMaXR0bGU` and `cDB3bmll` respectively.
+     - `name1` and `name2` are also input names for the username and password in the login form's user input.
 
 ---
 

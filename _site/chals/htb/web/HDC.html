@@ -180,7 +180,7 @@
         }
 	.ctf_content table { 
 	  margin: 0 10px 0px -8px;
-	  min-width: 600px;
+	  min-width: 800px;
 	}
 
         #main_content { margin-top:80px; }
@@ -357,10 +357,8 @@ Note: The flag is not an e-mail address.
     <p><img src="./screenshots/hdc_login.png" alt="HDC Home" /></p>
   </li>
   <li>
-    <p>Page Source:</p>
-    <ul>
-      <li>Input Form:
-        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">'formaki'</span> <span class="na">name=</span><span class="s">'formaki'</span> <span class="na">action=</span><span class="s">"./main/index.php"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+    <p>Input Form (Page Source):</p>
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">'formaki'</span> <span class="na">name=</span><span class="s">'formaki'</span> <span class="na">action=</span><span class="s">"./main/index.php"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;p</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>Enter Username / Password
     <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"name1"</span> <span class="na">size=</span><span class="s">"20"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">Name=</span><span class="s">"name2"</span> <span class="na">size=</span><span class="s">"20"</span><span class="nt">&gt;</span>
@@ -373,32 +371,41 @@ Note: The flag is not an e-mail address.
     <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">value=</span><span class="s">"Submit"</span> <span class="na">onclick=</span><span class="s">"doProcess()"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/form&gt;</span>
-</code></pre></div>        </div>
-        <p><strong>NOTE(S)</strong>:</p>
-        <ol>
-          <li>The form submission is handled by a function <code class="highlighter-rouge">doProcess()</code>.
-            <ul>
-              <li><code class="highlighter-rouge">onclick=</code> is always referenced to a JS script</li>
-            </ul>
-          </li>
-          <li>There are two hidden inputs – <code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code>.</li>
-        </ol>
+</code></pre></div>    </div>
+    <ol>
+      <li>The form submission is handled by a function <code class="highlighter-rouge">doProcess()</code>.
+        <ul>
+          <li><code class="highlighter-rouge">onclick=</code> is always referenced to a JS script</li>
+        </ul>
       </li>
-      <li>Included Scripts:
-        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery-3.2.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+      <li>There are two hidden inputs – <code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code>.</li>
+    </ol>
+  </li>
+</ul>
+
+<p><span></span></p>
+
+<ul>
+  <li>Included Scripts:
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery-3.2.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"myscripts.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-</code></pre></div>        </div>
-        <p><strong>NOTE(S)</strong>:</p>
-        <ol>
-          <li><code class="highlighter-rouge">myscripts.js</code>:
-            <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">doProcess</span><span class="p">()</span>
+</code></pre></div>    </div>
+
+    <ol>
+      <li><code class="highlighter-rouge">myscripts.js</code>:
+        <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">doProcess</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">[</span><span class="dl">"</span><span class="s2">formaki</span><span class="dl">"</span><span class="p">].</span><span class="nx">submit</span><span class="p">();</span>
 <span class="p">}</span>
-</code></pre></div>            </div>
-          </li>
-          <li><code class="highlighter-rouge">jquery-3.2.1.js</code>:
-            <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ...omitted...</span>
+</code></pre></div>        </div>
+      </li>
+      <li><code class="highlighter-rouge">jquery-3.2.1.js</code>:
+        <ul>
+          <li>It’s very notable that the included jquery file was not <strong><em>minified</em></strong>.</li>
+          <li>It also includes a function definition of <code class="highlighter-rouge">doProcess()</code>:</li>
+        </ul>
+
+        <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ...omitted...</span>
 <span class="kd">function</span> <span class="nx">doProcess</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">form</span><span class="dl">"</span><span class="p">);</span>
     <span class="nx">form</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">post</span><span class="dl">"</span><span class="p">);</span>
@@ -420,20 +427,14 @@ Note: The flag is not an e-mail address.
     <span class="nx">form</span><span class="p">.</span><span class="nx">submit</span><span class="p">();</span>
 <span class="p">}</span>
 <span class="c1">// ...omitted...</span>
-</code></pre></div>            </div>
-            <ul>
-              <li>It’s very notable that the included jquery file was not <strong><em>minified</em></strong>.</li>
-              <li>It also includes a function definition of <code class="highlighter-rouge">doProcess()</code>:
-                <ul>
-                  <li>It sets the hiddent inputs, <code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code>, to <code class="highlighter-rouge">TXlMaXR0bGU</code> and <code class="highlighter-rouge">cDB3bmll</code> respectively.</li>
-                  <li><code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code> are also input names for the username and password in the login form’s user input.</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ol>
+</code></pre></div>        </div>
+
+        <ul>
+          <li>It sets the hiddent inputs, <code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code>, to <code class="highlighter-rouge">TXlMaXR0bGU</code> and <code class="highlighter-rouge">cDB3bmll</code> respectively.</li>
+          <li><code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code> are also input names for the username and password in the login form’s user input.</li>
+        </ul>
       </li>
-    </ul>
+    </ol>
   </li>
 </ul>
 

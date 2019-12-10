@@ -1,0 +1,56 @@
+I"ã<h2 id="-htb-retired-challenges"><span style="color:red">$ htb retired challenges</span></h2>
+
+<hr />
+
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <td><strong style="text-decoration:underline">CHALLENGE NAME</strong></td>
+     <td><strong style="text-decoration:underline">CATEGORY</strong></td>
+     <td><strong style="text-decoration:underline">POINTS</strong></td>
+     <td><strong style="text-decoration:underline">DIFFICULTY</strong></td>
+     <td><strong style="text-decoration:underline">RELEASED</strong></td>
+     <td><strong style="text-decoration:underline">RETIRED</strong></td>
+   </tr>
+   
+   <tr>
+     <td><a href="./for/Keep_Tryin.html">Keep Tryin'</a></td>
+     <td>&lt;span id="for""&gt;Forensics&lt;/span&gt;</td>
+     <td><span style="color:orange">50 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Apr 25, 2018</td>
+     <td>Oct 27, 2019</td>
+   </tr>
+   
+ </table>
+</div>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong style="text-decoration:underline">CHALLENGE NAME</strong></td>
+      <td><strong style="text-decoration:underline">CATEGORY</strong></td>
+      <td><strong style="text-decoration:underline">POINTS</strong></td>
+      <td><strong style="text-decoration:underline">DIFFICULTY</strong></td>
+      <td><strong style="text-decoration:underline">RELEASED</strong></td>
+      <td><strong style="text-decoration:underline">RETIRED</strong></td>
+    </tr>
+    <tr>
+      <td><a href="./for/Keep_Tryin.html">Keep Tryinâ€™</a></td>
+      <td><span id="for">Forensics</span></td>
+      <td><span style="color:orange">50 pts</span></td>
+      <td><span style="color:orange">Medium</span></td>
+      <td>Apr 25, 2018</td>
+      <td>Oct 27, 2019</td>
+    </tr>
+    <tr>
+      <td><a href="./web/HDC.html">HDC</a></td>
+      <td><span id="web">Web</span></td>
+      <td><span style="color:green">30 pts</span></td>
+      <td><span style="color:green">Easy</span></td>
+      <td>Jul 10, 2017</td>
+      <td>Jul 31, 2019</td>
+    </tr>
+  </tbody>
+</table>
+:ET

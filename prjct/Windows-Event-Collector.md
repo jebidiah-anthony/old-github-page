@@ -161,7 +161,7 @@ tags: [windows, event manager, event viewer, event logs, windows logs, logs, win
          2. Right-click on `Configure target Subscription Manager` then select `Edit`
          3. Choose `Enabled`
          4. Under `Options`, beside `SubscriptionManagers`, press `Show...`
-         5. Enter `Server=http://win-bo2ct95indp.bossmanben.local:5985/wsman/SubscriptionManager/WEC,Refresh=30`
+         5. Enter `Server= http://win-bo2ct95indp.bossmanben.local:5985 /wsman/SubscriptionManager/WEC, Refresh=30`
          6. Press `OK`
          7. Press `OK`
 
