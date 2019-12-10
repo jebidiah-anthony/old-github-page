@@ -16,7 +16,7 @@ challenges: [
   [Shared, os/2_Shared.html, OS (110), Shared Objects]
 ]
 recommendations: [
-  [Binary Ultra, altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), ""], 
+  [Binary Ultra, altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), 'Write-up by my teammate, <a href="https&colon;//altelus1.github.io/about.html" target="_blank">Altelus</a>'], 
   [Present, altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), 'Write-up by my teammate, <a href="https&colon;//altelus1.github.io/about.html" target="_blank">Altelus</a>']
 ]
 ---
