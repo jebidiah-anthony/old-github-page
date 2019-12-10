@@ -401,9 +401,11 @@ tags: [windows, event manager, event viewer, event logs, windows logs, logs, evt
 
 ## REFERENCES
 
+```
 - https://blogs.technet.microsoft.com/russellt/2016/05/18/creating-custom-windows-event-forwarding-logs/
 - https://stackoverflow.com/questions/53028775/cannot-locate-ecmangen
 - https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 - https://blogs.msdn.microsoft.com/astebner/2007/03/14/mailbag-what-version-of-the-net-framework-is-included-in-what-version-of-the-os/
-- https://docs.microsoft.com/en-us/windows/win32/wes/message-compiler--mc-exe-         
+- https://docs.microsoft.com/en-us/windows/win32/wes/message-compiler--mc-exe-
 - https://docs.microsoft.com/en-us/windows/win32/menurc/using-rc-the-rc-command-line-
+```
