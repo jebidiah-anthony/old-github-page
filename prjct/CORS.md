@@ -99,9 +99,11 @@ Since the __`DELETE`__ method was allowed after checking during the pre-flight t
 
 ## REFERENCES
 
+```
 - https://www.codecademy.com/articles/what-is-cors
 - https://portswigger.net/research/exploiting-cors-misconfigurations-for-bitcoins-and-bounties
 - https://www.geekboy.ninja/blog/exploiting-misconfigured-cors-cross-origin-resource-sharing/
 - https://stackoverflow.com/questions/12001269/what-are-the-security-risks-of-setting-access-control-allow-origin
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 - https://mobilejazz.com/blog/which-security-risks-do-cors-imply/
+```

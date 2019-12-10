@@ -13,10 +13,28 @@ tags: [windows, event manager, event viewer, event logs, windows logs, logs, win
 
 #### MACHINES:
 
-HOSTNAME | MACHINE IP | OS | Description 
---- | --- | --- | --- 
-MSEDGEWIN10 | 192.168.150.128 | Windows 10 Enterprise Evaluation | Source Machine
-WIN-BO2CT95INDP | 192.168.150.133 | Windows Server 2016 | Collector Machine
+<div style="overflow-x:auto">
+  <table>
+    <tr>
+      <th>HOSTNAME</th>
+      <th>MACHINE IP</th>
+      <th>OS</th>
+      <th>REMARKS</th>
+    </tr>
+    <tr>
+      <td>MSEDGEWIN10</td>
+      <td>192.168.150.128</td>
+      <td>Windows 10 Enterprise Evaluation</td>
+      <td>Source Machine</td>
+    </tr>
+    <tr>
+      <td>WIN-BO2CT95INDP</td>
+      <td>192.168.150.133</td>
+      <td>Windows Server 2016</td>
+      <td>Collector Machine</td>
+    </tr>
+  </table>
+</div>
 
 - The <span style="color:orange">FQDN</span> for WIN-BO2CT95INDP is <span style="color:orange">__win-bo2ct95indp.bossmanben.local__</span>
 
@@ -63,6 +81,8 @@ WIN-BO2CT95INDP | 192.168.150.133 | Windows Server 2016 | Collector Machine
 
    - `AllowRemoteAccess = true` signifies that the service is running.
 
+   <span></span>
+
 3. Test if the Collector Machine (BOSSMANBEN) is reachable using WinRM:
    ```powershell
    Test-WSMan WIN-BO2CT95INDP
@@ -86,10 +106,14 @@ WIN-BO2CT95INDP | 192.168.150.133 | Windows Server 2016 | Collector Machine
       
      - Press `Win` + `R` then enter `lusrmgr.msc`
 
+     <span></span>
+
   2. Navigate to `Local Users and Groups (Local)` __>__ `Groups`:
       
      1. Right-click `Event Log Readers` and select `Properties`
      2. Select `Add...`
+
+     <span></span>
 
   3. Select `Object Types...` then check the box, `Computers`
 
@@ -152,7 +176,7 @@ WIN-BO2CT95INDP | 192.168.150.133 | Windows Server 2016 | Collector Machine
       1. `Logged` -- "__*Any time*__"
       2. `Event level` -- __*Critical*__, __*Error*__, __*Information*__, __*Warning*__
       3. Choose `By log` -- __*Windows*__ -> __*Security*__
-      4. Filter __Event IDs__ -- 4624,4657,4688,4698,4720,4722,4724,4732,4738,4769
+      4. Filter __Event IDs__ -- 4624, 4657, 4688, 4698, 4720, 4722, 4724, 4732, 4738, 4769
       5. Select `OK`
    
    6. Select `Advanced...`:
@@ -161,11 +185,30 @@ WIN-BO2CT95INDP | 192.168.150.133 | Windows Server 2016 | Collector Machine
       2. `Event Delivery Optimization` -- Choose `Minimize Latency`
       3. Select `OK`
 
-      OPTION | DESCRIPTION | INTERVAL
-      --- | --- | ---
-      Normal | Does not conserve bandwidth | 15 minutes via pull delivery
-      Minimize Bandwidth | Bandwidth for delivery is controlled | 6 hours via push delivery
-      Minimize Latency | Delivery with minimal delay | 30 seconds via push delivery 
+      <div style="overflow-x:auto">
+        <table>
+          <tr>
+            <th>OPTION</th>
+            <th>DESCRIPTION</th>
+            <th>INTERVAL</th>
+          </tr>
+          <tr>
+            <td>Normal</td>
+            <td>Does not conserve bandwidth</td>
+            <td>15 minutes via pull delivery</td>
+          </tr>
+          <tr>
+            <td>Minimize Bandwidth</td>
+            <td>Bandwidth for delivery is controlled</td>
+            <td>6 hours via push delivery</td>
+          </tr>
+          <tr>
+            <td>Minimize Latency</td>
+            <td>Delivery with minimal delay</td>
+            <td>30 seconds via push delivery</td>
+          </tr>
+        </table>
+      </div>
 
    7. Select `OK`
 
@@ -231,7 +274,10 @@ __NOTE(S)__:
 ---
 
 ## __REFERENCES:__
+
+```
 - https://www.vkernel.ro/blog/how-to-configure-windows-event-log-forwarding?fbclid=IwAR1bQ9VpgL--PWaqvEWcJBduR3xJ2UnBBhZmO7UGef-NXcKN9PCINZ3gmQ0
 - https://www.itprotoday.com/strategy/q-what-are-some-simple-tips-testing-and-troubleshooting-windows-event-forwarding-and?fbclid=IwAR3ceGoJU-jgkD2U_rVo2FmQee5M0spvE85lZRVw0FHv4YFTphLaX-5JJe8
 - https://rockyprogress.wordpress.com/2011/12/04/security-event-log-collection-from-a-domain-controller/?fbclid=IwAR01Puy9Wvr4eCQeV828raqfLesYJwVTw_8EAmDgvJIKYBVWoaT3giv24PA
 - https://blogs.technet.microsoft.com/supportingwindows/2016/07/18/setting-up-a-source-initiated-subscription-on-an-event-collector-computer/?fbclid=IwAR2JagIePrComWaIcZknK_92Igakb4_jvnrmJJnGpZlFGnms_2PM7z6trJc
+```
