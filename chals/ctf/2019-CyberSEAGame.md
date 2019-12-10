@@ -8,7 +8,7 @@ challenges: [
   [Fraud(1) Whistle blowing, crypto/1_Fraud1_Whistle_blowing.html, Crypto (50), Fullwidth Unicode Encoding], 
   [Shared, os/2_Shared.html, OS (110), Shared Objects]
 ]
-recommendations: [[Binary Ultra, https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), 'Write-up by my teammate, <a href="https://altelus1.github.io/about.html" target="_blank">Altelus</a>'], [Present, https://altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), 'Write-up by my teammate, <a href="https://altelus1.github.io/about.html" target="_blank">Altelus</a>']]
+
 ---
 
 ## <span style="color:red">$ Cyber SEA Game 2019</span>
@@ -70,3 +70,8 @@ recommendations: [[Binary Ultra, https://altelus1.github.io/writeups/cyberseagam
   [Friend, misc/6_Friend.html, Misc (100), Hash Collision], 
   [Trim_Auth, misc/8_Trim_Auth.html, Misc (150), SQL Truncation], 
   [Intact, network/1_Intact.html, Network (80), FTP], 
+
+recommendations: [
+  [Binary Ultra, https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), 'Write-up by my teammate, <a href="https://altelus1.github.io/about.html" target="_blank">Altelus</a>'], 
+  [Present, https://altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), 'Write-up by my teammate, <a href="https://altelus1.github.io/about.html" target="_blank">Altelus</a>']
+]
