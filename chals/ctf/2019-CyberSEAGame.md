@@ -16,8 +16,8 @@ challenges: [
   [Shared, os/2_Shared.html, OS (110), Shared Objects]
 ]
 recommendations: [
-  [Binary Ultra, https://altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), ""], 
-  [Present, https://altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), ""]
+  [Binary Ultra, altelus1.github.io/writeups/cyberseagames2019/binary_ultra, Binary (50), ""], 
+  [Present, altelus1.github.io/writeups/cyberseagames2019/present, Binary (100), 'Write-up by my teammate, <a href="https&colon;//altelus1.github.io/about.html" target="_blank">Altelus</a>']
 ]
 ---
 
@@ -62,7 +62,7 @@ recommendations: [
    </tr>
    {% for chal in page.recommendations %}
    <tr>
-     <td><a href="{{ chal[1] }}" target="_blank">{{ chal[0] }}</a></td>
+     <td><a href="https://{{ chal[1] }}" target="_blank">{{ chal[0] }}</a></td>
      <td>{{ chal[2] }}</td>
      <td>{{ chal[3] }}</td>
    </tr>
@@ -70,8 +70,5 @@ recommendations: [
  </table>
 </div>
 
-
-
-- 'Write-up by my teammate, <a href="https://altelus1.github.io/about.html" target="_blank">Altelus</a>'
 - Write-ups from <a href="https://khroot.com/2019/12/06/cyber-sea-game-2019-write-up/" target="_blank">Team Cambodia</a>
 - Write-ups from <a href="https://github.com/end1an/Cyber-SEA-GAME-2019" target="_blank">Team Thailand</a>
