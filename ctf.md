@@ -2,7 +2,7 @@
 layout: menu
 title: "CTF WRITE-UPS"
 description: "Solution to CTF Challenges I've encountered."
-tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, nactf, cyberseagame, cyberseagames, cyber-sea-game, cyber-sea-games, tghack, tg:hack, tjctf, hackthebox, htb, solutions, 2019]
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, nactf, cyberseagame, cyberseagames, cyber-sea-game, cyber-sea-games, tghack, "tg:hack", tjctf, hackthebox, htb, solutions, 2019]
 ---
 
 # <span style="color:red">$ ctf write-ups</span>

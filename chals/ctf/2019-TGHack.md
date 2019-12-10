@@ -3,7 +3,7 @@ layout: menu
 title: "TG:Hack 2019"
 description: "TG:Hack 2019 Web exploit challenge write-ups"
 header-img: "chals/ctf/2019_CyberSEAGame/cyber_sea_game_2019.png"
-tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, tghack, tg:hack, solutions, 2019]
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, tghack, "tg:hack", solutions, 2019]
 ---
 
 ## <span style="color:red">$ [TG:Hack 2019](https://tghack.no/)</span>
