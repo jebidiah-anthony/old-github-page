@@ -34,7 +34,7 @@ challenges_web: [
 ]
 ---
 
-## <span style="color:red">$ htb retired challenges</span>
+## <span id="for" style="color:red">$ htb retired challenges</span>
 
 ---
 
@@ -57,14 +57,15 @@ challenges_web: [
          <a href="./for/{{ chal[1] }}">{{ chal[0] }}</a>
        {% endif %}
      </td>
-     <td><span id="for">Forensics</span></td>
+     <td><span>Forensics</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[2] }}</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[3] }}</span></td>
      <td>{{ chal[5] }}</td>
      <td>{{ chal[6] }}</td>
    </tr>
    {% endfor %}
-   <tr><td colspan="6" style="border-bottom:1px dashed #eaeaea"></td></tr>
+   <tr><td colspan="6" id="mob"></td></tr>
+   <tr><td colspan="6" style="border-top:1px dashed #eaeaea"></td></tr>
    {% for chal in page.challenges_mob %}
    <tr>
      <td>
@@ -74,14 +75,15 @@ challenges_web: [
          <a href="./mob/{{ chal[1] }}">{{ chal[0] }}</a>
        {% endif %}
      </td>
-     <td><span id="mob">Mobile</span></td>
+     <td><span>Mobile</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[2] }}</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[3] }}</span></td>
      <td>{{ chal[5] }}</td>
      <td>{{ chal[6] }}</td>
    </tr>
    {% endfor %}
-   <tr><td colspan="6" style="border-bottom:1px dashed #eaeaea"></td></tr>
+   <tr><td colspan="6" id="pwn"></td></tr>
+   <tr><td colspan="6" style="border-top:1px dashed #eaeaea"></td></tr>
    {% for chal in page.challenges_pwn %}
    <tr>
      <td>
@@ -91,14 +93,15 @@ challenges_web: [
          <a href="./pwn/{{ chal[1] }}">{{ chal[0] }}</a>
        {% endif %}
      </td>
-     <td><span id="pwn">Pwn</span></td>
+     <td><span>Pwn</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[2] }}</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[3] }}</span></td>
      <td>{{ chal[5] }}</td>
      <td>{{ chal[6] }}</td>
    </tr>
    {% endfor %}
-   <tr><td colspan="6" style="border-bottom:1px dashed #eaeaea"></td></tr>
+   <tr><td colspan="6" id="web"></td></tr>
+   <tr><td colspan="6" style="border-top:1px dashed #eaeaea"></td></tr>
    {% for chal in page.challenges_web %}
    <tr>
      <td>
@@ -108,7 +111,7 @@ challenges_web: [
          <a href="./web/{{ chal[1] }}">{{ chal[0] }}</a>
        {% endif %}
      </td>
-     <td><span id="web">Web</span></td>
+     <td><span>Web</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[2] }}</span></td>
      <td><span style="color:{{ chal[4] }}">{{ chal[3] }}</span></td>
      <td>{{ chal[5] }}</td>

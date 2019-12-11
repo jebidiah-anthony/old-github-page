@@ -9,8 +9,23 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 
 ---
 
-[Cyber SEA Game 2019](./chals/ctf/2019-CyberSEAGame.html) | Thu, 21 Nov 2019, 11:30 PHT - Thu, 21 Nov 2019, 18:30 PHT
-[NACTF 2019](./chals/ctf/2019-NACTF.html) | Wed, 18 Sep 2019, 06:00 PHT - Mon, 23 Sep 2019, 06:00 PHT
-[TG:Hack 2019](./chals/ctf/2019-TGHack.html) | Thu, 18 Apr 2019, 00:00 PHT - Sun, 21 Apr 2019, 00:00 PHT
-[TJCTF 2019](./chals/ctf/2019-TJCTF.html) | Sat, 06 Apr 2019, 07:00 PHT - Wed, 10 Apr 2019, 07:00 PHT
-[HTB Retired Challenges](./chals/htb/challenges.html) | [Forensics](./chals/htb/challenges.html#for) \| [Web](./chals/htb/challenges.html#web)
+<div style="overflow-x:auto">
+ <table>
+   {% for ctf in site.ctf_menu %}
+   <tr>
+     <td><a href="{{ site.url }}/chals/ctf/{{ ctf[1] }}-{{ ctf[0] }}.html">{{ ctf[2] }} {{ ctf[1] }}</a></td>
+     <td>{{ ctf[3] }} - {{ ctf[4] }}</td>
+   </tr>
+   {% endfor %}
+   <tr>
+     <td><a href="./chals/htb/challenges.html">HTB Retired Challenges</a></td>
+     <td>(
+       {% for cat in site.htb_chls %}
+       <span style="padding:0 5px">
+         <a href="./chals/htb/challenges.html#{{ cat[0] }}">{{ cat[1] }}</a>
+       </span>
+       {% endfor %}
+     )</td>
+   </tr>
+ </table>
+</div>

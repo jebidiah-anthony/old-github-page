@@ -6,9 +6,19 @@ url: "https://jebidiah-anthony.github.io"
 plugins:
   - jekyll-sitemap
 
-ctf_menu: [[CyberSEAGame, 2019, Cyber SEA Game], [NACTF, 2019, NACTF], [TGHack, 2019, "TG:Hack"], [TJCTF, 2019, TJCTF]]
+ctf_menu: [
+  [CyberSEAGame, 2019, Cyber SEA Game, "Thu, 21 Nov 2019, 11:30 PHT", "Thu, 21 Nov 2019, 18:30 PHT"],
+  [NACTF, 2019, NACTF, "Wed, 18 Sep 2019, 06:00 PHT", "Mon, 23 Sep 2019, 06:00 PHT"], 
+  [TGHack, 2019, "TG:Hack", "Thu, 18 Apr 2019, 00:00 PHT", "Sun, 21 Apr 2019, 00:00 PHT"], 
+  [TJCTF, 2019, TJCTF, "Sat, 06 Apr 2019, 07:00 PHT", "Wed, 10 Apr 2019, 07:00 PHT"]
+]
 
-htb_chls: [[for, Forensics], [web, Web]]
+htb_chls: [
+  [for, Forensics],
+  [mob, Mobile],
+  [pwn, Pwn], 
+  [web, Web]
+]
 
 htb_menu: [[33, Safe], [32, Ellingson], [31, WriteUp], [30, swagshop], [29, kryptos], [28, Luke], [26, CTF], [25, Friendzone], [24, Flujab], [23, Help], [22, Chaos], [21, Lightweight], [20, Irked], [19, Teacher], [15, Mischief], [14, Waldo]]
 
