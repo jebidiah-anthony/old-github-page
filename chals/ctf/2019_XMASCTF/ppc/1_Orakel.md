@@ -1,7 +1,7 @@
 ---
 layout: menu
 title: "Orakel [ppc 152]"
-Description: "X-MAS CTF 2019 [Professional Programming & Coding] Orakel (152 pts)"
+description: "X-MAS CTF 2019 [Professional Programming & Coding] Orakel (152 pts)"
 header-img: "chals/ctf/2019_XMASCTF/xmas_ctf_2019.png"
 tags: [xmas, x-mas, xmas ctf, x-mas ctf, 2019, ctf, challenge, writeup, write-up, solution, programming, coding, professional programming and coding, ppc, word search]
 ---
