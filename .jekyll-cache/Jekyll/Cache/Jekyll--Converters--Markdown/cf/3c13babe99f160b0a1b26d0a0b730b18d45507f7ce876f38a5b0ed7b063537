@@ -1,0 +1,65 @@
+I"�<h1 id="fraud1-whistle-blowing-50-pts"><span style="color:red">Fraud(1) Whistle Blowing (50 pts)</span></h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We have finally linked up with the famous Lapland Oracle, that knows and sees all!
+Can you guess his secret word?
+
+Remote server: challs.xmas.htsp.ro 13000
+Authors: Milkdrop, Gabies
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--getting-the-flag">PART 2 : GETTING THE FLAG</h2>
+
+<p>Connecting to the given server using <strong><code class="highlighter-rouge">netcat</code></strong> gives:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+                                     ,,,,
+                                  ,########,
+                                 ############
+                                |############|
+                                 ############
+                                  "########"
+                                     """"
+
+                     |\___/|
+                     | " " |                    ~ ORAKEL ~
+              ,===__/( \ / )\__===,        THE LAPLAND  ORACLE
+             /     """ (") """     \
+            /           "           \
+            |   \_____=   =_____/   |
+      ,==._/    /\     /^\     /\    \_.==,
+     |   _  __/"  \   |] [|   /  "\__  _   |
+      555 """      |  |] [|  |      """ 555
+"""""""""""""""""""###########""""""""""""""""""""""""""""""""""""""""""""
+--- ,#######   ,#############, ,########  ___     _________
+ -- #####################################"       _____     _________
+    "###" #######################" ____     ___   _____           __
+  ---_____  "#############   _           _________     ____
+  ______     ##########        ______                _______
+         ____"##  "##   _________            ___        ________  _____
+    ___       ____    __     _________            _______
+
+
+
+Hello child.
+
+&gt; I will give you the True Flag you seek, but for that you must pass my test:
+I will think of a word of great length, known only by the gods that roam Lapland.
+You must guess which word I am thinking of, but only under a limited number of [1000] tries.
+In order to make this possible for you, I will tell you how close you are to my word through a number.
+The higher the number, the further you are from my word.
+If the number is 0, then you have found it.
+
+Good Luck.
+</code></pre></div></div>
+
+<p>The challenge is to find the word the Lapland Oracle thinks of in <strong style="color:orange">a thousand tries or less</strong>. The <stron style="color:orange">guesses given are scored&lt;/strong&gt; which tells you how close you really are to the actual word.</stron></p>
+
+<p>From my observations, the length of the word and the actual “word” changes every new connection to the remote server. The length ranges only from <strong style="color:orange">91-101 characters</strong></p>
+
+:ET

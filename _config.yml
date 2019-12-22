@@ -7,6 +7,7 @@ plugins:
   - jekyll-sitemap
 
 ctf_menu: [
+  [XMASCTF, 2019, X-MAS CTF, "Sat, 14 Dec 2019, 03:00 PHT", "Sat, 21 Dec 2019, 03:00 PHT"],
   [CyberSEAGame, 2019, Cyber SEA Game, "Thu, 21 Nov 2019, 11:30 PHT", "Thu, 21 Nov 2019, 18:30 PHT"],
   [NACTF, 2019, NACTF, "Wed, 18 Sep 2019, 06:00 PHT", "Mon, 23 Sep 2019, 06:00 PHT"], 
   [TGHack, 2019, "TG:Hack", "Thu, 18 Apr 2019, 00:00 PHT", "Sun, 21 Apr 2019, 00:00 PHT"], 
