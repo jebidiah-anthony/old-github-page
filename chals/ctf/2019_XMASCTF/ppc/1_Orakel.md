@@ -413,5 +413,5 @@ Now, running the program:
 
 ---
 
-## FLAG : __X-MAS{7hey_h4t3d_h1m_b3c4use_h3_sp0k3_th3_truth}__
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>X-MAS{7hey_h4t3d_h1m_b3c4use_h3_sp0k3_th3_truth}</strong></h2></div>
 
