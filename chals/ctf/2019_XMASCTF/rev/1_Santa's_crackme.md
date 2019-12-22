@@ -6,7 +6,7 @@ header-img: "chals/ctf/2019_XMASCTF/xmas_ctf_2019.png"
 tags: [xmas, x-mas, xmas ctf, x-mas ctf, 2019, ctf, challenge, writeup, write-up, solution, reversing, reverse engineering, santas crackme, ltrace, strcmp]
 ---
 
-# <span style="color:red">Pythagoreic Pancakes (413 pts)</span>
+# <span style="color:red">Santa's crackme (25 pts)</span>
 
 ---
 
