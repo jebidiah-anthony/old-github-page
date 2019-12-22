@@ -1,392 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/style.css?v=">
-    
-    
-    <meta property="article:tag" content="xmas" />
-    
-    <meta property="article:tag" content="x-mas" />
-    
-    <meta property="article:tag" content="xmas ctf" />
-    
-    <meta property="article:tag" content="x-mas ctf" />
-    
-    <meta property="article:tag" content="2019" />
-    
-    <meta property="article:tag" content="ctf" />
-    
-    <meta property="article:tag" content="challenge" />
-    
-    <meta property="article:tag" content="writeup" />
-    
-    <meta property="article:tag" content="write-up" />
-    
-    <meta property="article:tag" content="solution" />
-    
-    <meta property="article:tag" content="programming" />
-    
-    <meta property="article:tag" content="coding" />
-    
-    <meta property="article:tag" content="professional programming and coding" />
-    
-    <meta property="article:tag" content="ppc" />
-    
-    <meta property="article:tag" content="pythagoreic pancakes" />
-    
-    <meta property="article:tag" content="primitive pythagorean triples" />
-    
-    <meta property="article:tag" content="pythagorean triples" />
-    
-    <meta property="article:tag" content="triples" />
-    
-    <meta property="article:tag" content="euclidean algorithm" />
-    
-    <meta property="article:tag" content="coprimes" />
-    
-    <meta property="article:tag" content="gcd" />
-        
-
-    <meta name="twitter:card" content="summary"/>
-    <meta name="twitter:title" content="Pythagoreic Pancakes [ppc 413]">
-    <meta name="twitter:description" content="X-MAS CTF 2019 [Professional Programming & Coding] Pythagoreic Pancakes (413 pts)">
-    <meta name="twitter:site" content="@jebidiah-anthony" />
-    <meta name="twitter:creator" content="@feeeellliix">
-
-    
-    <meta property="og:image" content="http://localhost:4000/chals/ctf/2019_XMASCTF/xmas_ctf_2019.png" />
-    
-
-    
-    <meta property="og:title" content="Pythagoreic Pancakes [ppc 413]" />
-    
-
-    <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Pythagoreic Pancakes [ppc 413] | jebidiah-anthony</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Pythagoreic Pancakes [ppc 413]" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="X-MAS CTF 2019 [Professional Programming &amp; Coding] Pythagoreic Pancakes (413 pts)" />
-<meta property="og:description" content="X-MAS CTF 2019 [Professional Programming &amp; Coding] Pythagoreic Pancakes (413 pts)" />
-<link rel="canonical" href="http://localhost:4000/chals/ctf/2019_XMASCTF/ppc/2_Pythagoreic_Pancakes.html" />
-<meta property="og:url" content="http://localhost:4000/chals/ctf/2019_XMASCTF/ppc/2_Pythagoreic_Pancakes.html" />
-<meta property="og:site_name" content="jebidiah-anthony" />
-<script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/chals/ctf/2019_XMASCTF/ppc/2_Pythagoreic_Pancakes.html","description":"X-MAS CTF 2019 [Professional Programming &amp; Coding] Pythagoreic Pancakes (413 pts)","headline":"Pythagoreic Pancakes [ppc 413]","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-
-
-    <style>
-      header { margin-bottom: 0px; }
-      .header .navbtn {
-	position: fixed;
-	width: 0px;
-	visibility: hidden;
-      }
-      .header .title { 
-	padding-left: 69px;
-	vertical-align: middle;
-      }
-      .header .title h2 { margin: 0; } 
-
-      .container {
-	max-width: 1200px;
-      }
-      .sidebar {
-        border-right: 1px dashed #b5e853;
-	bottom: 0;
-        height: 100%;
-	overflow: auto;
-	padding: 10px 10px 10px 10px;
-        position: fixed;
-	top: 0;
-        width: 230px;
-      }
-      .openbtn { 
-	color:#b5e853;
-	font-size:30px;
-	cursor:pointer
-      }
-      .closebtn {
-	color:#b5e853;
-	font-size:69px;
-	cursor:pointer;
-	position:absolute;
-	top:0;
-	right:25px;
-	font-size:36px;
-	margin-left:50px;
-	visibility:hidden;
-      }
-      
-      .ctf_content {
-        margin-left: 250px;
-	padding-bottom: 5px;
-      }
-      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
-      .ctf_content h3 { margin: 20px 0px 0px 10px; }
-      .ctf_content img {
-	max-width: 100%;
-	padding: 0 10px 0 0;
-      }
-      .ctf_content table { padding: 0 15px; }
-
-      #main_content h1 { padding: 20px 0px 0px 8px; }
-      #main_content h2, p, pre { 
-	padding-right:10px;
-	padding-left:15px; 
-      }
-      #main_content h4 { 
-        margin: 20px 0px 10px 0px; 
-        padding-left: 25px; 
-      }
-      #main_content ol, ul { margin: 0 0 0 10px; }
-
-      .highlighter-rouge { padding: 0 10px 0 10px; }
-
-      .section-divider{
-        border-bottom: 1.5px solid #b5e853;
-        padding-top:28px;
-        width:55%;
-      }
-      
-      @media screen and (min-width: 801px) {
-	.ctf_content {
-          margin-left: 250px;
-	  padding-bottom: 5px;
-        }
-      }
-      @media screen and (max-width: 800px) {
-        header {
-	  background-color: #202020;
-	  height: 80px;
-	  padding: 0px 0 0 0;
-	  position: fixed;
-	  top: 0;
-	}
-        .header .navbtn {
-          height: 80px;
-	  padding: 18px 0 0 20px;
-          visibility: visible;
-	  width: 100px;
-        }
-	.header .title { padding-left: 100px; }
-	.header .title h1 { padding-top: 5px; }
-        .header .title h2 { margin: 0; }
-
-	.container {
-	  width:100%;
-	}
-	.sidebar {
-          width: 0;
-          z-index: 1;
-          overflow-x: hidden;
-	  padding: 0;
-          transition: 0.5s;
-	}
-	.sidebar h2 { 
-	  font-size: 18px; 
-	  padding: 10px 10px 5px 10px;
-	}
-	.sidebar div { 
-	  font-size: 15px; 
-	  padding: 5px 10px 5px 10px;
-	}
-	.closebtn { visibility:visible; }
-
-	.highlighter-rouge { padding: 0 0 0 0; }
-
-	.ctf_content {
-	  margin: 0;
-	}
-	.ctf_content h2 { padding: 15px 0px 0px 5px; }
-        .ctf_content h3 { margin: 15px 10px 0px 15px; }
-        .ctf_content img {
-	  max-width: 100%;
-	  padding: 0 10px 0 0;
-        }
-	.ctf_content table { 
-	  margin: 0 10px 0px -8px;
-	  min-width: 800px;
-	}
-
-        #main_content { margin-top:80px; }
-	#main_content code { font-size: 15px; }
-	#main_content h1 { font-size: 25px; }
-	#main_content h2 { font-size: 22px; }
-	#main_content h3 { font-size: 18px; }
-	#main_content h4 { padding-left: 20px; }
-	#main_content ol, ul {
-	  font-size: 14px;
-	  margin: 0 0 0 12px;
-	  padding: 0 0 0 25px;
-	}
-	#main_content table { font-size: 14px; }
-      }
-
-      @media screen and (max-width: 480px) {
-        header {
-	  background-color: #202020;
-	  height: 70px;
-	  padding: 0px 0 0 0;
-	  position: fixed;
-	  top: 0;
-	}
-        .header .navbtn {
-          height: 70px;
-	  padding: 14px 0 0 18px;
-        }
-	.header .title { padding-left: 100px; }
-	.header .title h1 { font-size:22px; }
-        .header .title h2 { font-size:16px; }
-
-	#main_content code { font-size: 13px; }
-        #main_content ol, ul {
-	  font-size: 13px;
-	  margin: 0 0 0 12px;
-	  padding: 0 0 0 25px;
-	}
-	#main_content table { font-size: 13px; }
-      }
-    </style>
-
-  </head>
-
-  <body>
-    <div class="container">
-       <div id="sidebar" class="sidebar">
-         <span class="closebtn" onclick="closeNav()">&times;</span>      
-	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
-
-<div style="padding-top:10px">
-  
-  > <a href="/">whoami</a>
-  
-</div>
-<div style="padding-top:10px">  
-  >  <a href="/htb.html">
-    
-    htb writeups
-    
-  </a>
-</div>
-<div style="padding-top:10px">
-  > <a href="/ctf.html">
-    
-    <strong style="color:orange">ctf writeups</strong>
-    
-  </a>
-</div>
-<div style="padding-top:10px">
-  > <a href="/projects.html">
-    
-    projects
-    
-  </a>
-</div>
-</div>
-	 <div style="padding-bottom:20px">
-           
-	     <h2 style="margin-bottom:0; padding-top: 20px">[HTB CHALLENGES]</h2>
-
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/htb/challenges.html#for">
-  
-  Forensics
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/htb/challenges.html#mob">
-  
-  Mobile
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/htb/challenges.html#pwn">
-  
-  Pwn
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/htb/challenges.html#web">
-  
-  Web
-  
-  </a>
-</div>
-
-
-
-             <h2 style="margin-bottom:0; padding-top:20px">[CTF EVENTS]</h2>
-
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/ctf/2019-XMASCTF.html">
-  
-  <strong style="color:orange;text-decoration:none">X-MAS CTF 2019</strong>
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/ctf/2019-CyberSEAGame.html">
-  
-  Cyber SEA Game 2019
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/ctf/2019-NACTF.html">
-  
-  NACTF 2019
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/ctf/2019-TGHack.html">
-  
-  TG:Hack 2019
-  
-  </a>
-</div>
-
-<div style="padding-top:10px">
-  > <a href="http://localhost:4000/chals/ctf/2019-TJCTF.html">
-  
-  TJCTF 2019
-  
-  </a>
-</div>
-
-
-	   
-	 </div>
-       </div>
-       <div id="content" class="ctf_content">
-	 <header>
-           <div class="header">
-             <div class="navbtn">
-               <span class="openbtn" onclick="openNav()">&#9776;</span>
-	     </div>
-	     <div class="title">
-               <h1>jebidiah-anthony</h1>
-               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
-	     </div>
-           </div>
-         </header>
-         <section id="main_content"><h1 id="pythagoreic-pancakes-413-pts"><span style="color:red">Pythagoreic Pancakes (413 pts)</span></h1>
+I"õ|<h1 id="pythagoreic-pancakes-413-pts"><span style="color:red">Pythagoreic Pancakes (413 pts)</span></h1>
 
 <hr />
 
@@ -494,7 +106,7 @@ Also you have 5 seconds / test.
 
 </code></pre></div></div>
 
-<p>Now that I have everything I need to generate primitive pythagorean triples, all that is left is to solve the challenges:</p>
+<p>Now that I have everything I need to generate primitive pythagorean triples, all that is left it to solve the challenges:</p>
 
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
@@ -529,8 +141,10 @@ Also you have 5 seconds / test.
 
                 <span class="n">triples</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">triple</span><span class="p">])</span>
 
-<span class="n">triples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">triples</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
-
+<span class="c1">#triples = sorted(triples, key=lambda x: (x[3], x[2][2], x[2][1]))
+</span><span class="n">triples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">triples</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+<span class="c1">#triples = sorted(triples, key=lambda x: x[3])
+</span>
 <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">d PRIMITIVE PYTHAGOREAN TRIPLES GENERATED"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triples</span><span class="p">)))</span>
 <span class="k">print</span><span class="p">(</span><span class="s">"===================================================================="</span><span class="p">)</span>
 
@@ -595,7 +209,7 @@ Also you have 5 seconds / test.
 
 <p>Running the code:</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">[+] Opening connection to challs.xmas.htsp.ro on port 14004: Done
+<pre><code class="language-pwn">[+] Opening connection to challs.xmas.htsp.ro on port 14004: Done
 ====================================================================
 [*] GENERATING PRIMITIVE PYTHAGOREAN TRIPLES
 [+] 2533381 PRIMITIVE PYTHAGOREAN TRIPLES GENERATED
@@ -607,53 +221,53 @@ Also you have 5 seconds / test.
 [*] SENDING HEX STRING: 0000000000358096
 [+] Good, you can continue!
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>1:
-<span class="go">[*] Give me the 8455-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #1:
+[*] Give me the 8455-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 8455-TH PRIMITIVE PYTHAGOREAN TRIPLE: 5980, 52731, 53069
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>2:
-<span class="go">[*] Give me the 1477-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #2:
+[*] Give me the 1477-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 1477-TH PRIMITIVE PYTHAGOREAN TRIPLE: 3040, 8769, 9281
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>3:
-<span class="go">[*] Give me the 10155-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #3:
+[*] Give me the 10155-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 10155-TH PRIMITIVE PYTHAGOREAN TRIPLE: 14555, 62172, 63853
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>4:
-<span class="go">[*] Give me the 5379-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #4:
+[*] Give me the 5379-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 5379-TH PRIMITIVE PYTHAGOREAN TRIPLE: 10023, 32264, 33785
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>5:
-<span class="go">[*] Give me the 7662-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #5:
+[*] Give me the 7662-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 7662-TH PRIMITIVE PYTHAGOREAN TRIPLE: 25320, 40921, 48121
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>6:
-<span class="go">[*] Give me the 15703-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #6:
+[*] Give me the 15703-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 15703-TH PRIMITIVE PYTHAGOREAN TRIPLE: 48032, 86175, 98657
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>7:
-<span class="go">[*] Give me the 45559-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #7:
+[*] Give me the 45559-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 45559-TH PRIMITIVE PYTHAGOREAN TRIPLE: 184149, 219220, 286301
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>8:
-<span class="go">[*] Give me the 137044-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #8:
+[*] Give me the 137044-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 137044-TH PRIMITIVE PYTHAGOREAN TRIPLE: 400044, 762517, 861085
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>9:
-<span class="go">[*] Give me the 397207-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #9:
+[*] Give me the 397207-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 397207-TH PRIMITIVE PYTHAGOREAN TRIPLE: 936411, 2313460, 2495789
 [+] Well done, here, have another.
 ===================================================================
-</span><span class="gp">[*] Here's the challange #</span>10:
-<span class="go">[*] Give me the 1182921-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
+[*] Here's the challange #10:
+[*] Give me the 1182921-th primitive pythagorean triple in the following format: a,b,c with a &lt; b &lt; c.
 [*] 1182921-TH PRIMITIVE PYTHAGOREAN TRIPLE: 535567, 7413144, 7432465
 [+] Well done, here, have another.
 ===================================================================
@@ -661,35 +275,9 @@ Also you have 5 seconds / test.
 [+] Here's your flag: X-MAS{Th3_Tr33_0f_pr1m1t1v3_Pyth4g0r34n_tr1ple5}
 ===================================================================
 [*] Closed connection to challs.xmas.htsp.ro port 14004
-</span></code></pre></div></div>
+</code></pre>
 
 <hr />
 
 <div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>X-MAS{Th3_Tr33_0f_pr1m1t1v3_Pyth4g0r34n_tr1ple5}</strong></h2></div>
-</section>
-       </div>
-    </div>
-
-    <script>
-      function openNav() {
-        document.getElementById("sidebar").style.width = "250px";
-        document.getElementById("content").style.marginLeft = "250px";
-      }
-      function closeNav() {
-        document.getElementById("sidebar").removeAttribute("style");
-        document.getElementById("content").removeAttribute("style");
-      } 
-    </script>
-
-    
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'true', 'auto');
-        ga('send', 'pageview');
-      </script>
-    
-  </body>
-</html>
+:ET
