@@ -20,7 +20,7 @@
     <meta property="article:tag" content="aggregation" />
         
 
-    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="elastalerter.py">
     <meta name="twitter:description" content="An elastalert rule tester using python.">
     <meta name="twitter:site" content="@jebidiah-anthony" />
