@@ -290,11 +290,11 @@ Your md5 is: 1f29b6a10128ae69db7c6f6982fe54f0<br>Work required is: 1f29b6<br>Wor
 
 Now looking back at the idea posted:
 
-![jebidiah - bakanaman](./screenshots/rigged_election_jebidiah.png)
+![jebidiah bakanaman](./screenshots/rigged_election_jebidiah.png)
 
 And requesting the page once again with the __`PHSSESSID`__ used for voting:
 
-![Rigged Election - Flag](./screenshots/rigged_election_flag.png)
+![Rigged Election Flag](./screenshots/rigged_election_flag.png)
 
 ---
 
