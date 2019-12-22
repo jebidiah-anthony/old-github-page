@@ -7,6 +7,7 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 challenges: [
 	[Orakel, ppc/1_Orakel.html, PPC (152), Word Search],
         [Pythagoreic Pancakes, ppc/2_Pythagoreic_Pancakes.html, PPC (413), Primitive Pythagorean Triples],
+        [Santa's crackme, rev/1_Santa's_crackme.html, Reversing (25), "strcmp"],
 	[Rigged Election, web/3_Rigged_Election.html, Web (50), Scripting],
 	[Gnome's Buttons v2, web/6_Gnomes_Buttons_v2.html, Web (152), GET Parameter]
 ]

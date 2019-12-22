@@ -1,0 +1,157 @@
+I"T3<h1 id="pythagoreic-pancakes-413-pts"><span style="color:red">Pythagoreic Pancakes (413 pts)</span></h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I bet you can't crack this!
+
+Files: download
+Author: littlewho
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="./files/main">main</a></p>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file main
+<span class="go">
+  main: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=5a1d1f7ac1d7a5998eec19ad57aa061fc81f1e4d, not stripped
+
+</span></code></pre></div></div>
+
+<p>The given executable is a 64-bit ELF file and running it on <strong><code class="highlighter-rouge">ltrace</code></strong> shows:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s1">'print "A"*50'</span> | ltrace ./main
+<span class="go">
+  printf("Enter your license key: ")                            = 24
+  __isoc99_scanf(0x402029, 0x7ffdeca5b8b0, 0, 0)                = 1
+  strcmp("B", "[")                                              = -25
+  strcmp("B", ".")                                              = 20
+  strcmp("B", "N")                                              = -12
+  strcmp("B", "B")                                              = 0
+  strcmp("B", "P")                                              = -14
+  strcmp("B", "x")                                              = -54
+  strcmp("B", "6")                                              = 12
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "m")                                              = -43
+  strcmp("B", "4")                                              = 14	
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "2")                                              = 16
+  strcmp("B", "6")                                              = 12
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "a")                                              = -31
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "g")                                              = -37
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "4")                                              = 14
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "o")                                              = -45
+  strcmp("B", "2")                                              = 16
+  strcmp("B", "`")                                              = -30
+  strcmp("B", "0")                                              = 18
+  strcmp("B", "m")                                              = -43
+  strcmp("B", "6")                                              = 12
+  strcmp("B", "0")                                              = 18
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "`")                                              = -30
+  strcmp("B", "k")                                              = -41
+  strcmp("B", "0")                                              = 18
+  strcmp("B", "`")                                              = -30
+  strcmp("B", "h")                                              = -38
+  strcmp("B", "2")                                              = 16
+  strcmp("B", "m")                                              = -43
+  strcmp("B", "5")                                              = 13
+  strcmp("B", "~")                                              = -60
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  puts("License key is incorrect"License key is incorrect
+  )                              = 25
+  +++ exited (status 0) +++
+
+</span></code></pre></div></div>
+
+<p>The program shifted the input characters (<strong><code class="highlighter-rouge">A</code></strong> -&gt; <strong><code class="highlighter-rouge">B</code></strong>) and are passed to a <strong><code class="highlighter-rouge">strcmp()</code></strong> function individually with a corresponding character relative to the license key.</p>
+
+<p>The integer values on the right are the difference between the decimal values of the shifted input character and the character it was compared to.</p>
+
+<p>The license key seems to only have 39 characters and pooling all the characters compared to the inputthen passing it to <strong><code class="highlighter-rouge">ltrace</code></strong>:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s1">'[.NBPx67m47\\26\\a7g\\74\\o2`0m60\\`k0`h2m5~'</span> | ltrace ./main
+<span class="go">
+  printf("Enter your license key: ")                            = 24
+  __isoc99_scanf(0x402029, 0x7ffc868dca50, 0, 0)                = 1
+  strcmp("X", "[")                                              = -3
+  strcmp("-", ".")                                              = -1
+  strcmp("M", "N")                                              = -1
+  strcmp("A", "B")                                              = -1
+  strcmp("S", "P")                                              = 3
+  strcmp("{", "x")                                              = 3
+  strcmp("5", "6")                                              = -1
+  strcmp("4", "7")                                              = -3
+  strcmp("n", "m")                                              = 1
+  strcmp("7", "4")                                              = 3
+  strcmp("4", "7")                                              = -3
+  strcmp("_", "\\")                                             = 3
+  strcmp("1", "2")                                              = -1
+  strcmp("5", "6")                                              = -1
+  strcmp("_", "\\")                                             = 3
+  strcmp("b", "a")                                              = 1
+  strcmp("4", "7")                                              = -3
+  strcmp("d", "g")                                              = -3
+  strcmp("_", "\\")                                             = 3
+  strcmp("4", "7")                                              = -3
+  strcmp("7", "4")                                              = 3
+  strcmp("_", "\\")                                             = 3
+  strcmp("l", "o")                                              = -3
+  strcmp("1", "2")                                              = -1
+  strcmp("c", "`")                                              = 3
+  strcmp("3", "0")                                              = 3
+  strcmp("n", "m")                                              = 1
+  strcmp("5", "6")                                              = -1
+  strcmp("3", "0")                                              = 3
+  strcmp("_", "\\")                                             = 3
+  strcmp("c", "`")                                              = 3
+  strcmp("h", "k")                                              = -3
+  strcmp("3", "0")                                              = 3
+  strcmp("c", "`")                                              = 3
+  strcmp("k", "h")                                              = 3
+  strcmp("1", "2")                                              = -1
+  strcmp("n", "m")                                              = 1
+  strcmp("6", "5")                                              = 1
+  strcmp("}", "~")                                              = -1
+  puts("License key is incorrect"Enter your license key: License key is incorrect
+  )                              = 25
+  +++ exited (status 0) +++
+
+</span></code></pre></div></div>
+
+<p>The characters seems to have been shifted to show the flag. Pooling all the difference on the right:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s">"[.NBPx67m47</span><span class="se">\\</span><span class="s">26</span><span class="se">\\</span><span class="s">a7g</span><span class="se">\\</span><span class="s">74</span><span class="se">\\</span><span class="s">o2`0m60</span><span class="se">\\</span><span class="s">`k0`h2m5~"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="o">+</span> <span class="n">diff</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">))])</span>
+<span class="s">'X-MAS{54n74_15_b4d_47_l1c3n53_ch3ck1n6}'</span>
+</code></pre></div></div>
+
+<p>```console
+$ echo X-MAS{54n74_15_b4d_47_l1c3n53_ch3ck1n6} | ./main</p>
+
+:ET

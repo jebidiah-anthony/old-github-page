@@ -1,0 +1,101 @@
+I"Û"<h1 id="pythagoreic-pancakes-413-pts"><span style="color:red">Pythagoreic Pancakes (413 pts)</span></h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I bet you can't crack this!
+
+Files: download
+Author: littlewho
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--given-files">PART 2 : GIVEN FILES</h2>
+
+<p>[&gt;] <a href="./files/main">main</a></p>
+
+<hr />
+
+<h2 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>file main
+<span class="go">
+  main: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=5a1d1f7ac1d7a5998eec19ad57aa061fc81f1e4d, not stripped
+
+</span></code></pre></div></div>
+
+<p>The given executable is a 64-bit ELF file and running it on <strong><code class="highlighter-rouge">ltrace</code></strong> shows:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ltrace ./main
+<span class="go">
+  printf("Enter your license key: ")                            = 24
+  __isoc99_scanf(0x402029, 0x7ffe4db05150, 0, 0Enter your license key: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  )                = 1
+  strcmp("B", "[")                                              = -25
+  strcmp("B", ".")                                              = 20
+  strcmp("B", "N")                                              = -12
+  strcmp("B", "B")                                              = 0
+  strcmp("B", "P")                                              = -14
+  strcmp("B", "x")                                              = -54
+  strcmp("B", "6")                                              = 12
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "m")                                              = -43
+  strcmp("B", "4")                                              = 14
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "2")                                              = 16
+  strcmp("B", "6")                                              = 12
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "a")                                              = -31
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "g")                                              = -37
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "7")                                              = 11
+  strcmp("B", "4")                                              = 14
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "o")                                              = -45
+  strcmp("B", "2")                                              = 16
+  strcmp("B", "`")                                              = -30
+  strcmp("B", "0")                                              = 18
+  strcmp("B", "m")                                              = -43
+  strcmp("B", "6")                                              = 12
+  strcmp("B", "0")                                              = 18
+  strcmp("B", "\\")                                             = -26
+  strcmp("B", "`")                                              = -30
+  strcmp("B", "k")                                              = -41
+  strcmp("B", "0")                                              = 18
+  strcmp("B", "`")                                              = -30
+  strcmp("B", "h")                                              = -38
+  strcmp("B", "2")                                              = 16
+  strcmp("B", "m")                                              = -43
+  strcmp("B", "5")                                              = 13
+  strcmp("B", "~")                                              = -60
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  strcmp("B", "")                                               = 66
+  puts("License key is incorrect"License key is incorrect
+  )                              = 25
+  +++ exited (status 0) +++
+
+</span></code></pre></div></div>
+
+<p>The program shifted the input characters (<strong><code class="highlighter-rouge">A</code></strong> -&gt; <strong><code class="highlighter-rouge">B</code></strong>) and are passed to a <strong><code class="highlighter-rouge">strcmp()</code></strong> function individually with a corresponding character relative to the license key.</p>
+
+<p>The integer values on the right are the difference between the decimal values of the shifted input character and the character it was compared to.</p>
+
+<p>Pooling together all difference:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">54</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="o">-</span><span class="mi">43</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mi">31</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="o">-</span><span class="mi">37</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">43</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">41</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">38</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">43</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span> <span class="p">]</span>
+</code></pre></div></div>
+
+:ET
