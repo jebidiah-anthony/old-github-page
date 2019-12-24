@@ -198,7 +198,7 @@ Now reversing the rotation by going clockwise for the whole packet data starting
 
 ---
 
-## FLAG : <div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>X-MAS{1t's_g4m3_n1ght_t0n1ght___}</strong></h2></div>
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>X-MAS{1t's_g4m3_n1ght_t0n1ght___}</strong></h2></div>
 
 
 
