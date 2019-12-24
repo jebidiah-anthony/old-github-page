@@ -32,9 +32,11 @@ tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber
 
 ## <span style="color:red">$ affiliations</span>
 
-### [hackstreetboys](https://hackstreetboys.ph/#team-members)
+### hackstreetboys
 
-> [CTFtime](https://ctftime.org/team/43377) | [Facebook](https://www.facebook.com/hackstreetboys) | [Medium](https://medium.com/hackstreetboys)
+> [CTFtime](https://ctftime.org/team/43377)  
+> [Facebook](https://www.facebook.com/hackstreetboys) | 
+> [Medium](https://medium.com/hackstreetboys)
 
 ### UP Future Library and Information Professionals of the Philippines (UP FLIPP) 
 > Multimedia and Information Technology Committee Head (Jun 2017 - Jun 2018)
