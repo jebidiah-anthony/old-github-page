@@ -34,8 +34,8 @@ tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber
 
 ### hackstreetboys
 
-> [CTFtime](https://ctftime.org/team/43377)  
-> [Facebook](https://www.facebook.com/hackstreetboys) | 
+> [CTFtime](https://ctftime.org/team/43377) | 
+> [Facebook](https://www.facebook.com/hackstreetboys) |
 > [Medium](https://medium.com/hackstreetboys)
 
 ### UP Future Library and Information Professionals of the Philippines (UP FLIPP) 
