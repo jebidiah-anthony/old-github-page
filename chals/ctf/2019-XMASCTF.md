@@ -5,6 +5,7 @@ description: "A few challenge solutions/write-ups for X-MAS CTF 2019"
 header-img: "chals/ctf/2019_XMASCTF/xmas_ctf_2019.png"
 tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, xmas, x-mas, xmas ctf, x-mas ctf, solutions, 2019]
 challenges: [
+        [Back to 2007, for/5_Back_to_2007.html, Forensics (499), "Rotated Bits, UDP Stream"],
 	[Orakel, ppc/1_Orakel.html, PPC (152), Word Search],
         [Pythagoreic Pancakes, ppc/2_Pythagoreic_Pancakes.html, PPC (413), Primitive Pythagorean Triples],
         [Santa's crackme, rev/1_Santa's_crackme.html, Reversing (25), "strcmp"],
