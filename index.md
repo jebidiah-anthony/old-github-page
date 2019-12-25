@@ -32,7 +32,7 @@ tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber
 
 ## <span style="color:red">$ affiliations</span>
 
-### hackstreetboys
+### Team hackstreetboys
 
 > [CTFtime](https://ctftime.org/team/43377) | 
 > [Facebook](https://www.facebook.com/hackstreetboys) |
