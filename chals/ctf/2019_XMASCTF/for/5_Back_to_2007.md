@@ -3,7 +3,7 @@ layout: menu
 title: "Back to 2007 [for 499]"
 description: "X-MAS CTF 2019 [Forensics] Back to 2007 (499 pts)"
 header-img: "chals/ctf/2019_XMASCTF/xmas_ctf_2019.png"
-tags: [xmas, x-mas, xmas ctf, x-mas ctf, 2019, ctf, challenge, writeup, write-up, solution, forensics, network forensics, networking, networks, udp, udp-stream]
+tags: [xmas, x-mas, xmas ctf, x-mas ctf, 2019, ctf, challenge, writeup, write-up, solution, forensics, network forensics, networking, networks, back to 2007, udp, udp-stream, bit shifting, rotated bits]
 ---
 
 # <span style="color:red">Back to 2007 (499 pts)</span>
@@ -124,7 +124,7 @@ Four packet data contains repeating bytes that is long enough to form a flag.
 
 4. <div style="overflow-x:auto;padding-top:10px">df 06 00 00 7c 0d 00 00 21 8f c4 01 3f ef ed cf 48 d7 45 80 ac 80 00 2a a3 af 21 b4 30 ba af 20 <strong style="color:green">36 36</strong> 80 a6 34 b6 b5 30 00 2c ac <strong style="color:green">96 96 a6 a6 a0 a0 a9 a9 bd bd</strong> 98 18 3a ba <strong style="color:green">93 93 b9 b9 af af</strong> b3 33 1a 9a <strong style="color:green">b6 b6 99 99</strong> af 2f 37 b7 <strong style="color:green">98 98</strong> b3 33 <strong style="color:green">34 34</strong> 3a ba af 2f <strong style="color:green">3a 3a 18 18</strong> 37 b7 <strong style="color:green">98 98</strong> b3 33 <strong style="color:green">34 34</strong> 3a ba <strong style="color:green">af af af af af af</strong> be 3e 00 00 00 a0 e1 7a d1 02 c0 bb 20 04 40 d3 62 e8 45 0b 80 02 88 06 00 04 21 ee 45 0b 80 f0 17 c3 85 c4 56 e0 35 a3 fa 92 c8 3d 00 02 00 00 be 00 00 80</div>
 
-The first and second strings may have numerous repeating bytes but their variation of is almost non-existent so I just dropped it.
+The first and second strings may have numerous repeating bytes but their variation is almost non-existent so I just dropped it.
 
 The third string seems to be a prime candidate for a flag since trying to convert the highlighted hex data into ASCII returns:
 
@@ -166,7 +166,7 @@ Doing this rotation for the string "<strong style="color:orange">X-MAS{</strong>
 
 And true enough for the fourth string, the rotated hex value were found:
 
-- <div style="overflow-x:auto;padding-top:10px">df 06 00 00 7c 0d 00 00 21 8f c4 01 3f ef ed cf 48 d7 45 80 ac 80 00 2a a3 af 21 b4 30 ba af 20 36 36 80 a6 34 b6 b5 30 00 <strong style="color:red">2c</strong> ac <strong style="color:red">96</strong> 96 <strong style="color:red">a6</strong> a6 <strong style="color:red">a0</strong> a0 <strong style="color:red">a9</strong> a9 <strong style="color:red">bd</strong> bd 98 18 3a ba 93 93 b9 b9 af af b3 33 1a 9a b6 b6 99 99 af 2f 37 b7 98 98 b3 33 34 34 3a ba af 2f 3a 3a 18 18 37 b7 98 98 b3 33 34 34 3a ba af af af af af af be 3e 00 00 00 a0 e1 7a d1 02 c0 bb 20 04 40 d3 62 e8 45 0b 80 02 88 06 00 04 21 ee 45 0b 80 f0 17 c3 85 c4 56 e0 35 a3 fa 92 c8 3d 00 02 00 00 be 00 00 80</div>
+- <div style="overflow-x:auto;padding-top:10px">df 06 00 00 7c 0d 00 00 21 8f c4 01 3f ef ed cf 48 d7 45 80 ac 80 00 2a a3 af 21 b4 30 ba af 20 36 36 80 a6 34 b6 b5 30 00 <strong style="color:red">2c</strong> ac <strong style="color:red">96 96</strong> <strong style="color:red">a6 a6</strong> <strong style="color:red">a0 a0</strong> <strong style="color:red">a9 a9</strong> <strong style="color:red">bd bd</strong> 98 18 3a ba 93 93 b9 b9 af af b3 33 1a 9a b6 b6 99 99 af 2f 37 b7 98 98 b3 33 34 34 3a ba af 2f 3a 3a 18 18 37 b7 98 98 b3 33 34 34 3a ba af af af af af af be 3e 00 00 00 a0 e1 7a d1 02 c0 bb 20 04 40 d3 62 e8 45 0b 80 02 88 06 00 04 21 ee 45 0b 80 f0 17 c3 85 c4 56 e0 35 a3 fa 92 c8 3d 00 02 00 00 be 00 00 80</div>
 
 Now reversing the rotation by going clockwise for the whole packet data starting from the <strong style="color:red">2c</strong> byte:
 
@@ -175,11 +175,7 @@ Now reversing the rotation by going clockwise for the whole packet data starting
 ...     bits = bin(int(byte, 16))[2:].zfill(8)
 ...     shifted = bits[1:] + bits[0]
 ...     return hex(int(shifted, 2))[2:]
-... 
->>> [rotateBits(byte) for byte in packet_data]
-['58', '59', '2d', '2d', '4d', '4d', '41', '41', '53', '53', '7b', '7b', '31', '30', '74', '75', '27', '27', '73', '73', '5f', '5f', '67', '66', '34', '35', '6d', '6d', '33', '33', '5f', '5e', '6e', '6f', '31', '31', '67', '66', '68', '68', '74', '75', '5f', '5e', '74', '74', '30', '30', '6e', '6f', '31', '31', '67', '66', '68', '68', '74', '75', '5f', '5f', '5f', '5f', '5f', '5f', '7d', '7c', '0', '0', '0', '41', 'c3', 'f4', 'a3', '4', '81', '77', '40', '8', '80', 'a7', 'c4', 'd1']
->>> [int(rotateBits(byte),16) for byte in packet_data]
-[88, 89, 45, 45, 77, 77, 65, 65, 83, 83, 123, 123, 49, 48, 116, 117, 39, 39, 115, 115, 95, 95, 103, 102, 52, 53, 109, 109, 51, 51, 95, 94, 110, 111, 49, 49, 103, 102, 104, 104, 116, 117, 95, 94, 116, 116, 48, 48, 110, 111, 49, 49, 103, 102, 104, 104, 116, 117, 95, 95, 95, 95, 95, 95, 125, 124, 0, 0, 0, 65, 195, 244, 163, 4, 129, 119, 64, 8, 128, 167, 196, 209]
+...
 >>> packet_data = "2c ac 96 96 a6 a6 a0 a0 a9 a9 bd bd 98 18 3a ba 93 93 b9 b9 af af b3 33 1a 9a b6 b6 99 99 af 2f 37 b7 98 98 b3 33 34 34 3a ba af 2f 3a 3a 18 18 37 b7 98 98 b3 33 34 34 3a ba af af af af af af be 3e 00 00 00 a0 e1 7a d1 02 c0 bb 20 04 40 d3 62 e8"
 >>> packet_data = packet_data.split(" ")
 >>> flag = [rotateBits(byte) for byte in packet_data]
@@ -191,8 +187,7 @@ Now reversing the rotation by going clockwise for the whole packet data starting
 >>> flag = [chr(x) for x in flag]
 >>> flag
 ['X', 'Y', '-', '-', 'M', 'M', 'A', 'A', 'S', 'S', '{', '{', '1', '0', 't', 'u', "'", "'", 's', 's', '_', '_', 'g', 'f', '4', '5', 'm', 'm', '3', '3', '_', '^', 'n', 'o', '1', '1', 'g', 'f', 'h', 'h', 't', 'u', '_', '^', 't', 't', '0', '0', 'n', 'o', '1', '1', 'g', 'f', 'h', 'h', 't', 'u', '_', '_', '_', '_', '_', '_', '}', '|', '\x00', '\x00', '\x00', 'A', 'Ã', 'ô', '£', '\x04', '\x81', 'w', '@', '\x08', '\x80', '§', 'Ä', 'Ñ']
->>> flag = "".join(flag)[::2]
->>> flag
+>>> "".join(flag[::2])
 "X-MAS{1t's_g4m3_n1ght_t0n1ght___}\x00\x00Ã£\x81@\x80Ä"
 ```
 
