@@ -11,7 +11,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 
 ## ENVIRONMENT
 
-<table>
+<div style="overflow-x:auto"><table>
 <tr>
 	<td><strong>ELASTICSEARCH</strong></td>
 	<td><a href="https://www.elastic.co/downloads/past-releases/elasticsearch-7-4-0">v7.4.0</a></td>
@@ -24,7 +24,7 @@ tags: [elastalert, elasticsearch, rule, rules, test, aggregation]
 	<td><strong>OPERATING SYSTEM</strong></td>
 	<td>Linux (in this case: Ubuntu 18.04)</td>
 </tr>
-</table>
+</table></div>
 
 ---
 
@@ -213,35 +213,35 @@ required arguments:
 ```shell
 (v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected expected.json
 ```
-```
-[+] RUNNING test_1 :
-    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
-    [+] TEST ( test_1 ) PASSED
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color:#779ECB">[+] RUNNING test_1 :</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
+    <span style="color:green">[+] TEST ( test_1 ) PASSED</span>
 
-[+] RUNNING test_2 :
-    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
-    [+] TEST ( test_2 ) PASSED
+<span style="color:#779ECB">[+] RUNNING test_2 :</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
+    <span style="color:green">[+] TEST ( test_2 ) PASSED</span>
 
-[+] RUNNING test_3 :
-    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
-    [+] TEST ( test_3 ) FAILED
+<span style="color:#779ECB">[+] RUNNING test_3 :</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
+    <span style="color:red">[+] TEST ( test_3 ) FAILED</span>
 
-[+] RUNNING test_4 :
-    [+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )
-        [ERROR] "test_file" IS NOT A VALID JSON FILE.
-        [ERROR] "test_file.json" IS NOT A VALID LOG FILE.
-    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
-    [+] TEST ( test_4 ) FAILED
+<span style="color:#779ECB">[+] RUNNING test_4 :</span>
+    <span style="color:orange">[+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )</span>
+        <span style="color:red">[ERROR] "test_file" IS NOT A VALID JSON FILE.</span>
+        <span style="color:red">[ERROR] "test_file.json" IS NOT A VALID LOG FILE.</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
+    <span style="color:red">[+] TEST ( test_4 ) FAILED</span>
 
-[+] RUNNING test_agg_1 :
-    [+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )
-    [+] TEST ( test_agg_1 ) FAILED
+<span style="color:#779ECB">[+] RUNNING test_agg_1 :</span>
+    <span style="color:orange">[+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )</span>
+    <span style="color:red">[+] TEST ( test_agg_1 ) FAILED</span>
 
-[+] RUNNING test_agg_02 :
-    [+] TEST ( test_agg_2 ) WAS DISABLED
+<span style="color:#779ECB">[+] RUNNING test_agg_02 :</span>
+    <span style="color:orange">[+] TEST ( test_agg_2 ) WAS DISABLED</span>
 
 
-[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json
+<span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
+
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
@@ -250,15 +250,15 @@ required arguments:
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
     │ test_2     │ PASSED   │                                                             │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_3     │ FAILED   │ > 1 LOG(S) MATCHED: log001.json                             │
+    │ test_3     │ FAILED   │ &gt; 1 LOG(S) MATCHED: log001.json                             │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_4     │ FAILED   │ > 7 LOG(S) DID NOT MATCH: agg_log001.json, agg_log002.json, │
+    │ test_4     │ FAILED   │ &gt; 7 LOG(S) DID NOT MATCH: agg_log001.json, agg_log002.json, │
     │            │          │   agg_log003.json, agg_log004.json, agg_log005.json,        │
     │            │          │   log001.json, log003.json                                  │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_agg_1 │ FAILED   │ > HITS (5) EXCEEDED THE THRESHOLD                           │
+    │ test_agg_1 │ FAILED   │ &gt; HITS (5) EXCEEDED THE THRESHOLD                           │
     ╘════════════╧══════════╧═════════════════════════════════════════════════════════════╛
-```
+</code></pre></div></div>
 
 ### mappings (__`--mappings`__)
 
@@ -278,35 +278,35 @@ required arguments:
 ```shell
 (v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected expected.json --mappings mappings.json
 ```
-```
-[+] RUNNING test_1 :
-    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
-    [+] TEST ( test_1 ) PASSED
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color:#779ECB">[+] RUNNING test_1 :</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
+    <span style="color:green">[+] TEST ( test_1 ) PASSED</span>
 
-[+] RUNNING test_2 :
-    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
-    [+] TEST ( test_2 ) PASSED
+<span style="color:#779ECB">[+] RUNNING test_2 :</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
+    <span style="color:green">[+] TEST ( test_2 ) PASSED</span>
 
-[+] RUNNING test_3 :
-    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
-    [+] TEST ( test_3 ) FAILED
+<span style="color:#779ECB">[+] RUNNING test_3 :</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
+    <span style="color:red">[+] TEST ( test_3 ) FAILED</span>
 
-[+] RUNNING test_4 :
-    [+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )
-        [ERROR] "test_file" IS NOT A VALID JSON FILE.
-        [ERROR] "test_file.json" IS NOT A VALID LOG FILE.
-    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
-    [+] TEST ( test_4 ) FAILED
+<span style="color:#779ECB">[+] RUNNING test_4 :</span>
+    <span style="color:orange">[+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )</span>
+        <span style="color:red">[ERROR] "test_file" IS NOT A VALID JSON FILE.</span>
+        <span style="color:red">[ERROR] "test_file.json" IS NOT A VALID LOG FILE.</span>
+    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
+    <span style="color:red">[+] TEST ( test_4 ) FAILED</span>
 
-[+] RUNNING test_agg_1 :
-    [+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )
-    [+] TEST ( test_agg_1 ) FAILED
+<span style="color:#779ECB">[+] RUNNING test_agg_1 :</span>
+    <span style="color:orange">[+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )</span>
+    <span style="color:red">[+] TEST ( test_agg_1 ) FAILED</span>
 
-[+] RUNNING test_agg_02 :
-    [+] TEST ( test_agg_2 ) WAS DISABLED
+<span style="color:#779ECB">[+] RUNNING test_agg_02 :</span>
+    <span style="color:orange">[+] TEST ( test_agg_2 ) WAS DISABLED</span>
 
 
-[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json
+<span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
+
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
@@ -315,69 +315,68 @@ required arguments:
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
     │ test_2     │ PASSED   │                                                             │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_3     │ FAILED   │ > 1 LOG(S) MATCHED: log001.json                             │
+    │ test_3     │ FAILED   │ &gt; 1 LOG(S) MATCHED: log001.json                             │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_4     │ FAILED   │ > 7 LOG(S) DID NOT MATCH: agg_log001.json, agg_log002.json, │
+    │ test_4     │ FAILED   │ &gt; 7 LOG(S) DID NOT MATCH: agg_log001.json, agg_log002.json, │
     │            │          │   agg_log003.json, agg_log004.json, agg_log005.json,        │
     │            │          │   log001.json, log003.json                                  │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_agg_1 │ FAILED   │ > HITS (5) EXCEEDED THE THRESHOLD                           │
+    │ test_agg_1 │ FAILED   │ &gt; HITS (5) EXCEEDED THE THRESHOLD                           │
     ╘════════════╧══════════╧═════════════════════════════════════════════════════════════╛
-```
+</code></pre></div></div>
 
 ### verbose (__`--verbose`__)
 ```shell
 (v_env) $ python elastalerter.py --logs ./logs --rules ./rules --expected ./expected.json --verbose
 ```
-```
-[+] RUNNING test_1 :
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span style="color:#779ECB">[+] RUNNING test_1 :</span>
     [+] A NEW INDEX ( test_1 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
+    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    [+] TEST ( test_1 ) PASSED
+    <span style="color:green">[+] TEST ( test_1 ) PASSED</span>
 
-[+] RUNNING test_2 :
+<span style="color:#779ECB">[+] RUNNING test_2 :</span>
     [+] A NEW INDEX ( test_2 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
+    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    [+] TEST ( test_2 ) PASSED
+    <span style="color:green">[+] TEST ( test_2 ) PASSED</span>
 
-[+] RUNNING test_3 :
+<span style="color:#779ECB">[+] RUNNING test_3 :</span>
     [+] A NEW INDEX ( test_3 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    [+] TESTING RULE -- RULE01 ( ./rule01.yaml )
+    <span style="color:orange">[+] TESTING RULE -- RULE01 ( ./rule01.yaml )</span>
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    [+] TEST ( test_3 ) FAILED
+    <span style="color:red">[+] TEST ( test_3 ) FAILED</span>
 
-[+] RUNNING test_4 :
+<span style="color:#779ECB">[+] RUNNING test_4 :</span>
     [+] A NEW INDEX ( test_4 ) WAS CREATED
-    [+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )
-        [ERROR] "test_file" IS NOT A VALID JSON FILE.
-        [ERROR] "test_file.json" IS NOT A VALID LOG FILE.
+    <span style="color:orange">[+] SPECIFIED LOGS IS A DIRECTORY ( ./logs )</span>
+        <span style="color:red">[ERROR] "test_file" IS NOT A VALID JSON FILE.</span>
+        <span style="color:red">[ERROR] "test_file.json" IS NOT A VALID LOG FILE.</span>
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    [+] TESTING RULE -- RULE02 ( ./rule02.yaml )
+    <span style="color:orange">[+] TESTING RULE -- RULE02 ( ./rule02.yaml )</span>
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    [+] TEST ( test_4 ) FAILED
+    <span style="color:red">[+] TEST ( test_4 ) FAILED</span>
 
-[+] RUNNING test_agg_1 :
+<span style="color:#779ECB">[+] RUNNING test_agg_1 :</span>
     [+] A NEW INDEX ( test_agg_1 ) WAS CREATED
     [+] TIMESTAMP RANGE -- [2019-09-16T15:59:57 - 2019-09-16T15:59:57]
-    [+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )
+    <span style="color:orange">[+] TESTING RULE -- AGG_RULE01 ( ./agg_rule01.yaml )</span>
     [+] UPDATING RESULTS...
     [+] DELETING TEST INDEX...
-    [+] TEST ( test_agg_1 ) FAILED
+    <span style="color:red">[+] TEST ( test_agg_1 ) FAILED</span>
 
-[+] RUNNING test_agg_02 :
-    [+] TEST ( test_agg_2 ) WAS DISABLED
+<span style="color:#779ECB">[+] RUNNING test_agg_02 :</span>
+    <span style="color:orange">[+] TEST ( test_agg_2 ) WAS DISABLED</span>
 
 
-[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json
+<span style="color:orange">[+] RESULTS WERE OUTPUT TO CURRENT_WORKING_DIRECTORY/results.json</span>
 
     ╒════════════╤══════════╤═════════════════════════════════════════════════════════════╕
     │ TestID     │ RESULT   │ MESSAGE                                                     │
@@ -386,12 +385,12 @@ required arguments:
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
     │ test_2     │ PASSED   │                                                             │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_3     │ FAILED   │ > 1 LOG(S) MATCHED: log001.json                             │
+    │ test_3     │ FAILED   │ &gt; 1 LOG(S) MATCHED: log001.json                             │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_4     │ FAILED   │ > 7 LOG(S) DID NOT MATCH: agg_log001.json, agg_log002.json, │
+    │ test_4     │ FAILED   │ &gt; 7 LOG(S) DID NOT MATCH: agg_log001.json, agg_log002.json, │
     │            │          │   agg_log003.json, agg_log004.json, agg_log005.json,        │
     │            │          │   log001.json, log003.json                                  │
     ├────────────┼──────────┼─────────────────────────────────────────────────────────────┤
-    │ test_agg_1 │ FAILED   │ > HITS (5) EXCEEDED THE THRESHOLD                           │
+    │ test_agg_1 │ FAILED   │ &gt; HITS (5) EXCEEDED THE THRESHOLD                           │
     ╘════════════╧══════════╧═════════════════════════════════════════════════════════════╛
-```
+</code></pre></div></div>
