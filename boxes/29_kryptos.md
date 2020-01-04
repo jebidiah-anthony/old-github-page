@@ -25,110 +25,107 @@ tags: [hackthebox, htb, boot2root, writeup, write-up, linux, php, pdo, pdo objec
 ## PART 1 : INITIAL RECON
 
 ```console
-nmap --min-rate 700 -p- -v 10.10.10.129
-```
-```
-PORT   STATE SERVICE
-22/tcp open  ssh
-80/tcp open  http
-```
-```console
-nmap -oN kryptos.nmap -p 22,80 -sC -sV -v 10.10.10.129
-```
-```
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
-|   2048 2c:b3:7e:10:fa:91:f3:6c:4a:cc:d7:f4:88:0f:08:90 (RSA)
-|   256 0c:cd:47:2b:96:a2:50:5e:99:bf:bd:d0:de:05:5d:ed (ECDSA)
-|_  256 e6:5a:cb:c8:dc:be:06:04:cf:db:3a:96:e7:5a:d5:aa (ED25519)
-80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
-| http-cookie-flags: 
-|   /: 
-|     PHPSESSID: 
-|_      httponly flag not set
-| http-methods: 
-|_  Supported Methods: GET HEAD POST OPTIONS
-|_http-server-header: Apache/2.4.29 (Ubuntu)
-|_http-title: Cryptor Login
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+$ nmap --min-rate 700 -p- -v 10.10.10.129
+
+  PORT   STATE SERVICE
+  22/tcp open  ssh
+  80/tcp open  http
+
+$ nmap -oN kryptos.nmap -p 22,80 -sC -sV -v 10.10.10.129
+
+  PORT   STATE SERVICE VERSION
+  22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+  | ssh-hostkey: 
+  |   2048 2c:b3:7e:10:fa:91:f3:6c:4a:cc:d7:f4:88:0f:08:90 (RSA)
+  |   256 0c:cd:47:2b:96:a2:50:5e:99:bf:bd:d0:de:05:5d:ed (ECDSA)
+  |_  256 e6:5a:cb:c8:dc:be:06:04:cf:db:3a:96:e7:5a:d5:aa (ED25519)
+  80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+  | http-cookie-flags: 
+  |   /: 
+  |     PHPSESSID: 
+  |_      httponly flag not set
+  | http-methods: 
+  |_  Supported Methods: GET HEAD POST OPTIONS
+  |_http-server-header: Apache/2.4.29 (Ubuntu)
+  |_http-title: Cryptor Login
+  Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
 ```
 
 ---
 
 ## PART 2 : PORT ENUMERATION
 
-1. HTTP service at __port 80__:
-   - Landing Page:
+### TCP PORT 80
 
-     ![http://10.10.10.129](./screenshots/29_kryptos/80_landing_page.png)
+Opening __`http://10.10.10.129/`__ on your browser leads you to:
 
-   - Page Source:
+![http://10.10.10.129](./screenshots/29_kryptos/80_landing_page.png)
 
-     ```html
-     <html>
-     <head>
-       <title>Cryptor Login</title>
-       <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-     </head>
-     <body>
-       <div class="container-fluid">
-         <div class="container">
-           <h2>Cryptor Login</h2>
-           <form action="" method="post">
-             <div class="form-group">
-               <label for="Username">Username:</label>
-               <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
-             </div>
-             <div class="form-group">
-               <label for="password">Password:</label>
-               <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
-             </div>
-             <input type="hidden" id="db" name="db" value="cryptor">
-             <input type="hidden" name="token" value="42517f1f6b8abed04777dcdcbe2970ec04829ff65580e029e0f85d58ca4c1148" />
-             <button type="submit" class="btn btn-primary" name="login">Submit</button>
-           </form>
-         </div>
-     </body>
-     </html>
-     ```
-     __NOTE(S)__:
-     1. There are two hidden values -- `db` and `token`:
-        - Fuzzing the `db` parameter returns __PDOException code: 1044__.
-        - The `token` value is not reusable and should be renewed every legitimate request.
-     2. `PDOException code: 1044` -- __*Access denied for user...*__:
-        - __ASSUMPTION:__ It is returned when connecting to a non-existent database.
-     3. __PDO__ stand for __*PHP Data Objects*__:
-        - This grants PHP access to various databases.
-        - The object constructor is as follows:
-          ```php
-          # public PDO::__construct ( string $dsn [, string $username [, string $passwd [, array $options ]]] )   
+It contains a login form and examining how the login works reveals that:
+
+```html
+<html>
+  <head>
+    <title>Cryptor Login</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <h2>Cryptor Login</h2>
+        <form action="" method="post">
+          <div class="form-group">
+            <label for="Username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+          </div>
+          <input type="hidden" id="db" name="db" value="cryptor">
+          <input type="hidden" name="token" value="42517f1f6b8abed04777dcdcbe2970ec04829ff65580e029e0f85d58ca4c1148" />
+          <button type="submit" class="btn btn-primary" name="login">Submit</button>
+        </form>
+      </div>
+  </body>
+</html>
+```
+
+There are two hidden values, __`db`__ and __`token`__, and fuzzing the __`db`__ parameter returns __`PDOException code: 1044`__. Also, the __`token`__ value is not reusable and should be renewed every legitimate request.
+
+<span style="color:orange">__PDO__ (__*PHP Data Objects*__)</span> grants PHP access to various databases and its object contructor is as follows:
+
+```php
+# public PDO::__construct ( string $dsn [, string $username [, string $passwd [, array $options ]]] )   
          
-          new PDO($dsn, $user, $password);
-          ```
-   - `gobuster`:
-     ```console
-     gobuster dir -u http://10.10.10.129/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,txt
+new PDO($dsn, $user, $password);
+```
 
-     # ===============================================================
-     # Gobuster v3.0.1
-     # by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
-     # ===============================================================
-     # ...omitted...
-     # /index.php (Status: 200)
-     # /css (Status: 301)
-     # /dev (Status: 403)
-     # /logout.php (Status: 302)
-     # /url.php (Status: 200)
-     # /aes.php (Status: 200)
-     # /encrypt.php (Status: 302)
-     # /rc4.php (Status: 200)   
-     ```
-     __NOTE(S)__:
-     1. Opening `url.php`, `aes.php`, and `rc4.php` leads to empty pages.
-        - They might be php files called inside `/encrypt.php`
-     2. `/encrypt.php` might need an authenticated session in order to access
-     3. `/dev` is a forbidden directory
+__`PDOException code: 1044`__ refers to "<strong style="color:red">Access denied for user...</strong>" and I assume that it is returned when connecting to a non-existent database.
+
+I also ran __`gobuster`__ on the web application:
+
+```console
+$ gobuster dir -u http://10.10.10.129/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,txt
+
+  ===============================================================
+  Gobuster v3.0.1
+  by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
+  ===============================================================
+  ...omitted...
+  /index.php (Status: 200)
+  /css (Status: 301)
+  /dev (Status: 403)
+  /logout.php (Status: 302)
+  /url.php (Status: 200)
+  /aes.php (Status: 200)
+  /encrypt.php (Status: 302)
+  /rc4.php (Status: 200)
+
+```
+
+A forbidden directory is found (__`/dev/`__ and opening `url.php`, `aes.php`, and `rc4.php` leads to empty pages so they might be php files included inside __`/encrypt.php`__
 
 ---
 
@@ -136,15 +133,18 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ### __PORT 80 (Login Page)__
 
-1. What is a __Data Source Name (DSN)__?
-   - Supplying a __DSN__ is required in creating a PDO instance.
-   - The contents of the __DSN__ depends on what database is used.
-     - __ASSUMPTION:__ The database in use is __MySQL__
-     - The DSN format for the __PDO_MYSQL__ is as follows:
-       ```php
-       $dsn = "mysql:dbname=testdb;port=3306;host=localhost";
-       ```
-       - Supplying the `port` is optional (defaults to 3306).
+What is a __Data Source Name (DSN)__?
+> Supplying a __DSN__ is required in creating a PDO instance.
+>
+> The contents of the __DSN__ depends on what database is used.
+
+Assuming that the database in use is __MySQL__, then the DSN format for the __PDO_MYSQL__ is as follows:
+       
+```php      
+$dsn = "mysql:dbname=testdb;port=3306;host=localhost";       
+```
+
+Supplying the `port` is optional (defaults to 3306).
    - `$dsn` when passed to a PDO constructor is a string.
      - All strings in PHP, if unsanitized, are vulnerable to injection when affected by user input.
 
