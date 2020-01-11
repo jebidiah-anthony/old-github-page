@@ -6,7 +6,7 @@ header-img: htb.png
 tags: [ctf, capture the flag, challenges, challenge write ups, write-ups, writeups, write-up, writeup, htb, hackthebox, solutions]
 challenges_for: [
   [Keep Tryin', Keep_Tryin.html, 50 pts, Medium, orange, "Apr 25, 2018", "Oct 27, 2019"],  
-  [Marshal in the Middle, "", 40 pts, Medium, orange, "Sep 01, 2017", "Active"],
+  [Marshal in the Middle, "Marshal_in_the_Middle.html", 40 pts, Medium, orange, "Sep 01, 2017", "Jan 10, 2020"],
   [Deadly Arthropod, "", 40 pts, Medium, orange, "Oct 26, 2017", "Active"],
   [Reminiscent, "", 40 pts, Medium, orange, "Oct 26, 2017", "Active"], 
   [Blue Shadow, "", 60 pts, Medium, orange, "May 28, 2018", "Active"], 

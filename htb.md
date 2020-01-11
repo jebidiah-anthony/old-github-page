@@ -5,7 +5,7 @@ description: "Retired HackTheBox Machine Write-ups"
 header-img: "chals/htb/htb.png"
 tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe, jebidiah-anthony, jebidiah, pentest, pentesting, penetration testing]
 boxes: [
-    [Bitlab, "", "", orange, Linux, 10.10.10.110, 30 pts, Active],
+    [Bitlab, "POST-MERGE METHOD", "./boxes/38_Bitlab.html", orange, Linux, 10.10.10.110, 30 pts, "Jan 12, 2020"],
     [Craft, "", "", orange, Linux, 10.10.10.114, 30 pts, "Jan 05, 2020"],
     [Networked, "", "", green, Linux, 10.10.10.146, 20 pts, "Nov 16, 2019"],
     [Jarvis, "", "", orange, Linux, 10.10.10.143, 30 pts, "Nov 09, 2019"],
