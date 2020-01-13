@@ -56,23 +56,28 @@ boxes: [
       <td><strong style="text-decoration:underline">BOX NAME</strong></td>
       <td><strong style="text-decoration:underline">OS</strong></td>
       <td><strong style="text-decoration:underline">MACHINE IP</strong></td>
-      <td><strong style="text-decoration:underline">BASE POINTS</strong></td>
       <td><strong style="text-decoration:underline">RETIRED</strong></td>
     </tr>
-    {% for box in page.boxes %}
+    {% for box in page.boxes %}{% if box[2] != "" %}
     <tr>
-      <td>
-      {% if box[2] == "" %}
-        {{ box[0] }}
-      {% else %}
-        <a href="{{ box[2] }}">{{ box[0] }}</a> {% if box[1] != "" %}({{ box[1] }}){% endif %}
-      {% endif %}
-      </td>
+      <td><a href="{{ box[2] }}">{{ box[0] }}</a> {% if box[1] != "" %}({{box[1]}}){% endif %}</td>
       <td><span style="color:{{ box[3] }}">{{ box[4] }}</span></td>
       <td><span style="color:{{ box[3] }}">{{ box[5] }}</span></td>
-      <td><span style="color:{{ box[3] }}">{{ box[6] }}</span></td>
       <td>{{ box[7] }}</td>
     </tr>
-    {% endfor %}
+    {% endif %}{% endfor %}
+    {% for box in page.boxes %}{% if box[2] == "" %}
+    <tr>
+      <td>{{ box[0] }} {% if box[1] != "" %}({{box[1]}}){% endif %}</td>
+      <td><span style="color:{{ box[3] }}">{{ box[4] }}</span></td>
+      <td><span style="color:{{ box[3] }}">{{ box[5] }}</span></td>
+      <td>{{ box[7] }}</td>
+    </tr>
+    {% endif %}{% endfor %}
   </table>
 </div>
+
+---
+
+### LEGEND : <strong style="color:green">EASY (20 pts)</strong> | <strong style="color:orange">MEDIUM (30 pts)</strong> | <strong style="color:red">HARD (40 pts)</strong> | <strong style="color:white">INSANE (50 pts)</strong>
+
