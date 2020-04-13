@@ -1,0 +1,15 @@
+---
+layout: menu
+title: "Space Challenge"
+description: ""
+header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, space]
+---
+
+:imagesdir: ./screenshots/
+:stem: latexmath
+:page-liquid:
+
++++<span><h1 style="color:red">Space Challenge</h1></span>+++
+
+---

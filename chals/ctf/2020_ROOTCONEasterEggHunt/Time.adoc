@@ -1,0 +1,169 @@
+---
+layout: menu
+title: "Time Challenge"
+description: "These cryptic messages seem to have some similarities. Perhaps the same key was used? Although it is naught but a guess of mine, pray do help in figuring it out. "
+header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, time, one time pad, one-time-pad, key reuse, key-reuse, stream cipher, stream-cipher, xor]
+---
+
+:imagesdir: ./screenshots/
+:stem: latexmath
+:page-liquid:
+
++++<span><h1 style="color:red">Time Challenge</h1></span>+++
+
+---
+
+== PART 1 : CHALLENGE DESCRIPTION
+
+Opening the http://easteregg.rootcon.net/rceaster/time/[challenge] brings you to:
+
+image::time_home.png[]
+
+which reads the following: 
+
+----
+I think someone stole the eggs here.
+They were pretty messy. Leaving these crumbs everywhere.
+I gathered them for you to compare adventurer. Go forth. Hydaelyn awaits for you valiant success 
+in uncovering the secrets of these "eggs" that have spawned on the Second Umbral Moon of our time.
+
+
+Urianger's Notes: 
+
+These cryptic messages seem to have some similarities. Perhaps the same key was used? 
+Although it is naught but a guess of mine, pray do help in figuring it out.
+
+Message 1: 83d7f7966225c71b556cfd1fa28aa1cb364903c74bfad82400a5b8326ebf110cf610Q
+Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2 
+----
+
+---
+
+== PART 2 : IDENTIFYING THE CIPHER
+
+We are given two ciphertexts with lengths *68* and *66* (as hex characters) respectively. Since it has different lengths, I dropped the assumption that it was encrypted using a block cipher which also removes substitution-permutation. Also with the limited given, it doesn't seem to involve assymetric cryptography and based on the randomness of each character byte, it doesn't look like a direct substitution either.
+
+What was said, however, was that +++<strong style="color:orange">the same key was perhaps used to encrypt</strong>+++ both ciphertexts and the arbitrary lengths led me to believe that the plaintext was hidden using a repeated XOR key or maybe +++<strong>a One Time Pad which coincides well with the challenge theme</strong>+++.
+
+Other things:
+
+* There is a *`Q`* character at the end of *`Message1`* but I found it quite irrelevant. 
+* I couldn't find a cipher that ends with a *`Q`*.
+* Counting it with the ciphertext brings the length to an odd number so I dropped it.
+
+---
+
+== PART 3 : GETTING THE FLAG
+
+If this is ineed a +++<span style="color:orange">One Time Pad</span>+++ and the key was reused for both ciphertexts, then it may be decrypted via a +++<span style="color:red">Crib Dragging</span>+++ attack.
+
++++<strong style="color:red">Crib Dragging</strong>+++
+____
+It is where you decrypt a ciphertext by XORing a known portion of the plaintext then shifting it right until another likely plaintext string is revealed.
+____
+
+With *One Time Pads*,The ciphertext (latexmath:[Ciphertext_n]) is produced by XORing (latexmath:[\oplus]) the plaintext (latexmath:[Message_n]) and the key (latexmath:[K]) where the key and plaintext has the same length.
+____
+
+. +++<span style="color:orange">+++ latexmath:[Ciphertext_1 = Message_1 \oplus K] +++</span>+++
+
+. +++<span style="color:orange">+++ latexmath:[Ciphertext_2 = Message_2 \oplus K] +++</span>+++
+____
+
+
+How does this help with the attack?
+____
+Consider this: 
+
+. +++<span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2] +++</span>+++
+
+By substituting values, we get:
+
+[start=2]
+. +++<span style="color:orange">+++ latexmath:[(Message_1 \oplus K) \oplus (Message_2 \oplus K)] +++</span>+++
+
+And since the key (latexmath:[K]) is reused for both messages:
+
+[start=3]
+. +++<span style="color:orange">+++ latexmath:[Message_1 \oplus Message_2] +++</span>+++
+
+If *latexmath:[Ciphertext_1 \oplus Ciphertext_2 = (Message_1 \oplus K) \oplus (Message_2 \oplus K)]*, then:
+
+[start=4]
+. +++<span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2 = Message_1 \oplus Message_2] +++</span>+++
+
+Which also means that:
+
+[start=5]
+. +++<span style="color:orange">+++ latexmath:[(Ciphertext_1 \oplus Ciphertext_2) \oplus Message_1 = Message_2] +++</span>+++
+____
+
+Proceeding to the attack:
+____
+Finding the value of *latexmath:[Ciphertext_1 \oplus Ciphertext_2]*:
+
+----
+    83d7f7966225c71b556cfd1fa28aa1cb364903c74bfad82400a5b8326ebf110cf610
+XOR 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2
+------------------------------------------------------------------------
+    00573c0651431a502d4e47570b506e405d02696f560b296f460a6c41045600121493
+----
+
+Now, we guess a portion of the plaintext then encode it in hex. It is advisable to use simple words first but to each their own:
+
+----
+easter => 656173746572
+----
+
+Then, XOR it with the value from *latexmath:[Ciphertext_1 \oplus Ciphertext_2]*:
+
+[subs="verbatim,quotes"]
+----
+    ##00573c065143##1a502d4e47570b506e405d02696f560b296f460a6c41045600121493
+XOR #656173746572# (easter)
+------------------------------------------------------------------------
+    #65364f723431# (e6Or41)
+----
+
+But the value returned is gibberish, so then we shift the XOR to the right:
+
+[subs="verbatim,quotes"]
+----
+    00573c##0651431a502d##4e47570b506e405d02696f560b296f460a6c41045600121493
+XOR       #656173746572# (easter)
+------------------------------------------------------------------------
+          #6330306e355f# (c00n5_)
+----
+
+Shifting three bytes to the right returns `c00n5_` which looks like a portion of the flag, now trying the flag format, c which fits well with the shift and it returns:
+
+[subs="verbatim,quotes"]
+----
+    ##00573c0651431a502d4e##47570b506e405d02696f560b296f460a6c41045600121493
+XOR #72635f6561737465727b# (rc_easter{)
+------------------------------------------------------------------------
+    #7234636330306e355f35# (r4cc00n5_5)
+----
+
+We get the word, +++<span style="color:orange">r4cc00n5</span>+++, in 1337 speak followed by what seems to be a word that starts with +++<span style="color:orange">5</span>+++ (`letter S`). According to the challenge, eggs were stolen and the image references to a *evil plotting raccoon meme* which made me try to guess the string one word at a time along the lines of +++<span style="color:red">the raccoons stole the eggs</span>+++
+
+----
+    00573c0651431a502d4e##47570b506e405d02696f560b296f460a6c41045600121493
+XOR 7234636330306e355f3574306c335f346c6c5f30665f793075725f336767352121 (r4cc00n5_5t0l3_4ll_0f_y0ur_3gg5!!)
+------------------------------------------------------------------------
+    72635f6561737465727b336767633174316e365f3054505f337833726331353335 (rc_easter{3ggc1t1n6_0TP_3x3rc1535)
+----
+
+To my surprise, the flag was revealed.
+____
+
+---
+
+== FLAG : *rc_easter{3ggc1t1n6_0TP_3x3rc1535}*
+
+
+++++
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+++++

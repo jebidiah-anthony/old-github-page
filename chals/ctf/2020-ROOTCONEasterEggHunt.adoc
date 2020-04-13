@@ -1,0 +1,63 @@
+---
+layout: menu
+title: ROOTCON Easter Egg Hunt 2020
+description: "As an Agent of Eggshield, Bonny Stark has tasked you to help aid the Avengers in collecting the Infinity Eggs from different timelines and multiverses in order to defeat Thanos the Deggstroyer once and for all. "
+header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020]
+challenges: [
+    [Time, Time.html, One Time Pad], 
+    [Space, Space.html, grep], 
+    [Power, Power.html, "OpenSSL, bruteforce"], 
+    [Reality, Reality.html, MalDoc], 
+    [Soul, Soul.html, Atlantean Alphabet], 
+    [Mind, "Mind.html", "Unicode Steganography, Memory dump"] 
+]
+---
+
+:imagesdir: ./2020_ROOTCONEasterEggHunt/screenshots/
+:page-liquid:
+
+== $ ROOTCON Easter Egg Hunt 2020
+
+---
+
+=== EVENT
+
+image::banner.png[]
+
+----
+Welcome to the ROOTCON 2020 Easter-Egg Hunt! Before anything else, please read the Background, Mechanics and Details below. 
+
+Background:
+As an Agent of Eggshield, Bonny Stark has tasked you to help aid the Avengers in collecting the Infinity Eggs from different 
+timelines and multiverses in order to defeat Thanos the Deggstroyer once and for all. 
+
+Aid him in this mission, and he'll snap the cost of your ROOTCON ticket from existence!
+----
+
+---
+
+=== DURATION
+
+*[Sun, 12 Apr 2020, 06:00 PHT - Mon, 13 Apr 2020, 06:00 PHT]*
+
+---
+
+=== CHALLENGE WRITE-UPS
+
+++++
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <td><strong style="text-decoration:underline">NAME</strong></td>
+     <td><strong style="text-decoration:underline">TAGS</strong></td>
+   </tr>
+   {% for chal in page.challenges %}
+   <tr>
+     <td><a href="./2020_ROOTCONEasterEggHunt/{{ chal[1] }}">{{ chal[0] }}</a></td>
+     <td>{{ chal[2] }}</td>
+   </tr>
+   {% endfor %}
+ </table>
+</div>
+++++

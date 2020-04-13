@@ -44,3 +44,6 @@ gem install terminal-table --version 1.8.0
 gem install unicode-display_width --version 1.6.0
 gem install w3c_validators --version 1.3.4
 gem install yell --version 2.2.0
+gem install jekyll-asciidoc
+gem install nokogiri --version 1.10.7
+gem install jekyll-sitemap --version 1.4.0
