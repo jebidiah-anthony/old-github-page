@@ -26,7 +26,7 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 
 == PART 2 : GETTING THE FLAG
 
-The dump file contains all the data received by a CAN interface and the first thing I did was to clean up all the noise:
+The dump file contains all the data received by a CAN interface and the first thing I did was to clean up some noise from the log:
 
 [source,shell]
 ----
