@@ -158,6 +158,9 @@ XOR 7234636330306e355f3574306c335f346c6c5f30665f793075725f336767352121 (r4cc00n5
 ----
 
 To my surprise, the flag was revealed.
+
+Since *`Message1`* is longer by 1 character than *`Message2`*, that missing character must be +++<span style="color:orange">}</span>+++ to complete the flag.
+
 ____
 
 ---
