@@ -164,7 +164,6 @@ ____
 
 == FLAG : *rc_easter{3ggc1t1n6_0TP_3x3rc1535}*
 
-asdfasdfasdfasdfasdfas
 ++++
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
