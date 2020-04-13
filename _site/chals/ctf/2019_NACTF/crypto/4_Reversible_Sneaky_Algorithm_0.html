@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="jebidiah-anthony">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/banner.jpg" />
+    
+
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/chals/ctf/2019_NACTF/crypto/4_Reversible_Sneaky_Algorithm_0.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/chals/ctf/2019_NACTF/crypto/4_Reversible_Sneaky_Algorithm_0.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"jebidiah-anthony","url":"https://jebidiah-anthony.github.io/chals/ctf/2019_NACTF/crypto/4_Reversible_Sneaky_Algorithm_0.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    <strong style="color:orange">ctf writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+	     <h2 style="margin-bottom:0; padding-top: 20px">[HTB CHALLENGES]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#for">
+  
+  Forensics
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#mob">
+  
+  Mobile
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#pwn">
+  
+  Pwn
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#web">
+  
+  Web
+  
+  </a>
+</div>
+
+
+             <h2 style="margin-bottom:0; padding-top:20px">[CTF EVENTS]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2020-ROOTCONEasterEggHunt.html">
+  
+  ROOTCON Easter Egg Hunt 2020
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-XMASCTF.html">
+  
+  X-MAS CTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-CyberSEAGame.html">
+  
+  Cyber SEA Game 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-NACTF.html">
+  
+  <strong style="color:orange;text-decoration:none">NACTF 2019</strong>
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TGHack.html">
+  
+  TG:Hack 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TJCTF.html">
+  
+  TJCTF 2019
+  
+  </a>
+</div>
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><h2 id="reversible-sneaky-algorithm-0"><span style="color:red">Reversible Sneaky Algorithm #0</span></h2>
+
+<h3 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Yavan sent me these really large numbers... what can they mean? He 
+sent me the cipher "c", the private key "d", and the public modulus 
+"n". I also know he converted his message to a number with ascii. 
+For example:
+
+"nactf" --&gt; \x6e61637466 --&gt; 474080310374
+
+Can you help me decrypt his cipher?
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="part-2--given-files">PART 2 : GIVEN FILES</h3>
+
+<h4 id="-rsatxt"><strong>[&gt;]</strong> <a href="./files/rsa.txt">rsa.txt</a></h4>
+
+<table>
+<tr>
+  <td>c</td>
+  <td>7597447581111665937753781070914281099248138767561231457808924842755340796976767584904483452403406793827996034815852778012984740739361969304711271790657255334745163889379518040725967970769121270606356380463906882556650693485795903105298437519246733021136433493998710761239540681944709850299154477898517149127</td>
+</tr>
+<tr>
+  <td>n</td>
+  <td>140971369982728290584003929856637011308685429687969594429997821710108459830116393789723684079062708514036299475509430542212659734507429142853158004794834935174746493412962154796160975546005828130717579132438781804174244070129160649779404165370266408790722528108474736698480388956217393838955462967989235557729</td>
+</tr>
+<tr>
+  <td>d</td>
+  <td>3210396717872682205420233842120187670754123682946955455494937957220148561826887372494355836977601850209792589944578254791223196877372140862540829182847721214418314564429696694983379689813325142035328881707722441498876726169675843996078221651180111278667814216844121752144791638682520989591783787929482763483</td>
+</tr>
+</table>
+
+<hr />
+
+<h3 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h3>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># n = p*q
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">140971369982728290584003929856637011308685429687969594429997821710108459830116393789723684079062708514036299475509430542212659734507429142853158004794834935174746493412962154796160975546005828130717579132438781804174244070129160649779404165370266408790722528108474736698480388956217393838955462967989235557729</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># phi = (p-1)*(q-1) 
+</span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># d = inverse(exponent, phi) 
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">3210396717872682205420233842120187670754123682946955455494937957220148561826887372494355836977601850209792589944578254791223196877372140862540829182847721214418314564429696694983379689813325142035328881707722441498876726169675843996078221651180111278667814216844121752144791638682520989591783787929482763483</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># ciphertext 
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">7597447581111665937753781070914281099248138767561231457808924842755340796976767584904483452403406793827996034815852778012984740739361969304711271790657255334745163889379518040725967970769121270606356380463906882556650693485795903105298437519246733021136433493998710761239540681944709850299154477898517149127</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">unhexlify</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">plaintext</span> <span class="o">=</span> <span class="n">unhexlify</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">plaintext</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+<span class="n">nactf</span><span class="p">{</span><span class="n">w3lc0me_t0_numb3r_th30ry</span><span class="p">}</span>
+</code></pre></div></div>
+<p><strong>NOTE(S)</strong>:</p>
+<ol>
+  <li><strong><code class="highlighter-rouge">python3</code></strong> handles large numbers very well compared to <strong><code class="highlighter-rouge">python2</code></strong>.</li>
+  <li>All the values required for decryption are already given.</li>
+  <li>The implementation of the decryption is all that’s left.</li>
+</ol>
+
+<hr />
+
+<h2 id="flag--nactfw3lc0me_t0_numb3r_th30ry">FLAG : <strong>nactf{w3lc0me_t0_numb3r_th30ry}</strong></h2>
+</section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

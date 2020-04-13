@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="ctf" />
+    
+    <meta property="article:tag" content="capture the flag" />
+    
+    <meta property="article:tag" content="challenges" />
+    
+    <meta property="article:tag" content="challenge write ups" />
+    
+    <meta property="article:tag" content="write-ups" />
+    
+    <meta property="article:tag" content="writeups" />
+    
+    <meta property="article:tag" content="write-up" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="solutions" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB CHALLENGES">
+    <meta name="twitter:description" content="Retired HackTheBox challenge write-ups">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/htb.png" />
+    
+
+    
+    <meta property="og:title" content="HTB CHALLENGES" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB CHALLENGES | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB CHALLENGES" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Retired HackTheBox challenge write-ups" />
+<meta property="og:description" content="Retired HackTheBox challenge write-ups" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/chals/htb/challenges.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/chals/htb/challenges.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"HTB CHALLENGES","url":"https://jebidiah-anthony.github.io/chals/htb/challenges.html","description":"Retired HackTheBox challenge write-ups","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    <strong style="color:orange">ctf writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+	     <h2 style="margin-bottom:0; padding-top: 20px">[HTB CHALLENGES]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#for">
+  
+  Forensics
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#mob">
+  
+  Mobile
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#pwn">
+  
+  Pwn
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#web">
+  
+  Web
+  
+  </a>
+</div>
+
+
+             <h2 style="margin-bottom:0; padding-top:20px">[CTF EVENTS]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2020-ROOTCONEasterEggHunt.html">
+  
+  ROOTCON Easter Egg Hunt 2020
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-XMASCTF.html">
+  
+  X-MAS CTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-CyberSEAGame.html">
+  
+  Cyber SEA Game 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-NACTF.html">
+  
+  NACTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TGHack.html">
+  
+  TG:Hack 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TJCTF.html">
+  
+  TJCTF 2019
+  
+  </a>
+</div>
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><h2 id="-htb-retired-challenges"><span id="for" style="color:red">$ htb retired challenges</span></h2>
+
+<hr />
+
+<div style="overflow-x:auto">
+ <table>
+   <tr>
+     <td><strong style="text-decoration:underline">CHALLENGE NAME</strong></td>
+     <td><strong style="text-decoration:underline">CATEGORY</strong></td>
+     <td><strong style="text-decoration:underline">POINTS</strong></td>
+     <td><strong style="text-decoration:underline">DIFFICULTY</strong></td>
+     <td><strong style="text-decoration:underline">RELEASED</strong></td>
+     <td><strong style="text-decoration:underline">RETIRED</strong></td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         <a href="./for/Keep_Tryin.html">Keep Tryin'</a>
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:orange">50 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Apr 25, 2018</td>
+     <td>Oct 27, 2019</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         <a href="./for/Marshal_in_the_Middle.html">Marshal in the Middle</a>
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Sep 01, 2017</td>
+     <td>Jan 10, 2020</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Deadly Arthropod
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Oct 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Reminiscent
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Oct 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Blue Shadow
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:orange">60 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>May 28, 2018</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         MarketDump
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:orange">30 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>May 16, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Took the Byte
+       
+     </td>
+     <td><span>Forensics</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jun 30, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr><td colspan="6" id="mob"></td></tr>
+   <tr><td colspan="6" style="border-top:1px dashed #eaeaea"></td></tr>
+   
+   <tr>
+     <td>
+       
+         Cryptohorrific
+       
+     </td>
+     <td><span>Mobile</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Jun 20, 2018</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr><td colspan="6" id="pwn"></td></tr>
+   <tr><td colspan="6" style="border-top:1px dashed #eaeaea"></td></tr>
+   
+   <tr>
+     <td>
+       
+         Ropme
+       
+     </td>
+     <td><span>Pwn</span></td>
+     <td><span style="color:red">80 pts</span></td>
+     <td><span style="color:red">Hard</span></td>
+     <td>Jul 08, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Little Tommy
+       
+     </td>
+     <td><span>Pwn</span></td>
+     <td><span style="color:orange">40 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Sep 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Old Bridge
+       
+     </td>
+     <td><span>Pwn</span></td>
+     <td><span style="color:red">80 pts</span></td>
+     <td><span style="color:red">Hard</span></td>
+     <td>Apr 25, 2018</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         ropmev2
+       
+     </td>
+     <td><span>Pwn</span></td>
+     <td><span style="color:red">40 pts</span></td>
+     <td><span style="color:red">Hard</span></td>
+     <td>Jul 10, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr><td colspan="6" id="web"></td></tr>
+   <tr><td colspan="6" style="border-top:1px dashed #eaeaea"></td></tr>
+   
+   <tr>
+     <td>
+       
+         <a href="./web/HDC.html">HDC</a>
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:green">30 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 10, 2017</td>
+     <td>Jul 31, 2019</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         I know Mag1k
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:orange">50 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Jul 12, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Grammar
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:red">70 pts</span></td>
+     <td><span style="color:red">Hard</span></td>
+     <td>Jul 22, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Lernaean
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 26, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Cartographer
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:green">30 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Aug 31, 2017</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Emdee five for life
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>May 21, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         Fuzzy
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:green">20 pts</span></td>
+     <td><span style="color:green">Easy</span></td>
+     <td>Jul 05, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+   <tr>
+     <td>
+       
+         FreeLancer
+       
+     </td>
+     <td><span>Web</span></td>
+     <td><span style="color:orange">30 pts</span></td>
+     <td><span style="color:orange">Medium</span></td>
+     <td>Jul 31, 2019</td>
+     <td>Active</td>
+   </tr>
+   
+ </table>
+</div>
+</section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

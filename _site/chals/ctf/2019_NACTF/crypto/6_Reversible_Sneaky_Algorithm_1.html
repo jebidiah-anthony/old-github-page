@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="jebidiah-anthony">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/banner.jpg" />
+    
+
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/chals/ctf/2019_NACTF/crypto/6_Reversible_Sneaky_Algorithm_1.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/chals/ctf/2019_NACTF/crypto/6_Reversible_Sneaky_Algorithm_1.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"jebidiah-anthony","url":"https://jebidiah-anthony.github.io/chals/ctf/2019_NACTF/crypto/6_Reversible_Sneaky_Algorithm_1.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    <strong style="color:orange">ctf writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+	     <h2 style="margin-bottom:0; padding-top: 20px">[HTB CHALLENGES]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#for">
+  
+  Forensics
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#mob">
+  
+  Mobile
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#pwn">
+  
+  Pwn
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#web">
+  
+  Web
+  
+  </a>
+</div>
+
+
+             <h2 style="margin-bottom:0; padding-top:20px">[CTF EVENTS]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2020-ROOTCONEasterEggHunt.html">
+  
+  ROOTCON Easter Egg Hunt 2020
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-XMASCTF.html">
+  
+  X-MAS CTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-CyberSEAGame.html">
+  
+  Cyber SEA Game 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-NACTF.html">
+  
+  <strong style="color:orange;text-decoration:none">NACTF 2019</strong>
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TGHack.html">
+  
+  TG:Hack 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TJCTF.html">
+  
+  TJCTF 2019
+  
+  </a>
+</div>
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><h2 id="reversible-sneaky-algorithm-1"><span style="color:red">Reversible Sneaky Algorithm #1</span></h2>
+
+<hr />
+
+<h3 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Lori decided to implement RSA without any security measures like 
+random padding. Must be deterministic then, huh? Silly goose!
+
+She encrypted a message of the form nactf{****} where the redacted 
+flag is a string of 4 lowercase alphabetical characters. Can you 
+decrypt it?
+
+As in the previous problem, the message is converted to a number by 
+converting ascii to hex.
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="part-2--given-files">PART 2 : GIVEN FILES</h3>
+
+<h4 id="-reversiblesneakyalgorithmtxt"><strong>[&gt;]</strong> <a href="./files/ReversibleSneakyAlgorithm.txt">ReversibleSneakyAlgorithm.txt</a></h4>
+
+<table>
+<tr>
+  <td>n</td>
+  <td>22211149480575639993429030519324903433947913532364781040868963328192510711356813047019777682976897694523708823502748768149007288902843985412808705624398873301639600888468250478096471710461804856036409585519537946352413960371213677893523940481424813184421465313214067723492301317054407961642320909213358344993453825109139928083868146685834149311590508677641684185974469669019522897333475910002506624356655715375691861599282035176111228787146595035293770294934083506588432931535561733381730924617763450268288785249430304809062568532772866407535937947253602671915278827388538023000320823892308918791287865032550658101647</td>
+</tr>
+<tr>
+  <td>e</td>
+  <td>65537</td>
+</tr>
+<tr>
+  <td>c</td>
+  <td>17092019895398435490936645877681389522100314381280314137324590582626113380519883878346612680436149571504342956062627199254592419000136198748264157134720216337534802137245374257104787163473593768075381161119603573787923015405105192411372689756878820005036480013443173993126005361536816259899310244534769833694660355126920566669139672444357708161337389888825104348833002955918763849005061351140425567156148202269336347554989169075541289307981444741551677799416273481457219933391047628725337828725080079301570909831609401028488393457876225318163558871115320155827798534306397644894097358075465535794590825299057956641732</td>
+</tr>
+</table>
+
+<hr />
+
+<h3 id="part-3--getting-the-flag">PART 3 : GETTING THE FLAG</h3>
+
+<p>Since the flag only consists of only 4 lowercase letters, bruteforcing the flag should be done within a reasonable timeframe.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">hexlify</span>
+
+<span class="n">cipher</span> <span class="o">=</span> <span class="mi">17092019895398435490936645877681389522100314381280314137324590582626113380519883878346612680436149571504342956062627199254592419000136198748264157134720216337534802137245374257104787163473593768075381161119603573787923015405105192411372689756878820005036480013443173993126005361536816259899310244534769833694660355126920566669139672444357708161337389888825104348833002955918763849005061351140425567156148202269336347554989169075541289307981444741551677799416273481457219933391047628725337828725080079301570909831609401028488393457876225318163558871115320155827798534306397644894097358075465535794590825</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">22211149480575639993429030519324903433947913532364781040868963328192510711356813047019777682976897694523708823502748768149007288902843985412808705624398873301639600888468250478096471710461804856036409585519537946352413960371213677893523940481424813184421465313214067723492301317054407961642320909213358344993453825109139928083868146685834149311590508677641684185974469669019522897333475910002506624356655715375691861599282035176111228787146595035293770294934083506588432931535561733381730924617763450268288785249430304809062568532772866407535937947253602671915278827388538023000320823892308918791287865032550658101647</span>
+
+<span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+
+<span class="n">alphabet</span> <span class="o">=</span> <span class="s">"abcdefghijklmnopqrstuvwxyz"</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">:</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="s">"nactf{"</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="s">"}"</span>
+                <span class="n">flag_hex</span> <span class="o">=</span> <span class="n">hexlify</span><span class="p">(</span><span class="n">flag</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">flag_hex</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+                <span class="n">m_enc</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">m_enc</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">cipher</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">m_enc</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>After successfully running the script:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 rsa-1.py
+  nactf{pkcs} 17092019895398435490936645877681389522100314381280314137324590582626113380519883878346612680436149571504342956062627199254592419000136198748264157134720216337534802137245374257104787163473593768075381161119603573787923015405105192411372689756878820005036480013443173993126005361536816259899310244534769833694660355126920566669139672444357708161337389888825104348833002955918763849005061351140425567156148202269336347554989169075541289307981444741551677799416273481457219933391047628725337828725080079301570909831609401028488393457876225318163558871115320155827798534306397644894097358075465535794590825299057956641732
+</code></pre></div></div>
+
+<p>I wasn’t able to get a full match when comparing the integer value of the ciphertext and the supposed plaintext; however, comparing a substring resulted in a probably valid flag which is actually the case.</p>
+
+<hr />
+
+<h2 id="flag--nactfpkcs">FLAG : <strong>nactf{pkcs}</strong></h2>
+</section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

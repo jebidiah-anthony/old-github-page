@@ -86,7 +86,7 @@ By substituting values, we get:
 And since the key (latexmath:[K]) is reused for both messages:
 
 [start=3]
-. +++<span style="color:orange">+++ latexmath:[Message_1 \oplus Message_2] +++</span>+++
+. +++<span style="color:orange">+++ latexmath:[(Message_1 \oplus K) \oplus (Message_2 \oplus K) = Message_1 \oplus Message_2] +++</span>+++
 
 If *latexmath:[Ciphertext_1 \oplus Ciphertext_2 = (Message_1 \oplus K) \oplus (Message_2 \oplus K)]*, then:
 
@@ -97,6 +97,8 @@ Which also means that:
 
 [start=5]
 . +++<span style="color:orange">+++ latexmath:[(Ciphertext_1 \oplus Ciphertext_2) \oplus Message_1 = Message_2] +++</span>+++
+
+Which is the general idea of the *crib dragging* attack.
 ____
 
 Proceeding to the attack:
@@ -136,7 +138,7 @@ XOR       #656173746572# (easter)
           #6330306e355f# (c00n5_)
 ----
 
-Shifting three bytes to the right returns `c00n5_` which looks like a portion of the flag, now trying the flag format, c which fits well with the shift and it returns:
+Shifting three bytes to the right returns `c00n5_` which looks like a portion of the flag. Now, trying the flag format, `rc_easter{` which fits well with the shift returns:
 
 [subs="verbatim,quotes"]
 ----
@@ -146,7 +148,7 @@ XOR #72635f6561737465727b# (rc_easter{)
     #7234636330306e355f35# (r4cc00n5_5)
 ----
 
-We get the word, +++<span style="color:orange">r4cc00n5</span>+++, in 1337 speak followed by what seems to be a word that starts with +++<span style="color:orange">5</span>+++ (`letter S`). According to the challenge, eggs were stolen and the image references to a *evil plotting raccoon meme* which made me try to guess the string one word at a time along the lines of +++<span style="color:red">the raccoons stole the eggs</span>+++
+We get the word, +++<span style="color:orange">r4cc00n5</span>+++, in 1337 speak followed by what seems to be a word that starts with +++<span style="color:orange">5</span>+++ (`letter S`). According to the challenge, eggs were stolen and the image references to an *evil plotting raccoon meme* which made me try to guess the string one word at a time along the lines of +++<span style="color:red">the raccoons stole the eggs</span>+++
 
 ----
     00573c0651431a502d4e47570b506e405d02696f560b296f460a6c41045600121493
@@ -162,7 +164,7 @@ ____
 
 == FLAG : *rc_easter{3ggc1t1n6_0TP_3x3rc1535}*
 
-
+asdfasdfasdfasdfasdfas
 ++++
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
