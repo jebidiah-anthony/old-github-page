@@ -1,0 +1,223 @@
+I"*C<h1 id="hdc-web-30-pts"><span style="color:red">HDC [WEB] (30 pts)</span></h1>
+
+<hr />
+
+<h2 id="part-1--challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We believe a certain individual uses this website for shady business. Can you find 
+out who that is and send him an email to check, using the web site's functionality?
+
+Note: The flag is not an e-mail address.
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--reconnaissance">PART 2 : RECONNAISSANCE</h2>
+
+<h3 id="login-page">Login Page</h3>
+
+<ul>
+  <li>
+    <p>Landing Page:</p>
+
+    <p><img src="./screenshots/hdc_login.png" alt="HDC Home" /></p>
+  </li>
+  <li>
+    <p>Input Form (Page Source):</p>
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">'formaki'</span> <span class="na">name=</span><span class="s">'formaki'</span> <span class="na">action=</span><span class="s">"./main/index.php"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>Enter Username / Password
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"name1"</span> <span class="na">size=</span><span class="s">"20"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">Name=</span><span class="s">"name2"</span> <span class="na">size=</span><span class="s">"20"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">value= </span><span class="s">name="name1"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">value= </span><span class="s">name="name2"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">value=</span><span class="s">"Submit"</span> <span class="na">onclick=</span><span class="s">"doProcess()"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div>    </div>
+    <ol>
+      <li>The form submission is handled by a function <code class="highlighter-rouge">doProcess()</code>.
+        <ul>
+          <li><code class="highlighter-rouge">onclick=</code> is always referenced to a JS script</li>
+        </ul>
+      </li>
+      <li>There are two hidden inputs – <code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code>.</li>
+    </ol>
+  </li>
+</ul>
+
+<p><span></span></p>
+
+<ul>
+  <li>Included Scripts:
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery-3.2.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"myscripts.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>    </div>
+
+    <ol>
+      <li><code class="highlighter-rouge">myscripts.js</code>:
+        <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">doProcess</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">[</span><span class="dl">"</span><span class="s2">formaki</span><span class="dl">"</span><span class="p">].</span><span class="nx">submit</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li><code class="highlighter-rouge">jquery-3.2.1.js</code>:
+        <ul>
+          <li>It’s very notable that the included jquery file was not <strong><em>minified</em></strong>.</li>
+          <li>It also includes a function definition of <code class="highlighter-rouge">doProcess()</code>:</li>
+        </ul>
+
+        <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ...omitted...</span>
+<span class="kd">function</span> <span class="nx">doProcess</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">form</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">post</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">action</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">main/index.php</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">target</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">view</span><span class="dl">"</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">hiddenField</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">hiddenField</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hidden</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">hiddenField</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">name1</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">hiddenField</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">TXlMaXR0bGU</span><span class="dl">"</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">hiddenField2</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">hiddenField2</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hidden</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">hiddenField2</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">name2</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">hiddenField2</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">cDB3bmll</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">hiddenField2</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">hiddenField</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">hiddenField2</span><span class="p">);</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">form</span><span class="p">);</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">view</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">submit</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c1">// ...omitted...</span>
+</code></pre></div>        </div>
+
+        <ul>
+          <li>It sets the hiddent inputs, <code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code>, to <code class="highlighter-rouge">TXlMaXR0bGU</code> and <code class="highlighter-rouge">cDB3bmll</code> respectively.</li>
+          <li><code class="highlighter-rouge">name1</code> and <code class="highlighter-rouge">name2</code> are also input names for the username and password in the login form’s user input.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="part-3--finding-the-flag">PART 3 : FINDING THE FLAG</h2>
+
+<ol>
+  <li>
+    <p>Login using the credentials, <strong><code class="highlighter-rouge">TXlMaXR0bGU</code></strong>:<strong><code class="highlighter-rouge">cDB3bmll</code></strong></p>
+
+    <p><img src="./screenshots/hdc_service.png" alt="Hellenic Distribution Company" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ol>
+      <li>The page sections are loaded using <strong>HTML Frames</strong>.</li>
+      <li>There is a section of the page named <strong><code class="highlighter-rouge">Mailbox of Special Customers</code></strong>:
+        <ul>
+          <li>According to the challenge description, the objective is to find the an e-mail address and then inbox the individual.</li>
+          <li>Since an e-mail address is still yet to be found, it must be imperative to explore this section.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Explore <strong><code class="highlighter-rouge">Mailbox of Special Customers</code></strong>:</p>
+
+    <p><img src="./screenshots/hdc_mailbox.png" alt="Mailbox of Special Customers" /></p>
+
+    <ul>
+      <li>Frame Source:
+        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=windows-1253"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Language"</span> <span class="na">content=</span><span class="s">"us"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"ProgId"</span> <span class="na">content=</span><span class="s">"FrontPage.Editor.Document"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;font</span> <span class="na">size=</span><span class="s">"6"</span><span class="nt">&gt;&lt;span</span> <span class="na">lang=</span><span class="s">"en-us"</span><span class="nt">&gt;</span>Special Customers' Mailbox<span class="nt">&lt;/font&gt;</span>
+  <span class="nt">&lt;b&gt;&lt;font</span> <span class="na">size=</span><span class="s">"6"</span><span class="nt">&gt;</span><span class="ni">&amp;nbsp;&amp;nbsp;&amp;nbsp;</span> <span class="nt">&lt;/font&gt;&lt;/b&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">border=</span><span class="s">"1"</span> <span class="na">src=</span><span class="s">"./secret_area_/mails.gif"</span> <span class="na">width=</span><span class="s">"21"</span> <span class="na">height=</span><span class="s">"20"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;hr&gt;</span>
+  <span class="nt">&lt;p&gt;&lt;body&gt;&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      Up to now we have 5 special customers who will help us to achieve our goals.<span class="nt">&lt;br&gt;&lt;br&gt;</span>
+      This list will soon be expanded with the new 'expansion program' for our corporate goals.<span class="nt">&lt;br&gt;&lt;br&gt;</span>
+      It is planned that within the next six months we will have reached 20 dedicated Special Customers.<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;&lt;span</span> <span class="na">lang=</span><span class="s">"us"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"main.htm"</span><span class="nt">&gt;</span>���������<span class="nt">&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>        </div>
+        <p><strong>NOTE(S)</strong>:
+      1. A GIF is loaded using from a directory, <strong><code class="highlighter-rouge">./secret_area_</code></strong>:</p>
+        <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;img</span> <span class="na">border=</span><span class="s">"1"</span> <span class="na">src=</span><span class="s">"./secret_area_/mails.gif"</span> <span class="na">width=</span><span class="s">"21"</span> <span class="na">height=</span><span class="s">"20"</span><span class="nt">&gt;</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Navigate to <strong><code class="highlighter-rouge">http://docker.hackthebox.eu:&lt;port&gt;/main/secret_area_</code></strong>:</p>
+
+    <p><img src="./screenshots/hdc_secret_area.png" alt="HDC secret_area_" /></p>
+
+    <ul>
+      <li><strong><code class="highlighter-rouge">mail.txt</code></strong>:
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>All good boys are here... hehehehehehe!
+----------------------------------------
+Peter Punk CallMePink@newmail.com
+Nabuchodonosor BabyNavou@mailpost.gr
+Ilias Magkakos imagkakos@badmail.com
+Nick Pipshow NickTheGreek@mail.tr.gr
+Don Quixote Windmill@mail.gr 
+Crazy Priest SeVaftise@hotmail.com
+Fishroe Salad fishroesalad@mail.com
+TaPanta Ola OlaMaziLeme@mail.gr
+Laertis George I8aki@mail.gr
+Thiseas Sparrow Pirates@mail.gr
+Black Dreamer SupaHacka@mail.com
+Callme Daddy FuckthemALL@mail.com
+Aggeliki Lykolouli FwsStoTounel@Traino.pourxetai
+Kompinadoros Yannnnis YannisWith4N@rolf.com
+Serafino Titamola Ombrax@mail.gr
+Joe Hard Soft@Butter.gr
+Bond James MyNameIsBond@JamesBond.com
+Endof Text EndOfLine@mail.com
+</code></pre></div>        </div>
+        <p><strong>NOTE(S)</strong>:</p>
+        <ol>
+          <li>A list of names and e-mails have now been found.</li>
+          <li>There is a section named <strong><code class="highlighter-rouge">Send EMail</code></strong>:
+            <ul>
+              <li>Since the objective is to send a shady guy an e-mail, this should be the final step towards the flag.</li>
+            </ul>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Send an e-mail to the listed users in <strong><code class="highlighter-rouge">mail.txt</code></strong>:</p>
+    <ul>
+      <li>
+        <p>Mailing Form:</p>
+
+        <p><img src="./screenshots/hdc_email.png" alt="HDC Send EMail" /></p>
+      </li>
+      <li>
+        <p>After sending an e-mail to <strong><code class="highlighter-rouge">fishroesalad@mail.com</code></strong>:</p>
+
+        <p><img src="./screenshots/hdc_flag.png" alt="HDC Flag" /></p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="flag--htbfucktheb3standplaywiththerest">FLAG : HTB{FuckTheB3stAndPlayWithTheRest!!}</h2>
+:ET

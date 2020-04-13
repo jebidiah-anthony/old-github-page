@@ -1,0 +1,302 @@
+I"º%<h2 id="-htb-write-ups"><span style="color:red">$ htb write-ups</span></h2>
+
+<hr />
+
+<div style="overflow-x:auto">
+  <table>
+    <tr>
+      <td><strong style="text-decoration:underline">BOX NAME</strong></td>
+      <td><strong style="text-decoration:underline">OS</strong></td>
+      <td><strong style="text-decoration:underline">MACHINE IP</strong></td>
+      <td><strong style="text-decoration:underline">RETIRED</strong></td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/38_Bitlab.html">Bitlab</a> (POST-MERGE METHOD)</td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.110</span></td>
+      <td>Jan 12, 2020</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/33_Safe.html">Safe</a> (NO PRIVESC YET)</td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.147</span></td>
+      <td>Oct 26, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/32_Ellingson.html">Ellingson</a> </td>
+      <td><span style="color:red">Linux</span></td>
+      <td><span style="color:red">10.10.10.139</span></td>
+      <td>Oct 19, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/31_WriteUp.html">WriteUp</a> </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.138</span></td>
+      <td>Oct 12, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/30_swagshop.html">SwagShop</a> </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.140</span></td>
+      <td>Sep 28, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/29_kryptos.html">Kryptos</a> </td>
+      <td><span style="color:white">Linux</span></td>
+      <td><span style="color:white">10.10.10.129</span></td>
+      <td>Sep 21, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/28_Luke.html">Luke</a> </td>
+      <td><span style="color:orange">FreeBSD</span></td>
+      <td><span style="color:orange">10.10.10.137</span></td>
+      <td>Sep 14, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/26_CTF.html">CTF</a> </td>
+      <td><span style="color:white">Linux</span></td>
+      <td><span style="color:white">10.10.10.122</span></td>
+      <td>Jul 20, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/25_Friendzone.html">FriendZone</a> </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.123</span></td>
+      <td>Jul 13, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/24_Flujab.html">Flujab</a> </td>
+      <td><span style="color:red">Linux</span></td>
+      <td><span style="color:red">10.10.10.124</span></td>
+      <td>Jun 15, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/23_Help.html">Help</a> </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.121</span></td>
+      <td>Jun 08, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/22_Chaos.html">Chaos</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.120</span></td>
+      <td>May 25, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/21_Lightweight.html">Lightweight</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.119</span></td>
+      <td>May 11, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/20_Irked.html">Irked</a> </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.117</span></td>
+      <td>Apr 27, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/19_Teacher.html">Teacher</a> </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.153</span></td>
+      <td>Apr 20, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/15_Mischief.html">Mischief</a> </td>
+      <td><span style="color:white">Linux</span></td>
+      <td><span style="color:white">10.10.10.92</span></td>
+      <td>Jan 06, 2019</td>
+    </tr>
+    
+    <tr>
+      <td><a href="./boxes/14_Waldo.html">Waldo</a> (NO PRIVESC YET)</td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.87</span></td>
+      <td>Dec 16, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-active/">Active</a> </td>
+      <td><span style="color:green">Windows</span></td>
+      <td><span style="color:green">10.10.10.100</span></td>
+      <td>Dec 09, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-hawk/">Hawk</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.102</span></td>
+      <td>Dec 02, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-jerry/">Jerry</a> </td>
+      <td><span style="color:green">Windows</span></td>
+      <td><span style="color:green">10.10.10.95</span></td>
+      <td>Nov 18, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-tartarsauce/">TartarSauce</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.88</span></td>
+      <td>Oct 21, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-dev0ops/">DevOops</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.91</span></td>
+      <td>Oct 14, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-sunday/">Sunday</a> </td>
+      <td><span style="color:green">Solaris</span></td>
+      <td><span style="color:green">10.10.10.76</span></td>
+      <td>Sep 30, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-canape/">Canape</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.70</span></td>
+      <td>Sep 16, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-poison/">Poison</a> </td>
+      <td><span style="color:orange">FreeBSD</span></td>
+      <td><span style="color:orange">10.10.10.84</span></td>
+      <td>Sep 09, 2018</td>
+    </tr>
+    
+    <tr>
+      <td><a href="https://hackedthebox.wordpress.com/htb-stratosphere/">Stratosphere</a> </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.64</span></td>
+      <td>Sep 02, 2018</td>
+    </tr>
+    
+    
+    <tr>
+      <td>Obscurity </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.168</span></td>
+      <td>Active</td>
+    </tr>
+    
+    <tr>
+      <td>Traverxec </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.165</span></td>
+      <td>Active</td>
+    </tr>
+    
+    <tr>
+      <td>Craft </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.114</span></td>
+      <td>Jan 05, 2020</td>
+    </tr>
+    
+    <tr>
+      <td>Networked </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.146</span></td>
+      <td>Nov 16, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>Jarvis </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.143</span></td>
+      <td>Nov 09, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>Haystack </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.115</span></td>
+      <td>Nov 02, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>OneTwoSeven </td>
+      <td><span style="color:red">Linux</span></td>
+      <td><span style="color:red">10.10.10.133</span></td>
+      <td>Sep 01, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>Frolic </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.111</span></td>
+      <td>Mar 24, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>Dab </td>
+      <td><span style="color:red">Linux</span></td>
+      <td><span style="color:red">10.10.10.86</span></td>
+      <td>Feb 02, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>Reddish </td>
+      <td><span style="color:white">Linux</span></td>
+      <td><span style="color:white">10.10.10.94</span></td>
+      <td>Jan 26, 2019</td>
+    </tr>
+    
+    <tr>
+      <td>Olympus </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.83</span></td>
+      <td>Sep 23, 2018</td>
+    </tr>
+    
+    <tr>
+      <td>Celestial </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.85</span></td>
+      <td>Aug 26, 2018</td>
+    </tr>
+    
+    <tr>
+      <td>Valentine </td>
+      <td><span style="color:green">Linux</span></td>
+      <td><span style="color:green">10.10.10.79</span></td>
+      <td>Jul 29, 2018</td>
+    </tr>
+    
+    <tr>
+      <td>Aragog </td>
+      <td><span style="color:orange">Linux</span></td>
+      <td><span style="color:orange">10.10.10.78</span></td>
+      <td>Jul 22, 2018</td>
+    </tr>
+    
+  </table>
+</div>
+
+<hr />
+
+<h3 id="legend--easy-20-pts--medium-30-pts--hard-40-pts--insane-50-pts">LEGEND : <strong style="color:green">EASY (20 pts)</strong> | <strong style="color:orange">MEDIUM (30 pts)</strong> | <strong style="color:red">HARD (40 pts)</strong> | <strong style="color:white">INSANE (50 pts)</strong></h3>
+
+:ET
