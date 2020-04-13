@@ -47,3 +47,5 @@ gem install yell --version 2.2.0
 gem install jekyll-asciidoc
 gem install nokogiri --version 1.10.7
 gem install jekyll-sitemap --version 1.4.0
+gem install jekyll-asciidoc
+gem install rouge

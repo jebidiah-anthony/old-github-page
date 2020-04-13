@@ -63,7 +63,7 @@
 <meta property="og:url" content="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Space.html" />
 <meta property="og:site_name" content="jebidiah-anthony" />
 <script type="application/ld+json">
-{"@type":"WebPage","headline":"Space Challenge","url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Space.html","@context":"https://schema.org"}</script>
+{"headline":"Space Challenge","@type":"WebPage","url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Space.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -390,7 +390,86 @@
          <section id="main_content"><div class="paragraph">
 <p><span><h1 style="color:red">Space Challenge</h1></span></p>
 </div>
-<hr></section>
+<hr>
+<div class="sect1">
+<h2 id="part-1-given-files">PART 1 : GIVEN FILES</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="/chals/ctf/2020_ROOTCONEasterEggHunt/files/diwata_satellite_canbus_dump.log">diwata_satellite_canbus_dump.log</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>checksum (MD5)  : d9f61b2a711f5800fac2dfd552e07bb2</code></p>
+</li>
+<li>
+<p><code>checksum (SHA1) : cdb351ac8043ba2f331d22ab66ee2c3524b60f73</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-getting-the-flag">PART 2 : GETTING THE FLAG</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The dump file contains all the data received by a CAN interface and the first thing I did was to clean up all the noise:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ log_file</span><span class="o">=</span><span class="si">$(</span><span class="nb">cat </span>diwata_satellite_canbus_dump.log | <span class="nb">tr</span> <span class="s1">'#'</span> <span class="s1">' '</span><span class="si">)</span>
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$log_file</span><span class="s2">"</span> | <span class="nb">awk</span> <span class="s1">'$3!=300 &amp;&amp; $3!=056 &amp;&amp; $3!=050 { printf "%s %s\n", $3, $4 }'</span> | <span class="nb">sort</span> | <span class="nb">uniq
+
+  </span>123 DEAD1337
+  123 DEADBEEF
+  188 030000
+  19B 00000F
+  19B 000010
+  202 6001606060606000
+  244 0000009999
+  400 7370
+  401 616365736174656C
+  402 6C69746573686176
+  403 6563616E746F6F
+  510 10AD013CF048120B
+  600 021001
+  7E0 0103
+  7E0 0107
+  7E0 020100
+  7E0 020900
+  7F1 0322F19000000000</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first column are CAN IDs and the second column is the unique data each ID contains.</p>
+</div>
+<div class="paragraph">
+<p>Unusual data are found in CAN IDs&#8201;&#8212;&#8201;123, 400, 401, 402, 403. And those with <strong><code>40X</code></strong> IDs seem to contain lowercase ASCII characters (<strong><code>\x61</code></strong> - <strong><code>\x7A</code></strong>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$log_file</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"^(.*) vcan0 40. .*$"</span> | <span class="nb">awk</span> <span class="s1">'{ printf $4 }'</span>
+
+  7370616365736174656C6C697465736861766563616E746F6F
+
+<span class="nv">$ </span><span class="nb">echo </span>7370616365736174656C6C697465736861766563616E746F6F | xxd <span class="nt">-p</span> <span class="nt">-r</span>
+
+  spacesatelliteshavecantoo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Extracting the hex string then converting it to ASCII gives us the flag!</p>
+</div>
+<hr>
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{spacesatelliteshavecantoo}</strong></h2></div>
+</div>
+</div></section>
        </div>
     </div>
 

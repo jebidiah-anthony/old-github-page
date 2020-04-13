@@ -6,10 +6,75 @@ header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
 tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, space]
 ---
 
+:filesdir: /chals/ctf/2020_ROOTCONEasterEggHunt/files/
 :imagesdir: ./screenshots/
 :stem: latexmath
 :page-liquid:
+:source-highlighter: rouge
 
 +++<span><h1 style="color:red">Space Challenge</h1></span>+++
 
 ---
+
+== PART 1 : GIVEN FILES
+
+* link:{filesdir}diwata_satellite_canbus_dump.log[diwata_satellite_canbus_dump.log]
+** `checksum (MD5)  : d9f61b2a711f5800fac2dfd552e07bb2`
+** `checksum (SHA1) : cdb351ac8043ba2f331d22ab66ee2c3524b60f73`
+
+---
+
+== PART 2 : GETTING THE FLAG
+
+The dump file contains all the data received by a CAN interface and the first thing I did was to clean up all the noise:
+
+[source,shell]
+----
+$ log_file=$(cat diwata_satellite_canbus_dump.log | tr '#' ' ') 
+
+$ echo "$log_file" | awk '$3!=300 && $3!=056 && $3!=050 { printf "%s %s\n", $3, $4 }' | sort | uniq
+
+  123 DEAD1337
+  123 DEADBEEF
+  188 030000
+  19B 00000F
+  19B 000010
+  202 6001606060606000
+  244 0000009999
+  400 7370
+  401 616365736174656C
+  402 6C69746573686176
+  403 6563616E746F6F
+  510 10AD013CF048120B
+  600 021001
+  7E0 0103
+  7E0 0107
+  7E0 020100
+  7E0 020900
+  7F1 0322F19000000000
+
+----
+
+The first column are CAN IDs and the second column is the unique data each ID contains.
+
+Unusual data are found in CAN IDs -- 123, 400, 401, 402, 403. And those with *`40X`* IDs seem to contain lowercase ASCII characters (*`\x61`* - *`\x7A`*).
+
+[source,shell]
+----
+$ echo "$log_file" | grep -e "^(.*) vcan0 40. .*$" | awk '{ printf $4 }'
+
+  7370616365736174656C6C697465736861766563616E746F6F
+
+$ echo 7370616365736174656C6C697465736861766563616E746F6F | xxd -p -r
+
+  spacesatelliteshavecantoo
+
+----
+
+Extracting the hex string then converting it to ASCII gives us the flag!
+
+---
+
+++++
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{spacesatelliteshavecantoo}</strong></h2></div>
+++++
