@@ -1,9 +1,9 @@
 ---
 layout: menu
 title: "Power Challenge"
-description: ""
+description: "Our insiders from the multiverse were informed that she encrypted the data about the Power Egg using Advanced Earth Shenanigans."
 header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
-tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, power]
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, power, wordlist, wordlist generation, bruteforce, openssl, qr code, qr]
 ---
 
 :filesdir: /chals/ctf/2020_ROOTCONEasterEggHunt/files/
