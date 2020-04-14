@@ -28,6 +28,7 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 
 The dump file contains all the data received by a CAN interface and the first thing I did was to clean up some noise from the log:
 
+____
 [source,shell]
 ----
 $ log_file=$(cat diwata_satellite_canbus_dump.log | tr '#' ' ') 
@@ -54,11 +55,13 @@ $ echo "$log_file" | awk '$3!=300 && $3!=056 && $3!=050 { printf "%s %s\n", $3, 
   7F1 0322F19000000000
 
 ----
+____
 
 The first column are CAN IDs and the second column is the unique data each ID contains.
 
 Unusual data are found in CAN IDs -- 123, 400, 401, 402, 403. And those with *`40X`* IDs seem to contain lowercase ASCII characters (*`\x61`* - *`\x7A`*).
 
+____
 [source,shell]
 ----
 $ echo "$log_file" | grep -e "^(.*) vcan0 40. .*$" | awk '{ printf $4 }'
@@ -70,6 +73,7 @@ $ echo 7370616365736174656C6C697465736861766563616E746F6F | xxd -p -r
   spacesatelliteshavecantoo
 
 ----
+____
 
 Extracting the hex string then converting it to ASCII gives us the flag!
 

