@@ -390,7 +390,130 @@
          <section id="main_content"><div class="paragraph">
 <p><span><h1 style="color:red">Power Challenge</h1></span></p>
 </div>
-<hr></section>
+<hr>
+<div class="sect1">
+<h2 id="part-1-given-files">PART 1 : GIVEN FILES</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="/chals/ctf/2020_ROOTCONEasterEggHunt/files/power.tar.gz">power.tar.gz</a></p>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span> <span class="nb">md5sum </span>power.tar.gz
+
+  d878a796e00fb63353bf79cdc3b92b65  power.tar.gz
+
+<span class="nv">$ </span><span class="nb">sha1sum </span>power.tar.gz
+
+  4956d86470b7c62392fdf35168ceb6a5c05a965d  power.tar.gz
+
+<span class="nv">$ </span><span class="nb">gzip</span> <span class="nt">-d</span> power.tar.gz
+
+<span class="nv">$ </span><span class="nb">tar </span>xvf power.tar.gz
+
+  power/description.txt
+  power/the_power_egg.enc</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-challenge-description">PART 2 : CHALLENGE DESCRIPTION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file, <span style="color:orange"><code>description.txt</code></span>, reads the following:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>MISSION BRIEFING FOR EGGSHIELD AGENT:</p>
+</div>
+<div class="paragraph">
+<p>Lucy is an avid fan of ROOTCON and is also an agent of Eggshield.</p>
+</div>
+<div class="paragraph">
+<p>She was tasked to protect the Power Egg to protect it from thieves who would use it for evil purposes.</p>
+</div>
+<div class="paragraph">
+<p>Our insiders from the multiverse were informed that she encrypted the data about the Power Egg using Advanced Earth Shenanigans.</p>
+</div>
+<div class="paragraph">
+<p>They also told us the pattern of the password she used; composed of the following:
+    a year
+    her favorite ROOTCON Goon
+    her favorite color (which is quite unique!)</p>
+</div>
+<div class="paragraph">
+<p>For example:
+    2020-Methadone-teal</p>
+</div>
+<div class="paragraph">
+<p>Moreover, they also acquired the hash of Lucy&#8217;s password. See below:
+    34d5cf6ecc220ab4c31d90f41f07c9a1</p>
+</div>
+<div class="paragraph">
+<p>That&#8217;s all we can give you.</p>
+</div>
+<div class="paragraph">
+<p>Good luck!
+-Eggshield</p>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-3-getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The goal is to decrypt the contents of <span style="color:orange"><code>the_power_egg.enc</code></span> that, according to the challenge, was encrypted using <span style="color:orange"><code>Advanced Earth Shenanigans</code></span> which is presumably a variant of AES.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>file the_power_egg.enc
+
+  the_power_egg.enc: openssl enc<span class="s1">'d data with salted password
+</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>To get there, the password (or key) needs to be determined first. It was said that the password comprises of:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;YEAR&gt;-&lt;ROOTCON GOON&gt;-&lt;UNIQUE COLOR&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where I selected the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>YEAR          : 1920 onwards
+ROOTCON GOONS : <a href="https://www.rootcon.org/html/about/goons" target="_blank" rel="noopener">MEET THE GOONS</a>
+UNIQUE COLORS : <a href="https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F" target="_blank" rel="noopener">A-F</a>, <a href="https://en.wikipedia.org/wiki/List_of_colors:_G%E2%80%93M" target="_blank" rel="noopener">G-M</a>, <a href="https://en.wikipedia.org/wiki/List_of_colors:_N%E2%80%93Z" target="_blank" rel="noopener">N-Z</a></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+</div></section>
        </div>
     </div>
 

@@ -6,10 +6,99 @@ header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
 tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, power]
 ---
 
+:filesdir: /chals/ctf/2020_ROOTCONEasterEggHunt/files/
 :imagesdir: ./screenshots/
-:stem: latexmath
 :page-liquid:
+:source-highlighter: rouge
 
 +++<span><h1 style="color:red">Power Challenge</h1></span>+++
 
 ---
+
+== PART 1 : GIVEN FILES
+
+* link:{filesdir}power.tar.gz[power.tar.gz]
+____
+[source,shell]
+----
+$  md5sum power.tar.gz
+
+  d878a796e00fb63353bf79cdc3b92b65  power.tar.gz
+
+$ sha1sum power.tar.gz
+
+  4956d86470b7c62392fdf35168ceb6a5c05a965d  power.tar.gz
+
+$ gzip -d power.tar.gz
+
+$ tar xvf power.tar.gz
+
+  power/description.txt
+  power/the_power_egg.enc
+
+----
+____
+
+---
+
+== PART 2 : CHALLENGE DESCRIPTION
+
+The file, +++<span style="color:orange">+++`description.txt`+++</span>+++, reads the following:
+____
+MISSION BRIEFING FOR EGGSHIELD AGENT:
+
+Lucy is an avid fan of ROOTCON and is also an agent of Eggshield.
+
+She was tasked to protect the Power Egg to protect it from thieves who would use it for evil purposes.
+
+Our insiders from the multiverse were informed that she encrypted the data about the Power Egg using Advanced Earth Shenanigans.
+
+They also told us the pattern of the password she used; composed of the following:
+    a year
+    her favorite ROOTCON Goon
+    her favorite color (which is quite unique!)
+
+For example:
+    2020-Methadone-teal
+
+Moreover, they also acquired the hash of Lucy's password. See below:
+    34d5cf6ecc220ab4c31d90f41f07c9a1
+
+That's all we can give you.
+
+Good luck!
+-Eggshield
+____
+
+---
+
+== PART 3 : GETTING THE FLAG
+
+The goal is to decrypt the contents of +++<span style="color:orange">+++`the_power_egg.enc`+++</span>+++ that, according to the challenge, was encrypted using +++<span style="color:orange">+++`Advanced Earth Shenanigans`+++</span>+++ which is presumably a variant of AES.
+
+____
+[source,shell]
+----
+$ file the_power_egg.enc
+
+  the_power_egg.enc: openssl enc'd data with salted password
+
+----
+____
+
+To get there, the password (or key) needs to be determined first. It was said that the password comprises of:
+
+____
+----
+<YEAR>-<ROOTCON GOON>-<UNIQUE COLOR>
+----
+
+Where I selected the following:
+
+[subs="+macros"]
+----
+YEAR          : 1920 onwards
+ROOTCON GOONS : link:https://www.rootcon.org/html/about/goons[MEET THE GOONS,window=_blank]
+UNIQUE COLORS : link:https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F[A-F,window=_blank], link:https://en.wikipedia.org/wiki/List_of_colors:_G%E2%80%93M[G-M,window=_blank], link:https://en.wikipedia.org/wiki/List_of_colors:_N%E2%80%93Z[N-Z,window=_blank]
+----
+____
