@@ -484,8 +484,7 @@
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>file the_power_egg.enc
 
-  the_power_egg.enc: openssl enc<span class="s1">'d data with salted password
-</span></code></pre>
+  the_power_egg.enc: openssl enc<span class="se">\'</span>d data with salted password</code></pre>
 </div>
 </div>
 </blockquote>
@@ -512,6 +511,147 @@ UNIQUE COLORS : <a href="https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%9
 </div>
 </blockquote>
 </div>
+<div class="paragraph">
+<p>There were a lot of colors so I decided to trim the list by removing those with multiple words (e.g. Baby Blue) after scraping the contents of the webpage.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ A_F</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--silent</span> https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F<span class="si">)</span>
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$A_F</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">"^&lt;th.*4em.*&lt;a"</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/.*&gt;\(.*\)&lt;\/a&gt;$/\1/g'</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+
+  332
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$A_F</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">"^&lt;th.*4em.*&lt;a"</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/.*&gt;\(.*\)&lt;\/a&gt;$/\1/g'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">" "</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+
+  92</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The number of colors were significantly reduced (from 332 to 92 in colors starting from A-F). I&#8217;ll add/use those colors if the password still can&#8217;t be found.</p>
+</div>
+<div class="paragraph">
+<p>Now to merge the color list:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ A_F</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--silent</span> https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F<span class="si">)</span>
+
+<span class="nv">$ G_M</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--silent</span> https://en.wikipedia.org/wiki/List_of_colors:_G%E2%80%93M<span class="si">)</span>
+
+<span class="nv">$ N_Z</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--silent</span> https://en.wikipedia.org/wiki/List_of_colors:_N%E2%80%93Z<span class="si">)</span>
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$A_F</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">"^&lt;th.*4em.*&lt;a"</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/.*&gt;\(.*\)&lt;\/a&gt;$/\1/g'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">" "</span> <span class="o">&gt;</span> list.color
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$G_M</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">"^&lt;th.*4em.*&lt;a"</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/.*&gt;\(.*\)&lt;\/a&gt;$/\1/g'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">" "</span> <span class="o">&gt;&gt;</span> list.color
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$N_Z</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">"^&lt;th.*4em.*&lt;a"</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/.*&gt;\(.*\)&lt;\/a&gt;$/\1/g'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">" "</span> <span class="o">&gt;&gt;</span> list.color
+
+<span class="nv">$ </span><span class="nb">cat </span>list.color | <span class="nb">wc</span> <span class="nt">-l</span>
+
+  248</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>I scraped the contents of the ROOTCON Goons page as well:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ goons</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">--silent</span> https://www.rootcon.org/html/about/goons<span class="si">)</span>
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$goons</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="s2">"&lt;b&gt;&lt;c"</span> | <span class="nb">tr</span> <span class="s1">'&lt;&gt;'</span> <span class="s1">' '</span> | <span class="nb">awk</span> <span class="s1">'{print $3}'</span> <span class="o">&gt;</span> list.goons
+
+<span class="nv">$ </span><span class="nb">cat </span>list.goons | <span class="nb">wc</span> <span class="nt">-l</span>
+
+  27</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The total number of combinations so far is <strong><code>6,696</code></strong> for each year that will be tested which is not so bad so I began writing this python script (md5_dec.py)</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python"><span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="s">"34d5cf6ecc220ab4c31d90f41f07c9a1"</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"list.colors"</span><span class="p">)</span> <span class="k">as</span> <span class="n">colors_file</span><span class="p">:</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">colors_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"list.goons"</span><span class="p">)</span> <span class="k">as</span> <span class="n">goons_file</span><span class="p">:</span>
+    <span class="n">goons</span> <span class="o">=</span> <span class="n">goons_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="s">"TARGET HASH    : </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">target</span><span class="p">)</span>
+<span class="n">year</span> <span class="o">=</span> <span class="mi">1920</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">goons</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="s">"</span><span class="si">%</span><span class="s">d-</span><span class="si">%</span><span class="s">s-</span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="n">md5</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">md5</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">"PASSWORD FOUND : </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">password</span><span class="p">)</span>
+                <span class="nb">exit</span><span class="p">()</span>
+
+    <span class="n">year</span> <span class="o">=</span> <span class="n">year</span> <span class="o">+</span> <span class="mi">1</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And running it gives us the password:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>python md5_dec.py
+
+  TARGET HASH    : 34d5cf6ecc220ab4c31d90f41f07c9a1
+  PASSWORD FOUND : 2169-ShipCode-eminence</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now that we have the password, we could now decrypt <span style="color:orange"><code>the_power_egg.enc</code></span>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>openssl aes-256-cbc <span class="nt">-d</span> <span class="nt">-in</span> the_power_egg.enc <span class="nt">-k</span> 2169-ShipCode-eminence <span class="nt">-out</span> the_power_egg
+
+<span class="nv">$ </span>file the_power_egg
+
+  the_power_egg: PNG image data, 198 x 255, 8-bit/color RGBA, non-interlaced</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A PNG file is returned after decryption which when displayed show a QR code:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/the_power_egg.png" alt="The Power Egg">
+</div>
+</div>
+<div class="paragraph">
+<p>Which when scanned gives us the flag!!</p>
+</div>
+<hr>
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{p0w3r_1s_n07h1n6_w17h0u7_c0ntr0L}</strong></h2></div>
 </div>
 </div></section>
        </div>

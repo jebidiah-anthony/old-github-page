@@ -81,7 +81,7 @@ ____
 ----
 $ file the_power_egg.enc
 
-  the_power_egg.enc: openssl enc'd data with salted password
+  the_power_egg.enc: openssl enc\'d data with salted password
 
 ----
 ____
@@ -102,3 +102,130 @@ ROOTCON GOONS : link:https://www.rootcon.org/html/about/goons[MEET THE GOONS,win
 UNIQUE COLORS : link:https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F[A-F,window=_blank], link:https://en.wikipedia.org/wiki/List_of_colors:_G%E2%80%93M[G-M,window=_blank], link:https://en.wikipedia.org/wiki/List_of_colors:_N%E2%80%93Z[N-Z,window=_blank]
 ----
 ____
+
+There were a lot of colors so I decided to trim the list by removing those with multiple words (e.g. Baby Blue) after scraping the contents of the webpage.
+
+____
+[source,shell]
+----
+$ A_F=$(curl --silent https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F)
+
+$ echo "$A_F" | grep "^<th.*4em.*<a" | sed -e 's/.*>\(.*\)<\/a>$/\1/g' | wc -l
+
+  332
+
+$ echo "$A_F" | grep "^<th.*4em.*<a" | sed -e 's/.*>\(.*\)<\/a>$/\1/g' | grep -v " " | wc -l
+
+  92
+
+----
+____
+
+The number of colors were significantly reduced (from 332 to 92 in colors starting from A-F). I'll add/use those colors if the password still can't be found.
+
+Now to merge the color list:
+
+____
+[source,shell]
+----
+$ A_F=$(curl --silent https://en.wikipedia.org/wiki/List_of_colors:_A%E2%80%93F)
+
+$ G_M=$(curl --silent https://en.wikipedia.org/wiki/List_of_colors:_G%E2%80%93M)
+
+$ N_Z=$(curl --silent https://en.wikipedia.org/wiki/List_of_colors:_N%E2%80%93Z)
+
+$ echo "$A_F" | grep "^<th.*4em.*<a" | sed -e 's/.*>\(.*\)<\/a>$/\1/g' | grep -v " " > list.color
+
+$ echo "$G_M" | grep "^<th.*4em.*<a" | sed -e 's/.*>\(.*\)<\/a>$/\1/g' | grep -v " " >> list.color
+
+$ echo "$N_Z" | grep "^<th.*4em.*<a" | sed -e 's/.*>\(.*\)<\/a>$/\1/g' | grep -v " " >> list.color
+
+$ cat list.color | wc -l
+
+  248
+
+----
+____
+
+I scraped the contents of the ROOTCON Goons page as well:
+____
+[source,shell]
+----
+$ goons=$(curl --silent https://www.rootcon.org/html/about/goons)
+
+$ echo "$goons" | grep "<b><c" | tr '<>' ' ' | awk '{print $3}' > list.goons
+
+$ cat list.goons | wc -l
+
+  27
+
+----
+____
+
+The total number of combinations so far is *`6,696`* for each year that will be tested which is not so bad so I began writing this python script (md5_dec.py)
+
+____
+[source,python]
+----
+import hashlib
+
+target = "34d5cf6ecc220ab4c31d90f41f07c9a1"
+
+with open("list.colors") as colors_file:
+    colors = colors_file.read().split()
+
+with open("list.goons") as goons_file:
+    goons = goons_file.read().split()
+
+print "TARGET HASH    : %s" % (target)
+year = 1920
+while True:
+    for x in goons:
+        for y in colors:
+            password = "%d-%s-%s" % (year, x, y.lower())
+            md5 = hashlib.md5(password).hexdigest()
+
+            if md5 == target:
+                print "PASSWORD FOUND : %s" % (password)
+                exit()
+
+    year = year + 1
+----
+
+And running it gives us the password:
+
+[source,shell]
+----
+$ python md5_dec.py
+
+  TARGET HASH    : 34d5cf6ecc220ab4c31d90f41f07c9a1
+  PASSWORD FOUND : 2169-ShipCode-eminence
+
+----
+____
+
+Now that we have the password, we could now decrypt +++<span style="color:orange">+++`the_power_egg.enc`+++</span>+++:
+
+____
+[source,shell]
+----
+$ openssl aes-256-cbc -d -in the_power_egg.enc -k 2169-ShipCode-eminence -out the_power_egg
+
+$ file the_power_egg
+
+  the_power_egg: PNG image data, 198 x 255, 8-bit/color RGBA, non-interlaced
+
+----
+____
+
+A PNG file is returned after decryption which when displayed show a QR code:
+
+image::the_power_egg.png[The Power Egg]
+
+Which when scanned gives us the flag!!
+
+---
+
+++++
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{p0w3r_1s_n07h1n6_w17h0u7_c0ntr0L}</strong></h2></div>
+++++
