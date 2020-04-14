@@ -207,7 +207,7 @@ ____
 
 The expected columns where the function/formulas are built should be +++<span style="color:orange">+++B -> D -> F -> H -> J -> L -> N -> P+++</span>+++ but as you can see from the dump, +++<span style="color:orange">+++COL 49164+++</span>+++ jumps to +++<span style="color:orange">+++COL 49167+++</span>+++ meaning +++<span style="color:orange">+++column L+++</span>+++ jumped to +++<span style="color:orange">+++column O+++</span>+++ which shouldn't be the case.
 
-If you look at the Excel Sheet, it would reveal that +++<span style="color:orange">+++column N+++</span>+++ is missing and when revealed:
+If you look at the Excel Sheet, it would show that +++<span style="color:orange">+++column N+++</span>+++ is missing and when revealed:
 
 ____
 image::reality_column_N.png[column N]
