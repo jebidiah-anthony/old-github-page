@@ -162,7 +162,7 @@ $ cat list.goons | wc -l
 ----
 ____
 
-The total number of combinations so far is *`6,696`* for each year that will be tested which is not so bad so I began writing this python script (md5_dec.py)
+The total number of combinations so far is *`6,696`* for each year that will be tested which is not so bad so I began writing this python script (md5_dec.py) that searches for a match with the password hash.
 
 ____
 [source,python]
