@@ -7,9 +7,71 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 ---
 
 :imagesdir: ./screenshots/
-:stem: latexmath
 :page-liquid:
 
 +++<span><h1 style="color:red">Soul Challenge</h1></span>+++
 
 ---
+
+== PART 1 : CHALLENGE DESCTIPTION
+
+image:soul_home.png[]
+
+Where it reads:
+
+____
+----
+You could not live with your own failure. And where did that bring you? Back to me.
+The soul egg is all about manipulation of the living and dead souls.
+Reveal to me your knowledge of dead languages and you shall have your egg. 
+----
+____
+
+---
+
+== PART 2 : GETTING THE FLAG
+
+One thing you could do is to try guessing what each character stands for:
+
+____
+
+image:soul_cipher.jpg[]
+____
+
+I marked the cipher for each unique character there is:
+
+____
+image:soul_characters.jpg[]
+____
+
+There are 14 total characters and if you substitute +++<span style="color:orange">+++rceaster+++</span>+++ to the first 8 characters you also get the following:
+
+____
+image:soul_letters.jpg[]
+____
+
+If you also consider the characters consisting of dots and lines to be numbers:
+
+____
+image:soul_numbers.jpg[]
+____
+
+With only a few characters left to guess, you eventually get:
+
+____
+image:soul_flag.jpg[]
+____
+
+Which gives you the flag!!
+
+Or if you don't like guessing, you could use this (+++<span style="color:orange">+++Atlantean Alphabet+++</span>+++):
+
+____
+image:soul_atlantean.jpg[]
+____
+
+---
+
+++++
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{sacr1f1c3h4lft0me}</strong></h2></div>
+++++
