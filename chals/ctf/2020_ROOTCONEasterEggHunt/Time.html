@@ -79,7 +79,7 @@
 <meta property="og:url" content="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Time.html" />
 <meta property="og:site_name" content="jebidiah-anthony" />
 <script type="application/ld+json">
-{"headline":"Time Challenge","@type":"WebPage","url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Time.html","description":"These cryptic messages seem to have some similarities. Perhaps the same key was used? Although it is naught but a guess of mine, pray do help in figuring it out.","@context":"https://schema.org"}</script>
+{"url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCONEasterEggHunt/Time.html","headline":"Time Challenge","description":"These cryptic messages seem to have some similarities. Perhaps the same key was used? Although it is naught but a guess of mine, pray do help in figuring it out.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -421,6 +421,8 @@
 <div class="paragraph">
 <p>which reads the following:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>I think someone stole the eggs here.
@@ -437,6 +439,8 @@ Although it is naught but a guess of mine, pray do help in figuring it out.
 Message 1: 83d7f7966225c71b556cfd1fa28aa1cb364903c74bfad82400a5b8326ebf110cf610Q
 Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</pre>
 </div>
+</div>
+</blockquote>
 </div>
 <hr>
 </div>
@@ -493,10 +497,10 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><span style="color:orange"> \(Ciphertext_1 = Message_1 \oplus K\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \(Ciphertext_1 = Message_1 \oplus K\) </span></div></p>
 </li>
 <li>
-<p><span style="color:orange"> \(Ciphertext_2 = Message_2 \oplus K\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \(Ciphertext_2 = Message_2 \oplus K\) </span></div></p>
 </li>
 </ol>
 </div>
@@ -513,7 +517,7 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><span style="color:orange"> \(Ciphertext_1 \oplus Ciphertext_2\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \(Ciphertext_1 \oplus Ciphertext_2\) </span></div></p>
 </li>
 </ol>
 </div>
@@ -523,7 +527,7 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p><span style="color:orange"> \((Message_1 \oplus K) \oplus (Message_2 \oplus K)\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \((Message_1 \oplus K) \oplus (Message_2 \oplus K)\) </span></div></p>
 </li>
 </ol>
 </div>
@@ -533,17 +537,27 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 <div class="olist arabic">
 <ol class="arabic" start="3">
 <li>
-<p><span style="color:orange"> \((Message_1 \oplus K) \oplus (Message_2 \oplus K) = Message_1 \oplus Message_2\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \((Message_1 \oplus K) \oplus (Message_2 \oplus K) = Message_1 \oplus Message_2\) </span></div></p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>If <strong>\(Ciphertext_1 \oplus Ciphertext_2 = (Message_1 \oplus K) \oplus (Message_2 \oplus K)\)</strong>, then:</p>
+<p>So if:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="4">
 <li>
-<p><span style="color:orange"> \(Ciphertext_1 \oplus Ciphertext_2 = Message_1 \oplus Message_2\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \(Ciphertext_1 \oplus Ciphertext_2 = (Message_1 \oplus K) \oplus (Message_2 \oplus K)\) </span></div></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Then:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="5">
+<li>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \(Ciphertext_1 \oplus Ciphertext_2 = Message_1 \oplus Message_2\) </span></div></p>
 </li>
 </ol>
 </div>
@@ -551,9 +565,9 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 <p>Which also means that:</p>
 </div>
 <div class="olist arabic">
-<ol class="arabic" start="5">
+<ol class="arabic" start="6">
 <li>
-<p><span style="color:orange"> \((Ciphertext_1 \oplus Ciphertext_2) \oplus Message_1 = Message_2\) </span></p>
+<p><div style="width:100%;overflow-x:auto"><span style="color:orange"> \((Ciphertext_1 \oplus Ciphertext_2) \oplus Message_1 = Message_2\) </span></div></p>
 </li>
 </ol>
 </div>

@@ -22,6 +22,7 @@ image::time_home.png[]
 
 which reads the following: 
 
+____
 ----
 I think someone stole the eggs here.
 They were pretty messy. Leaving these crumbs everywhere.
@@ -37,6 +38,7 @@ Although it is naught but a guess of mine, pray do help in figuring it out.
 Message 1: 83d7f7966225c71b556cfd1fa28aa1cb364903c74bfad82400a5b8326ebf110cf610Q
 Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2 
 ----
+____
 
 ---
 
@@ -66,9 +68,9 @@ ____
 With *One Time Pads*,The ciphertext (latexmath:[Ciphertext_n]) is produced by XORing (latexmath:[\oplus]) the plaintext (latexmath:[Message_n]) and the key (latexmath:[K]) where the key and plaintext has the same length.
 ____
 
-. +++<span style="color:orange">+++ latexmath:[Ciphertext_1 = Message_1 \oplus K] +++</span>+++
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[Ciphertext_1 = Message_1 \oplus K] +++</span></div>+++
 
-. +++<span style="color:orange">+++ latexmath:[Ciphertext_2 = Message_2 \oplus K] +++</span>+++
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[Ciphertext_2 = Message_2 \oplus K] +++</span></div>+++
 ____
 
 
@@ -76,27 +78,32 @@ How does this help with the attack?
 ____
 Consider this: 
 
-. +++<span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2] +++</span>+++
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2] +++</span></div>+++
 
 By substituting values, we get:
 
 [start=2]
-. +++<span style="color:orange">+++ latexmath:[(Message_1 \oplus K) \oplus (Message_2 \oplus K)] +++</span>+++
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[(Message_1 \oplus K) \oplus (Message_2 \oplus K)] +++</span></div>+++
 
 And since the key (latexmath:[K]) is reused for both messages:
 
 [start=3]
-. +++<span style="color:orange">+++ latexmath:[(Message_1 \oplus K) \oplus (Message_2 \oplus K) = Message_1 \oplus Message_2] +++</span>+++
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[(Message_1 \oplus K) \oplus (Message_2 \oplus K) = Message_1 \oplus Message_2] +++</span></div>+++
 
-If *latexmath:[Ciphertext_1 \oplus Ciphertext_2 = (Message_1 \oplus K) \oplus (Message_2 \oplus K)]*, then:
+So if:
 
 [start=4]
-. +++<span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2 = Message_1 \oplus Message_2] +++</span>+++
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2 = (Message_1 \oplus K) \oplus (Message_2 \oplus K)] +++</span></div>+++
+ 
+Then:
+
+[start=5]
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[Ciphertext_1 \oplus Ciphertext_2 = Message_1 \oplus Message_2] +++</span></div>+++
 
 Which also means that:
 
-[start=5]
-. +++<span style="color:orange">+++ latexmath:[(Ciphertext_1 \oplus Ciphertext_2) \oplus Message_1 = Message_2] +++</span>+++
+[start=6]
+. +++<div style="width:100%;overflow-x:auto"><span style="color:orange">+++ latexmath:[(Ciphertext_1 \oplus Ciphertext_2) \oplus Message_1 = Message_2] +++</span></div>+++
 
 Which is the general idea of the *crib dragging* attack.
 ____
