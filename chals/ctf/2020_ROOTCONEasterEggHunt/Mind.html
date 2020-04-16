@@ -642,7 +642,7 @@ efbbbf : U+FEFF : ZERO WIDTH NO-BREAK SPACE</pre>
   INFO    : volatility.debug    : Determining profile based on KDBG search...
             Suggested Profile<span class="o">(</span>s<span class="o">)</span> : Win7SP1x64, Win7SP0x64, Win2008R2SP0x64, Win2008R2SP1x64_24000, Win2008R2SP1x64_23418, Win2008R2SP1x64, Win7SP1x64_24000, Win7SP1x64_23418
                        AS Layer1 : WindowsAMD64PagedMemory <span class="o">(</span>Kernel AS<span class="o">)</span>
-                       AS Layer2 : FileAddressSpace <span class="o">(</span>/mnt/c/Users/ASUS/Downloads/mind/mind/vision<span class="o">)</span>
+                       AS Layer2 : FileAddressSpace <span class="o">(</span>.../mind/vision<span class="o">)</span>
                         PAE <span class="nb">type</span> : No PAE
                              DTB : 0x187000L
                             KDBG : 0xf80002c0f0a0L
@@ -656,15 +656,215 @@ efbbbf : U+FEFF : ZERO WIDTH NO-BREAK SPACE</pre>
 </div>
 </blockquote>
 </div>
+<div class="paragraph">
+<p>According to <span style="color:orange"><code>To Wanda.txt</code></span>, "Let&#8217;s go back in time :)" after which we could open his <span style="color:orange">treasures</span> once we complete the secret:</p>
+</div>
+<div class="paragraph">
+<p>In order to gather leads, I first checked what processes were running using <span style="color:orange"><code>pstree</code></span> then find something I could relate to going back in time:</p>
+</div>
 <div class="quoteblock">
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>volatility <span class="nt">-f</span> vision <span class="nt">--dtb</span><span class="o">=</span>0x187000 <span class="nt">--kdbg</span><span class="o">=</span>0xf80002c0f0a0 <span class="nt">--profile</span><span class="o">=</span>Win7SP1x64 pstree</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>volatility <span class="nt">-f</span> vision <span class="nt">--dtb</span><span class="o">=</span>0x187000 <span class="nt">--kdbg</span><span class="o">=</span>0xf80002c0f0a0 <span class="nt">--profile</span><span class="o">=</span>Win7SP1x64 pstree
+
+  Volatility Foundation Volatility Framework 2.6
+  Name                                                  Pid   PPid   Thds   Hnds Time
+  <span class="nt">--------------------------------------------------</span> <span class="nt">------</span> <span class="nt">------</span> <span class="nt">------</span> <span class="nt">------</span> <span class="nt">----</span>
+  <span class="nt">---omitted---</span>
+  <span class="nb">.</span> 0xfffffa80036ff770:cmd.exe                         2484    516      1     22 2020-04-10 14:06:58 UTC+0000
+  <span class="nt">---omitted---</span>
+   0xfffffa8001d82b30:firefox.exe                      2836   2868     75   1383 2020-04-10 14:08:51 UTC+0000
+  <span class="nb">.</span> 0xfffffa80034f8b30:firefox.exe                     2188   2836     25    350 2020-04-10 14:08:54 UTC+0000
+  <span class="nb">.</span> 0xfffffa800198cb30:firefox.exe                     2668   2836     11    292 2020-04-10 14:08:53 UTC+0000
+  <span class="nb">.</span> 0xfffffa8003021060:firefox.exe                     3116   2836     24     65 2020-04-10 14:12:11 UTC+0000
+  <span class="nb">.</span> 0xfffffa8001934b30:firefox.exe                     3296   2836     34    387 2020-04-10 14:09:26 UTC+0000
+  <span class="nb">.</span> 0xfffffa8001928b30:firefox.exe                     1332   2836     21    318 2020-04-10 14:08:55 UTC+0000
+  <span class="nb">.</span> 0xfffffa8003522b30:firefox.exe                     3000   2836     24    334 2020-04-10 14:12:07 UTC+0000
+  <span class="nb">.</span> 0xfffffa80024ab060:firefox.exe                     4060   2836     27    337 2020-04-10 14:12:04 UTC+0000
+  <span class="nb">.</span> 0xfffffa800365db30:firefox.exe                     4052   2836     25    353 2020-04-10 14:11:59 UTC+0000
+  <span class="nb">.</span> 0xfffffa80034e0b30:firefox.exe                     3460   2836     21    318 2020-04-10 14:08:58 UTC+0000
+  <span class="nb">.</span> 0xfffffa8003282b30:firefox.exe                     1960   2836     28    324 2020-04-10 14:11:02 UTC+0000
+  <span class="nt">---omitted---</span></code></pre>
 </div>
 </div>
 </blockquote>
 </div>
+<div class="paragraph">
+<p>The processes&#8201;&#8212;&#8201;<span style="color:orange"><code>cmd.exe</code></span> and <span style="color:orange"><code>firefox.exe</code></span> caught my attention since if going back in time is considered to having "history", then this two should be prime candidates.</p>
+</div>
+<div class="paragraph">
+<p>Next thing I did was to dump the process memory of <span style="color:orange"><code>firefox.exe</code></span> to see if I can find recently accessed webpages:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>volatility <span class="nt">-f</span> vision <span class="nt">--dtb</span><span class="o">=</span>0x187000 <span class="nt">--kdbg</span><span class="o">=</span>0xf80002c0f0a0 <span class="nt">--profile</span><span class="o">=</span>Win7SP1x64 memdump <span class="nt">-D</span> ./ <span class="nt">-p</span> 2836
+
+  Volatility Foundation Volatility Framework 2.6
+  <span class="nt">------------------------------------------------------------------------</span>
+  Writing firefox.exe <span class="o">[</span>  2836] to 2836.dmp
+
+<span class="nv">$ </span>strings 2836.dmp | <span class="nb">grep</span> <span class="nt">-e</span> <span class="s2">"^http.-treasure"</span> | <span class="nb">sort</span> | <span class="nb">uniq
+
+  </span>https://s7.addthis.com/static/sh.f48a1a04fe8dbf021b4cda1d.html#rand<span class="o">=</span>0.7661267717714668&amp;iit<span class="o">=</span>1586527975883&amp;tmr<span class="o">=</span>load%3D1586527971495%26core%3D1586527971558%26main%3D1586527975877%26ifr%3D1586527975893&amp;cb<span class="o">=</span>0&amp;cdn<span class="o">=</span>0&amp;md<span class="o">=</span>0&amp;kw<span class="o">=</span>upload%20files%2Cfile%20hosting%2Cfile%20sharing%2Csend%20files&amp;ab<span class="o">=</span>-&amp;dh<span class="o">=</span>uploadfiles.io&amp;dr<span class="o">=</span>&amp;du<span class="o">=</span>https%3A%2F%2Fuploadfiles.io%2Fkiyqnnt9&amp;href<span class="o">=</span>https%3A%2F%2Fuploadfiles.io%2Fkiyqnnt9&amp;dt<span class="o">=</span>Upload%20files%20for%20free%20-%20my_treasures%20-%20Uploadfiles.io&amp;dbg<span class="o">=</span>0&amp;cap<span class="o">=</span>tc%3D0%26ab%3D0&amp;inst<span class="o">=</span>1&amp;jsl<span class="o">=</span>1&amp;prod<span class="o">=</span>undefined&amp;lng<span class="o">=</span>en&amp;ogt<span class="o">=</span>description%2Cimage%2Ctitle%2Curl%2Csite_name%2Ctype%3DFile%20storage%20and%20sharing&amp;pc<span class="o">=</span>men&amp;pub<span class="o">=</span>ra-56b61b1b0db9758f&amp;ssl<span class="o">=</span>1&amp;sid<span class="o">=</span>5e907ee30dfa06af&amp;srf<span class="o">=</span>0.01&amp;ver<span class="o">=</span>300&amp;xck<span class="o">=</span>0&amp;xtr<span class="o">=</span>0&amp;og<span class="o">=</span><span class="nb">type</span>%3DFile%2520storage%2520and%2520sharing%26site_name%3DUpload%2520Files%26url%3Dhttps%253A%252F%252Fuploadfiles.io%26title%3DUpload%2520files%2520for%2520free%2520-%2520my_treasures%2520-%2520Uploadfiles.io%26image%3Dhttps%253A%252F%252Fuploadfiles.io%252Fassets%252Fimg%252Ficons%252Fwidget.svg%26description%3DUpload%2520files%252C%2520for%2520free%252C%2520securely%252C%2520anonymously%252C%2520without%2520limits.%2520%2540UploadFilesFree&amp;csi<span class="o">=</span>undefined&amp;rev<span class="o">=</span>v8.28.3-wp&amp;ct<span class="o">=</span>1&amp;xld<span class="o">=</span>1&amp;xd<span class="o">=</span>1
+  <span class="c"><mark>https://uploadfiles.io/kiyqnnt9</mark>Upload files for free - <mark>my_treasures</mark> - Uploadfiles.iooi.selifdaolpu.</span>
+  https://www.google-analytics.com/collect?v<span class="o">=</span>1&amp;_v<span class="o">=</span>j81&amp;a<span class="o">=</span>894596498&amp;t<span class="o">=</span>timing&amp;_s<span class="o">=</span>2&amp;dl<span class="o">=</span>https%3A%2F%2Fuploadfiles.io%2Fkiyqnnt9&amp;ul<span class="o">=</span>en-gb&amp;de<span class="o">=</span>UTF-8&amp;dt<span class="o">=</span>Upload%20files%20for%20free%20-%20my_treasures%20-%20Uploadfiles.io&amp;sd<span class="o">=</span>24-bit&amp;sr<span class="o">=</span>2240x1400&amp;vp<span class="o">=</span>2007x1289&amp;je<span class="o">=</span>0&amp;plt<span class="o">=</span>7996&amp;pdt<span class="o">=</span>0&amp;dns<span class="o">=</span>0&amp;rrt<span class="o">=</span>0&amp;srt<span class="o">=</span>333&amp;tcp<span class="o">=</span>0&amp;dit<span class="o">=</span>6184&amp;clt<span class="o">=</span>7092&amp;_gst<span class="o">=</span>8001&amp;_gbt<span class="o">=</span>8556&amp;_u<span class="o">=</span>AACAAEAB~&amp;jid<span class="o">=</span>&amp;gjid<span class="o">=</span>&amp;cid<span class="o">=</span>1925544683.1586512461&amp;tid<span class="o">=</span>UA-73416834-1&amp;_gid<span class="o">=</span>1259732472.1586512461&amp;z<span class="o">=</span>1308647110</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>I found a URL that lets you download a file, <span style="color:orange"><code>my_treasures</code></span>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/mind_my_treasures.png" alt="mind my treasures">
+</div>
+</div>
+<div class="paragraph">
+<p>Once downloaded:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>file my_treasures
+
+  my_treasures: Zip archive data, at least v2.0 to extract
+
+<span class="nv">$ </span>unzip my_treasures
+
+  Archive:  my_treasures
+  <span class="o">[</span>my_treasures] mytreasures/00b7580c843db8b527c63f0d44496101.raw password:</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It&#8217;s asking for a password but we only have the second part of the secret; however, we haven&#8217;t checked <span style="color:orange"><code>cmd.exe</code></span> yet:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>volatility <span class="nt">-f</span> vision <span class="nt">--dtb</span><span class="o">=</span>0x187000 <span class="nt">--kdbg</span><span class="o">=</span>0xf80002c0f0a0 <span class="nt">--profile</span><span class="o">=</span>Win7SP1x64 cmdscan
+
+  Volatility Foundation Volatility Framework 2.6
+  <span class="nt">--------------------------------------------------</span>
+  CommandProcess: conhost.exe Pid: 2936
+  CommandHistory: 0x6d140 Application: cmd.exe Flags: Allocated, Reset
+  CommandCount: 5 LastAdded: 4 LastDisplayed: 4
+  FirstCommand: 0 CommandCountMax: 50
+  ProcessHandle: 0x60
+  Cmd <span class="c"><mark>0 @ 0x6bbc0: cd C:\Users</span>
+  Cmd <span class="c">#1 @ 0x6bbe0: cd vshade</span>
+  Cmd <span class="c">#2 @ 0x6bc00: cd Desktop</span>
+  Cmd <span class="c">#3 @ 0x4d050: echo "<mark>MUlPdVg1dTsybDJldW9MPSg/SkJGIy11bURKc2AvQDdHMyU3ODczKEByMg==</mark>"</span>
+  Cmd <span class="c">#4 @ 0x4d2f0: winpmem-2.1.post4.exe -o output.aff4</span>
+  Cmd <span class="c">#15 @ 0x30158: </span>
+  Cmd <span class="c">#16 @ 0x6c2b0: </span>
+  <span class="nt">--------------------------------------------------</span>
+  CommandProcess: conhost.exe Pid: 2936
+  CommandHistory: 0x71e00 Application: winpmem-2.1.post4.exe Flags: Allocated
+  CommandCount: 0 LastAdded: <span class="nt">-1</span> LastDisplayed: <span class="nt">-1</span>
+  FirstCommand: 0 CommandCountMax: 50
+  ProcessHandle: 0x8c
+
+<span class="nv">$ </span><span class="nb">echo </span>MUlPdVg1dTsybDJldW9MPSg/SkJGIy11bURKc2AvQDdHMyU3ODczKEByMg<span class="o">==</span> | <span class="nb">base64</span> <span class="nt">-d</span>
+
+  1IOuX5u<span class="p">;</span><span class="nv">2l2euoL</span><span class="o">=(</span>?JBF</mark>-umDJs<span class="sb">`</span>/@7G3%7873<span class="o">(</span>@r2</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The decoded base64 is gibberish but we almost forgot that there was a given <span style="color:orange"><code>hint.txt</code></span> in this challenge:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>hint.txt
+
+  def -&gt; 58 -&gt; 85 -&gt; 64 -&gt; ?</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Since the one we found at the memory dump was base64 encoded and the last number in the string is 64, this must be the process on how the first part of the secret was encoded:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/mind_hint.png" alt="mind hint">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>We now have the first and second halves of the secret&#8201;&#8212;&#8201;<span style="color:orange"><code>sc4rl37_w1tch_my_l0v3</code></span>!!</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-4-getting-the-flag">PART 4 : GETTING THE FLAG</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the secret to extract the contents of <span style="color:orange"><code>my_treasures</code></span>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>unzip my_treasures
+
+  Archive:  my_treasures
+  <span class="o">[</span>my_treasures] mytreasures/00b7580c843db8b527c63f0d44496101.raw password: sc4rl37_w1tch_my_l0v3
+  <span class="nt">---omitted---</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There are a lot of files extracted but one file seems to have a longer filename than the others:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-Al</span>
+
+  <span class="nt">-rwxrwxrwx</span> 1 jebidiah jebidiah    9082 Apr 10 16:44 e1eb1281e3015390f37b03f0282b6623.raw
+  <span class="nt">-rwxrwxrwx</span> 1 jebidiah jebidiah    1976 Apr 10 16:44 e24ff82569798c5e4b9fa1bb424404e8.raw
+  <span class="nt">-rwxrwxrwx</span> 1 jebidiah jebidiah   31287 Apr 10 17:21 <span class="c"><mark>e25463c82c609c52547f8f1523ff47833b6</mark>.raw</span>
+  <span class="nt">-rwxrwxrwx</span> 1 jebidiah jebidiah  279411 Apr 10 17:24 e26bbe7ada21e4e5e18bbc9bd974796c.raw
+  <span class="nt">-rwxrwxrwx</span> 1 jebidiah jebidiah    6695 Apr 10 16:44 e2899df66e8851d71d599f3576d41894.raw</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>When opened, it gives us an egg with a QR code:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/e25463c82c609c52547f8f1523ff47833b6.raw" alt="e25463c82c609c52547f8f1523ff47833b6">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Which when scanned gives us the flag!!</p>
+</div>
+<hr>
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{y0u_c0uld_n3veR_huRt_m3_I_ju57_f33l_y0u}</strong></h2></div>
 </div>
 </div></section>
        </div>

@@ -227,26 +227,195 @@ $ volatility -f vision imageinfo
   INFO    : volatility.debug    : Determining profile based on KDBG search...
             Suggested Profile(s) : Win7SP1x64, Win7SP0x64, Win2008R2SP0x64, Win2008R2SP1x64_24000, Win2008R2SP1x64_23418, Win2008R2SP1x64, Win7SP1x64_24000, Win7SP1x64_23418
                        AS Layer1 : WindowsAMD64PagedMemory (Kernel AS)
-                       AS Layer2 : FileAddressSpace (/mnt/c/Users/ASUS/Downloads/mind/mind/vision)
+                       AS Layer2 : FileAddressSpace (.../mind/vision)
                         PAE type : No PAE
                              DTB : 0x187000L
                             KDBG : 0xf80002c0f0a0L
             Number of Processors : 1
        Image Type (Service Pack) : 1
                   KPCR for CPU 0 : 0xfffff80002c10d00L
-               KUSER_SHARED_DATA : 0xfffff78000000000L
+               KUSER_SHARED_DATA : 0xfffff78000000000L 
              Image date and time : 2020-04-10 14:11:55 UTC+0000
        Image local date and time : 2020-04-10 22:11:55 +0800
 ----
 ____
+
+According to +++<span style="color:orange">+++`To Wanda.txt`+++</span>+++, "Let's go back in time :)" after which we could open his +++<span style="color:orange">+++treasures+++</span>+++ once we complete the secret:
+
+In order to gather leads, I first checked what processes were running using +++<span style="color:orange">+++`pstree`+++</span>+++ then find something I could relate to going back in time:
 
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
 $ volatility -f vision --dtb=0x187000 --kdbg=0xf80002c0f0a0 --profile=Win7SP1x64 pstree
 
+  Volatility Foundation Volatility Framework 2.6
+  Name                                                  Pid   PPid   Thds   Hnds Time
+  -------------------------------------------------- ------ ------ ------ ------ ----
+  ---omitted---
+  . 0xfffffa80036ff770:cmd.exe                         2484    516      1     22 2020-04-10 14:06:58 UTC+0000
+  ---omitted---
+   0xfffffa8001d82b30:firefox.exe                      2836   2868     75   1383 2020-04-10 14:08:51 UTC+0000
+  . 0xfffffa80034f8b30:firefox.exe                     2188   2836     25    350 2020-04-10 14:08:54 UTC+0000
+  . 0xfffffa800198cb30:firefox.exe                     2668   2836     11    292 2020-04-10 14:08:53 UTC+0000
+  . 0xfffffa8003021060:firefox.exe                     3116   2836     24     65 2020-04-10 14:12:11 UTC+0000
+  . 0xfffffa8001934b30:firefox.exe                     3296   2836     34    387 2020-04-10 14:09:26 UTC+0000
+  . 0xfffffa8001928b30:firefox.exe                     1332   2836     21    318 2020-04-10 14:08:55 UTC+0000
+  . 0xfffffa8003522b30:firefox.exe                     3000   2836     24    334 2020-04-10 14:12:07 UTC+0000
+  . 0xfffffa80024ab060:firefox.exe                     4060   2836     27    337 2020-04-10 14:12:04 UTC+0000
+  . 0xfffffa800365db30:firefox.exe                     4052   2836     25    353 2020-04-10 14:11:59 UTC+0000
+  . 0xfffffa80034e0b30:firefox.exe                     3460   2836     21    318 2020-04-10 14:08:58 UTC+0000
+  . 0xfffffa8003282b30:firefox.exe                     1960   2836     28    324 2020-04-10 14:11:02 UTC+0000
+  ---omitted---
+
 ----
 ____
 
+
+The processes -- +++<span style="color:orange">+++`cmd.exe`+++</span>+++ and +++<span style="color:orange">+++`firefox.exe`+++</span>+++ caught my attention since if going back in time is considered to having "history", then this two should be prime candidates.
+
+Next thing I did was to dump the process memory of +++<span style="color:orange">+++`firefox.exe`+++</span>+++ to see if I can find recently accessed webpages:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ volatility -f vision --dtb=0x187000 --kdbg=0xf80002c0f0a0 --profile=Win7SP1x64 memdump -D ./ -p 2836 
+
+  Volatility Foundation Volatility Framework 2.6
+  ------------------------------------------------------------------------
+  Writing firefox.exe [  2836] to 2836.dmp
+
+$ strings 2836.dmp | grep -e "^http.-treasure" | sort | uniq
+
+  https://s7.addthis.com/static/sh.f48a1a04fe8dbf021b4cda1d.html#rand=0.7661267717714668&iit=1586527975883&tmr=load%3D1586527971495%26core%3D1586527971558%26main%3D1586527975877%26ifr%3D1586527975893&cb=0&cdn=0&md=0&kw=upload%20files%2Cfile%20hosting%2Cfile%20sharing%2Csend%20files&ab=-&dh=uploadfiles.io&dr=&du=https%3A%2F%2Fuploadfiles.io%2Fkiyqnnt9&href=https%3A%2F%2Fuploadfiles.io%2Fkiyqnnt9&dt=Upload%20files%20for%20free%20-%20my_treasures%20-%20Uploadfiles.io&dbg=0&cap=tc%3D0%26ab%3D0&inst=1&jsl=1&prod=undefined&lng=en&ogt=description%2Cimage%2Ctitle%2Curl%2Csite_name%2Ctype%3DFile%20storage%20and%20sharing&pc=men&pub=ra-56b61b1b0db9758f&ssl=1&sid=5e907ee30dfa06af&srf=0.01&ver=300&xck=0&xtr=0&og=type%3DFile%2520storage%2520and%2520sharing%26site_name%3DUpload%2520Files%26url%3Dhttps%253A%252F%252Fuploadfiles.io%26title%3DUpload%2520files%2520for%2520free%2520-%2520my_treasures%2520-%2520Uploadfiles.io%26image%3Dhttps%253A%252F%252Fuploadfiles.io%252Fassets%252Fimg%252Ficons%252Fwidget.svg%26description%3DUpload%2520files%252C%2520for%2520free%252C%2520securely%252C%2520anonymously%252C%2520without%2520limits.%2520%2540UploadFilesFree&csi=undefined&rev=v8.28.3-wp&ct=1&xld=1&xd=1
+  ##https://uploadfiles.io/kiyqnnt9##Upload files for free - ##my_treasures## - Uploadfiles.iooi.selifdaolpu.
+  https://www.google-analytics.com/collect?v=1&_v=j81&a=894596498&t=timing&_s=2&dl=https%3A%2F%2Fuploadfiles.io%2Fkiyqnnt9&ul=en-gb&de=UTF-8&dt=Upload%20files%20for%20free%20-%20my_treasures%20-%20Uploadfiles.io&sd=24-bit&sr=2240x1400&vp=2007x1289&je=0&plt=7996&pdt=0&dns=0&rrt=0&srt=333&tcp=0&dit=6184&clt=7092&_gst=8001&_gbt=8556&_u=AACAAEAB~&jid=&gjid=&cid=1925544683.1586512461&tid=UA-73416834-1&_gid=1259732472.1586512461&z=1308647110
+
+----
+____
+
+I found a URL that lets you download a file, +++<span style="color:orange">+++`my_treasures`+++</span>+++:
+
+____
+image::mind_my_treasures.png[]
+
+Once downloaded:
+
+[source,shell]
+----
+$ file my_treasures
+
+  my_treasures: Zip archive data, at least v2.0 to extract
+
+$ unzip my_treasures
+
+  Archive:  my_treasures
+  [my_treasures] mytreasures/00b7580c843db8b527c63f0d44496101.raw password:  
+
+----
+____
+
+It's asking for a password but we only have the second part of the secret; however, we haven't checked +++<span style="color:orange">+++`cmd.exe`+++</span>+++ yet:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ volatility -f vision --dtb=0x187000 --kdbg=0xf80002c0f0a0 --profile=Win7SP1x64 cmdscan
+
+  Volatility Foundation Volatility Framework 2.6
+  --------------------------------------------------
+  CommandProcess: conhost.exe Pid: 2936
+  CommandHistory: 0x6d140 Application: cmd.exe Flags: Allocated, Reset
+  CommandCount: 5 LastAdded: 4 LastDisplayed: 4
+  FirstCommand: 0 CommandCountMax: 50
+  ProcessHandle: 0x60
+  Cmd #0 @ 0x6bbc0: cd C:\Users
+  Cmd #1 @ 0x6bbe0: cd vshade
+  Cmd #2 @ 0x6bc00: cd Desktop
+  Cmd #3 @ 0x4d050: echo "##MUlPdVg1dTsybDJldW9MPSg/SkJGIy11bURKc2AvQDdHMyU3ODczKEByMg==##"
+  Cmd #4 @ 0x4d2f0: winpmem-2.1.post4.exe -o output.aff4
+  Cmd #15 @ 0x30158: 
+  Cmd #16 @ 0x6c2b0: 
+  --------------------------------------------------
+  CommandProcess: conhost.exe Pid: 2936
+  CommandHistory: 0x71e00 Application: winpmem-2.1.post4.exe Flags: Allocated
+  CommandCount: 0 LastAdded: -1 LastDisplayed: -1
+  FirstCommand: 0 CommandCountMax: 50
+  ProcessHandle: 0x8c
+
+$ echo MUlPdVg1dTsybDJldW9MPSg/SkJGIy11bURKc2AvQDdHMyU3ODczKEByMg== | base64 -d
+
+  1IOuX5u;2l2euoL=(?JBF#-umDJs`/@7G3%7873(@r2
+
+----
+____
+
+The decoded base64 is gibberish but we almost forgot that there was a given +++<span style="color:orange">+++`hint.txt`+++</span>+++ in this challenge:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat hint.txt
+
+  def -> 58 -> 85 -> 64 -> ?
+
+----
+____
+
+Since the one we found at the memory dump was base64 encoded and the last number in the string is 64, this must be the process on how the first part of the secret was encoded:
+
+____
+image::mind_hint.png[]
+____
+
+We now have the first and second halves of the secret -- +++<span style="color:orange">+++`sc4rl37_w1tch_my_l0v3`+++</span>+++!!
+
+---
+
+== PART 4 : GETTING THE FLAG
+
+Using the secret to extract the contents of +++<span style="color:orange">+++`my_treasures`+++</span>+++:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ unzip my_treasures
+
+  Archive:  my_treasures
+  [my_treasures] mytreasures/00b7580c843db8b527c63f0d44496101.raw password: sc4rl37_w1tch_my_l0v3
+  ---omitted---
+
+----
+____
+
+There are a lot of files extracted but one file seems to have a longer filename than the others:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ ls -Al
+
+  -rwxrwxrwx 1 jebidiah jebidiah    9082 Apr 10 16:44 e1eb1281e3015390f37b03f0282b6623.raw
+  -rwxrwxrwx 1 jebidiah jebidiah    1976 Apr 10 16:44 e24ff82569798c5e4b9fa1bb424404e8.raw
+  -rwxrwxrwx 1 jebidiah jebidiah   31287 Apr 10 17:21 ##e25463c82c609c52547f8f1523ff47833b6##.raw
+  -rwxrwxrwx 1 jebidiah jebidiah  279411 Apr 10 17:24 e26bbe7ada21e4e5e18bbc9bd974796c.raw
+  -rwxrwxrwx 1 jebidiah jebidiah    6695 Apr 10 16:44 e2899df66e8851d71d599f3576d41894.raw
+
+----
+____
+
+When opened, it gives us an egg with a QR code:
+
+____
+image::e25463c82c609c52547f8f1523ff47833b6.raw[]
+____
+
+Which when scanned gives us the flag!!
+
+---
+
+++++
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{y0u_c0uld_n3veR_huRt_m3_I_ju57_f33l_y0u}</strong></h2></div>
+++++
 
 
