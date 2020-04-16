@@ -1,15 +1,252 @@
 ---
 layout: menu
 title: "Mind Challenge"
-description: ""
+description: "If you're reading this‌‌‌‌‍‬‌, the second part of the secret is in this file. Look closely and do it fast! Bonny Stark and the whole world is waiting. The first one, well.. if you‌‌‌‌‌‌‌'re really from Eggshield you should be able to figure it out. Let's go back in time :)"
 header-img: "chals/ctf/2020_ROOTCONEasterEggHunt/screenshots/banner.png"
 tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeups, write-up, writeup, rootcon, rootcon easter egg hunt, rootcon-easter-egg-hunt, easter egg hunt, easter-egg-hunt, solutions, 2020, mind]
 ---
 
+:filesdir: /chals/ctf/2020_ROOTCONEasterEggHunt/files/
 :imagesdir: ./screenshots/
-:stem: latexmath
 :page-liquid:
+:source-highlighter: rouge
 
-+++<span><h1 style="color:red">mind Challenge</h1></span>+++
++++<span><h1 style="color:red">Mind Challenge</h1></span>+++
 
 ---
+
+== PART 1 : GIVEN FILES
+
+- mind.tar.gz (The file is too big to host...)
+____
+[source,shell]
+----
+$ md5sum mind.tar.gz
+
+  b38fd751f8fc2ccd8dc292ef5285b2d3  mind.tar.gz
+
+$ sha1sum mind.tar.gz
+
+  aa4300366226b596cce3b85e89b30795d6b3e0c3  mind.tar.gz
+
+$ gzip -d mind.tar.gz
+
+$ tar xvf mind.tar.gz
+
+  mind/hint.txt
+  mind/To Wanda.txt
+  mind/vision
+
+----
+____
+
+---
+
+== PART 2 : A MESSAGE TO WANDA
+
+The file, +++<span style="color:orange">+++`To Wanda.txt`+++</span>+++, contains what the challenge is all about. I cleaned it a little bit so it reads:
+
+____
+----
+If you're reading this, I sacrificed my thoughts and memories to protect the‌‌‌‌‍‬‬‌ Mind Egg.
+
+To protect you.
+
+Doing so will make me forget you and every moment we had together.
+
+But doing so also gives us more time to spend new memories once this is all over.
+
+
+Love,
+
+Victor
+---------------------‌‌‌‌‍‍-------------------------------------------------------------------
+Eggshield Agent,
+
+If you're reading this‌‌‌‌‍‬‌, the second part of the secret is in this file. Look closely and do it fast! Bonny Stark and the whole world is waiting.
+
+The first one, well.. if you‌‌‌‌‌'re really from Eggshield you should be able to figure it out. Let's go back in time :)
+
+Once you ‌‌‌‌‍‍‬have the secret, use that to open the deepest part of my memories. My treasures.
+
+Lastly, please do tell the Avengersto take care of Wanda for me.
+
+Till then,
+Victor
+----
+____
+
+A secret is split into two -- in the file itself,  +++<span style="color:orange">+++`To Wanda.txt`+++</span>+++, and in the file, +++<span style="color:orange">+++`vision`+++</span>+++
+
+Looking back at the hexdump of the original +++<span style="color:orange">+++`To Wanda.txt`+++</span>+++:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat To\ Wanda.txt | xxd -p | tr -d '\n' | fold -w 100
+
+  496620796f752772652072656164696e6720746869732c20492073616372696669636564206d792074686f75676874732061
+  6e64206d656d6f7269657320746f2070726f7465637420746865##e2808ce2808ce2808ce2808ce2808de280ace280ace2808c##
+  204d696e64204567672e0a0a546f2070726f7465637420796f752e0a0a446f696e6720736f2077696c6c206d616b65206d65
+  20666f7267657420796f7520616e64206576657279206d6f6d656e742077652068616420746f6765746865722e0a0a427574
+  20646f696e6720736f20616c736f206769766573207573206d6f72652074696d6520746f207370656e64206e6577206d656d
+  6f72696573206f6e6365207468697320697320616c6c206f7665722e0a0a0a4c6f76652c0a0a566963746f720a0a##e2808ce2##
+  ##808ce2808ce2808ce2808de2808defbbbfefbbbf##0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a##e2808ce2808ce2808ce2##
+  ##808ce2808de280acefbbbfe2808d##0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a##e2808ce2808c##
+  ##e2808ce2808ce2808defbbbfe280ace2808d##0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+  0a0a0a2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d##e2808ce2808ce2808ce2808ce2808de2808defbbbfefbbbf##2d2d
+  2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+  2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d0a456767736869656c64204167656e742c0a0a496620796f752772652072656164696e
+  672074686973##e2808ce2808ce2808ce2808ce2808de280acefbbbfe2808c##2c20746865207365636f6e642070617274206f66
+  207468652073656372657420697320696e20746869732066696c652e204c6f6f6b20636c6f73656c7920616e6420646f2069
+  7420666173742120426f6e6e7920537461726b20616e64207468652077686f6c6520776f726c642069732077616974696e67
+  2e0a0a546865206669727374206f6e652c2077656c6c2e2e20696620796f75##e2808ce2808ce2808ce2808ce2808cefbbbfe2##
+  ##808ce2808c##277265207265616c6c792066726f6d20456767736869656c6420796f752073686f756c642062652061626c6520
+  746f20666967757265206974206f75742e204c6574277320676f206261636b20696e2074696d65203a290a0a4f6e63652079
+  6f7520##e2808ce2808ce2808ce2808ce2808defbbbfe2808de280ac##6861766520746865207365637265742c20757365207468
+  617420746f206f70656e2074686520646565706573742070617274206f66206d79206d656d6f726965732e204d7920747265
+  6173757265732e0a0a4c6173746c792c20706c6561736520646f2074656c6c20746865204176656e67657273746f2074616b
+  652063617265206f662057616e646120666f72206d652e0a0a54696c6c207468656e2c0a566963746f72##e2808ce2808ce280#
+  #8ce2808ce2808cefbbbfe2808cefbbbf#
+----
+____
+
+There are 9 hex strings consisting of the unicode characters -- +++<span style="color:orange">+++e2808c+++</span>+++, +++<span style="color:orange">+++e2808d+++</span>+++, +++<span style="color:orange">+++e280ac+++</span>+++, +++<span style="color:orange">+++efbbbf+++</span>+++ -- that are scattered all over the text:
+
+____
+----
+e2808c : U+200C : ZERO WIDTH NON-JOINER
+e2808d : U+200D : ZERO WIDTH JOINER
+e280ac : U+202C : POP DIRECTIONAL FORMATTING
+efbbbf : U+FEFF : ZERO WIDTH NO-BREAK SPACE
+----
+____
+
++++<span style="color:orange">+++Zero width characters+++</span>+++ are non-printing and if you search for how to hide text using such characters, you'll come across this -- link:https://330k.github.io/misc_tools/unicode_steganography.html[Unicode Steganography with Zero-Width Characters].
+
+I recreated the process of encoding characters to zero width (for fun's sake and this writeup) in order to find out how it works:
+
+____
+The zero width characters that will be used are set:
+
+[source,js]
+----
+chars = '\u200c\u200d\u202c\ufeff'.split('');
+// chars = ['\u200c', '\u200d', '\u202c', '\ufeff'];
+----
+
+Next, the following values are set:
+
+[source,js]
+----
+radix = chars.length;
+// radix = 4;
+
+codelengthText = Math.ceil(Math.log(65536) / Math.log(radix))
+// codelengthText = 8;
+
+var base = '';
+for(i = 0; i < codelengthText; i++){ base += '0'; }
+// base = '00000000';
+----
+
+Now, to perform the encoding:
+
+[source,js]
+----
+charToEncode = 'A';
+// FOR EXAMPLE ONLY
+
+var c = charToEncode.charCodeAt(0);
+// c = 65;
+
+var d = c.toString(radix);
+// d = c.toString(4);
+// d = 1001;
+// 65 was converted from decimal to base4
+
+var result = (base + d).substr(-codelengthText);
+// result = ('00000000' + 1001).substr(-8);
+// result = '00001001';
+
+var encodedCharacter = '';
+for(i=0; i<result.length; i++) { encodedCharacter += chars[result[i]]; }
+// encodedCharacter = '\u200c\u200c\u200c\u200c\u200d\u200c\u200c\u200d'
+// or in hex:
+// encodedCharacter = 'e2808ce2808ce2808ce2808ce2808de2808ce2808ce2808d'
+----
+____
+
+And true enough when reversing the process after gathering the hex strings from the hexdump earlier:
+
+____
+[source,python]
+----
+characters = [
+    "e2808c e2808c e2808c e2808c e2808d e280ac e280ac e2808c",
+    "e2808c e2808c e2808c e2808c e2808d e2808d efbbbf efbbbf",
+    "e2808c e2808c e2808c e2808c e2808d e280ac efbbbf e2808d",
+    "e2808c e2808c e2808c e2808c e2808d efbbbf e280ac e2808d",
+    "e2808c e2808c e2808c e2808c e2808d e2808d efbbbf efbbbf",
+    "e2808c e2808c e2808c e2808c e2808d e280ac efbbbf e2808c",
+    "e2808c e2808c e2808c e2808c e2808c efbbbf e2808c e2808c",
+    "e2808c e2808c e2808c e2808c e2808d efbbbf e2808d e280ac",
+    "e2808c e2808c e2808c e2808c e2808c efbbbf e2808c efbbbf"
+]
+
+subs = ["e2808c", "e2808d", "e280ac", "efbbbf"]
+
+secret = ""
+for i in characters:
+
+    i = i.split(" ")
+    
+    for x in range(len(i)):
+        i[x] = str(subs.index(i[x]))
+
+    secret += chr(int(''.join(i), 4))
+
+print(secret) # h_my_l0v3
+----
+____
+
+The second part of the secret is revealed to be +++<span style="color:orange">+++h_my_l0v3+++</span>+++!!
+
+---
+
+== PART 3 : VISION'S MEMORY
+
+Let's run the file, +++<span style="color:orange">+++vision+++</span>+++, in +++<span style="color:orange">+++volatility+++</span>+++ to see if it's a memory dump then gather information about the image
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ volatility -f vision imageinfo
+
+  Volatility Foundation Volatility Framework 2.6
+  INFO    : volatility.debug    : Determining profile based on KDBG search...
+            Suggested Profile(s) : Win7SP1x64, Win7SP0x64, Win2008R2SP0x64, Win2008R2SP1x64_24000, Win2008R2SP1x64_23418, Win2008R2SP1x64, Win7SP1x64_24000, Win7SP1x64_23418
+                       AS Layer1 : WindowsAMD64PagedMemory (Kernel AS)
+                       AS Layer2 : FileAddressSpace (/mnt/c/Users/ASUS/Downloads/mind/mind/vision)
+                        PAE type : No PAE
+                             DTB : 0x187000L
+                            KDBG : 0xf80002c0f0a0L
+            Number of Processors : 1
+       Image Type (Service Pack) : 1
+                  KPCR for CPU 0 : 0xfffff80002c10d00L
+               KUSER_SHARED_DATA : 0xfffff78000000000L
+             Image date and time : 2020-04-10 14:11:55 UTC+0000
+       Image local date and time : 2020-04-10 22:11:55 +0800
+----
+____
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ volatility -f vision --dtb=0x187000 --kdbg=0xf80002c0f0a0 --profile=Win7SP1x64 pstree
+
+----
+____
+
+
+
