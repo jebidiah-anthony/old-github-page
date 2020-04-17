@@ -413,10 +413,14 @@
 <div class="paragraph">
 <p>Opening the <a href="http://easteregg.rootcon.net/rceaster/time/">challenge</a> brings you to:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="imageblock">
 <div class="content">
 <img src="./screenshots/time_home.png" alt="time home">
 </div>
+</div>
+</blockquote>
 </div>
 <div class="paragraph">
 <p>which reads the following:</p>
@@ -474,7 +478,7 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 </div>
 </div>
 <div class="sect1">
-<h2 id="part-3-getting-the-flag">PART 3 : GETTING THE FLAG</h2>
+<h2 id="part-3-the-one-time-pad">PART 3 : THE ONE TIME PAD</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If this is ineed a <span style="color:orange">One Time Pad</span> and the key was reused for both ciphertexts, then it may be decrypted via a <span style="color:red">Crib Dragging</span> attack.</p>
@@ -576,14 +580,17 @@ Message 2: 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2</p
 </div>
 </blockquote>
 </div>
-<div class="paragraph">
-<p>Proceeding to the attack:</p>
+<hr>
 </div>
-<div class="quoteblock">
-<blockquote>
+</div>
+<div class="sect1">
+<h2 id="part-4-getting-the-flag">PART 4 : GETTING THE FLAG</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Finding the value of <strong>\(Ciphertext_1 \oplus Ciphertext_2\)</strong>:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>    83d7f7966225c71b556cfd1fa28aa1cb364903c74bfad82400a5b8326ebf110cf610
@@ -592,17 +599,25 @@ XOR 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2
     00573c0651431a502d4e47570b506e405d02696f560b296f460a6c41045600121493</pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>Now, we guess a portion of the plaintext then encode it in hex. It is advisable to use simple words first but to each their own:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>easter =&gt; 656173746572</pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>Then, XOR it with the value from <strong>\(Ciphertext_1 \oplus Ciphertext_2\)</strong>:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>    <mark>00573c065143</mark>1a502d4e47570b506e405d02696f560b296f460a6c41045600121493
@@ -611,9 +626,13 @@ XOR <mark>656173746572</mark> (easter)
     <mark>65364f723431</mark> (e6Or41)</pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>But the value returned is gibberish, so then we shift the XOR to the right:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>    00573c<mark>0651431a502d</mark>4e47570b506e405d02696f560b296f460a6c41045600121493
@@ -622,9 +641,13 @@ XOR       <mark>656173746572</mark> (easter)
           <mark>6330306e355f</mark> (c00n5_)</pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>Shifting three bytes to the right returns <code>c00n5_</code> which looks like a portion of the flag. Now, trying the flag format, <code>rc_easter{</code> which fits well with the shift returns:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>    <mark>00573c0651431a502d4e</mark>47570b506e405d02696f560b296f460a6c41045600121493
@@ -633,9 +656,13 @@ XOR <mark>72635f6561737465727b</mark> (rc_easter{)
     <mark>7234636330306e355f35</mark> (r4cc00n5_5)</pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>We get the word, <span style="color:orange">r4cc00n5</span>, in 1337 speak followed by what seems to be a word that starts with <span style="color:orange">5</span> (<code>letter S</code>). According to the challenge, eggs were stolen and the image references to an <strong>evil plotting raccoon meme</strong> which made me try to guess the string one word at a time along the lines of <span style="color:red">the raccoons stole the eggs</span></p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="listingblock">
 <div class="content">
 <pre>    00573c0651431a502d4e47570b506e405d02696f560b296f460a6c41045600121493
@@ -644,18 +671,22 @@ XOR 7234636330306e355f3574306c335f346c6c5f30665f793075725f336767352121 (r4cc00n5
     72635f6561737465727b336767633174316e365f3054505f337833726331353335 (rc_easter{3ggc1t1n6_0TP_3x3rc1535)</pre>
 </div>
 </div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>To my surprise, the flag was revealed.</p>
 </div>
 <div class="paragraph">
 <p>Since <strong><code>Message1</code></strong> is longer by 1 character than <strong><code>Message2</code></strong>, that missing character must be <span style="color:orange">}</span> to complete the flag.</p>
 </div>
-</blockquote>
-</div>
+<div class="quoteblock">
+<blockquote>
 <hr>
 <div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>rc_easter{3ggc1t1n6_0TP_3x3rc1535}</strong></h2></div>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</blockquote>
+</div>
 </div>
 </div></section>
        </div>

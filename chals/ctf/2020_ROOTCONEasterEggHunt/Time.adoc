@@ -18,7 +18,9 @@ tags: [ctf, capture-the-flag, challenges, challenge-write-ups, write-ups, writeu
 
 Opening the http://easteregg.rootcon.net/rceaster/time/[challenge] brings you to:
 
+____
 image::time_home.png[]
+____
 
 which reads the following: 
 
@@ -56,7 +58,7 @@ Other things:
 
 ---
 
-== PART 3 : GETTING THE FLAG
+== PART 3 : THE ONE TIME PAD
 
 If this is ineed a +++<span style="color:orange">One Time Pad</span>+++ and the key was reused for both ciphertexts, then it may be decrypted via a +++<span style="color:red">Crib Dragging</span>+++ attack.
 
@@ -108,25 +110,32 @@ Which also means that:
 Which is the general idea of the *crib dragging* attack.
 ____
 
-Proceeding to the attack:
-____
+---
+
+== PART 4 : GETTING THE FLAG
+
 Finding the value of *latexmath:[Ciphertext_1 \oplus Ciphertext_2]*:
 
+____
 ----
     83d7f7966225c71b556cfd1fa28aa1cb364903c74bfad82400a5b8326ebf110cf610
 XOR 8380cb903366dd4b7822ba48a9dacf8b6b4b6aa81df1f14b46afd4736ae9111ee2
 ------------------------------------------------------------------------
     00573c0651431a502d4e47570b506e405d02696f560b296f460a6c41045600121493
 ----
+____
 
 Now, we guess a portion of the plaintext then encode it in hex. It is advisable to use simple words first but to each their own:
 
+____
 ----
 easter => 656173746572
 ----
+____
 
 Then, XOR it with the value from *latexmath:[Ciphertext_1 \oplus Ciphertext_2]*:
 
+____
 [subs="verbatim,quotes"]
 ----
     ##00573c065143##1a502d4e47570b506e405d02696f560b296f460a6c41045600121493
@@ -134,9 +143,11 @@ XOR #656173746572# (easter)
 ------------------------------------------------------------------------
     #65364f723431# (e6Or41)
 ----
+____
 
 But the value returned is gibberish, so then we shift the XOR to the right:
 
+____
 [subs="verbatim,quotes"]
 ----
     00573c##0651431a502d##4e47570b506e405d02696f560b296f460a6c41045600121493
@@ -144,9 +155,11 @@ XOR       #656173746572# (easter)
 ------------------------------------------------------------------------
           #6330306e355f# (c00n5_)
 ----
+____
 
 Shifting three bytes to the right returns `c00n5_` which looks like a portion of the flag. Now, trying the flag format, `rc_easter{` which fits well with the shift returns:
 
+____
 [subs="verbatim,quotes"]
 ----
     ##00573c0651431a502d4e##47570b506e405d02696f560b296f460a6c41045600121493
@@ -154,15 +167,18 @@ XOR #72635f6561737465727b# (rc_easter{)
 ------------------------------------------------------------------------
     #7234636330306e355f35# (r4cc00n5_5)
 ----
+____
 
 We get the word, +++<span style="color:orange">r4cc00n5</span>+++, in 1337 speak followed by what seems to be a word that starts with +++<span style="color:orange">5</span>+++ (`letter S`). According to the challenge, eggs were stolen and the image references to an *evil plotting raccoon meme* which made me try to guess the string one word at a time along the lines of +++<span style="color:red">the raccoons stole the eggs</span>+++
 
+____
 ----
     00573c0651431a502d4e47570b506e405d02696f560b296f460a6c41045600121493
 XOR 7234636330306e355f3574306c335f346c6c5f30665f793075725f336767352121 (r4cc00n5_5t0l3_4ll_0f_y0ur_3gg5!!)
 ------------------------------------------------------------------------
     72635f6561737465727b336767633174316e365f3054505f337833726331353335 (rc_easter{3ggc1t1n6_0TP_3x3rc1535)
 ----
+____
 
 To my surprise, the flag was revealed.
 
