@@ -395,11 +395,13 @@ ____
 ----
 $ ls -Al
 
+  ---omitted---
   -rwxrwxrwx 1 jebidiah jebidiah    9082 Apr 10 16:44 e1eb1281e3015390f37b03f0282b6623.raw
   -rwxrwxrwx 1 jebidiah jebidiah    1976 Apr 10 16:44 e24ff82569798c5e4b9fa1bb424404e8.raw
   -rwxrwxrwx 1 jebidiah jebidiah   31287 Apr 10 17:21 ##e25463c82c609c52547f8f1523ff47833b6##.raw
   -rwxrwxrwx 1 jebidiah jebidiah  279411 Apr 10 17:24 e26bbe7ada21e4e5e18bbc9bd974796c.raw
   -rwxrwxrwx 1 jebidiah jebidiah    6695 Apr 10 16:44 e2899df66e8851d71d599f3576d41894.raw
+  ---omitted---
 
 ----
 ____
