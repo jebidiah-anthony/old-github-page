@@ -1,0 +1,134 @@
+---
+layout: menu
+title: "Output Encoding"
+description: "Values received from a data source should only be treated as what it should be (only as data) and nothing else."
+header-img: ""
+tags: [secure coding, output encoding, strings, html entities, data serialization, data deserialization, serialization, deserialization]
+---
+
+:page-liquid:
+:source-highlighter: rouge
+
++++<span><h1 style="color:red">+++SECURE CODING: OUTPUT ENCODING+++</h1></span>+++
+
+---
+
+== How does Output Encoding help?
+____
+Values received from a data source should only be treated as what it should be (only as data) and nothing else. This means that in an event where something maliscious is passed into a relevant resource, no rendering or unintenional event triggers will happen.
+____
+
+---
+
+== Output Encoding Methods:
+
++++<span style="color:orange">+++Escape Characters+++</span>+++
+
+A string usually beginning with a backslash ("*`\`*") followed by a certain encoding or character forcing it to be interpreted differently.
+
+____
+.+++<span style="color:red">+++Make sure that strings are not injectable+++</span>+++
+Imagine the input, +++<span style="color:red">+++`' OR 1=1; --`+++</span>+++, is passed to a dynamic query using `SELECT`: 
+
+[source,sql]
+----
+SELECT * FROM users WHERE id='' OR 1=1; --';
+----
+
+a valid query is returned instead of:
+
+[source,sql,subs="verbatim,quotes"]
+----
+SELECT * FROM users WHERE id='#\'# OR 1=1; --';
+----
+
+where the whole input is treated as a string and nothing else.
+____
+
++++<span style="color:orange">+++HTML Entities+++</span>+++
+
+A string that begins with an ampersand ("*`&`*") and ends with a semicolon ("*`;`*"). This is used when generating content with multiple encodings and is particularly useful in displaying reserved characters that are otherwise would be invisible.
+
+____
+.+++<span style="color:red">+++An unescaped "`*<*`" and "`*>*`" could potentially be dangerous+++</span>+++
+
+This wouldn't be rendered in a page with content types -- +++<span style="color:orange">+++`text/html`+++</span>+++, +++<span style="color:orange">+++`text/xml`+++</span>+++, +++<span style="color:orange">+++`image/svg+xml`+++</span>+++:
+
+[source,html,subs="verbatim,quotes"]
+----
+##&lt;##script##&gt;##alert(1);##&lt;##/script##&gt;##
+----
+
+as opposed to:
+
+[source,html]
+----
+<script>alert(1);</script>
+----
+
+which leads to a *Cross-Site Scripting (XSS)* vulnerability.
+____
+
++++<span style="color:orange">+++Data Serialization+++</span>+++ 
+
+This is the process of transforming objects into a data format that can be restored later usually for storage or for transmission of data. It is highly dependent on what programming language you are using since the translation of objects is into what it understands. 
+
+____
+.+++<span style="color:red">+++The very old *node-serialize* module+++</span>+++
+
+The danger usually lies when users are able to pass serialized input and then it is deserialized. This section of this post doesn’t really focus on encoding as much as making sure that data types are strictly set for each parameter value. 
+
+Consider this code block where an object with a function that executes the system command, id, is serialized:
+
+[source,js]
+----
+var poc = {
+  command_execution : function(){
+    require('child_process').exec('id', function(error, stdout, stderr) { 
+      console.log(stdout) 
+    });
+  },
+}
+var serialize = require('node-serialize');
+console.log(serialize.serialize(poc));
+----
+
+It would return the following (with `\n` and some `<spaces>` cleaned) serialized data. An ”()” is added at the end to enable the function to be immediately invoked:
+
+[source,json,subs="verbatim,quotes"]
+----
+{"command_execution":"_$$ND_FUNC$$_function(){ require('child_process').exec('id', function(error, stdout, stderr) { console.log(stdout) }); }##()##"}
+----
+
+Now, what would happen if the above data is deserialized?
+
+[source,js]
+----
+var serialize = require('node-serialize');
+var payload = '<the serialized data from earlier>'
+serialize.unserialize(payload);
+----
+
+After deserialization, the following is returned:
+
+[source,shell]
+----
+$ node deserialize.js
+
+  uid=1000(jebidiah) gid=1000(jebidiah) groups=1000(jebidiah),4(adm)
+
+----
+
+The command, `id`, was successfully executed. The server could now be exploited via remote command execution which is a very critical vulnerability.
+____
+
+---
+
+== Takeaways:
+
+* This goes hand in hand with +++<span style="color:orange">+++Input Validation+++</span>+++.
+* When using open source libraries, always check for vulnerabilities and security fixes to make sure that they are always well-maintained.
+* Always be wary of parameters defined by users externally in order to avoid insecure deserialization of objects from malicious sources.
+* Make sure that serialization and deserialization is done in a secure channel or low privilege environments as much as possible. This makes lateral movement a bit harder to do.
+
+---

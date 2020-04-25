@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="secure coding" />
+    
+    <meta property="article:tag" content="output encoding" />
+    
+    <meta property="article:tag" content="strings" />
+    
+    <meta property="article:tag" content="html entities" />
+    
+    <meta property="article:tag" content="data serialization" />
+    
+    <meta property="article:tag" content="data deserialization" />
+    
+    <meta property="article:tag" content="serialization" />
+    
+    <meta property="article:tag" content="deserialization" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="Output Encoding">
+    <meta name="twitter:description" content="Values received from a data source should only be treated as what it should be (only as data) and nothing else.">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/" />
+    
+
+    
+    <meta property="og:title" content="Output Encoding" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Output Encoding | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Output Encoding" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Values received from a data source should only be treated as what it should be (only as data) and nothing else." />
+<meta property="og:description" content="Values received from a data source should only be treated as what it should be (only as data) and nothing else." />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/prjct/Output-Encoding.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/prjct/Output-Encoding.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"url":"https://jebidiah-anthony.github.io/prjct/Output-Encoding.html","headline":"Output Encoding","description":"Values received from a data source should only be treated as what it should be (only as data) and nothing else.","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    <strong style="color:orange">projects</strong>
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[PROJECTS]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <strong style="color:orange">Output Encoding</strong>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/prjct/CORS.html">CORS</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/prjct/elastalerter.html">elastalerter.py</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/prjct/Windows-Event-Collector.html">Event Forwarder</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/prjct/Custom-evtx-Logfiles.html">Custom .evtx Files</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/prjct/PTT-PSRemoting.html">Double Hop Bypass</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><div class="paragraph">
+<p><span><h1 style="color:red">SECURE CODING: OUTPUT ENCODING</h1></span></p>
+</div>
+<hr>
+<div class="sect1">
+<h2 id="how-does-output-encoding-help">How does Output Encoding help?</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Values received from a data source should only be treated as what it should be (only as data) and nothing else. This means that in an event where something maliscious is passed into a relevant resource, no rendering or unintenional event triggers will happen.</p>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="output-encoding-methods">Output Encoding Methods:</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span style="color:orange">Escape Characters</span></p>
+</div>
+<div class="paragraph">
+<p>A string usually beginning with a backslash ("<strong><code>\</code></strong>") followed by a certain encoding or character forcing it to be interpreted differently.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<div class="title"><span style="color:red">Make sure that strings are not injectable</span></div>
+<p>Imagine the input, <span style="color:red"><code>' OR 1=1; --</code></span>, is passed to a dynamic query using <code>SELECT</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="k">WHERE</span> <span class="n">id</span><span class="o">=</span><span class="s1">''</span> <span class="k">OR</span> <span class="mi">1</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="c1">--';</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>a valid query is returned instead of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="k">WHERE</span> <span class="n">id</span><span class="o">=</span><span class="s1">'<mark></span><span class="se">\'</span><span class="s1"></mark> OR 1=1; --'</span><span class="p">;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where the whole input is treated as a string and nothing else.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p><span style="color:orange">HTML Entities</span></p>
+</div>
+<div class="paragraph">
+<p>A string that begins with an ampersand ("<strong><code>&amp;</code></strong>") and ends with a semicolon ("<strong><code>;</code></strong>"). This is used when generating content with multiple encodings and is particularly useful in displaying reserved characters that are otherwise would be invisible.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<div class="title"><span style="color:red">An unescaped &#8220;<strong>&lt;</strong>&#8221; and &#8220;<strong>&gt;</strong>&#8221; could potentially be dangerous</span></div>
+<p>This wouldn&#8217;t be rendered in a page with content types&#8201;&#8212;&#8201;<span style="color:orange"><code>text/html</code></span>, <span style="color:orange"><code>text/xml</code></span>, <span style="color:orange"><code>image/svg+xml</code></span>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><mark><span class="ni">&amp;lt;</span></mark>script<mark><span class="ni">&amp;gt;</span></mark>alert(1);<mark><span class="ni">&amp;lt;</span></mark>/script<mark><span class="ni">&amp;gt;</span></mark></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>as opposed to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;script&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which leads to a <strong>Cross-Site Scripting (XSS)</strong> vulnerability.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p><span style="color:orange">Data Serialization</span></p>
+</div>
+<div class="paragraph">
+<p>This is the process of transforming objects into a data format that can be restored later usually for storage or for transmission of data. It is highly dependent on what programming language you are using since the translation of objects is into what it understands.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<div class="title"><span style="color:red">The very old <strong>node-serialize</strong> module</span></div>
+<p>The danger usually lies when users are able to pass serialized input and then it is deserialized. This section of this post doesn’t really focus on encoding as much as making sure that data types are strictly set for each parameter value.</p>
+</div>
+<div class="paragraph">
+<p>Consider this code block where an object with a function that executes the system command, id, is serialized:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="js"><span class="kd">var</span> <span class="nx">poc</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">command_execution</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">child_process</span><span class="dl">'</span><span class="p">).</span><span class="nx">exec</span><span class="p">(</span><span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">stdout</span><span class="p">,</span> <span class="nx">stderr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">stdout</span><span class="p">)</span>
+    <span class="p">});</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">serialize</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">node-serialize</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">serialize</span><span class="p">.</span><span class="nx">serialize</span><span class="p">(</span><span class="nx">poc</span><span class="p">));</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It would return the following (with <code>\n</code> and some <code>&lt;spaces&gt;</code> cleaned) serialized data. An ”()” is added at the end to enable the function to be immediately invoked:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="nl">"command_execution"</span><span class="p">:</span><span class="s2">"_$$ND_FUNC$$_function(){ require('child_process').exec('id', function(error, stdout, stderr) { console.log(stdout) }); }<mark>()</mark>"</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, what would happen if the above data is deserialized?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="js"><span class="kd">var</span> <span class="nx">serialize</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">node-serialize</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">payload</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;the serialized data from earlier&gt;</span><span class="dl">'</span>
+<span class="nx">serialize</span><span class="p">.</span><span class="nx">unserialize</span><span class="p">(</span><span class="nx">payload</span><span class="p">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After deserialization, the following is returned:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>node deserialize.js
+
+  <span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>jebidiah<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>jebidiah<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>jebidiah<span class="o">)</span>,4<span class="o">(</span>adm<span class="o">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command, <code>id</code>, was successfully executed. The server could now be exploited via remote command execution which is a very critical vulnerability.</p>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="takeaways">Takeaways:</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>This goes hand in hand with <span style="color:orange">Input Validation</span>.</p>
+</li>
+<li>
+<p>When using open source libraries, always check for vulnerabilities and security fixes to make sure that they are always well-maintained.</p>
+</li>
+<li>
+<p>Always be wary of parameters defined by users externally in order to avoid insecure deserialization of objects from malicious sources.</p>
+</li>
+<li>
+<p>Make sure that serialization and deserialization is done in a secure channel or low privilege environments as much as possible. This makes lateral movement a bit harder to do.</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div></section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

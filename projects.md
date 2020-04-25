@@ -2,12 +2,15 @@
 title: PROJECTS
 layout: menu
 description: "Various manuals and proof of concepts I've created out of personal interest most of which in a Windows context."
-tags: [projects, pass-the-ticket, double-hop, psremoting, evtx, custom logs, ecmangen, subscription, windows event forwarder, windows event collector, wec, wef, elastalerter, elastalert, elasticsearch, rules, cross origin resource sharing, cors, mubix]
+tags: [projects, pass-the-ticket, double-hop, psremoting, evtx, custom logs, ecmangen, subscription, windows event forwarder, windows event collector, wec, wef, elastalerter, elastalert, elasticsearch, rules, cross origin resource sharing, cors, mubix, output encoding]
 ---
 
 ## <span style="color:red">$ projects</span>
 
 ---
+
+## >>[Secure Coding : Output Encoding](./prjct/Output-Encoding.html)<<
+> Values received from a data source should only be treated as what it should be (only as data) and nothing else.
 
 ## >>[CORS for Dummies](./prjct/CORS.html)<<
 > This is a brief introduction to __Cross Origin Resource Sharing__ along with common misconfigurations that might lead to exploitation. This was an entry to mubix's OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway.
