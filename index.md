@@ -13,6 +13,9 @@ tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber
 
 ## <span style="color:red">$ achievements</span>
 
+### __First Place, [ROOTCON Easter Egg Hunt 2020]({{site.url}}/chals/ctf/2020-ROOTCONEasterEggHunt.html)__ (_Apr 2020_)
+> An online easter-themed Capture the Flag competition organized by _Pwn De Manila_
+
 ### __National Representative, [Cyber SEA Game 2019]({{site.url}}/chals/ctf/2019-CyberSEAGame.html)__ (_Nov 2019_)
 > Competed as a member of the __Philippine team__ in the annual Cyber SEA Game held in Thailand organized by the AJCCBC (ASEAN-Japan Cybersecurity Capacity Building Center), ETDA (Electronic Transactions Development Agency), and JNSA (Japan Network Security Association), supported by JAIF 2.0 (Japan-ASEAN Integration Fund), and in cooperation with the Ministry of Internal Affairs and Communications, and the Ministry of Digital Economy and Society. 
 
