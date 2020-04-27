@@ -9,7 +9,7 @@ tags: [secure coding, output encoding, strings, html entities, data serializatio
 :page-liquid:
 :source-highlighter: rouge
 
-+++<span><h1 style="color:red">+++SECURE CODING: OUTPUT ENCODING+++</h1></span>+++
++++<span><h1 style="color:red">+++OUTPUT ENCODING+++</h1></span>+++
 
 ---
 

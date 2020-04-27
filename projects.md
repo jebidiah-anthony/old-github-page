@@ -9,7 +9,7 @@ tags: [projects, pass-the-ticket, double-hop, psremoting, evtx, custom logs, ecm
 
 ---
 
-## >>[Secure Coding : Output Encoding](./prjct/Output-Encoding.html)<<
+## >>[Output Encoding for Dummies](./prjct/Output-Encoding.html)<<
 > Values received from a data source should only be treated as what it should be (only as data) and nothing else.
 
 ## >>[CORS for Dummies](./prjct/CORS.html)<<
