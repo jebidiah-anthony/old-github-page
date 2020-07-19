@@ -33,7 +33,7 @@ boxes: [
     [Dab, "", "", red, Linux, 10.10.10.86, 40 pts,  "Feb 02, 2019"],
     [Reddish, "", "", white, Linux, 10.10.10.94, 50 pts,  "Jan 26, 2019"],
     [Mischief, "", "./boxes/15_Mischief.html", white, Linux, 10.10.10.92, 50 pts,  "Jan 06, 2019"],
-    [Waldo, "NO PRIVESC YET", "./boxes/14_Waldo.html", orange, Linux, 10.10.10.87, 30 pts,  "Dec 16, 2018"],
+    [Waldo, "", "./boxes/14_Waldo.html", orange, Linux, 10.10.10.87, 30 pts,  "Dec 16, 2018"],
     [Active, "", "https://hackedthebox.wordpress.com/htb-active/", green, Windows, 10.10.10.100, 20 pts,  "Dec 09, 2018"],
     [Hawk, "", "https://hackedthebox.wordpress.com/htb-hawk/", orange, Linux, 10.10.10.102, 30 pts,  "Dec 02, 2018"],
     [Jerry, "", "https://hackedthebox.wordpress.com/htb-jerry/", green, Windows, 10.10.10.95, 20 pts,  "Nov 18, 2018"],
