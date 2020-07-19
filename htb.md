@@ -5,9 +5,9 @@ description: "Retired HackTheBox Machine Write-ups"
 header-img: "chals/htb/htb.png"
 tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe, jebidiah-anthony, jebidiah, pentest, pentesting, penetration testing]
 boxes: [
-    [Obscurity, "", "", orange, Linux, 10.10.10.168, 30 pts, "Active"],
-    [OpenAdmin, "", "", green, Linux, 10.10.10.171, 20 pts, "Active"],
     [Traceback, "", "", green, Linux, 10.10.10.181, 20 pts, "Active"],
+    [Obscurity, "", "", orange, Linux, 10.10.10.168, 30 pts, "May 10, 2020"],
+    [OpenAdmin, "", "", green, Linux, 10.10.10.171, 20 pts, "May 03, 2020"],
     [Traverxec, "", "", green, Linux, 10.10.10.165, 20 pts, "Apr 12, 2020"],
     [Bitlab, "POST-MERGE METHOD", "./boxes/38_Bitlab.html", orange, Linux, 10.10.10.110, 30 pts, "Jan 12, 2020"],
     [Craft, "", "", orange, Linux, 10.10.10.114, 30 pts, "Jan 05, 2020"],
@@ -34,7 +34,7 @@ boxes: [
     [Reddish, "", "", white, Linux, 10.10.10.94, 50 pts,  "Jan 26, 2019"],
     [Mischief, "", "./boxes/15_Mischief.html", white, Linux, 10.10.10.92, 50 pts,  "Jan 06, 2019"],
     [Waldo, "", "./boxes/14_Waldo.html", orange, Linux, 10.10.10.87, 30 pts,  "Dec 16, 2018"],
-    [Active, "", "https://hackedthebox.wordpress.com/htb-active/", green, Windows, 10.10.10.100, 20 pts,  "Dec 09, 2018"],
+    [Active, "", "./boxes/13_Active.html", green, Windows, 10.10.10.100, 20 pts,  "Dec 09, 2018"],
     [Hawk, "", "https://hackedthebox.wordpress.com/htb-hawk/", orange, Linux, 10.10.10.102, 30 pts,  "Dec 02, 2018"],
     [Jerry, "", "https://hackedthebox.wordpress.com/htb-jerry/", green, Windows, 10.10.10.95, 20 pts,  "Nov 18, 2018"],
     [TartarSauce, "", "https://hackedthebox.wordpress.com/htb-tartarsauce/", orange, Linux, 10.10.10.88, 30 pts,  "Oct 21, 2018"],
