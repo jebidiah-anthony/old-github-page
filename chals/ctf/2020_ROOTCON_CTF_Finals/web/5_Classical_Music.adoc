@@ -142,9 +142,7 @@ Y  Z  0  1  2  3  4  5  6  7  8  9
 ----
 ____
 
-Next is that the first block will be transposed by a select interval
-The second block will be transposed and then modulated (block1 transposition + block2 modulation)
-The same goes with the third block (block1 transposition + block3 modulation)
+Next is that the first block will be transposed by a select interval, the second block will be transposed and then modulated (block1 transposition + block2 modulation), and the same goes with the third block (block1 transposition + block3 modulation)
 
 If we use the first interval key give -- `+++<strong style="color:orange">perfect fifth, minor third, major seventh</strong>+++`, the first block will be transposed to the right by a perfect fifth (7 semitones), the second block by modulating by minor third (7 + 3 semitones), and the third block by modulating by a major seventh (7 + 11 semitones).
 
