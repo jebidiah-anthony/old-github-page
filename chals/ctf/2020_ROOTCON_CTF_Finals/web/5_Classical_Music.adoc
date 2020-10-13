@@ -88,7 +88,7 @@ The same principle applies to the third block: If the second modulation (offset 
 Next up are the octaves which determine which of the notes correspond to which letter/number.
 Each block has its own starting octave, and octave numbers always begin with the C note.
 If we were to transpose a piece starting at B1 (the last note in the first octave) by a perfect fifth higher (7 semitones) then the next 7 notes belong to the higher octave (C2, C#2, D2, D#2, E2, F2 and F#2).
-In this case, our transposed piece now starts with F#2. The most important thing to remember is that +++<strong style="color:orange">octaves start with the letter C#, therefore #the octave number will always become one higher every time we reach the next C.</strong>+++
+In this case, our transposed piece now starts with F#2. The most important thing to remember is that octaves start with the letter C#, therefore +++<strong style="color:orange">the octave number will always become one higher every time we reach the next C.</strong>+++
 
 +++<strong style="color:orange">The starting octave for each block is the first part of the *octave* key.</strong>+++
 This is +++<strong style="color:orange">represented by the leading three-digit number of the octave key,</strong>+++ where the first digit is the octave number for the first block, the second digit for the second block and the third digit for the third block.
