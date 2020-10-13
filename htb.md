@@ -5,7 +5,7 @@ description: "Retired HackTheBox Machine Write-ups"
 header-img: "chals/htb/htb.png"
 tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe, jebidiah-anthony, jebidiah, pentest, pentesting, penetration testing]
 boxes: [
-    [Blunder, "", "" , "red", Linux, 10.10.10.200, 40 pts, "Active"],
+    [Unbalanced, "", "" , "red", Linux, 10.10.10.200, 40 pts, "Active"],
     [OepnKeyS, "", "" , "orange", OpenBSD, 10.10.10.199, 30 pts, "Active"],
     [Buff, "", "" , "green", Windows, 10.10.10.198, 20 pts, "Active"],
     [SneakyMailer, "", "" , "orange", Linux, 10.10.10.197, 30 pts, "Active"],

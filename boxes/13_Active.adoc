@@ -188,7 +188,7 @@ ____
             cpassword="##edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ##" 
             changeLogon="0" 
             noChange="1" 
-            neverExpires="1" 
+            neverExpires="1" cd 
             acctDisabled="0" 
             userName="##active.htb\SVC_TGS##"/>
     </User>

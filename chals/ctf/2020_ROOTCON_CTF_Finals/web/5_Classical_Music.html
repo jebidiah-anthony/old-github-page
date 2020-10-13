@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="ctf" />
+    
+    <meta property="article:tag" content="capture-the-flag" />
+    
+    <meta property="article:tag" content="challenges" />
+    
+    <meta property="article:tag" content="challenge-write-ups" />
+    
+    <meta property="article:tag" content="write-ups" />
+    
+    <meta property="article:tag" content="writeups" />
+    
+    <meta property="article:tag" content="write-up" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="rootcon" />
+    
+    <meta property="article:tag" content="rootcon finals" />
+    
+    <meta property="article:tag" content="web" />
+    
+    <meta property="article:tag" content="web500" />
+    
+    <meta property="article:tag" content="web 500" />
+    
+    <meta property="article:tag" content="underrail music puzzle" />
+    
+    <meta property="article:tag" content="underrail" />
+    
+    <meta property="article:tag" content="music" />
+    
+    <meta property="article:tag" content="puzzle solutions" />
+    
+    <meta property="article:tag" content="2020" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="[WEB500] Classical Music">
+    <meta name="twitter:description" content="The bakery loves to play music as customers shop our pastries. But we like putting a little extra into what music we play. Can you piece together the subliminal messages?">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCON_CTF_Finals/screenshots/banner.jpg" />
+    
+
+    
+    <meta property="og:title" content="[WEB500] Classical Music" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>[WEB500] Classical Music | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="[WEB500] Classical Music" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The bakery loves to play music as customers shop our pastries. But we like putting a little extra into what music we play. Can you piece together the subliminal messages?" />
+<meta property="og:description" content="The bakery loves to play music as customers shop our pastries. But we like putting a little extra into what music we play. Can you piece together the subliminal messages?" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCON_CTF_Finals/web/5_Classical_Music.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCON_CTF_Finals/web/5_Classical_Music.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"[WEB500] Classical Music","url":"https://jebidiah-anthony.github.io/chals/ctf/2020_ROOTCON_CTF_Finals/web/5_Classical_Music.html","description":"The bakery loves to play music as customers shop our pastries. But we like putting a little extra into what music we play. Can you piece together the subliminal messages?","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    <strong style="color:orange">ctf writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+	     <h2 style="margin-bottom:0; padding-top: 20px">[HTB CHALLENGES]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#for">
+  
+  Forensics
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#mob">
+  
+  Mobile
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#pwn">
+  
+  Pwn
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/htb/challenges.html#web">
+  
+  <strong style="color:orange">Web</strong>
+  
+  </a>
+</div>
+
+
+             <h2 style="margin-bottom:0; padding-top:20px">[CTF EVENTS]</h2>
+
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2020-ROOTCON_CTF_Finals.html">
+  
+  <strong style="color:orange;text-decoration:none">ROOTCON CTF Finals 2020</strong>
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2020-ROOTCONEasterEggHunt.html">
+  
+  ROOTCON Easter Egg Hunt 2020
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-XMASCTF.html">
+  
+  X-MAS CTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-CyberSEAGame.html">
+  
+  Cyber SEA Game 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-NACTF.html">
+  
+  NACTF 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TGHack.html">
+  
+  TG:Hack 2019
+  
+  </a>
+</div>
+
+<div style="padding-top:10px">
+  > <a href="https://jebidiah-anthony.github.io/chals/ctf/2019-TJCTF.html">
+  
+  TJCTF 2019
+  
+  </a>
+</div>
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><div class="paragraph">
+<p><span><h1 style="color:red">[WEB500] Classical Music</h1></span></p>
+</div>
+<hr>
+<div class="sect1">
+<h2 id="part-1-challenge-description">PART 1 : CHALLENGE DESCRIPTION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It reads:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>The bakery loves to play music as customers shop our pastries.
+But we like putting a little extra into what music we play. Can
+you piece together the subliminal messages?
+
+45.77.255.198</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-given-information">PART 2 : GIVEN INFORMATION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are three things that were given for this challenge:</p>
+</div>
+<div class="paragraph">
+<p>First is a series of notes were given when opening the web application:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/index.png" alt="index">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>I cleaned it up a bit and it looks like this:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>A  Ab B  C# D# C  F  Db C  Eb A  B  B  Bb F# Ab Gb A# A  Bb C# G# Ab Bb
+D# D  C  Eb B  A  Bb G  E  G# F  Eb B  E  A# Gb B  D  E  Ab Bb F# C  C  G
+Eb B  A  A# Db F# B  F  F# C# Db A  A# Gb A# Gb B  G  B  C  Ab C  E  A# Bb Bb A#
+A# Ab B  F  Ab B  A  B  C  D# F# Db D  Eb F  E  C  Bb Gb C# A  A  G  F# Db C  C# B</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Next is a series of keys that could be used to decipher the <code>subliminal messsages</code> as mentioned in the challenge description:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/solve_me.png" alt="solve me">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>Octave keys
+317381429294288138823834883
+8528638825868882828266828938
+852444188114251484814424244141
+3173812388192294422922983342948
+
+Interval key: perfect fifth, minor third, major seventh
+Interval key: minor second, minor sixth, perfect fourth
+
+I forget which interval is used for which octave, but I know that it's 2 each</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>And lastly is how to decipher the <code>subliminal messages</code> using the information above:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><mark>There are 12 notes per octave in a 12TET, which means we can properly fit the entire alphanumeric range within three octaves.</mark> We&#8217;ve made it that the digits follow the letters.
+<mark>Each character is represented by a note in the octave.</mark> For example, the default arrangement is that letter A corresponds to note C, letter B to C# or Db, C to D, etc.
+Then the notes start repeating once you reach the letter M, so now letter M is note C, N is C#, etc. And you go all the way until you&#8217;re done with the numbers as well.</p>
+</div>
+<div class="paragraph">
+<p>It wouldn&#8217;t be much of a cipher if we just stopped here. We wanted it to be more complex. <mark>We can change the arrangement by transposing the notes in all three blocks by a select interval.</mark>
+Let&#8217;s say the first block is being transposed by a major second (2 semitones, in keeping with the musical theme). That means that letter A now corresponds to note D, letter D# or Eb, C to E, etc. The same applies to the other two blocks.</p>
+</div>
+<div class="paragraph">
+<p>But why stop there? <mark>We also had the other two blocks not only be transposed, but also modulated.</mark> That is to say, <mark>after they have been offset by the "transposition" interval</mark> (major second) <mark>I add the "modulation" intervals for each block.</mark></p>
+</div>
+<div class="paragraph">
+<p>For the second block let&#8217;s pick a minor third, which makes that 5 semitones (2 + 3) from C to F. Remember, the first block is offset <strong>only</strong> by the transposition interval, but we start at the F note on the second. Now, the letter M (first letter of the second block) is F, N is F# or Gb , O is G, etc.
+The same principle applies to the third block: If the second modulation (offset interval for the third block) is a fifth (7 semitones above; 2 + 7 = 9; 9 semitones from C is A), then letter Y (first letter of the third block) is A, Z is A# or Bb, (now we&#8217;re starting with numbers) number 0 is B, 1 is C, etc.
+<mark>The three musical intervals (transposition, first modulation and second modulation) make up the <strong>interval</strong> key used to decode the cipher.</mark></p>
+</div>
+<div class="paragraph">
+<p>Next up are the octaves which determine which of the notes correspond to which letter/number.
+Each block has its own starting octave, and octave numbers always begin with the C note.
+If we were to transpose a piece starting at B1 (the last note in the first octave) by a perfect fifth higher (7 semitones) then the next 7 notes belong to the higher octave (C2, C#2, D2, D#2, E2, F2 and F#2).
+In this case, our transposed piece now starts with F#2. The most important thing to remember is that <mark>octaves start with the letter C</mark>, therefore <mark>the octave number will always become one higher every time we reach the next C.</mark></p>
+</div>
+<div class="paragraph">
+<p><mark>The starting octave for each block is the first part of the <strong>octave</strong> key.</mark>
+This is <mark>represented by the leading three-digit number of the octave key,</mark> where the first digit is the octave number for the first block, the second digit for the second block and the third digit for the third block.
+The rest of the trailing octave numbers in the octave key correspond to each of the notes in the ciphertext.</p>
+</div>
+<div class="paragraph">
+<p><mark>As an added challenge, we decided to reverse the flow of notes for one of the lines.</mark></p>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-generating-the-keys">PART 2 : GENERATING THE KEYS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In summary,</p>
+</div>
+<div class="paragraph">
+<p>We have three blocks (octaves) at the beginning to represent alphanumeric characters:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>Block 1
+C  C# D  D# E  F  F# G  G# A  A# B
+A  B  C  D  E  F  G  H  I  J  K  L
+
+Block 2
+C  C# D  D# E  F  F# G  G# A  A# B
+M  N  O  P  Q  R  S  T  U  V  W  X
+
+Block 3
+C  C# D  D# E  F  F# G  G# A  A# B
+Y  Z  0  1  2  3  4  5  6  7  8  9</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Using the first octave key given&#8201;&#8212;&#8201;<code><strong style="color:orange">317381429294288138823834883</strong></code>, it says that the <strong style="color:orange">3 leading numbers</strong> are the octave for each block so in this case we will use <code><strong style="color:orange">317</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>Block 1
+C  C# D  D# E  F  F# G  G# A  A# B
+3  3  3  3  3  3  3  3  3  3  3  3
+A  B  C  D  E  F  G  H  I  J  K  L
+
+Block 2
+C  C# D  D# E  F  F# G  G# A  A# B
+1  1  1  1  1  1  1  1  1  1  1  1
+M  N  O  P  Q  R  S  T  U  V  W  X
+
+Block 3
+C  C# D  D# E  F  F# G  G# A  A# B
+7  7  7  7  7  7  7  7  7  7  7  7
+Y  Z  0  1  2  3  4  5  6  7  8  9</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Next is that the first block will be transposed by a select interval
+The second block will be transposed and then modulated (block1 transposition + block2 modulation)
+The same goes with the third block (block1 transposition + block3 modulation)</p>
+</div>
+<div class="paragraph">
+<p>If we use the first interval key give&#8201;&#8212;&#8201;<code><strong style="color:orange">perfect fifth, minor third, major seventh</strong></code>, the first block will be transposed to the right by a perfect fifth (7 semitones), the second block by modulating by minor third (7 + 3 semitones), and the third block by modulating by a major seventh (7 + 11 semitones).</p>
+</div>
+<div class="paragraph">
+<p>Applying this to the three blocks above, we will have:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>If we have:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>C  C# D  D# E  F  F# G  G# A  A# B
+0  1  2  3  4  5  6  7  8  9  10 11
+
+Perfect Fifth =  7 semitones
+Minor Third   =  3 semitones
+Major Seventh = 11 semitones</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>INTERVAL|  STANDARD                            |  Transposed by a perfect fifth
+BLOCK#1 |  C  C# D  D# E  F  F# G  G# A  A# B  |  G  G# A  A# B  C  C# D  D# E  F  F#
+OCTAVE  |  3  3  3  3  3  3  3  3  3  3  3  3  |  3  3  3  3  3  4  4  4  4  4  4  4
+VALUE   |  A  B  C  D  E  F  G  H  I  J  K  L  |  A  B  C  D  E  F  G  H  I  J  K  L
+--------|--------------------------------------|--------------------------------------
+INTERVAL|  STANDARD                            |  By a perfect fifth + minor third
+BLOCK#2 |  C  C# D  D# E  F  F# G  G# A  A# B  |  A# B  C  C# D  D# E  F  F# G  G# A
+OCTAVE  |  1  1  1  1  1  1  1  1  1  1  1  1  |  1  1  2  2  2  2  2  2  2  2  2  2
+VALUE   |  M  N  O  P  Q  R  S  T  U  V  W  X  |  M  N  O  P  Q  R  S  T  U  V  W  X
+--------|--------------------------------------|--------------------------------------
+INTERVAL|  STANDARD                            |  By a perfect fifth + major seventh
+BLOCK#3 |  C  C# D  D# E  F  F# G  G# A  A# B  |  F# G  G# A  A# B  C  C# D  D# E  F
+OCTAVE  |  7  7  7  7  7  7  7  7  7  7  7  7  |  8  8  8  8  8  8  9  9  9  9  9  9
+VALUE   |  Y  Z  0  1  2  3  4  5  6  7  8  9  |  Y  Z  0  1  2  3  4  5  6  7  8  9</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There were only 2 sets of octave blocks given&#8201;&#8212;&#8201;it was <code><strong style="color:orange">317</strong></code> and <code><strong style="color:orange">852</strong></code>. The same goes for interval keys; only two were given <code><strong style="color:orange">`perfect fifth, minor third, major seventh</strong></code> and <code><strong style="color:orange">minor second, minor sixth, perfect fourth</strong></code></p>
+</div>
+<div class="paragraph">
+<p>Applying the respecitve octave keys given to the respective interval keys, we get:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>OCTAVE KEY : <code><strong style="color:orange">317</strong></code><br/>
+INTERVAL KEY : <code><strong style="color:orange">perfect fifth, minor third, major seventh</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>|  Transposed by a perfect fifth       |  By a perfect fifth + minor third    |  By a perfect fifth + major seventh  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  G  G# A  A# B  C  C# D  D# E  F  F# |  A# B  C  C# D  D# E  F  F# G  G# A  |  F# G  G# A  A# B  C  C# D  D# E  F  |
+|  3  3  3  3  3  4  4  4  4  4  4  4  |  1  1  2  2  2  2  2  2  2  2  2  2  |  8  8  8  8  8  8  9  9  9  9  9  9  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  A  B  C  D  E  F  G  H  I  J  K  L  |  M  N  O  P  Q  R  S  T  U  V  W  X  |  Y  Z  0  1  2  3  4  5  6  7  8  9  |</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>OCTAVE KEY : <code><strong style="color:orange">852</strong></code><br/>
+INTERVAL KEY : <code><strong style="color:orange">minor second, minor sixth, perfect fourth</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>|  Transposed by a minor second        |  By a minor second + minor sixth     |  By a minor second + perfect fourth  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  C# D  D# E  F  F# G  G# A  A# B  C  |  A  A# B  C  C# D  D# E  F  F# G  G# |  F# G  G# A  A# B  C  C# D  D# E  F  |
+|  8  8  8  8  8  8  8  8  8  8  8  9  |  5  5  5  6  6  6  6  6  6  6  6  6  |  2  2  2  2  2  2  3  3  3  3  3  3  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  A  B  C  D  E  F  G  H  I  J  K  L  |  M  N  O  P  Q  R  S  T  U  V  W  X  |  Y  Z  0  1  2  3  4  5  6  7  8  9  |</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The generated keys above from the octave and interval keys above are only an assumption up to this point since it was also mentioned that the interval keys are each used for two of the octave keys and it wasn&#8217;t stated which ones does. However, it wouldn&#8217;t be much of a problem since the transposition of notes remains the same and only the octave in which they belong will change.</p>
+</div>
+<div class="paragraph">
+<p>It was also stated that for one of the octave keys, the flow of notes were reversed so it will be something that will be tackled later on in this writeup.</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-3-deciphering-the-subliminal-messages">PART 3 : DECIPHERING THE "SUBLIMINAL MESSAGES"</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the keys generated above:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>OCTAVE KEY : <code><strong style="color:orange">317</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>|  Transposed by a perfect fifth       |  By a perfect fifth + minor third    |  By a perfect fifth + major seventh  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  G  G# A  A# B  C  C# D  D# E  F  F# |  A# B  C  C# D  D# E  F  F# G  G# A  |  F# G  G# A  A# B  C  C# D  D# E  F  |
+|  3  3  3  3  3  4  4  4  4  4  4  4  |  1  1  2  2  2  2  2  2  2  2  2  2  |  8  8  8  8  8  8  9  9  9  9  9  9  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  A  B  C  D  E  F  G  H  I  J  K  L  |  M  N  O  P  Q  R  S  T  U  V  W  X  |  Y  Z  0  1  2  3  4  5  6  7  8  9  |</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>OCTAVE KEY : <code><strong style="color:orange">852</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>|  Transposed by a minor second        |  By a minor second + minor sixth     |  By a minor second + perfect fourth  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  C# D  D# E  F  F# G  G# A  A# B  C  |  A  A# B  C  C# D  D# E  F  F# G  G# |  F# G  G# A  A# B  C  C# D  D# E  F  |
+|  8  8  8  8  8  8  8  8  8  8  8  9  |  5  5  5  6  6  6  6  6  6  6  6  6  |  2  2  2  2  2  2  3  3  3  3  3  3  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  A  B  C  D  E  F  G  H  I  J  K  L  |  M  N  O  P  Q  R  S  T  U  V  W  X  |  Y  Z  0  1  2  3  4  5  6  7  8  9  |</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It could be mapped out using the remaining numbers from the octave keys and the notes given from the landinge page:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>     A  Ab B  C# D# C  F  Db C  Eb A  B  B  Bb F# Ab Gb A# A  Bb C# G# Ab Bb
+317  3  8  1  4  2  9  2  9  4  2  8  8  1  3  8  8  2  3  8  3  4  8  8  3
+
+     D# D  C  Eb B  A  Bb G  E  G# F  Eb B  E  A# Gb B  D  E  Ab Bb F# C  C  G
+852  8  6  3  8  8  2  5  8  6  8  8  8  2  8  2  8  2  6  6  8  2  8  9  3  8
+
+     Eb B  A  A# Db F# B  F  F# C# Db A  A# Gb A# Gb B  G  B  C  Ab C  E  A# Bb Bb A#
+852  4  4  4  1  8  8  1  1  4  2  5  1  4  8  4  8  1  4  4  2  4  2  4  4  1  4  1
+
+     A# Ab B  F  Ab B  A  B  C  D# F# Db D  Eb F  E  C  Bb Gb C# A  A  G  F# Db C  C# B
+317  3  8  1  2  3  8  8  1  9  2  2  9  4  4  2  2  9  2  2  9  8  3  3  4  2  9  4  8</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Which gives us the following strings:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>     A  Ab B  C# D# C  F  Db C  Eb A  B  B  Bb F# Ab Gb A# A  Bb C# G# Ab Bb
+317  3  8  1  4  2  9  2  9  4  2  8  8  1  3  8  8  2  3  8  3  4  8  8  3
+-----------------------------------------------------------------------------
+     C  0  N  G  R  4  T  5  F  R  1  3  N  D  Y  0  U  D  1  D  G  0  0  D</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>     D# D  C  Eb B  A  Bb G  E  G# F  Eb B  E  A# Gb B  D  E  Ab Bb F# C  C  G
+852  8  6  3  8  8  2  5  8  6  8  8  8  2  8  2  8  2  6  6  8  2  8  9  3  8
+-------------------------------------------------------------------------------
+     C  R  4  C  K  1  N  G  T  H  E  C  3  D  2  F  3  R  T  H  2  F  L  4  G</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>     Eb B  A  A# Db F# B  F  F# C# Db A  A# Gb A# Gb B  G  B  C  Ab C  E  A# Bb Bb A#
+852  4  4  4  1  8  8  1  1  4  2  5  1  4  8  4  8  1  4  4  2  4  2  4  4  1  4  1
+--------------------------------------------------------------------------------------
+     ?  ?  ?  ?  A  F  ?  ?  ?  ?  ?  ?  ?  F  ?  F  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>     A# Ab B  F  Ab B  A  B  C  D# F# Db D  Eb F  E  C  Bb Gb C# A  A  G  F# Db C  C# B
+317  3  8  1  2  3  8  8  1  9  2  2  9  4  4  2  2  9  2  2  9  8  3  3  4  2  9  4  8
+----------------------------------------------------------------------------------------
+     D  0  N  T  B  3  1  N  4  R  U  5  H  I  T  S  4     U  5  1  C  A  L  P  4  G  3</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It rougly translates to the following strings:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>C0NGR4T5FR13NDY0UD1DG00D     == (Congrats, friend. You did good)
+CR4CK1NGTHEC3D2F3RTH2FL4G    == (cracking the code for the flag)
+????AF???????F?F???????????
+D0NTB31N4RU5HITS4 U51CALP4G3 == (Don't be in a rush, it's just a musical page)</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The third line was not even remotely decoded so it must be the one where the flow of notes was reversed.</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-3-the-reversed-flow">PART 3 : THE REVERSED FLOW</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If normal transposition is done by shifting to the right then maybe for this, we should transpose to the left.</p>
+</div>
+<div class="paragraph">
+<p>The interval key, <code><strong style="color:orange">minor second, minor sixth, perfect fourth</strong></code>, has only deciphered one message so far so we will be using this when transposing with a reversed flow.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>So if we have:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>C# D  D# E  F  F# G  G# A  A# B  C
+11 10 9  8  7  6  5  4  3  2  1  0
+
+Minor Second   = 1 semitones
+Minor Sixth    = 8 semitones
+Perfect Fourth = 5 semitones</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>INTERVAL|  STANDARD                            |  Transposed by a minor second
+BLOCK#1 |  C  C# D  D# E  F  F# G  G# A  A# B  |  B  C  C# D  D# E  F  F# G  G# A  A#
+OCTAVE  |  8  8  8  8  8  8  8  8  8  8  8  8  |  7  8  8  8  8  8  8  8  8  8  8  8
+VALUE   |  A  B  C  D  E  F  G  H  I  J  K  L  |  A  B  C  D  E  F  G  H  I  J  K  L
+--------|--------------------------------------|--------------------------------------
+INTERVAL|  STANDARD                            |  By a minor second + minor sixth
+BLOCK#2 |  C  C# D  D# E  F  F# G  G# A  A# B  |  D# E  F  F# G  G# A  A# B  C  C# D
+OCTAVE  |  5  5  5  5  5  5  5  5  5  5  5  5  |  4  4  4  4  4  4  4  4  4  5  5  5
+VALUE   |  M  N  O  P  Q  R  S  T  U  V  W  X  |  M  N  O  P  Q  R  S  T  U  V  W  X
+--------|--------------------------------------|--------------------------------------
+INTERVAL|  STANDARD                            |  By a minor second + perfect fourth
+BLOCK#3 |  C  C# D  D# E  F  F# G  G# A  A# B  |  F# G  G# A  A# B  C  C# D  D# E  F
+OCTAVE  |  2  2  2  2  2  2  2  2  2  2  2  2  |  1  1  1  1  1  1  2  2  2  2  2  2
+VALUE   |  Y  Z  0  1  2  3  4  5  6  7  8  9  |  Y  Z  0  1  2  3  4  5  6  7  8  9</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now we can use this key to decipher the third line:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>OCTAVE KEY : <code><strong style="color:orange">852</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>|  Transposed by a minor second        |  By a minor second + minor sixth     |  By a minor second + perfect fourth  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  C# D  D# E  F  F# G  G# A  A# B  C  |  A  A# B  C  C# D  D# E  F  F# G  G# |  F# G  G# A  A# B  C  C# D  D# E  F  |
+|  7  8  8  8  8  8  8  8  8  8  8  8  |  4  4  4  4  4  4  4  4  4  5  5  5  |  1  1  1  1  1  1  2  2  2  2  2  2  |
+|--------------------------------------|--------------------------------------|--------------------------------------|
+|  A  B  C  D  E  F  G  H  I  J  K  L  |  M  N  O  P  Q  R  S  T  U  V  W  X  |  Y  Z  0  1  2  3  4  5  6  7  8  9  |</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Which finally gives us:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre>     Eb B  A  A# Db F# B  F  F# C# Db A  A# Gb A# Gb B  G  B  C  Ab C  E  A# Bb Bb A#
+852  4  4  4  1  8  8  1  1  4  2  5  1  4  8  4  8  1  4  4  2  4  2  4  4  1  4  1
+--------------------------------------------------------------------------------------
+     M  U  S  2  C  H  3     P  5  W  1  T  H  T  H  3  Q  U  4  R  4  N  T  2  T  2</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When cleaned up a bit:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>MUS2CH3 P5W1THTH3QU4R4NT2T2
+----------------------------
+MUS1CH3LP5W1THTH3QU4R4NT1N3  == (Music hels with the quarantine)</pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-5-getting-the-flag">PART 5 : GETTING THE FLAG</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is a web challenge so I decided to try going to <code>/mus1ch3lp5w1thth3qu4r4nt1n3</code> and it led me to this page:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="./screenshots/flag.png" alt="flag">
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+<div style="width:100%;overflow-x:auto"><h2>FLAG : <strong>RC14{0xs4li3rididn0thingwr0ng}</strong></h2></div>
+</div>
+</div></section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

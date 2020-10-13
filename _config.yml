@@ -10,6 +10,7 @@ plugins:
   - jekyll-asciidoc
 
 ctf_menu: [
+  [ROOTCON_CTF_Finals, 2020, ROOTCON CTF Finals, "Fri, 09 Oct 2020, 03:00 PHT", "Sat, 10 Oct 2020, 20:00 PHT"],
   [ROOTCONEasterEggHunt, 2020, ROOTCON Easter Egg Hunt, "Sun, 12 Apr 2020, 06:00 PHT", "Mon, 13 Apr 2020, 06:00 PHT"],
   [XMASCTF, 2019, X-MAS CTF, "Sat, 14 Dec 2019, 03:00 PHT", "Sat, 21 Dec 2019, 03:00 PHT"],
   [CyberSEAGame, 2019, Cyber SEA Game, "Thu, 21 Nov 2019, 11:30 PHT", "Thu, 21 Nov 2019, 18:30 PHT"],
