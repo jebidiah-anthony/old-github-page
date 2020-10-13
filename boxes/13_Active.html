@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="boot2root" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="windows" />
+    
+    <meta property="article:tag" content="active" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB Active">
+    <meta name="twitter:description" content="10.10.10.100 | 20 pts">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/13_active/active.jpg" />
+    
+
+    
+    <meta property="og:title" content="HTB Active" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB Active | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB Active" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.100 20 pts" />
+<meta property="og:description" content="10.10.10.100 20 pts" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/13_Active.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/13_Active.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"HTB Active","url":"https://jebidiah-anthony.github.io/boxes/13_Active.html","description":"10.10.10.100 20 pts","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/38_Bitlab.html">Bitlab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/20_Irked.html">Irked</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/15_Mischief.html">Mischief</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><div class="paragraph">
+<p><h1 style="color:red"> HTB Waldo (10.10.10.87) </h1></p>
+</div>
+<hr>
+<hr>
+<div class="sect1">
+<h2 id="part-1-initial-recon">PART 1 : INITIAL RECON</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>nmap <span class="nt">--min-rate</span> 3000 <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-v</span> 10.10.10.100
+
+  PORT      STATE SERVICE
+  53/tcp    open  domain
+  88/tcp    open  kerberos-sec
+  135/tcp   open  msrpc
+  139/tcp   open  netbios-ssn
+  389/tcp   open  ldap
+  445/tcp   open  microsoft-ds
+  464/tcp   open  kpasswd5
+  593/tcp   open  http-rpc-epmap
+  636/tcp   open  ldapssl
+  3268/tcp  open  globalcatLDAP
+  3269/tcp  open  globalcatLDAPssl
+  5722/tcp  open  msdfsr
+  9389/tcp  open  adws
+  47001/tcp open  winrm
+  ...omitted...
+
+<span class="nv">$ </span>nmap <span class="nt">-p</span> 53,88,135,139,389,445,464,593,636,3268,3269,5722,9389,47001 <span class="nt">-Pn</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-T4</span> <span class="nt">-v</span> 10.10.10.100
+
+  PORT      STATE SERVICE       VERSION
+  53/tcp    open  domain        Microsoft DNS 6.1.7601 <span class="o">(</span>1DB15D39<span class="o">)</span> <span class="o">(</span>Windows Server 2008 R2 SP1<span class="o">)</span>
+  | dns-nsid:
+  |_  bind.version: Microsoft DNS 6.1.7601 <span class="o">(</span>1DB15D39<span class="o">)</span>
+  88/tcp    open  kerberos-sec  Microsoft Windows Kerberos <span class="o">(</span>server <span class="nb">time</span>: 2020-07-20 19:17:21Z<span class="o">)</span>
+  135/tcp   open  msrpc         Microsoft Windows RPC
+  139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+  389/tcp   open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: active.htb, Site: Default-First-Site-Name<span class="o">)</span>
+  445/tcp   open  microsoft-ds?
+  464/tcp   open  kpasswd5?
+  593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+  636/tcp   open  tcpwrapped
+  3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: active.htb, Site: Default-First-Site-Name<span class="o">)</span>
+  3269/tcp  open  tcpwrapped
+  5722/tcp  open  msrpc         Microsoft Windows RPC
+  9389/tcp  open  mc-nmf        .NET Message Framing
+  47001/tcp open  http          Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+  |<em>http-server-header: Microsoft-HTTPAPI/2.0
+  |_http-title: Not Found
+  Service Info: Host: DC<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+  Host script results:
+  |_clock-skew: 3m44s
+  | smb2-security-mode:
+  |   2.02:
+  |</em>    Message signing enabled and required
+  | smb2-time:
+  |   <span class="nb">date</span>: 2020-07-20T19:18:17
+  |_  start_date: 2020-07-20T18:35:49</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-port-enumeration">PART 2 : PORT ENUMERATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="port-445-smb">PORT 445 (SMB)</h3>
+<div class="paragraph">
+<p>Let&#8217;s enumerate available shares for the host, <strong><code>10.10.10.100</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>smbmap <span class="nt">-H</span> 10.10.10.100
+
+  <span class="o">[</span>+] IP: 10.10.10.100:445        Name: 10.10.10.100
+          Disk                                                    Permissions     Comment
+          <span class="nt">----</span>                                                    <span class="nt">-----------</span>     <span class="nt">-------</span>
+          ADMIN<span class="nv">$ </span>                                                 NO ACCESS       Remote Admin
+          C<span class="nv">$ </span>                                                     NO ACCESS       Default share
+          IPC<span class="nv">$ </span>                                                   NO ACCESS       Remote IPC
+          NETLOGON                                                NO ACCESS       Logon server share
+          <span class="c"><mark>Replication                                             READ ONLY</mark></span>
+          SYSVOL                                                  NO ACCESS       Logon server share
+          Users                                                   NO ACCESS</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The file share, <span style="color:orange">Replication</span>, could be accessed without having any login credentials.</p>
+</div>
+<div class="paragraph">
+<p>Exploring it using <strong><code>smbclient</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="title"><span style="color:red">The <strong><code>Replication</code></strong> share</span>:</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>smbclient <span class="se">\\\\</span>10.10.10.100<span class="se">\\</span>Replication <span class="nt">-I</span> 10.10.10.100 <span class="nt">-N</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="smb"><span style="color:green">smb :\&gt;</span> dir
+
+  <mark>active.htb                          D        0  Sat Jul 21 18:37:44 2018</mark>
+
+<span style="color:green">smb :\&gt;</span> cd active.htb
+
+<span style="color:green">smb: \active.htb\&gt;</span> dir
+
+  DfsrPrivate                       DHS        0  Sat Jul 21 18:37:44 2018
+  <mark>Policies                            D        0  Sat Jul 21 18:37:44 2018</mark>
+  scripts                             D        0  Thu Jul 19 02:48:57 2018
+
+<span style="color:green">smb: \active.htb\&gt;</span> cd Policies
+
+<span style="color:green">smb: ...\Policies\&gt;</span> dir
+
+  <mark>{31B2F340-016D-11D2-945F-00C04FB984F9}      D        0  Sat Jul 21 18:37:44 2018</mark>
+  {6AC1786C-016F-11D2-945F-00C04fB984F9}      D        0  Sat Jul 21 18:37:44 2018
+
+<span style="color:green">smb: ...\Policies\&gt;</span> cd {31B2F340-016D-11D2-945F-00C04FB984F9}
+
+<span style="color:green">smb: ...\{31B2F340-016D-11D2-945F-00C04FB984F9}\&gt;</span> dir
+
+  GPT.INI                             A       23  Thu Jul 19 04:46:06 2018
+  Group Policy                        D        0  Sat Jul 21 18:37:44 2018
+  <mark>MACHINE                             D        0  Sat Jul 21 18:37:44 2018</mark>
+  USER                                D        0  Thu Jul 19 02:49:12 2018
+
+<span style="color:green">smb: ...\{31B2F340-016D-11D2-945F-00C04FB984F9}\&gt;</span> cd MACHINE
+
+<span style="color:green">smb: ...\MACHINE\&gt;</span> dir
+
+  Microsoft                           D        0  Sat Jul 21 18:37:44 2018
+  <mark>Preferences                         D        0  Sat Jul 21 18:37:44 2018</mark>
+  Registry.pol                        A     2788  Thu Jul 19 02:53:45 2018
+
+<span style="color:green">smb: ...\MACHINE\&gt;</span> cd Preferences
+
+<span style="color:green">smb: ...\Preferences\&gt;</span> dir
+
+  <mark>Groups                              D        0  Sat Jul 21 18:37:44 2018</mark>
+
+<span style="color:green">smb: ...\Preferences\&gt;</span> cd Groups
+
+<span style="color:green">smb: ...\Groups\&gt;</span> dir
+
+  <mark>Groups.xml                          A      533  Thu Jul 19 04:46:06 2018</mark>
+
+<span style="color:green">smb: ...\Groups\&gt;</span> get Groups.xml</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There is a file, <span style="color:orange"><strong><code>Groups.xml</code></strong></span>, deep within the share:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="title"><span style="color:red"><strong><code>Groups.xml</code></strong></span>:</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;Groups</span> <span class="na">clsid=</span><span class="s">"{3125E937-EB16-4b4c-9934-544FC6D24D26}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;User</span> <span class="na">clsid=</span><span class="s">"{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}"</span> <span class="na">name=</span><span class="s">"active.htb\SVC_TGS"</span> <span class="na">image=</span><span class="s">"2"</span> <span class="na">changed=</span><span class="s">"2018-07-18 20:46:06"</span> <span class="na">uid=</span><span class="s">"{EF57DA28-5F69-4530-A59E-AAB58578219D}"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Properties</span>
+            <span class="na">action=</span><span class="s">"U"</span>
+            <span class="na">newName=</span><span class="s">""</span>
+            <span class="na">fullName=</span><span class="s">""</span>
+            <span class="na">description=</span><span class="s">""</span>
+            <span class="na">cpassword=</span><span class="s">"<mark>edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ</mark>"</span>
+            <span class="na">changeLogon=</span><span class="s">"0"</span>
+            <span class="na">noChange=</span><span class="s">"1"</span>
+            <span class="na">neverExpires=</span><span class="s">"1"</span>
+            <span class="na">acctDisabled=</span><span class="s">"0"</span>
+            <span class="na">userName=</span><span class="s">"<mark>active.htb\SVC_TGS</mark>"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/User&gt;</span>
+<span class="nt">&lt;/Groups&gt;</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Other XML files (like <span style="color:orange"><strong><code>Groups.xml</code></strong></span>) are created when a new Group Policy Preference is created.</p>
+</div>
+</div>
+</div>
+</div></section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

@@ -5,7 +5,15 @@ description: "Retired HackTheBox Machine Write-ups"
 header-img: "chals/htb/htb.png"
 tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe, jebidiah-anthony, jebidiah, pentest, pentesting, penetration testing]
 boxes: [
-    [Traceback, "", "", green, Linux, 10.10.10.181, 20 pts, "Active"],
+    [Blunder, "", "" , "red", Linux, 10.10.10.200, 40 pts, "Active"],
+    [OepnKeyS, "", "" , "orange", OpenBSD, 10.10.10.199, 30 pts, "Active"],
+    [Buff, "", "" , "green", Windows, 10.10.10.198, 20 pts, "Active"],
+    [SneakyMailer, "", "" , "orange", Linux, 10.10.10.197, 30 pts, "Active"],
+    [Intense, "", "" , "red", Linux, 10.10.10.195, 40 pts, "Active"],
+    [Tabby, "", "" , "green", Linux, 10.10.10.194, 20 pts, "Active"],
+    [Fuse, "", "" , "orange", Windows, 10.10.10.193, 30 pts, "Active"],
+    [Blunder, "", "" , "green", Linux, 10.10.10.191, 20 pts, "Active"],
+    [Traceback, "", "", green, Linux, 10.10.10.181, 20 pts, "Retired"],
     [Obscurity, "", "", orange, Linux, 10.10.10.168, 30 pts, "May 10, 2020"],
     [OpenAdmin, "", "", green, Linux, 10.10.10.171, 20 pts, "May 03, 2020"],
     [Traverxec, "", "", green, Linux, 10.10.10.165, 20 pts, "Apr 12, 2020"],
