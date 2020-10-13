@@ -33,15 +33,13 @@ ____
 
 There are three things that were given for this challenge:
 
-First is a series of notes were given when opening the web application:
+First is a series of notes when opening the web application:
    
 ____
 image::index.png[]
-____
    
 I cleaned it up a bit and it looks like this:
 
-____
 ----
 A  Ab B  C# D# C  F  Db C  Eb A  B  B  Bb F# Ab Gb A# A  Bb C# G# Ab Bb
 D# D  C  Eb B  A  Bb G  E  G# F  Eb B  E  A# Gb B  D  E  Ab Bb F# C  C  G
@@ -50,7 +48,7 @@ A# Ab B  F  Ab B  A  B  C  D# F# Db D  Eb F  E  C  Bb Gb C# A  A  G  F# Db C  C#
 ----
 ____
 
-Next is a series of keys that could be used to decipher the `subliminal messsages` as mentioned in the challenge description:
+Next is a series of keys that will probably be used to decipher the `subliminal messsages` (as described in the challenge description):
 
 ____
 image::solve_me.png[]
