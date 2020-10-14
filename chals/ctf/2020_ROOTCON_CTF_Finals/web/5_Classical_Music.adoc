@@ -146,7 +146,7 @@ Next is that the first block will be transposed by a select interval, the second
 
 If we use the first given interval key -- `+++<strong style="color:orange">perfect fifth, minor third, major seventh</strong>+++`, the first block will be transposed to the right by a perfect fifth (7 semitones), the second block by modulating by minor third (7 + 3 semitones), and the third block by modulating by a major seventh (7 + 11 semitones).
 
-Applying this to the three blocks above, we will have:
+Applying this to the three blocks above:
 
 ____
 If we have:
@@ -285,7 +285,7 @@ ____
 ----
 ____
 
-It rougly translates to the following strings:
+It roughly translates to the following strings:
 ____
 ----
 C0NGR4T5FR13NDY0UD1DG00D     == (Congrats, friend. You did good)
@@ -299,11 +299,11 @@ The third line was not even remotely decoded so it must be the one where the flo
 
 ---
 
-== PART 3 : THE REVERSED FLOW
+== PART 4 : THE REVERSED FLOW
 
 If normal transposition is done by shifting to the right then maybe for this, we should transpose to the left.
 
-The interval key, `+++<strong style="color:orange">minor second, minor sixth, perfect fourth</strong>+++`, has only deciphered one message so far so we will be using this when transposing with a reversed flow.
+The interval key, `+++<strong style="color:orange">minor second, minor sixth, perfect fourth</strong>+++`, has only deciphered one message so far so we will be using this when transposing with a reversed flow. The other one was used to decipher the first and fourth line.
 
 ____
 So if we have:
