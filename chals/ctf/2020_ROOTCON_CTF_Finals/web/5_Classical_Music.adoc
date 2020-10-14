@@ -94,7 +94,7 @@ In this case, our transposed piece now starts with F#2. The most important thing
 This is +++<strong style="color:orange">represented by the leading three-digit number of the octave key,</strong>+++ where the first digit is the octave number for the first block, the second digit for the second block and the third digit for the third block.
 +++<strong style="color:orange">The rest of the trailing octave numbers in the octave key correspond to each of the notes in the ciphertext.</strong>+++
 
-+++<strong style="color:orange">As an added challenge, we decided to reverse the flow of notes for one of the lines.</strong>+++
++++<strong style="color:red">As an added challenge, we decided to reverse the flow of notes for one of the lines.</strong>+++
 ____
 
 ---
