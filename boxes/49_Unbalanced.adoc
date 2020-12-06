@@ -581,12 +581,12 @@ The Pi-hole service can now be reached! However, it's running via docker so I de
 ____
 [source,shell,subs="+macros,verbatim,quotes"]
 ----
-+++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ cat squid.conf | grep dst
+$ cat squid.conf | grep dst
 
   acl intranet dstdomain -n intranet.unbalanced.htb
   #acl intranet_net dst -n 172.16.0.0/12#
 
-+++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ cat squid.conf | grep intranet_net
+$ cat squid.conf | grep intranet_net
 
   acl intranet_net dst -n 172.16.0.0/12
   #http_access allow intranet_net#
