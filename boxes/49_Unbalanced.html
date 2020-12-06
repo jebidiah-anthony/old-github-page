@@ -1037,9 +1037,9 @@
 <pre class="rouge highlight"><code data-lang="shell"><span style="color:green">bryan@unbalanced</span>:<span style="color:#779ECB">~</span><span class="nv">$ </span>curl <span class="nt">-I</span> <a href="http://127.0.0.1:8080/admin/" class="bare">http://127.0.0.1:8080/admin/</a>
 
   HTTP/1.1 200 OK
-  X-Pi-hole: The Pi-hole Web interface is working!
+  X-Pi-hole: <span class="c"><mark>The Pi-hole Web interface is working!</mark></span>
   X-Frame-Options: DENY
-  Set-Cookie: <span class="c"><mark>PHPSESSID=icng7lp4cktfauu6lt26inrot0; path=/</mark></span>
+  Set-Cookie: <span class="nv">PHPSESSID</span><span class="o">=</span>icng7lp4cktfauu6lt26inrot0<span class="p">;</span> <span class="nv">path</span><span class="o">=</span>/
   Expires: Thu, 19 Nov 1981 08:52:00 GMT
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
@@ -1057,12 +1057,12 @@
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span style="color:green">bryan@unbalanced</span>:<span style="color:#779ECB">~</span><span class="nv">$ </span><span class="nb">cat </span>squid.conf | <span class="nb">grep </span>dst
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>squid.conf | <span class="nb">grep </span>dst
 
   acl intranet dstdomain <span class="nt">-n</span> intranet.unbalanced.htb
   <span class="c"><mark>acl intranet_net dst -n 172.16.0.0/12</mark></span>
 
-<span style="color:green">bryan@unbalanced</span>:<span style="color:#779ECB">~</span><span class="nv">$ </span><span class="nb">cat </span>squid.conf | <span class="nb">grep </span>intranet_net
+<span class="nv">$ </span><span class="nb">cat </span>squid.conf | <span class="nb">grep </span>intranet_net
 
   acl intranet_net dst <span class="nt">-n</span> 172.16.0.0/12
   <span class="c"><mark>http_access allow intranet_net</mark></span></code></pre>
