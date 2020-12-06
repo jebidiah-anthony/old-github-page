@@ -564,9 +564,9 @@ ____
 +++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ curl -I http://127.0.0.1:8080/admin/
 
   HTTP/1.1 200 OK
-  X-Pi-hole: The Pi-hole Web interface is working!
+  X-Pi-hole: #The Pi-hole Web interface is working!#
   X-Frame-Options: DENY
-  Set-Cookie: #PHPSESSID=icng7lp4cktfauu6lt26inrot0; path=/#
+  Set-Cookie: PHPSESSID=icng7lp4cktfauu6lt26inrot0; path=/
   Expires: Thu, 19 Nov 1981 08:52:00 GMT
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
