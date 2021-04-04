@@ -13,6 +13,7 @@ boxes: [
     [Tabby, "", "" , "green", Linux, 10.10.10.194, 20 pts, "Nov 08, 2020"],
     [Fuse, "", "" , "orange", Windows, 10.10.10.193, 30 pts, "Nov 01, 2020"],
     [Blunder, "", "" , "green", Linux, 10.10.10.191, 20 pts, "Oct 18, 2020"],
+    [Travel, "SYNACK TRACK", "./boxes/62_Travel.html", red, Linux, 10.10.10.189, 40 pts, "Sep 13, 2020"],
     [Traceback, "", "", green, Linux, 10.10.10.181, 20 pts, "Aug 16, 2020"],
     [Oouch, "SYNACK TRACK", "", "red", Linux, 10.10.10.177, 40 pts, "Aug 02, 2020"],
     [Obscurity, "", "", orange, Linux, 10.10.10.168, 30 pts, "May 10, 2020"],

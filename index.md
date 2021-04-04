@@ -13,6 +13,12 @@ tags: [whoami, felix angelo mendoza, htb, hackthebox, ctf, cyber sea game, cyber
 
 ## <span style="color:red">$ achievements</span>
 
+### __First Place, ROOTCON14 CTF Finals__ (_Apr 2020_)
+> Competed as a member of __Team FACBOIS__ in a Capture the Flag competition organized by _Pwn De Manila_ for the premier hacking conference, _ROOTCON 13_
+
+### __Second Place, Red Team Village CTF__ (_Apr 2020_)
+> Competed as a member of __Team NOT FACBOIS__ in a Capture the Flag competition organized by _Red Team Village_ for the premier hacking conference, _ROOTCON 13_
+
 ### __First Place, [ROOTCON Easter Egg Hunt 2020]({{site.url}}/chals/ctf/2020-ROOTCONEasterEggHunt.html)__ (_Apr 2020_)
 > An online easter-themed Capture the Flag competition organized by _Pwn De Manila_
 
