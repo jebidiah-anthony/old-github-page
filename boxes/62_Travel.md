@@ -281,7 +281,7 @@ This brings you to __http[://]blog.travel.htb/awesome-rss__:
 
 This was extracted from the contents of http[://]blog-dev.travel.htb/.git/
 
-```php+HTML
+```php
 <?php
 	/*
 	Template Name: Awesome RSS
