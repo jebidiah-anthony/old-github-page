@@ -2,7 +2,7 @@
 layout: menu
 title: "HTB Quick"
 description: "10.10.10.186 | 40 pts"
-header-img: "boxes/screenshots/62_quick/quick.png"
+header-img: "boxes/screenshots/61_quick/quick.png"
 tags: [hackthebox, htb, boot2root, writeup, write-up, linux, quick, quick.htb, QUIC, QUIC protocol, HTTP3, Esigate, ESI injection, printer job, printer exploit, printer service, stored credentials]
 ---
 
