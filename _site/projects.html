@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="projects" />
+    
+    <meta property="article:tag" content="pass-the-ticket" />
+    
+    <meta property="article:tag" content="double-hop" />
+    
+    <meta property="article:tag" content="psremoting" />
+    
+    <meta property="article:tag" content="evtx" />
+    
+    <meta property="article:tag" content="custom logs" />
+    
+    <meta property="article:tag" content="ecmangen" />
+    
+    <meta property="article:tag" content="subscription" />
+    
+    <meta property="article:tag" content="windows event forwarder" />
+    
+    <meta property="article:tag" content="windows event collector" />
+    
+    <meta property="article:tag" content="wec" />
+    
+    <meta property="article:tag" content="wef" />
+    
+    <meta property="article:tag" content="elastalerter" />
+    
+    <meta property="article:tag" content="elastalert" />
+    
+    <meta property="article:tag" content="elasticsearch" />
+    
+    <meta property="article:tag" content="rules" />
+    
+    <meta property="article:tag" content="cross origin resource sharing" />
+    
+    <meta property="article:tag" content="cors" />
+    
+    <meta property="article:tag" content="mubix" />
+    
+    <meta property="article:tag" content="output encoding" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="PROJECTS">
+    <meta name="twitter:description" content="Various manuals and proof of concepts I've created out of personal interest most of which in a Windows context.">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/banner.jpg" />
+    
+
+    
+    <meta property="og:title" content="PROJECTS" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>PROJECTS | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="PROJECTS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Various manuals and proof of concepts I’ve created out of personal interest most of which in a Windows context." />
+<meta property="og:description" content="Various manuals and proof of concepts I’ve created out of personal interest most of which in a Windows context." />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/projects.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/projects.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"description":"Various manuals and proof of concepts I’ve created out of personal interest most of which in a Windows context.","@type":"WebPage","headline":"PROJECTS","url":"https://jebidiah-anthony.github.io/projects.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    htb writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    <strong style="color:orange">projects</strong>
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><h2 id="-projects"><span style="color:red">$ projects</span></h2>
+
+<hr />
+
+<h2 id="output-encoding-for-dummies">»<a href="./prjct/Output-Encoding.html">Output Encoding for Dummies</a>«</h2>
+<blockquote>
+  <p>Values received from a data source should only be treated as what it should be (only as data) and nothing else.</p>
+</blockquote>
+
+<h2 id="cors-for-dummies">»<a href="./prjct/CORS.html">CORS for Dummies</a>«</h2>
+<blockquote>
+  <p>This is a brief introduction to <strong>Cross Origin Resource Sharing</strong> along with common misconfigurations that might lead to exploitation. This was an entry to mubix’s OSCP giveaway challenge 3. I did not win but I still really learned a lot which is still a great takeaway.</p>
+</blockquote>
+
+<h2 id="elastalerterpy">»<a href="./prjct/elastalerter.html">elastalerter.py</a>«</h2>
+<blockquote>
+  <p>An elastalert rule tester built using python. Tests could be set-up uniquely and could be run by batch. Specified logs are indexed using <a href="https://www.elastic.co/downloads/past-releases/elasticsearch-7-4-0"><strong>Elasticsearch 7.4.0</strong></a> and are used with a custom elastalert <a href="https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter/alerter.py">alerter</a>. This program covers testing for single matches and log aggregation with field mapping capabilities. (<a href="https://github.com/jebidiah-anthony/elastalerter/blob/master/elastalerter.py">source code</a>)</p>
+</blockquote>
+
+<h2 id="setting-up-a-windows-event-collector">»<a href="./prjct/Windows-Event-Collector.html">Setting up a Windows Event Collector</a>«</h2>
+<blockquote>
+  <p>This lays out how to create a sbuscription (both source and collector initiated) that collects selected forwarded <strong><code class="highlighter-rouge">.evtx</code></strong>  event logs from a workstation to a domain controller.</p>
+</blockquote>
+
+<h2 id="creating-custom-evtx-logfiles">»<a href="./prjct/Custom-evtx-Logfiles.html">Creating Custom <strong><em>.evtx</em></strong> Logfiles</a>«</h2>
+<blockquote>
+  <p>This shows the process of how to create custom <strong><code class="highlighter-rouge">.evtx</code></strong> log files using <strong><code class="highlighter-rouge">ecmangen.exe</code></strong> and other utilities present in the <a href="https://go.microsoft.com/fwlink/p/?LinkId=838916"><strong>Windows Development Kit</strong></a>. The log file(s) created could be used as a destination log for forwarded events.</p>
+</blockquote>
+
+<h2 id="pass-the-ticket-psremoting-double-hop-bypass">»<a href="./prjct/PTT-PSRemoting.html">Pass-the-Ticket: PSRemoting Double-hop Bypass</a>«</h2>
+<blockquote>
+  <p>The double-hop problem occurs when, for example, a local PowerShell instance connected via PSRemoting to a remote server which is connected to the target server and an attempt to execute commands on the target server was made and was rejected. The end goal of this proof-of-concept is to execute a pass-the-ticket attack on an active directory while being remotely connected to a domain computer with administrator privileges.</p>
+</blockquote>
+
+</section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

