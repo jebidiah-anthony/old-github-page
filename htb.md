@@ -5,7 +5,11 @@ description: "Retired HackTheBox Machine Write-ups"
 header-img: "chals/htb/htb.png"
 tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe, jebidiah-anthony, jebidiah, pentest, pentesting, penetration testing]
 boxes: [
-    [OpenKeyS, "", "" , "orange", OpenBSD, 10.10.10.199, 30 pts, "Active"],
+    [Proper, "", "" , "red", Windows, 10.10.10.231, 40 pts, "Active"],
+    [APT, "", "" , "white", Windows, 10.10.10.213, 50 pts, "Apr 11, 2021"],
+    [Proper, "", "" , "green", Windows, 10.10.10.215, 20 pts, "Feb 28, 2021"],
+    [Doctor, "", "" , "green", Windows, 10.10.10.209, 20 pts, "Feb 07, 2021"],
+    [OpenKeyS, "", "" , "orange", OpenBSD, 10.10.10.199, 30 pts, "Dec 20, 2020"],
     [Unbalanced, "", "./boxes/49_Unbalanced.html" , "red", Linux, 10.10.10.200, 40 pts, "Dec 06, 2020"],
     [SneakyMailer, "", "" , "orange", Linux, 10.10.10.197, 30 pts, "Nov 29, 2020"],
     [Buff, "", "" , "green", Windows, 10.10.10.198, 20 pts, "Nov 22, 2020"],
@@ -57,7 +61,10 @@ boxes: [
     [Stratosphere, "", "https://hackedthebox.wordpress.com/htb-stratosphere/", orange, Linux, 10.10.10.64, 30 pts, "Sep 02, 2018"],
     [Celestial, "", "", orange, Linux, 10.10.10.85, 30 pts,  "Aug 26, 2018"],
     [Valentine, "", "", green, Linux, 10.10.10.79, 20 pts,  "Jul 29, 2018"],
-    [Aragog, "", "", orange, Linux, 10.10.10.78, 30 pts, "Jul 22, 2018"]
+    [Aragog, "", "", orange, Linux, 10.10.10.78, 30 pts, "Jul 22, 2018"],
+    [Kotarak, "", "", red, Linux, 10.10.10.55, 40 pts, "Mar 11, 2018"],
+    [Haircut, "", "", orange, Linux, 10.10.10.24, 30 pts, "Oct 01, 2017"],
+    [Cronos, "", "", orange, Linux, 10.10.10.13, 30 pts, "Aug 06, 2017"],
 ]
 ---
 
