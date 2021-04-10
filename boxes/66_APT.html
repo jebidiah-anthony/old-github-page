@@ -840,7 +840,7 @@ $ cat kerbrute.txt | grep VALID
 <blockquote>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>registry.txt | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-A5</span> <span class="nt">-B5</span> <span class="nt">-E</span> <span class="s1">'henry$'</span>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">cat </span>registry.txt | <span class="nb">grep</span> <span class="nt">-i</span> <span class="nt">-A5</span> <span class="nt">-B5</span> <span class="nt">-E</span> <span class="s1">'henry'</span>
 
   <span class="o">[</span>...omitted...]
   <span class="se">\S</span>oftware<span class="se">\G</span>iganticHostingManagementSystem<span class="se">\</span>
@@ -987,7 +987,7 @@ invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemP
 <div class="sect2">
 <h3 id="5-2-intercepting-ntlmv1-hashes">5.2 Intercepting NTLMv1 Hashes</h3>
 <div class="paragraph">
-<p>Setting up <code><strong>responder</strong></code> with a custom challeng, "1122334455667788"</p>
+<p>Setting up <code><strong>responder</strong></code> with a custom challenge, "1122334455667788"</p>
 </div>
 <div class="quoteblock">
 <blockquote>
