@@ -6,7 +6,7 @@ header-img: "chals/htb/htb.png"
 tags: [HackTheBox, htb, boot2root, solutions, solution, writeup, write-up, machines, machine, linux, windows, openbsd, stratosphere, poison, canape, sunday, devoops, tartarsauce, jerry, hawk, active, waldo, mischief, teacher, irked, lightweight, chaos, help, flujab, friendzone, ctf, luke, kryptos, swagshop, writeup, ellingson, safe, jebidiah-anthony, jebidiah, pentest, pentesting, penetration testing]
 boxes: [
     [Proper, "", "" , "red", Windows, 10.10.10.231, 40 pts, "Active"],
-    [APT, "", "" , "white", Windows, 10.10.10.213, 50 pts, "Apr 11, 2021"],
+    [APT, "", "./boxes/66_APT.html" , "white", Windows, 10.10.10.213, 50 pts, "Apr 11, 2021"],
     [Proper, "", "" , "green", Windows, 10.10.10.215, 20 pts, "Feb 28, 2021"],
     [Doctor, "", "" , "green", Windows, 10.10.10.209, 20 pts, "Feb 07, 2021"],
     [OpenKeyS, "", "" , "orange", OpenBSD, 10.10.10.199, 30 pts, "Dec 20, 2020"],
