@@ -2,7 +2,7 @@
 layout: menu
 title: "HTB APT"
 description: "10.10.10.213 | 50 pts"
-header-img: "boxes/screenshots/49_unbalanced/unbalanced.png"
+header-img: "boxes/screenshots/66_APT/APT.png"
 tags: [hackthebox, htb, boot2root, writeup, windows, APT, apt]
 ---
 
@@ -179,7 +179,9 @@ This might be essential when enumerating/connecting to the machine.
 
 === TCP PORT 80 : HTTP
 
+____
 image::80_landing_page.png[GiganticHosting]
+____
 
 === TCP PORT 445 : SMB
 
@@ -485,6 +487,7 @@ ____
 
 The DWORD value for `*lmcompatibilitylevel*` was set to `*2*` and based on the Microsoft documentation for LAN Manager authentication level:
 
+____
 [cols="1,3,8"]
 |===
 |DWORD |Setting |Description
@@ -493,6 +496,7 @@ The DWORD value for `*lmcompatibilitylevel*` was set to `*2*` and based on the M
 | Send NTLM response only
 | Client devices use NTLMv1 authentication, and they use NTLMv2 session security if the server supports it. Domain controllers accept LM, NTLM, and NTLMv2 authentication.
 |===
+____
 
 With this the machine should only repond with NTLMv1 hashes during authentication.
 

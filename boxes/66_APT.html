@@ -29,7 +29,7 @@
     <meta name="twitter:creator" content="@feeeellliix">
 
     
-    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/49_unbalanced/unbalanced.png" />
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/66_APT/APT.png" />
     
 
     
@@ -587,10 +587,14 @@ ff02::2 ip6-allrouters
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="tcp-port-80-http">TCP PORT 80 : HTTP</h3>
+<div class="quoteblock">
+<blockquote>
 <div class="imageblock">
 <div class="content">
 <img src="/boxes/screenshots/66_APT/80_landing_page.png" alt="GiganticHosting">
 </div>
+</div>
+</blockquote>
 </div>
 </div>
 <div class="sect2">
@@ -951,6 +955,8 @@ invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemP
 <div class="paragraph">
 <p>The DWORD value for <code><strong>lmcompatibilitylevel</strong></code> was set to <code><strong>2</strong></code> and based on the Microsoft documentation for LAN Manager authentication level:</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 8.3333%;">
@@ -972,6 +978,8 @@ invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemP
 </tr>
 </tbody>
 </table>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>With this the machine should only repond with NTLMv1 hashes during authentication.</p>
 </div>
