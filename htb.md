@@ -14,7 +14,7 @@ boxes: [
     [ScriptKiddie, "", "" , "green", Linux, 10.10.10.226, 20 pts, "Active"],
     [Ophiuchi, "", "" , "orange", Linux, 10.10.10.227, 30 pts, "Active"],
     [Breadcrumbs, "", "" , "red", Windows, 10.10.10.228, 40 pts, "Active"],
-    [Spectra, "", "" , "green", "?", 10.10.10.229, 20 pts, "Active"],
+    [Spectra, "", "" , "green", "", 10.10.10.229, 20 pts, "Active"],
     [TheNotebook, "", "" , "orange", Linux, 10.10.10.230, 30 pts, "Active"],
     [Proper, "", "" , "red", Windows, 10.10.10.231, 40 pts, "Active"],
     [CrossFitTwo, "", "" , "white", OpenBSD, 10.10.10.232, 50 pts, "Active"],
