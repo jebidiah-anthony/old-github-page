@@ -246,7 +246,7 @@ The command will execute before proceeding to the actual file contents.
 There are a few challenges to overcome since only RPC compliant protocols are allowed for outbound connections so first, I created an automated vim modeline payload generator using bash:
 
 ____
-[source,bash,subs="verbatim,quotes"]
+[source,sh,subs="verbatim,quotes"]
 ----
 #!/bin/bash
 
@@ -269,7 +269,7 @@ ____
 This incorporates a python2 one-liner which when expanded looks like the following:
 
 ____
-[source,python,subs="verbatim,quotes"]
+[source,py,subs="verbatim,quotes"]
 ----
 import math
 import requests
