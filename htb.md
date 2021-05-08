@@ -24,7 +24,7 @@ boxes: [
     [Atom, "", "" , "orange", Windows, 10.10.10.237, 30 pts, "Active"],
     [Monitors, "", "" , "red", Linux, 10.10.10.238, 40 pts, "Active"],
     [Love, "", "" , "green", Windows, 10.10.10.239, 20 pts, "Active"],
-    [Attended, "", "", "white", OpenBSD, 10.10.10.221, 50pts, "May 09, 2021"]
+    [Attended, "", "./boxes/73_Attended.html", "white", OpenBSD, 10.10.10.221, 50pts, "May 09, 2021"]
     [Sharp, "", "", "red", Windows, 10.10.10.219, 40 pts, "May 02, 2021"],
     [APT, "", "./boxes/66_APT.html" , "white", Windows, 10.10.10.213, 50 pts, "Apr 11, 2021"],
     [Academy, "", "" , "green", Windows, 10.10.10.215, 20 pts, "Feb 28, 2021"],
