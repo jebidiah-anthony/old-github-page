@@ -1,0 +1,50 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:findAllUsersResponse xmlns:ns2="http://www.hp.com/webinspect/zerows">
+            <ns2:findAllUsersResult>
+                <enabled>true</enabled>
+                <userId>2</userId>
+                <username>username</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>536-48-3769</ssn>
+                <userId>3</userId>
+                <username>Leeroy Jenkins</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>607-58-7435</ssn>
+                <userId>4</userId>
+                <username>Stephen Bowen</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>247-54-1719</ssn>
+                <userId>5</userId>
+                <username>Linus Moran</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>578-13-3713</ssn>
+                <userId>6</userId>
+                <username>Nero Chan</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>449-20-3206</ssn>
+                <userId>7</userId>
+                <username>Kadeem Higgins</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>008-70-6738</ssn>
+                <userId>8</userId>
+                <username>Quinn Burks</username>
+            </ns2:findAllUsersResult>
+            <ns2:findAllUsersResult>
+                <enabled>false</enabled>
+                <ssn>574-56-1932</ssn>
+                <userId>9</userId>
+                <username>Davis Thompson</username>
+            </ns2:findAllUsersResult><ns2:findAllUsersResult><enabled>false</enabled><ssn>330-58-4012</ssn><userId>10</userId><username>Lester Keller</username></ns2:findAllUsersResult></ns2:findAllUsersResponse></soap:Body></soap:Envelope>

